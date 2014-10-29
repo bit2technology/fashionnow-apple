@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D824CAC92C93D9205931DB7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 048B75AE9DC83A2F458FA468 /* libPods.a */; };
 		4BF1D05B1A00F1EB00818658 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF1D05A1A00F1EB00818658 /* AppDelegate.swift */; };
 		4BF1D05E1A00F1EB00818658 /* Fashion_Now.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4BF1D05C1A00F1EB00818658 /* Fashion_Now.xcdatamodeld */; };
-		4BF1D0601A00F1EB00818658 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF1D05F1A00F1EB00818658 /* ViewController.swift */; };
 		4BF1D0631A00F1EB00818658 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BF1D0611A00F1EB00818658 /* Main.storyboard */; };
 		4BF1D0651A00F1EB00818658 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BF1D0641A00F1EB00818658 /* Images.xcassets */; };
 		4BF1D0681A00F1EB00818658 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BF1D0661A00F1EB00818658 /* LaunchScreen.xib */; };
 		4BF1D0741A00F1EB00818658 /* Fashion_NowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF1D0731A00F1EB00818658 /* Fashion_NowTests.swift */; };
+		4BF1D07E1A00F23700818658 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF1D07D1A00F23700818658 /* TabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,17 +28,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		048B75AE9DC83A2F458FA468 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BF1D0551A00F1EB00818658 /* Fashion Now.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fashion Now.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BF1D0591A00F1EB00818658 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4BF1D05A1A00F1EB00818658 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4BF1D05D1A00F1EB00818658 /* Fashion_Now.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Fashion_Now.xcdatamodel; sourceTree = "<group>"; };
-		4BF1D05F1A00F1EB00818658 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4BF1D0621A00F1EB00818658 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4BF1D0641A00F1EB00818658 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4BF1D0671A00F1EB00818658 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		4BF1D06D1A00F1EB00818658 /* Fashion NowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Fashion NowTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BF1D0721A00F1EB00818658 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4BF1D0731A00F1EB00818658 /* Fashion_NowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fashion_NowTests.swift; sourceTree = "<group>"; };
+		4BF1D07D1A00F23700818658 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		4BF1D0801A010DD400818658 /* Fashion Now-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fashion Now-Bridging-Header.h"; sourceTree = "<group>"; };
+		97B7EF322D314078C3A2FB3A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		9A149039849EB88E2D00C657 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D824CAC92C93D9205931DB7 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +70,8 @@
 				4BF1D0571A00F1EB00818658 /* Fashion Now */,
 				4BF1D0701A00F1EB00818658 /* Fashion NowTests */,
 				4BF1D0561A00F1EB00818658 /* Products */,
+				50BBFE5617CD5165D7925FD4 /* Pods */,
+				852B2819E90E3361AA2D69D7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -79,9 +87,9 @@
 		4BF1D0571A00F1EB00818658 /* Fashion Now */ = {
 			isa = PBXGroup;
 			children = (
-				4BF1D05A1A00F1EB00818658 /* AppDelegate.swift */,
-				4BF1D05F1A00F1EB00818658 /* ViewController.swift */,
 				4BF1D0611A00F1EB00818658 /* Main.storyboard */,
+				4BF1D05A1A00F1EB00818658 /* AppDelegate.swift */,
+				4BF1D07D1A00F23700818658 /* TabBarController.swift */,
 				4BF1D0641A00F1EB00818658 /* Images.xcassets */,
 				4BF1D0661A00F1EB00818658 /* LaunchScreen.xib */,
 				4BF1D05C1A00F1EB00818658 /* Fashion_Now.xcdatamodeld */,
@@ -93,6 +101,7 @@
 		4BF1D0581A00F1EB00818658 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4BF1D0801A010DD400818658 /* Fashion Now-Bridging-Header.h */,
 				4BF1D0591A00F1EB00818658 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -115,6 +124,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		50BBFE5617CD5165D7925FD4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				97B7EF322D314078C3A2FB3A /* Pods.debug.xcconfig */,
+				9A149039849EB88E2D00C657 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		852B2819E90E3361AA2D69D7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				048B75AE9DC83A2F458FA468 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -122,9 +148,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4BF1D0771A00F1EB00818658 /* Build configuration list for PBXNativeTarget "Fashion Now" */;
 			buildPhases = (
+				3BDADDEDC860DE1AB8F8FECD /* Check Pods Manifest.lock */,
 				4BF1D0511A00F1EB00818658 /* Sources */,
 				4BF1D0521A00F1EB00818658 /* Frameworks */,
 				4BF1D0531A00F1EB00818658 /* Resources */,
+				75813197C4A225B2AEDD361A /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -164,6 +192,7 @@
 				TargetAttributes = {
 					4BF1D0541A00F1EB00818658 = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = 2CPJD7ENY9;
 					};
 					4BF1D06C1A00F1EB00818658 = {
 						CreatedOnToolsVersion = 6.1;
@@ -210,12 +239,45 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		3BDADDEDC860DE1AB8F8FECD /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		75813197C4A225B2AEDD361A /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		4BF1D0511A00F1EB00818658 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BF1D0601A00F1EB00818658 /* ViewController.swift in Sources */,
+				4BF1D07E1A00F23700818658 /* TabBarController.swift in Sources */,
 				4BF1D05B1A00F1EB00818658 /* AppDelegate.swift in Sources */,
 				4BF1D05E1A00F1EB00818658 /* Fashion_Now.xcdatamodeld in Sources */,
 			);
@@ -293,7 +355,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -330,7 +392,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -340,21 +402,32 @@
 		};
 		4BF1D0781A00F1EB00818658 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 97B7EF322D314078C3A2FB3A /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Fashion Now/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Fashion Now/Fashion Now-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		4BF1D0791A00F1EB00818658 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A149039849EB88E2D00C657 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Fashion Now/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Fashion Now/Fashion Now-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -411,6 +484,7 @@
 				4BF1D0791A00F1EB00818658 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4BF1D07A1A00F1EB00818658 /* Build configuration list for PBXNativeTarget "Fashion NowTests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +493,7 @@
 				4BF1D07C1A00F1EB00818658 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
