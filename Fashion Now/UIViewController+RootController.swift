@@ -15,6 +15,15 @@ extension UIViewController {
             return tabBarController as? TabBarController
         }
     }
+
+    func preferredStatusBarHidden() -> Bool {
+
+        if respondsToSelector("traitCollection") {
+            return (traitCollection.verticalSizeClass == .Compact)
+        }
+
+        return (interfaceOrientation.isLandscape && UIDevice.currentDevice().userInterfaceIdiom == .Phone)
+    }
     
     func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
         return .Slide
