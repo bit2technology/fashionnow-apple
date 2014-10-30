@@ -51,6 +51,10 @@ internal class PhotoComparisonController: UIViewController, PhotoControllerDeleg
         self.rightPhotoView.layer.mask.transform = CATransform3DMakeScale(rightPhotoViewSize.width / maskReferenceSize, rightPhotoViewSize.height / maskReferenceSize, 1)
 //        CATransaction.commit()
     }
+    
+    func clean(#animated: Bool) {
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,18 +92,15 @@ internal class PhotoComparisonController: UIViewController, PhotoControllerDeleg
         adjustMaskSizeWithAnimationDuration(0)
     }
 
-//    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-//        adjustMaskSizeWithAnimationDuration(duration)
-//        println("rotation")
-//    }
+    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        adjustMaskSizeWithAnimationDuration(duration)
+    }
 
-//    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-//        coordinator.animateAlongsideTransition({ (context) -> Void in
-//            self.adjustMaskSizeWithAnimationDuration(context.transitionDuration())
-//            self.tabBarController?.tabBar.hidden = true
-//        }, completion: nil)
-//        println("transition")
-//    }
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animateAlongsideTransition({ (context) -> Void in
+            self.adjustMaskSizeWithAnimationDuration(context.transitionDuration())
+        }, completion: nil)
+    }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 

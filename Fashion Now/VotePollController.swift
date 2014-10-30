@@ -8,29 +8,16 @@
 
 import UIKit
 
-class VotePollController: UIViewController {
-
-    @IBOutlet var loadingView: UIView!
+class VotePollController: UIViewController, UITabBarControllerDelegate {
     
     var photoComparisonController: PhotoComparisonController!
     
     override func viewDidLoad() {
         
-        photoComparisonController.mode = .Vote
+//        photoComparisonController.mode = .Vote
     }
     
-    override func viewDidAppear(animated: Bool) {
-        
-        loadingView.hidden = false
-        
-        var query: PFQuery = PFQuery(className: Poll.parseClassName())
-        query.orderByDescending("createdAt")
-        
-        query.getFirstObjectInBackgroundWithBlock { (object, error) -> Void in
-            self.photoComparisonController.poll = object as Poll
-            self.loadingView.hidden = true
-        }
-    }
+    // MARK: UIViewController
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
@@ -47,11 +34,31 @@ class VotePollController: UIViewController {
         }
     }
 
-    override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation {
-        return UIInterfaceOrientation.Portrait
-    }
-
     override func supportedInterfaceOrientations() -> Int {
+        return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.tabBarController?.delegate = nil
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.tabBarController?.delegate = self
+        
+        var query: PFQuery = PFQuery(className: Poll.parseClassName())
+        query.orderByDescending("createdAt")
+        
+        query.getFirstObjectInBackgroundWithBlock { (object, error) -> Void in
+            
+//            self.photoComparisonController.poll = object as Poll
+        }
+    }
+    
+    func tabBarControllerSupportedInterfaceOrientations(tabBarController: UITabBarController) -> Int {
         return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
     }
 }

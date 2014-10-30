@@ -43,12 +43,6 @@ public class Poll: PFObject, PFSubclassing {
             self[PhotosKey] = newValueOrNSNull(newValue)
         }
     }
-
-    var isValid: Bool {
-        get {
-            return (createdBy != nil && photos?.count >= 2)
-        }
-    }
 }
 
 // MARK: - Photo class

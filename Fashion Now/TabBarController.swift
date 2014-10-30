@@ -10,12 +10,19 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
-    private var tabBarHidden = false
-    
+    // Bottom layout guide substitute
     var tabBarHeight: CGFloat {
         get {
             return view.bounds.height - tabBar.frame.minY
         }
+    }
+    
+    private var tabBarHidden = false
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.clipsToBounds = true
     }
     
     override func viewWillLayoutSubviews() {
@@ -27,13 +34,7 @@ class TabBarController: UITabBarController {
         }
         
         var tabBarFrame = tabBar.frame
-        tabBarFrame.origin.y = view.frame.height - (tabBarHidden ? 0 : tabBarFrame.height)
+        tabBarFrame.origin.y = view.bounds.height - (tabBarHidden ? 0 : tabBarFrame.height)
         tabBar.frame = tabBarFrame
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.clipsToBounds = true
     }
 }
