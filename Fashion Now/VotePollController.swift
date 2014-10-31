@@ -49,6 +49,8 @@ class VotePollController: UIViewController, UITabBarControllerDelegate {
         
         self.tabBarController?.delegate = self
         
+        UIViewController.attemptRotationToDeviceOrientation()
+        
         var query: PFQuery = PFQuery(className: Poll.parseClassName())
         query.orderByDescending("createdAt")
         

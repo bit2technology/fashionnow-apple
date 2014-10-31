@@ -45,7 +45,6 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
 
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var deleteOrVoteButton: UIButton!
-    @IBOutlet var editButton: UIButton!
     @IBOutlet var buttonsCenterX: NSLayoutConstraint!
 
     private func adjustForLayout(layout: Layout) {
@@ -67,14 +66,12 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         switch mode {
 
         case .Edit:
-            photo.image = nil
             cameraButton.hidden = false
             libraryButton.hidden = false
             previousButton.hidden = false
             imageView.superview?.hidden = true
             imageView.image = nil
             deleteOrVoteButton.setTitle("Delete", forState: .Normal)
-            editButton.hidden = false
 
         case .Vote:
             cameraButton.hidden = true
@@ -82,11 +79,10 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
             previousButton.hidden = true
             imageView.superview?.hidden = false
             deleteOrVoteButton.setTitle("Vote", forState: .Normal)
-            editButton.hidden = true
         }
     }
 
-    @IBAction func deleteImageButtonPressed(sender: UIButton) {
+    @IBAction func deleteOrVoteButtonPressed(sender: UIButton) {
 
         if mode == .Edit {
             photo.image = nil
@@ -134,7 +130,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         
         photo.uploadedBy = PFUser.currentUser()
 
-        deleteOrVoteButton.superview?.tintColor = UIColor.purpleColor().colorWithAlphaComponent(0.4)
+        deleteOrVoteButton.superview?.tintColor = UIColor.defaultTintColor().colorWithAlphaComponent(0.6)
 
         adjustForMode(mode)
     }

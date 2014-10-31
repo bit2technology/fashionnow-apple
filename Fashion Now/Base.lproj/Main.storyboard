@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Vote Poll Controller-->
@@ -39,35 +40,48 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jhk-qh-N5O">
                                 <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                                 <connections>
-                                    <segue destination="hpa-fw-Ay5" kind="embed" id="IZA-Rh-gPV"/>
+                                    <segue destination="hpa-fw-Ay5" kind="embed" identifier="Photo Comparison Controller" id="IZA-Rh-gPV"/>
                                 </connections>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bgG-Zw-FU2">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bgG-Zw-FU2" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                 <rect key="frame" x="128" y="216" width="64" height="64"/>
                                 <state key="normal" title="Send" backgroundImage="ButtonBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="sendButtonPressed:" destination="37Z-1j-EcS" eventType="touchUpInside" id="5al-o5-Yqr"/>
+                                </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="rgf-j2-tkN">
+                                <rect key="frame" x="142" y="229" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="jhk-qh-N5O" secondAttribute="trailing" id="4Fb-Mb-DRN"/>
                             <constraint firstItem="bgG-Zw-FU2" firstAttribute="centerY" secondItem="jhk-qh-N5O" secondAttribute="centerY" id="HLJ-I0-2Rb"/>
                             <constraint firstItem="bgG-Zw-FU2" firstAttribute="centerX" secondItem="jhk-qh-N5O" secondAttribute="centerX" id="SaD-dm-42j"/>
+                            <constraint firstItem="rgf-j2-tkN" firstAttribute="centerX" secondItem="bgG-Zw-FU2" secondAttribute="centerX" id="V6u-4T-yeg"/>
                             <constraint firstItem="JXH-OA-dU0" firstAttribute="top" secondItem="jhk-qh-N5O" secondAttribute="bottom" id="oS7-js-Bt2"/>
                             <constraint firstItem="jhk-qh-N5O" firstAttribute="top" secondItem="Iyt-Jh-hZw" secondAttribute="bottom" id="suq-dW-KlL"/>
                             <constraint firstItem="jhk-qh-N5O" firstAttribute="leading" secondItem="dLv-IX-e0T" secondAttribute="leading" id="xqv-v4-l2i"/>
+                            <constraint firstItem="rgf-j2-tkN" firstAttribute="centerY" secondItem="bgG-Zw-FU2" secondAttribute="centerY" id="yFJ-LS-As8"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="KCZ-ul-Trr">
                         <nil key="title"/>
-                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Look for..." minimumFontSize="17" id="Ir4-tl-x3r">
+                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Comment" minimumFontSize="17" id="Ir4-tl-x3r">
                             <rect key="frame" x="8" y="7" width="304" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardType="twitter"/>
                         </textField>
                     </navigationItem>
+                    <connections>
+                        <outlet property="loadingView" destination="rgf-j2-tkN" id="wua-Js-3Xe"/>
+                        <outlet property="sendButton" destination="bgG-Zw-FU2" id="hFN-N5-M1q"/>
+                        <outlet property="textField" destination="Ir4-tl-x3r" id="97E-g4-lqP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hmV-tg-bv8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -93,18 +107,43 @@
             </objects>
             <point key="canvasLocation" x="392" y="593"/>
         </scene>
-        <!--View Controller-->
+        <!--Photo Comparison Controller-->
         <scene sceneID="Vak-gc-gYh">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="hpa-fw-Ay5" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="hpa-fw-Ay5" customClass="PhotoComparisonController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SrB-gE-87J"/>
                         <viewControllerLayoutGuide type="bottom" id="e0n-el-6bw"/>
                     </layoutGuides>
-                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Ngt-gb-2Qu">
+                    <view key="view" opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="Ngt-gb-2Qu">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="22F-CN-JDl">
+                                <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
+                                <connections>
+                                    <segue destination="rPD-KC-83S" kind="embed" id="4GQ-Aa-EaP"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TYB-j4-um4">
+                                <rect key="frame" x="160" y="0.0" width="160" height="367"/>
+                                <connections>
+                                    <segue destination="rPD-KC-83S" kind="embed" id="uM3-tb-eTB"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="TYB-j4-um4" firstAttribute="top" secondItem="Ngt-gb-2Qu" secondAttribute="top" id="0xO-Ve-Goz"/>
+                            <constraint firstAttribute="trailing" secondItem="TYB-j4-um4" secondAttribute="trailing" id="3iO-eE-pIX"/>
+                            <constraint firstItem="22F-CN-JDl" firstAttribute="leading" secondItem="Ngt-gb-2Qu" secondAttribute="leading" id="GnB-Zy-Mmd"/>
+                            <constraint firstAttribute="bottom" secondItem="TYB-j4-um4" secondAttribute="bottom" id="I1e-SS-ZES"/>
+                            <constraint firstAttribute="bottom" secondItem="22F-CN-JDl" secondAttribute="bottom" id="JaO-Ef-V9Q"/>
+                            <constraint firstItem="TYB-j4-um4" firstAttribute="leading" secondItem="22F-CN-JDl" secondAttribute="trailing" id="Ns6-nH-O22"/>
+                            <constraint firstItem="TYB-j4-um4" firstAttribute="leading" secondItem="22F-CN-JDl" secondAttribute="trailing" id="iGg-Pw-Lmq"/>
+                            <constraint firstItem="TYB-j4-um4" firstAttribute="width" secondItem="22F-CN-JDl" secondAttribute="width" id="ohe-Du-ENH"/>
+                            <constraint firstItem="22F-CN-JDl" firstAttribute="top" secondItem="Ngt-gb-2Qu" secondAttribute="top" id="zFJ-tk-Ovo"/>
+                        </constraints>
                     </view>
                     <toolbarItems/>
                 </viewController>
@@ -150,8 +189,109 @@
             </objects>
             <point key="canvasLocation" x="880" y="876"/>
         </scene>
+        <!--Photo Controller-->
+        <scene sceneID="oDJ-hZ-wtb">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="rPD-KC-83S" customClass="PhotoController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="J5z-13-Iut"/>
+                        <viewControllerLayoutGuide type="bottom" id="lwi-Vt-MNP"/>
+                    </layoutGuides>
+                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="5Xe-GT-hcA">
+                        <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FBu-Eh-kK4" userLabel="Camera Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="48" y="80" width="64" height="64"/>
+                                <state key="normal" image="ButtonCamera" backgroundImage="ButtonBackground">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="getImageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="QRn-Ti-vwo"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vhz-QE-CMT" userLabel="Library Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="48" y="152" width="64" height="64"/>
+                                <state key="normal" image="ButtonLibrary" backgroundImage="ButtonBackground">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="getImageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="E8D-mt-TsM"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3W7-Sc-zrt" userLabel="Previous Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="48" y="224" width="64" height="64"/>
+                                <state key="normal" image="ButtonPrevious" backgroundImage="ButtonBackground">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="getImageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="HN4-ZH-RyI"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bRL-AR-0mD" userLabel="Image Container">
+                                <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yhO-Ld-1tg">
+                                        <rect key="frame" x="-16" y="0.0" width="192" height="367"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GxD-Vg-L3y" userLabel="Delete Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                        <rect key="frame" x="48" y="295" width="64" height="64"/>
+                                        <state key="normal" title="Delete" backgroundImage="ButtonBackground">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="deleteOrVoteButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="XVi-PI-XZJ"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="GxD-Vg-L3y" secondAttribute="bottom" constant="8" id="DEM-Wx-svT"/>
+                                    <constraint firstAttribute="centerX" secondItem="GxD-Vg-L3y" secondAttribute="centerX" priority="750" id="Kx7-FH-riD"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="GxD-Vg-L3y" secondAttribute="trailing" id="O0j-hj-tXP"/>
+                                    <constraint firstAttribute="bottom" secondItem="yhO-Ld-1tg" secondAttribute="bottom" id="OGn-Rg-M4y"/>
+                                    <constraint firstItem="yhO-Ld-1tg" firstAttribute="width" secondItem="bRL-AR-0mD" secondAttribute="width" multiplier="1.2" id="fgW-Zf-WdL"/>
+                                    <constraint firstItem="GxD-Vg-L3y" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bRL-AR-0mD" secondAttribute="leading" id="h4U-kE-vAm"/>
+                                    <constraint firstItem="yhO-Ld-1tg" firstAttribute="top" secondItem="bRL-AR-0mD" secondAttribute="top" id="uCy-zG-5db"/>
+                                    <constraint firstAttribute="centerX" secondItem="yhO-Ld-1tg" secondAttribute="centerX" id="zKK-Q2-PpZ"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="vhz-QE-CMT" secondAttribute="centerY" id="Ekj-UV-2ca"/>
+                            <constraint firstItem="bRL-AR-0mD" firstAttribute="top" secondItem="5Xe-GT-hcA" secondAttribute="top" id="OMy-oM-SSr"/>
+                            <constraint firstItem="vhz-QE-CMT" firstAttribute="centerX" secondItem="FBu-Eh-kK4" secondAttribute="centerX" id="PkY-VB-eor"/>
+                            <constraint firstItem="bRL-AR-0mD" firstAttribute="leading" secondItem="5Xe-GT-hcA" secondAttribute="leading" id="Squ-OY-6Pj"/>
+                            <constraint firstAttribute="centerX" secondItem="vhz-QE-CMT" secondAttribute="centerX" id="ety-VB-STS"/>
+                            <constraint firstAttribute="trailing" secondItem="bRL-AR-0mD" secondAttribute="trailing" id="fYZ-jy-JeE"/>
+                            <constraint firstAttribute="bottom" secondItem="bRL-AR-0mD" secondAttribute="bottom" id="hb2-XZ-SXL"/>
+                            <constraint firstItem="vhz-QE-CMT" firstAttribute="top" secondItem="FBu-Eh-kK4" secondAttribute="bottom" constant="8" id="iLj-zo-oOR"/>
+                            <constraint firstItem="3W7-Sc-zrt" firstAttribute="centerX" secondItem="vhz-QE-CMT" secondAttribute="centerX" id="rXR-py-GNC"/>
+                            <constraint firstItem="3W7-Sc-zrt" firstAttribute="top" secondItem="vhz-QE-CMT" secondAttribute="bottom" constant="8" id="uc2-8i-rSC"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <connections>
+                        <outlet property="buttonsCenterX" destination="Kx7-FH-riD" id="tRj-Eo-KgI"/>
+                        <outlet property="cameraButton" destination="FBu-Eh-kK4" id="YFa-VO-0p1"/>
+                        <outlet property="deleteOrVoteButton" destination="GxD-Vg-L3y" id="3Kf-Q9-hV2"/>
+                        <outlet property="imageView" destination="yhO-Ld-1tg" id="NjT-wD-fFX"/>
+                        <outlet property="libraryButton" destination="vhz-QE-CMT" id="JXu-0p-2Lw"/>
+                        <outlet property="previousButton" destination="3W7-Sc-zrt" id="zjY-4U-wrR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AbR-wv-pbr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2055" y="592.5"/>
+        </scene>
     </scenes>
     <resources>
         <image name="ButtonBackground" width="64" height="64"/>
+        <image name="ButtonCamera" width="32" height="32"/>
+        <image name="ButtonLibrary" width="32" height="32"/>
+        <image name="ButtonPrevious" width="32" height="32"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="4GQ-Aa-EaP"/>
+    </inferredMetricsTieBreakers>
 </document>

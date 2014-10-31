@@ -10,14 +10,14 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
-    // Bottom layout guide substitute
+    // Substitute for bottom layout guide
     var tabBarHeight: CGFloat {
         get {
             return view.bounds.height - tabBar.frame.minY
         }
     }
     
-    private var tabBarHidden = false
+    private(set) var tabBarHidden = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +26,7 @@ class TabBarController: UITabBarController {
     }
     
     override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
         
         if respondsToSelector("traitCollection") {
             tabBarHidden = (traitCollection.verticalSizeClass == .Compact)

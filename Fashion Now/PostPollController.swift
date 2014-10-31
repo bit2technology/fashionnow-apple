@@ -13,18 +13,25 @@ class PostPollController: UIViewController, UITabBarControllerDelegate, PhotoCom
     private var poll: Poll?
 
     @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var loadingView: UIView!
     
     weak var photoComparisonController: PhotoComparisonController!
     
     @IBAction func sendButtonPressed(sender: UIButton) {
         
-        loadingView.hidden = false
-        
-        poll?.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+        if true {//let unwrappedPoll = poll {
             
-            self.photoComparisonController.clean(animated: true)
-            self.loadingView.hidden = true
+            sender.enabled = false
+//            sender.setTitle(nil, forState: .Normal)
+            loadingView.hidden = false
+            textField.enabled = false
+            
+//            unwrappedPoll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+//                
+//                self.photoComparisonController.clean(animated: true)
+//                self.loadingView.hidden = true
+//            }
         }
     }
     
@@ -47,11 +54,13 @@ class PostPollController: UIViewController, UITabBarControllerDelegate, PhotoCom
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        sendButton.tintColor = UIColor.defaultTintColor().colorWithAlphaComponent(0.6)
 
 //        sendButton.hidden = true
-//        loadingView.hidden = true
-//        
-//        photoComparisonController.delegate = self
+        loadingView.hidden = true
+        
+        photoComparisonController.delegate = self
     }
     
     override func viewDidAppear(animated: Bool) {
