@@ -11,8 +11,19 @@ import UIKit
 class VotePollController: UIViewController, UITabBarControllerDelegate {
     
     var photoComparisonController: PhotoComparisonController!
+
+    @IBOutlet weak var testLabel: UILabel!;
+
+    var navBarHidden = false
     
     override func viewDidLoad() {
+
+        testLabel.text = "Cupcake ipsum dolor sit amet pie. Pudding chocolate fruitcake apple pie sweet roll I love jelly beans ice cream. Brownie tootsie roll carrot cake lollipop lemon drops apple pie sugar plum macaroon biscuit."
+        testLabel.textColor = UIColor.whiteColor()
+        testLabel.layer.shadowColor = UIColor.blackColor().CGColor
+        testLabel.layer.shadowOffset = CGSizeZero
+        testLabel.layer.shadowOpacity = 1
+        testLabel.layer.shadowRadius = 2
         
 //        photoComparisonController.mode = .Vote
     }
@@ -37,6 +48,10 @@ class VotePollController: UIViewController, UITabBarControllerDelegate {
     override func supportedInterfaceOrientations() -> Int {
         return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
     }
+
+    override func prefersStatusBarHidden() -> Bool {
+        return navBarHidden
+    }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
@@ -46,10 +61,10 @@ class VotePollController: UIViewController, UITabBarControllerDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+
+
         
         self.tabBarController?.delegate = self
-        
-        UIViewController.attemptRotationToDeviceOrientation()
         
         var query: PFQuery = PFQuery(className: Poll.parseClassName())
         query.orderByDescending("createdAt")
@@ -58,6 +73,31 @@ class VotePollController: UIViewController, UITabBarControllerDelegate {
             
 //            self.photoComparisonController.poll = object as Poll
         }
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        if respondsToSelector("traitCollection") {
+            navBarHidden = (traitCollection.verticalSizeClass == .Compact)
+        } else {
+            navBarHidden = (interfaceOrientation.isLandscape && UIDevice.currentDevice().userInterfaceIdiom == .Phone)
+        }
+
+//        var navBarFrame = navigationController!.navigationBar.frame
+//        navBarFrame.origin.y = 0 - (navBarHidden ? navBarFrame.height : 0)
+//        navigationController?.navigationBar.frame = navBarFrame
+
+        navigationController?.setNavigationBarHidden(navBarHidden, animated: true)
+
+    }
+
+    @IBAction func test(sender: UIButton!) {
+
+    }
+
+    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+
     }
     
     func tabBarControllerSupportedInterfaceOrientations(tabBarController: UITabBarController) -> Int {

@@ -11,7 +11,6 @@
 		4B8941491A03B3530017F6FC /* TemplateBackgroundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8941481A03B3530017F6FC /* TemplateBackgroundButton.swift */; };
 		4B89414B1A03BD980017F6FC /* UIColor+Fashion-Now.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B89414A1A03BD980017F6FC /* UIColor+Fashion-Now.swift */; };
 		4BC4CF0B1A01164F0000A231 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4BC4CF0A1A01164F0000A231 /* .gitignore */; };
-		4BC4CF0D1A0117C30000A231 /* UIViewController+RootController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC4CF0C1A0117C30000A231 /* UIViewController+RootController.swift */; };
 		4BEB9E181A01AA9A00A71764 /* ParseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEB9E171A01AA9A00A71764 /* ParseHelper.swift */; };
 		4BEB9E1A1A01ABD200A71764 /* PhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEB9E191A01ABD200A71764 /* PhotoController.swift */; };
 		4BEB9E1C1A01ABF800A71764 /* PhotoComparisonController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEB9E1B1A01ABF800A71764 /* PhotoComparisonController.swift */; };
@@ -41,7 +40,6 @@
 		4B8941481A03B3530017F6FC /* TemplateBackgroundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateBackgroundButton.swift; sourceTree = "<group>"; };
 		4B89414A1A03BD980017F6FC /* UIColor+Fashion-Now.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Fashion-Now.swift"; sourceTree = "<group>"; };
 		4BC4CF0A1A01164F0000A231 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
-		4BC4CF0C1A0117C30000A231 /* UIViewController+RootController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+RootController.swift"; sourceTree = "<group>"; };
 		4BEB9E171A01AA9A00A71764 /* ParseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseHelper.swift; sourceTree = "<group>"; };
 		4BEB9E191A01ABD200A71764 /* PhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoController.swift; sourceTree = "<group>"; };
 		4BEB9E1B1A01ABF800A71764 /* PhotoComparisonController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoComparisonController.swift; sourceTree = "<group>"; };
@@ -114,7 +112,6 @@
 				4BEB9E1B1A01ABF800A71764 /* PhotoComparisonController.swift */,
 				4BEB9E191A01ABD200A71764 /* PhotoController.swift */,
 				4B89414A1A03BD980017F6FC /* UIColor+Fashion-Now.swift */,
-				4BC4CF0C1A0117C30000A231 /* UIViewController+RootController.swift */,
 				4BEB9E171A01AA9A00A71764 /* ParseHelper.swift */,
 				4B8941481A03B3530017F6FC /* TemplateBackgroundButton.swift */,
 				4BF1D05C1A00F1EB00818658 /* Fashion_Now.xcdatamodeld */,
@@ -307,7 +304,6 @@
 			files = (
 				4B89414B1A03BD980017F6FC /* UIColor+Fashion-Now.swift in Sources */,
 				4BEB9E1A1A01ABD200A71764 /* PhotoController.swift in Sources */,
-				4BC4CF0D1A0117C30000A231 /* UIViewController+RootController.swift in Sources */,
 				4BF1D07E1A00F23700818658 /* TabBarController.swift in Sources */,
 				4BEB9E201A01ACA200A71764 /* VotePollController.swift in Sources */,
 				4BEB9E1C1A01ABF800A71764 /* PhotoComparisonController.swift in Sources */,

@@ -39,3 +39,12 @@ class TabBarController: UITabBarController {
         tabBar.frame = tabBarFrame
     }
 }
+
+extension UIViewController {
+
+    var customTabBarController: TabBarController? {
+        get {
+            return tabBarController as? TabBarController
+        }
+    }
+}

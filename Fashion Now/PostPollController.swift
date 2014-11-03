@@ -10,8 +10,6 @@ import UIKit
 
 class PostPollController: UIViewController, UITabBarControllerDelegate, PhotoComparisonControllerDelegate {
     
-    private var poll: Poll?
-
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var loadingView: UIView!
@@ -23,7 +21,6 @@ class PostPollController: UIViewController, UITabBarControllerDelegate, PhotoCom
         if true {//let unwrappedPoll = poll {
             
             sender.enabled = false
-//            sender.setTitle(nil, forState: .Normal)
             loadingView.hidden = false
             textField.enabled = false
             
@@ -57,7 +54,7 @@ class PostPollController: UIViewController, UITabBarControllerDelegate, PhotoCom
         
         sendButton.tintColor = UIColor.defaultTintColor().colorWithAlphaComponent(0.6)
 
-//        sendButton.hidden = true
+        sendButton.hidden = true
         loadingView.hidden = true
         
         photoComparisonController.delegate = self
@@ -76,19 +73,14 @@ class PostPollController: UIViewController, UITabBarControllerDelegate, PhotoCom
     }
     
     func tabBarControllerSupportedInterfaceOrientations(tabBarController: UITabBarController) -> Int {
-        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+        return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
     }
 
     // MARK: PhotoComparisonControllerDelegate
     
     func photoComparisonController(photoComparisonController: PhotoComparisonController, didEditPoll poll: Poll) {
-        
-        if poll.createdBy != nil && poll.photos?.count >= 2 {
-            self.poll = poll
-            sendButton.hidden = false
-        } else {
-            self.poll = nil
-            sendButton.hidden = true
-        }
+
+        // If poll is valid, show send button
+        sendButton.hidden = (poll.createdBy == nil || poll.photos?.count < 2)
     }
 }
