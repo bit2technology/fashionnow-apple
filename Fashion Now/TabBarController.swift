@@ -11,11 +11,11 @@ import UIKit
 class TabBarController: UITabBarController {
     
     // Substitute for bottom layout guide
-    var tabBarHeight: CGFloat {
-        get {
-            return view.bounds.height - tabBar.frame.minY
-        }
-    }
+//    var tabBarHeight: CGFloat {
+//        get {
+//            return tabBar.frame.height
+//        }
+//    }
     
     private(set) var tabBarHidden = false
     

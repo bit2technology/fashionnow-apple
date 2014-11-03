@@ -43,9 +43,13 @@ internal class PhotoComparisonController: UIViewController, PhotoControllerDeleg
     
     let maskReferenceSize: CGFloat = 1024
     
-    func adjustMaskSizeWithAnimationDuration() {
+    func adjustMaskSizeWithAnimationDuration(duration: Double) {
         let rightPhotoViewSize = rightPhotoView.bounds.size
+//        CATransaction.begin()
+//        CATransaction.setAnimationDuration(duration)
+//        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         self.rightPhotoView.layer.mask.transform = CATransform3DMakeScale(rightPhotoViewSize.width / maskReferenceSize, rightPhotoViewSize.height / maskReferenceSize, 1)
+//        CATransaction.commit()
     }
     
     func clean(#animated: Bool) {
@@ -85,16 +89,16 @@ internal class PhotoComparisonController: UIViewController, PhotoControllerDeleg
             rightPhotoView.layer.mask = rightMask
         }
         
-        adjustMaskSizeWithAnimationDuration()
+        adjustMaskSizeWithAnimationDuration(0)
     }
 
     override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        adjustMaskSizeWithAnimationDuration()
+        adjustMaskSizeWithAnimationDuration(duration)
     }
 
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animateAlongsideTransition({ (context) -> Void in
-            self.adjustMaskSizeWithAnimationDuration()
+            self.adjustMaskSizeWithAnimationDuration(0)
         }, completion: nil)
     }
 

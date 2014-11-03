@@ -18,17 +18,14 @@ class PostPollController: UIViewController, UITabBarControllerDelegate, PhotoCom
     
     @IBAction func sendButtonPressed(sender: UIButton) {
         
-        if true {//let unwrappedPoll = poll {
+        sender.enabled = false
+        loadingView.hidden = false
+        textField.enabled = false
+        
+        photoComparisonController.poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             
-            sender.enabled = false
-            loadingView.hidden = false
-            textField.enabled = false
-            
-//            unwrappedPoll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
-//                
-//                self.photoComparisonController.clean(animated: true)
-//                self.loadingView.hidden = true
-//            }
+            self.photoComparisonController.clean(animated: true)
+            self.loadingView.hidden = true
         }
     }
     
@@ -73,7 +70,7 @@ class PostPollController: UIViewController, UITabBarControllerDelegate, PhotoCom
     }
     
     func tabBarControllerSupportedInterfaceOrientations(tabBarController: UITabBarController) -> Int {
-        return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
+        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
     }
 
     // MARK: PhotoComparisonControllerDelegate

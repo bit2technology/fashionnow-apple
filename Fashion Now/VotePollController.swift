@@ -12,18 +12,18 @@ class VotePollController: UIViewController, UITabBarControllerDelegate {
     
     var photoComparisonController: PhotoComparisonController!
 
-    @IBOutlet weak var testLabel: UILabel!;
+    @IBOutlet weak var bottomMargin: NSLayoutConstraint!
 
     var navBarHidden = false
     
     override func viewDidLoad() {
 
-        testLabel.text = "Cupcake ipsum dolor sit amet pie. Pudding chocolate fruitcake apple pie sweet roll I love jelly beans ice cream. Brownie tootsie roll carrot cake lollipop lemon drops apple pie sugar plum macaroon biscuit."
-        testLabel.textColor = UIColor.whiteColor()
-        testLabel.layer.shadowColor = UIColor.blackColor().CGColor
-        testLabel.layer.shadowOffset = CGSizeZero
-        testLabel.layer.shadowOpacity = 1
-        testLabel.layer.shadowRadius = 2
+//        testLabel.text = "Cupcake ipsum dolor sit amet pie. Pudding chocolate fruitcake apple pie sweet roll I love jelly beans ice cream. Brownie tootsie roll carrot cake lollipop lemon drops apple pie sugar plum macaroon biscuit."
+//        testLabel.textColor = UIColor.whiteColor()
+//        testLabel.layer.shadowColor = UIColor.blackColor().CGColor
+//        testLabel.layer.shadowOffset = CGSizeZero
+//        testLabel.layer.shadowOpacity = 1
+//        testLabel.layer.shadowRadius = 2
         
 //        photoComparisonController.mode = .Vote
     }
@@ -78,17 +78,15 @@ class VotePollController: UIViewController, UITabBarControllerDelegate {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
-        if respondsToSelector("traitCollection") {
+        if false {//respondsToSelector("traitCollection") {
             navBarHidden = (traitCollection.verticalSizeClass == .Compact)
         } else {
             navBarHidden = (interfaceOrientation.isLandscape && UIDevice.currentDevice().userInterfaceIdiom == .Phone)
         }
 
-//        var navBarFrame = navigationController!.navigationBar.frame
-//        navBarFrame.origin.y = 0 - (navBarHidden ? navBarFrame.height : 0)
-//        navigationController?.navigationBar.frame = navBarFrame
-
-        navigationController?.setNavigationBarHidden(navBarHidden, animated: true)
+//        bottomMargin.constant = (navBarHidden ? 0 : customTabBarController!.tabBar.frame.height)
+//        println("margin \(bottomMargin.constant)")
+//        navigationController?.setNavigationBarHidden(navBarHidden, animated: true)
 
     }
 
