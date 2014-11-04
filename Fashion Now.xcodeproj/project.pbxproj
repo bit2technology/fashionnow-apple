@@ -23,7 +23,6 @@
 		4BF1D0651A00F1EB00818658 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BF1D0641A00F1EB00818658 /* Images.xcassets */; };
 		4BF1D0681A00F1EB00818658 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BF1D0661A00F1EB00818658 /* LaunchScreen.xib */; };
 		4BF1D0741A00F1EB00818658 /* Fashion_NowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF1D0731A00F1EB00818658 /* Fashion_NowTests.swift */; };
-		4BF1D07E1A00F23700818658 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF1D07D1A00F23700818658 /* TabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +56,6 @@
 		4BF1D06D1A00F1EB00818658 /* Fashion NowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Fashion NowTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BF1D0721A00F1EB00818658 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4BF1D0731A00F1EB00818658 /* Fashion_NowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fashion_NowTests.swift; sourceTree = "<group>"; };
-		4BF1D07D1A00F23700818658 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4BF1D0801A010DD400818658 /* Fashion Now-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fashion Now-Bridging-Header.h"; sourceTree = "<group>"; };
 		97B7EF322D314078C3A2FB3A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		9A149039849EB88E2D00C657 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -116,7 +114,6 @@
 				4B89414A1A03BD980017F6FC /* UIColor+Fashion-Now.swift */,
 				4BEB9E171A01AA9A00A71764 /* ParseHelper.swift */,
 				4B8941481A03B3530017F6FC /* TemplateBackgroundButton.swift */,
-				4BF1D07D1A00F23700818658 /* TabBarController.swift */,
 				4BF1D05C1A00F1EB00818658 /* Fashion_Now.xcdatamodeld */,
 				4BF1D0641A00F1EB00818658 /* Images.xcassets */,
 				4BF1D0581A00F1EB00818658 /* Supporting Files */,
@@ -307,7 +304,6 @@
 			files = (
 				4B89414B1A03BD980017F6FC /* UIColor+Fashion-Now.swift in Sources */,
 				4BEB9E1A1A01ABD200A71764 /* PhotoController.swift in Sources */,
-				4BF1D07E1A00F23700818658 /* TabBarController.swift in Sources */,
 				4BC8BDBE1A07ABEF008FB95D /* RootController.swift in Sources */,
 				4BEB9E201A01ACA200A71764 /* VotePollController.swift in Sources */,
 				4BEB9E1C1A01ABF800A71764 /* PhotoComparisonController.swift in Sources */,

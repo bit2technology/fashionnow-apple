@@ -107,3 +107,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     */
 }
+
+extension UIStoryboard {
+
+    class func mainStoryboard() -> UIStoryboard {
+        return UIStoryboard(name: "Main", bundle: nil)
+    }
+}

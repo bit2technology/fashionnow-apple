@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PostPollController: UIViewController, UITabBarControllerDelegate, PhotoComparisonControllerDelegate {
+class PostPollController: UIViewController, PhotoComparisonControllerDelegate {
     
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var textField: UITextField!
@@ -22,11 +22,11 @@ class PostPollController: UIViewController, UITabBarControllerDelegate, PhotoCom
         loadingView.hidden = false
         textField.enabled = false
         
-        photoComparisonController.poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
-            
-            self.photoComparisonController.clean(animated: true)
-            self.loadingView.hidden = true
-        }
+//        photoComparisonController.poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+//            
+//            self.photoComparisonController.clean(animated: true)
+//            self.loadingView.hidden = true
+//        }
     }
     
     // MARK: UIViewController
@@ -60,17 +60,17 @@ class PostPollController: UIViewController, UITabBarControllerDelegate, PhotoCom
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.tabBarController?.delegate = self
+        self.rootController?.delegate = self
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        self.tabBarController?.delegate = nil
+        self.rootController?.delegate = nil
     }
     
-    func tabBarControllerSupportedInterfaceOrientations(tabBarController: UITabBarController) -> Int {
-        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+    override func supportedInterfaceOrientations() -> Int {
+        return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
     }
 
     // MARK: PhotoComparisonControllerDelegate

@@ -43,7 +43,7 @@
             </objects>
             <point key="canvasLocation" x="857" y="876"/>
         </scene>
-        <!--Item-->
+        <!--Post-->
         <scene sceneID="DGH-qf-Zqz">
             <objects>
                 <viewController id="37Z-1j-EcS" customClass="PostPollController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
@@ -55,14 +55,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jhk-qh-N5O">
-                                <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jhk-qh-N5O">
+                                <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                                 <connections>
                                     <segue destination="hpa-fw-Ay5" kind="embed" identifier="Photo Comparison Controller" id="IZA-Rh-gPV"/>
                                 </connections>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bgG-Zw-FU2" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="128" y="216" width="64" height="64"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bgG-Zw-FU2" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="128" y="240" width="64" height="64"/>
                                 <state key="normal" title="Send" backgroundImage="ButtonBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -70,32 +70,51 @@
                                     <action selector="sendButtonPressed:" destination="37Z-1j-EcS" eventType="touchUpInside" id="5al-o5-Yqr"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="rgf-j2-tkN">
-                                <rect key="frame" x="142" y="229" width="37" height="37"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="rgf-j2-tkN">
+                                <rect key="frame" x="142" y="253" width="37" height="37"/>
                             </activityIndicatorView>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZR6-mL-edo">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZR6-mL-edo">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="UCz-Eg-j3T"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="F06-Br-Xho" appends="YES" id="hfn-fE-EZ1"/>
+                                </connections>
                             </navigationBar>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add hashtags" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aa7-aO-RqI">
+                                <rect key="frame" x="8" y="27" width="304" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="jhk-qh-N5O" secondAttribute="trailing" id="4Fb-Mb-DRN"/>
+                            <constraint firstItem="jhk-qh-N5O" firstAttribute="top" secondItem="ZR6-mL-edo" secondAttribute="bottom" id="B22-T4-EUK"/>
                             <constraint firstItem="bgG-Zw-FU2" firstAttribute="centerY" secondItem="jhk-qh-N5O" secondAttribute="centerY" id="HLJ-I0-2Rb"/>
+                            <constraint firstItem="ZR6-mL-edo" firstAttribute="trailing" secondItem="aa7-aO-RqI" secondAttribute="trailing" constant="8" id="MRB-7F-XJl"/>
+                            <constraint firstItem="ZR6-mL-edo" firstAttribute="top" secondItem="dLv-IX-e0T" secondAttribute="top" id="OXW-0N-T5D"/>
                             <constraint firstItem="bgG-Zw-FU2" firstAttribute="centerX" secondItem="jhk-qh-N5O" secondAttribute="centerX" id="SaD-dm-42j"/>
+                            <constraint firstItem="aa7-aO-RqI" firstAttribute="leading" secondItem="ZR6-mL-edo" secondAttribute="leading" constant="8" id="TQR-Xe-9pE"/>
                             <constraint firstItem="rgf-j2-tkN" firstAttribute="centerX" secondItem="bgG-Zw-FU2" secondAttribute="centerX" id="V6u-4T-yeg"/>
-                            <constraint firstItem="JXH-OA-dU0" firstAttribute="top" secondItem="jhk-qh-N5O" secondAttribute="bottom" id="oS7-js-Bt2"/>
-                            <constraint firstItem="jhk-qh-N5O" firstAttribute="top" secondItem="Iyt-Jh-hZw" secondAttribute="bottom" id="suq-dW-KlL"/>
+                            <constraint firstAttribute="trailing" secondItem="ZR6-mL-edo" secondAttribute="trailing" id="bBU-m9-yRv"/>
+                            <constraint firstItem="ZR6-mL-edo" firstAttribute="leading" secondItem="dLv-IX-e0T" secondAttribute="leading" id="cJ0-Pe-kPv"/>
+                            <constraint firstAttribute="bottom" secondItem="jhk-qh-N5O" secondAttribute="bottom" id="j7n-DZ-kw1"/>
+                            <constraint firstItem="ZR6-mL-edo" firstAttribute="bottom" secondItem="aa7-aO-RqI" secondAttribute="bottom" constant="7" id="rvD-FL-atX"/>
                             <constraint firstItem="jhk-qh-N5O" firstAttribute="leading" secondItem="dLv-IX-e0T" secondAttribute="leading" id="xqv-v4-l2i"/>
                             <constraint firstItem="rgf-j2-tkN" firstAttribute="centerY" secondItem="bgG-Zw-FU2" secondAttribute="centerY" id="yFJ-LS-As8"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="2O1-Ra-Pjk"/>
+                    <tabBarItem key="tabBarItem" title="Post" id="2O1-Ra-Pjk"/>
                     <connections>
                         <outlet property="loadingView" destination="rgf-j2-tkN" id="wua-Js-3Xe"/>
                         <outlet property="sendButton" destination="bgG-Zw-FU2" id="hFN-N5-M1q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hmV-tg-bv8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="F06-Br-Xho" userLabel="Navigation Bar Tapped"/>
             </objects>
             <point key="canvasLocation" x="857" y="342"/>
         </scene>
@@ -117,13 +136,13 @@
                                     <segue destination="6QH-p8-eFG" kind="embed" identifier="Tab Bar Controller" id="2hl-3c-IzQ"/>
                                 </connections>
                             </containerView>
-                            <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JbN-M6-WyN">
+                            <tabBar contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="JbN-M6-WyN">
                                 <rect key="frame" x="0.0" y="431" width="320" height="49"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <items/>
                             </tabBar>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="JbN-M6-WyN" firstAttribute="leading" secondItem="3s9-wn-ags" secondAttribute="leading" id="5jK-Cj-1hS"/>
                             <constraint firstAttribute="bottom" secondItem="JbN-M6-WyN" secondAttribute="bottom" id="9L9-ZY-5aW"/>
@@ -148,7 +167,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="CJf-es-BZO">
             <objects>
-                <tabBarController id="6QH-p8-eFG" sceneMemberID="viewController">
+                <tabBarController id="6QH-p8-eFG" customClass="TabBarController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="3ZA-w6-eH8">
@@ -174,17 +193,17 @@
                         <viewControllerLayoutGuide type="bottom" id="e0n-el-6bw"/>
                     </layoutGuides>
                     <view key="view" opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="Ngt-gb-2Qu">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="22F-CN-JDl">
-                                <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
+                                <rect key="frame" x="0.0" y="0.0" width="160" height="416"/>
                                 <connections>
                                     <segue destination="rPD-KC-83S" kind="embed" identifier="Left Photo Controller" id="4GQ-Aa-EaP"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TYB-j4-um4">
-                                <rect key="frame" x="160" y="0.0" width="160" height="367"/>
+                                <rect key="frame" x="160" y="0.0" width="160" height="416"/>
                                 <connections>
                                     <segue destination="rPD-KC-83S" kind="embed" identifier="Right Photo Controller" id="uM3-tb-eTB"/>
                                 </connections>
@@ -222,15 +241,15 @@
                         <viewControllerLayoutGuide type="bottom" id="lwi-Vt-MNP"/>
                     </layoutGuides>
                     <view key="view" opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="5Xe-GT-hcA">
-                        <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
+                        <rect key="frame" x="0.0" y="0.0" width="160" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OuB-lJ-89T" userLabel="Background">
-                                <rect key="frame" x="-16" y="0.0" width="192" height="367"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="-16" y="0.0" width="192" height="416"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FBu-Eh-kK4" userLabel="Camera Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="48" y="80" width="64" height="64"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FBu-Eh-kK4" userLabel="Camera Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="48" y="105" width="64" height="64"/>
                                 <state key="normal" image="ButtonCamera" backgroundImage="ButtonBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -238,8 +257,8 @@
                                     <action selector="getImageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="QRn-Ti-vwo"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vhz-QE-CMT" userLabel="Library Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="48" y="152" width="64" height="64"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vhz-QE-CMT" userLabel="Library Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="48" y="177" width="64" height="64"/>
                                 <state key="normal" image="ButtonLibrary" backgroundImage="ButtonBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -247,8 +266,8 @@
                                     <action selector="getImageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="E8D-mt-TsM"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3W7-Sc-zrt" userLabel="Previous Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="48" y="224" width="64" height="64"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3W7-Sc-zrt" userLabel="Previous Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="48" y="249" width="64" height="64"/>
                                 <state key="normal" image="ButtonPrevious" backgroundImage="ButtonBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -257,13 +276,13 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bRL-AR-0mD" userLabel="Image Container">
-                                <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
+                                <rect key="frame" x="0.0" y="0.0" width="160" height="416"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yhO-Ld-1tg">
-                                        <rect key="frame" x="-16" y="0.0" width="192" height="367"/>
+                                        <rect key="frame" x="-16" y="0.0" width="192" height="416"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GxD-Vg-L3y" userLabel="Delete Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                        <rect key="frame" x="48" y="299" width="64" height="64"/>
+                                        <rect key="frame" x="48" y="348" width="64" height="64"/>
                                         <state key="normal" title="Delete" backgroundImage="ButtonBackground">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
