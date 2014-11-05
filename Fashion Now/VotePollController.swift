@@ -8,13 +8,14 @@
 
 import UIKit
 
-class VotePollController: UIViewController, UITabBarControllerDelegate {
+class VotePollController: UIViewController {
     
     var photoComparisonController: PhotoComparisonController!
 
-    @IBOutlet weak var bottomMargin: NSLayoutConstraint!
+    @IBOutlet weak var navBarTopMargin: NSLayoutConstraint!
+    @IBOutlet weak var navBar: UINavigationBar!
 
-    var navBarHidden = false
+    private var navBarHidden = false
     
     override func viewDidLoad() {
 
@@ -25,7 +26,7 @@ class VotePollController: UIViewController, UITabBarControllerDelegate {
 //        testLabel.layer.shadowOpacity = 1
 //        testLabel.layer.shadowRadius = 2
         
-//        photoComparisonController.mode = .Vote
+        photoComparisonController.mode = .Vote
     }
     
     // MARK: UIViewController
@@ -48,45 +49,37 @@ class VotePollController: UIViewController, UITabBarControllerDelegate {
     override func supportedInterfaceOrientations() -> Int {
         return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
     }
-
-    override func prefersStatusBarHidden() -> Bool {
-        return navBarHidden
-    }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        self.tabBarController?.delegate = nil
+        self.rootController?.delegate = nil
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-
-
         
-        self.tabBarController?.delegate = self
+        self.rootController?.delegate = self
         
         var query: PFQuery = PFQuery(className: Poll.parseClassName())
         query.orderByDescending("createdAt")
         
         query.getFirstObjectInBackgroundWithBlock { (object, error) -> Void in
             
-//            self.photoComparisonController.poll = object as Poll
+            self.photoComparisonController.poll = object as Poll
         }
     }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
-        if false {//respondsToSelector("traitCollection") {
+        if respondsToSelector("traitCollection") {
             navBarHidden = (traitCollection.verticalSizeClass == .Compact)
         } else {
             navBarHidden = (interfaceOrientation.isLandscape && UIDevice.currentDevice().userInterfaceIdiom == .Phone)
         }
 
-//        bottomMargin.constant = (navBarHidden ? 0 : customTabBarController!.tabBar.frame.height)
-//        println("margin \(bottomMargin.constant)")
-//        navigationController?.setNavigationBarHidden(navBarHidden, animated: true)
+        navBarTopMargin.constant = (navBarHidden ? -navBar.frame.height : 0)
 
     }
 

@@ -17,6 +17,7 @@ class RootController: UIViewController {
     @IBOutlet weak var tabBarBottomMargin: NSLayoutConstraint!
     
     private var cleanInterface = false
+    var contentBehindTabBar = false
 
     var delegate: UIViewController?
     
@@ -33,6 +34,16 @@ class RootController: UIViewController {
                 return
             }
         }
+    }
+    
+    // MARK: Rotation
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return cleanInterface
+    }
+    
+    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+        return .Slide
     }
 
     override func supportedInterfaceOrientations() -> Int {
@@ -54,11 +65,13 @@ class RootController: UIViewController {
         
         tabBarBottomMargin.constant = (cleanInterface ? -tabBar.frame.height : 0)
     }
-
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-
-        presentViewController(UIViewController(), animated: animated, completion: nil)
+    
+    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        setNeedsStatusBarAppearanceUpdate()
     }
 }
 

@@ -6,7 +6,7 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Item-->
+        <!--Vote-->
         <scene sceneID="VVH-fN-2gA">
             <objects>
                 <viewController id="6wq-1Y-TiB" customClass="VotePollController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
@@ -15,33 +15,82 @@
                         <viewControllerLayoutGuide type="bottom" id="3bW-d0-UfL"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="0mu-nJ-pcc">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EtK-fa-XtU">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EtK-fa-XtU">
                                 <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                                 <connections>
                                     <segue destination="hpa-fw-Ay5" kind="embed" identifier="Photo Comparison Controller" id="apZ-Yv-541"/>
                                 </connections>
                             </containerView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ORJ-Y7-Dhf">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="76A-wr-syV"/>
+                                </constraints>
+                            </navigationBar>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BpX-JS-d9h">
+                                <rect key="frame" x="8" y="22" width="40" height="40"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="1wb-LH-0L2"/>
+                                    <constraint firstAttribute="width" constant="40" id="Rc3-qr-QBv"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oWN-q7-Q6r">
+                                <rect key="frame" x="52" y="45" width="211" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1iE-fK-YeD">
+                                <rect key="frame" x="263" y="20" width="57" height="44"/>
+                                <inset key="contentEdgeInsets" minX="4" minY="0.0" maxX="8" maxY="0.0"/>
+                                <state key="normal" title="Follow">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mhc-nx-wcX">
+                                <rect key="frame" x="52" y="22" width="211" height="21"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="EtK-fa-XtU" secondAttribute="trailing" id="7A5-2b-seX"/>
-                            <constraint firstItem="EtK-fa-XtU" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" id="VBn-2U-Ozp"/>
-                            <constraint firstItem="EtK-fa-XtU" firstAttribute="top" secondItem="xur-zt-maA" secondAttribute="bottom" id="jHg-i6-Irt"/>
-                            <constraint firstAttribute="bottom" secondItem="EtK-fa-XtU" secondAttribute="bottom" id="pri-wW-bCV"/>
+                            <constraint firstItem="1iE-fK-YeD" firstAttribute="top" secondItem="ORJ-Y7-Dhf" secondAttribute="top" constant="20" id="5BK-KM-E9M"/>
+                            <constraint firstItem="mhc-nx-wcX" firstAttribute="leading" secondItem="BpX-JS-d9h" secondAttribute="trailing" constant="4" id="5oi-fL-hAG"/>
+                            <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="bottom" secondItem="1iE-fK-YeD" secondAttribute="bottom" id="6uI-ea-ARS"/>
+                            <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="trailing" secondItem="1iE-fK-YeD" secondAttribute="trailing" id="GcB-hT-TOC"/>
+                            <constraint firstItem="EtK-fa-XtU" firstAttribute="top" secondItem="ORJ-Y7-Dhf" secondAttribute="bottom" id="K7d-7v-DaE"/>
+                            <constraint firstAttribute="bottom" secondItem="EtK-fa-XtU" secondAttribute="bottom" id="R4g-Dj-BjA"/>
+                            <constraint firstItem="oWN-q7-Q6r" firstAttribute="bottom" secondItem="BpX-JS-d9h" secondAttribute="bottom" id="Tq3-MV-lhu"/>
+                            <constraint firstItem="1iE-fK-YeD" firstAttribute="leading" secondItem="oWN-q7-Q6r" secondAttribute="trailing" id="WbQ-GN-9l4"/>
+                            <constraint firstItem="oWN-q7-Q6r" firstAttribute="leading" secondItem="BpX-JS-d9h" secondAttribute="trailing" constant="4" id="Xjk-oM-KYs"/>
+                            <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" id="aIv-c4-DMz"/>
+                            <constraint firstItem="1iE-fK-YeD" firstAttribute="leading" secondItem="mhc-nx-wcX" secondAttribute="trailing" id="aPF-ms-JYA"/>
+                            <constraint firstAttribute="trailing" secondItem="EtK-fa-XtU" secondAttribute="trailing" id="ebZ-gs-u0B"/>
+                            <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="bottom" secondItem="BpX-JS-d9h" secondAttribute="bottom" constant="2" id="gCy-Da-kdI"/>
+                            <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="top" secondItem="0mu-nJ-pcc" secondAttribute="top" id="hM7-SD-Sht"/>
+                            <constraint firstItem="EtK-fa-XtU" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" id="net-mc-JIC"/>
+                            <constraint firstItem="BpX-JS-d9h" firstAttribute="top" secondItem="mhc-nx-wcX" secondAttribute="top" id="qUd-Hn-oCD"/>
+                            <constraint firstAttribute="trailing" secondItem="ORJ-Y7-Dhf" secondAttribute="trailing" id="saH-f4-N2N"/>
+                            <constraint firstItem="BpX-JS-d9h" firstAttribute="leading" secondItem="ORJ-Y7-Dhf" secondAttribute="leading" constant="8" id="vwk-fJ-qkX"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="cp0-V5-EKB"/>
+                    <tabBarItem key="tabBarItem" title="Vote" id="cp0-V5-EKB"/>
                     <navigationItem key="navigationItem" id="zzA-bz-q3J"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="bottomMargin" destination="pri-wW-bCV" id="WIG-FW-Ous"/>
+                        <outlet property="navBar" destination="ORJ-Y7-Dhf" id="JOy-aN-weU"/>
+                        <outlet property="navBarTopMargin" destination="hM7-SD-Sht" id="E8t-EQ-OHx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vvg-GW-0gy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="857" y="876"/>
+            <point key="canvasLocation" x="866" y="70.5"/>
         </scene>
         <!--Post-->
         <scene sceneID="DGH-qf-Zqz">
@@ -52,17 +101,17 @@
                         <viewControllerLayoutGuide type="bottom" id="JXH-OA-dU0"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="dLv-IX-e0T">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jhk-qh-N5O">
-                                <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                                 <connections>
                                     <segue destination="hpa-fw-Ay5" kind="embed" identifier="Photo Comparison Controller" id="IZA-Rh-gPV"/>
                                 </connections>
                             </containerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bgG-Zw-FU2" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="128" y="240" width="64" height="64"/>
+                                <rect key="frame" x="128" y="216" width="64" height="64"/>
                                 <state key="normal" title="Send" backgroundImage="ButtonBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -71,7 +120,7 @@
                                 </connections>
                             </button>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="rgf-j2-tkN">
-                                <rect key="frame" x="142" y="253" width="37" height="37"/>
+                                <rect key="frame" x="142" y="229" width="37" height="37"/>
                             </activityIndicatorView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZR6-mL-edo">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
@@ -108,6 +157,7 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Post" id="2O1-Ra-Pjk"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="loadingView" destination="rgf-j2-tkN" id="wua-Js-3Xe"/>
                         <outlet property="sendButton" destination="bgG-Zw-FU2" id="hFN-N5-M1q"/>
@@ -116,7 +166,26 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hmV-tg-bv8" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="F06-Br-Xho" userLabel="Navigation Bar Tapped"/>
             </objects>
-            <point key="canvasLocation" x="857" y="342"/>
+            <point key="canvasLocation" x="866" y="547.5"/>
+        </scene>
+        <!--Me-->
+        <scene sceneID="6EB-zh-XRs">
+            <objects>
+                <viewController id="h96-mz-Qs4" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="GxN-sP-BWC"/>
+                        <viewControllerLayoutGuide type="bottom" id="ImA-kO-RKZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jw7-7V-LtB">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Me" id="ebj-yB-2vL"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pKy-yz-n0a" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="866" y="1023.5"/>
         </scene>
         <!--Root Controller-->
         <scene sceneID="VWY-sA-d8t">
@@ -142,7 +211,7 @@
                                 <items/>
                             </tabBar>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="JbN-M6-WyN" firstAttribute="leading" secondItem="3s9-wn-ags" secondAttribute="leading" id="5jK-Cj-1hS"/>
                             <constraint firstAttribute="bottom" secondItem="JbN-M6-WyN" secondAttribute="bottom" id="9L9-ZY-5aW"/>
@@ -169,15 +238,15 @@
             <objects>
                 <tabBarController id="6QH-p8-eFG" customClass="TabBarController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="3ZA-w6-eH8">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="37Z-1j-EcS" kind="relationship" relationship="viewControllers" id="dIm-df-iYM"/>
                         <segue destination="6wq-1Y-TiB" kind="relationship" relationship="viewControllers" id="EOH-kZ-a3B"/>
+                        <segue destination="37Z-1j-EcS" kind="relationship" relationship="viewControllers" id="dIm-df-iYM"/>
+                        <segue destination="h96-mz-Qs4" kind="relationship" relationship="viewControllers" id="bkr-aw-b7e"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fpy-e7-ti8" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -193,17 +262,17 @@
                         <viewControllerLayoutGuide type="bottom" id="e0n-el-6bw"/>
                     </layoutGuides>
                     <view key="view" opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="Ngt-gb-2Qu">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="22F-CN-JDl">
-                                <rect key="frame" x="0.0" y="0.0" width="160" height="416"/>
+                                <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
                                 <connections>
                                     <segue destination="rPD-KC-83S" kind="embed" identifier="Left Photo Controller" id="4GQ-Aa-EaP"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TYB-j4-um4">
-                                <rect key="frame" x="160" y="0.0" width="160" height="416"/>
+                                <rect key="frame" x="160" y="0.0" width="160" height="367"/>
                                 <connections>
                                     <segue destination="rPD-KC-83S" kind="embed" identifier="Right Photo Controller" id="uM3-tb-eTB"/>
                                 </connections>
@@ -230,7 +299,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t7F-ab-SSQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1319" y="592.5"/>
+            <point key="canvasLocation" x="1328" y="293.5"/>
         </scene>
         <!--Photo Controller-->
         <scene sceneID="oDJ-hZ-wtb">
@@ -241,15 +310,15 @@
                         <viewControllerLayoutGuide type="bottom" id="lwi-Vt-MNP"/>
                     </layoutGuides>
                     <view key="view" opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="5Xe-GT-hcA">
-                        <rect key="frame" x="0.0" y="0.0" width="160" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OuB-lJ-89T" userLabel="Background">
-                                <rect key="frame" x="-16" y="0.0" width="192" height="416"/>
+                                <rect key="frame" x="-16" y="0.0" width="192" height="367"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FBu-Eh-kK4" userLabel="Camera Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="48" y="105" width="64" height="64"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FBu-Eh-kK4" userLabel="Camera Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="48" y="80" width="64" height="64"/>
                                 <state key="normal" image="ButtonCamera" backgroundImage="ButtonBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -257,8 +326,8 @@
                                     <action selector="getImageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="QRn-Ti-vwo"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vhz-QE-CMT" userLabel="Library Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="48" y="177" width="64" height="64"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vhz-QE-CMT" userLabel="Library Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="48" y="152" width="64" height="64"/>
                                 <state key="normal" image="ButtonLibrary" backgroundImage="ButtonBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -266,8 +335,8 @@
                                     <action selector="getImageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="E8D-mt-TsM"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3W7-Sc-zrt" userLabel="Previous Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="48" y="249" width="64" height="64"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3W7-Sc-zrt" userLabel="Previous Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="48" y="224" width="64" height="64"/>
                                 <state key="normal" image="ButtonPrevious" backgroundImage="ButtonBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -276,13 +345,13 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bRL-AR-0mD" userLabel="Image Container">
-                                <rect key="frame" x="0.0" y="0.0" width="160" height="416"/>
+                                <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yhO-Ld-1tg">
-                                        <rect key="frame" x="-16" y="0.0" width="192" height="416"/>
+                                        <rect key="frame" x="-16" y="0.0" width="192" height="367"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GxD-Vg-L3y" userLabel="Delete Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                        <rect key="frame" x="48" y="348" width="64" height="64"/>
+                                        <rect key="frame" x="48" y="299" width="64" height="64"/>
                                         <state key="normal" title="Delete" backgroundImage="ButtonBackground">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -332,7 +401,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AbR-wv-pbr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1620" y="592.5"/>
+            <point key="canvasLocation" x="1630" y="293.5"/>
         </scene>
     </scenes>
     <resources>
@@ -342,7 +411,7 @@
         <image name="ButtonPrevious" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="IZA-Rh-gPV"/>
+        <segue reference="apZ-Yv-541"/>
         <segue reference="uM3-tb-eTB"/>
     </inferredMetricsTieBreakers>
 </document>
