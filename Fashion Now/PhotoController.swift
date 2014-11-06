@@ -10,11 +10,8 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
 
     var photo: Photo = Photo() {
         didSet {
-            photo.fetchIfNeededInBackgroundWithBlock { (fetchedObject, error) -> Void in
-                let fetchedPhoto = fetchedObject as Photo
-                fetchedPhoto.image?.getDataInBackgroundWithBlock { (data, error) -> Void in
-                    self.imageView.image = UIImage(data: data)
-                }
+            photo.image?.getDataInBackgroundWithBlock { (data, error) -> Void in
+                self.imageView.image = UIImage(data: data)
             }
         }
     }

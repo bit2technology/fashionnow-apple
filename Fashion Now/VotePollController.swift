@@ -14,20 +14,8 @@ class VotePollController: UIViewController {
 
     @IBOutlet weak var navBarTopMargin: NSLayoutConstraint!
     @IBOutlet weak var navBar: UINavigationBar!
-
-    private var navBarHidden = false
     
-    override func viewDidLoad() {
-
-//        testLabel.text = "Cupcake ipsum dolor sit amet pie. Pudding chocolate fruitcake apple pie sweet roll I love jelly beans ice cream. Brownie tootsie roll carrot cake lollipop lemon drops apple pie sugar plum macaroon biscuit."
-//        testLabel.textColor = UIColor.whiteColor()
-//        testLabel.layer.shadowColor = UIColor.blackColor().CGColor
-//        testLabel.layer.shadowOffset = CGSizeZero
-//        testLabel.layer.shadowOpacity = 1
-//        testLabel.layer.shadowRadius = 2
-        
-        photoComparisonController.mode = .Vote
-    }
+    @IBOutlet weak var dateLabel: UILabel!
     
     // MARK: UIViewController
     
@@ -45,15 +33,39 @@ class VotePollController: UIViewController {
             }
         }
     }
+    
+    // MARK: Rotation
 
     override func supportedInterfaceOrientations() -> Int {
-        return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
+        
+        var supportedInterfaceOrientations = UIInterfaceOrientationMask.AllButUpsideDown
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            supportedInterfaceOrientations = UIInterfaceOrientationMask.All
+        }
+        return Int(supportedInterfaceOrientations.rawValue)
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
         
-        self.rootController?.delegate = nil
+        navBarTopMargin.constant = (rootController!.cleanInterface ? -navBar.frame.height : 0)
+    }
+    
+    // MARK: View lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.rootController?.delegate = self
+        
+        //        testLabel.text = "Cupcake ipsum dolor sit amet pie. Pudding chocolate fruitcake apple pie sweet roll I love jelly beans ice cream. Brownie tootsie roll carrot cake lollipop lemon drops apple pie sugar plum macaroon biscuit."
+        //        testLabel.textColor = UIColor.whiteColor()
+        //        testLabel.layer.shadowColor = UIColor.blackColor().CGColor
+        //        testLabel.layer.shadowOffset = CGSizeZero
+        //        testLabel.layer.shadowOpacity = 1
+        //        testLabel.layer.shadowRadius = 2
+        
+        photoComparisonController.mode = .Vote
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -62,36 +74,24 @@ class VotePollController: UIViewController {
         self.rootController?.delegate = self
         
         var query: PFQuery = PFQuery(className: Poll.parseClassName())
+        query.includeKey("photos")
         query.orderByDescending("createdAt")
         
         query.getFirstObjectInBackgroundWithBlock { (object, error) -> Void in
             
-            self.photoComparisonController.poll = object as Poll
+            let poll = object as Poll
+            self.photoComparisonController.poll = poll
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateStyle = .ShortStyle
+            dateFormatter.timeStyle = .ShortStyle
+            dateFormatter.doesRelativeDateFormatting = true
+            self.dateLabel.text = dateFormatter.stringFromDate(poll.createdAt)
         }
-    }
-
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-
-        if respondsToSelector("traitCollection") {
-            navBarHidden = (traitCollection.verticalSizeClass == .Compact)
-        } else {
-            navBarHidden = (interfaceOrientation.isLandscape && UIDevice.currentDevice().userInterfaceIdiom == .Phone)
-        }
-
-        navBarTopMargin.constant = (navBarHidden ? -navBar.frame.height : 0)
-
-    }
-
-    @IBAction func test(sender: UIButton!) {
-
-    }
-
-    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-
     }
     
-    func tabBarControllerSupportedInterfaceOrientations(tabBarController: UITabBarController) -> Int {
-        return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.rootController?.delegate = nil
     }
 }

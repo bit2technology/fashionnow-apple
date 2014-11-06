@@ -23,6 +23,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         PFFacebookUtils.initializeFacebook()
         
+        // Parse login
+        PFUser.enableAutomaticUser()
+        PFUser.currentUser().saveInBackgroundWithBlock { (succeeded, error) -> Void in
+            if !succeeded {
+                println("Save user in backgound error: \(error)")
+            }
+        }
+        
         return true
     }
     

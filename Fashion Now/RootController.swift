@@ -16,7 +16,7 @@ class RootController: UIViewController {
     @IBOutlet weak var tabBar: UITabBar!
     @IBOutlet weak var tabBarBottomMargin: NSLayoutConstraint!
     
-    private var cleanInterface = false
+    private(set) var cleanInterface = false
     var contentBehindTabBar = false
 
     var delegate: UIViewController?
