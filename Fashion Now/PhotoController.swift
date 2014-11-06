@@ -128,6 +128,10 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         photo.uploadedBy = PFUser.currentUser()
 
         deleteOrVoteButton.superview?.tintColor = UIColor.defaultTintColor().colorWithAlphaComponent(0.6)
+        deleteOrVoteButton.layer.shadowColor = UIColor.whiteColor().CGColor
+        deleteOrVoteButton.layer.shadowOffset = CGSizeZero
+        deleteOrVoteButton.layer.shadowOpacity = 1
+        deleteOrVoteButton.layer.shadowRadius = 3
 
         adjustForMode(mode)
     }
