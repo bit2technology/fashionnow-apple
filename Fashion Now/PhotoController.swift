@@ -52,9 +52,11 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
 
         case .Left:
             buttonsCenterX.constant = -adjustedMaxConstant
+            deleteOrVoteButton.setBackgroundImage(UIImage(named: "ButtonBackgroundLeft"), forState: .Normal)
 
         case .Right:
             buttonsCenterX.constant = adjustedMaxConstant
+            deleteOrVoteButton.setBackgroundImage(UIImage(named: "ButtonBackgroundRight"), forState: .Normal)
         }
     }
 
@@ -127,11 +129,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         
         photo.uploadedBy = PFUser.currentUser()
 
-        deleteOrVoteButton.superview?.tintColor = UIColor.defaultTintColor().colorWithAlphaComponent(0.6)
-        deleteOrVoteButton.layer.shadowColor = UIColor.whiteColor().CGColor
-        deleteOrVoteButton.layer.shadowOffset = CGSizeZero
-        deleteOrVoteButton.layer.shadowOpacity = 1
-        deleteOrVoteButton.layer.shadowRadius = 3
+        deleteOrVoteButton.tintColor = UIColor.defaultTintColor().colorWithAlphaComponent(0.6)
 
         adjustForMode(mode)
     }

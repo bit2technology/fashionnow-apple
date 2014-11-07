@@ -13,6 +13,10 @@ class TemplateBackgroundButton: UIButton {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        setBackgroundImage(backgroundImageForState(.Normal)?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+        setBackgroundImage(backgroundImageForState(.Normal), forState: .Normal)
+    }
+    
+    override func setBackgroundImage(image: UIImage?, forState state: UIControlState) {
+        super.setBackgroundImage(image?.imageWithRenderingMode(.AlwaysTemplate), forState: state)
     }
 }

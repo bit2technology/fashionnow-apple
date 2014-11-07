@@ -18,8 +18,8 @@ class VotePollController: UIViewController {
     @IBOutlet weak var avatarView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
-    
-    @IBOutlet weak var testLabel: UILabel!
+    @IBOutlet weak var tagsLabel: UILabel!
+    weak var tagsGradientBackgroundLayer: CAGradientLayer!
     
     // MARK: UIViewController
     
@@ -53,6 +53,11 @@ class VotePollController: UIViewController {
         super.viewWillLayoutSubviews()
         
         navBarTopMargin.constant = (rootController!.cleanInterface ? -navBar.frame.height : 0)
+        
+//        var tagsGradientBackgroundLayerFrame = tagsGradientBackgroundLayer.superlayer.bounds
+//        tagsGradientBackgroundLayerFrame.size.width *= 1.5
+//        tagsGradientBackgroundLayerFrame.size.height *= 1.4
+//        tagsGradientBackgroundLayer.frame = tagsGradientBackgroundLayerFrame
     }
     
     // MARK: View lifecycle
@@ -65,12 +70,12 @@ class VotePollController: UIViewController {
         avatarView.layer.cornerRadius = 20
         avatarView.layer.masksToBounds = true
         
-        //        testLabel.text = "Cupcake ipsum dolor sit amet pie. Pudding chocolate fruitcake apple pie sweet roll I love jelly beans ice cream. Brownie tootsie roll carrot cake lollipop lemon drops apple pie sugar plum macaroon biscuit."
-        //        testLabel.textColor = UIColor.whiteColor()
-        testLabel.layer.shadowColor = UIColor.whiteColor().CGColor
-        testLabel.layer.shadowOffset = CGSizeZero
-        testLabel.layer.shadowOpacity = 1
-        testLabel.layer.shadowRadius = 2
+//        let gradientLayer = CAGradientLayer()
+//        gradientLayer.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+//        gradientLayer.colors = [UIColor(white: 0, alpha: 0.25).CGColor, UIColor(white: 0, alpha: 0.2).CGColor, UIColor(white: 0, alpha: 0).CGColor]
+//        tagsLabel.superview?.layer.insertSublayer(gradientLayer, atIndex: 0)
+//        tagsLabel.superview?.backgroundColor = nil
+//        tagsGradientBackgroundLayer = gradientLayer
         
         photoComparisonController.mode = .Vote
     }
