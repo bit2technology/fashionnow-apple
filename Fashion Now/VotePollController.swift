@@ -79,11 +79,15 @@ class VotePollController: UIViewController {
         
         photoComparisonController.mode = .Vote
     }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        rootController?.delegate = self
+    }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-        self.rootController?.delegate = self
         
         var query: PFQuery = PFQuery(className: Poll.parseClassName())
         query.includeKey("photos")
@@ -104,11 +108,5 @@ class VotePollController: UIViewController {
             dateFormatter.doesRelativeDateFormatting = true
             self.dateLabel.text = dateFormatter.stringFromDate(poll.createdAt)
         }
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        self.rootController?.delegate = nil
     }
 }

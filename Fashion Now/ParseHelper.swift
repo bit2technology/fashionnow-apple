@@ -10,6 +10,27 @@ private func newValueOrNSNull(newValue: AnyObject?) -> AnyObject {
     return (newValue != nil ? newValue! : NSNull())
 }
 
+// MARK: - User class
+
+public class User: PFUser, PFSubclassing {
+
+    private let BirthdayKey = "birthday"
+
+    override public class func load() {
+        superclass()?.load()
+        registerSubclass()
+    }
+
+    var birthday: NSDate? {
+        get {
+            return self[BirthdayKey] as? NSDate
+        }
+        set {
+            self[BirthdayKey] = newValueOrNSNull(newValue)
+        }
+    }
+}
+
 // MARK: - Poll class
 
 public class Poll: PFObject, PFSubclassing {

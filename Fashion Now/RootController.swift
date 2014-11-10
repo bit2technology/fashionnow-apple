@@ -35,6 +35,11 @@ class RootController: UIViewController {
             }
         }
     }
+
+    func presentLoginController() {
+
+        performSegueWithIdentifier("Login Controller", sender: self)
+    }
     
     // MARK: Rotation
     

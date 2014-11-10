@@ -6,6 +6,46 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
+        <!--Login Controller-->
+        <scene sceneID="dax-F6-DHD">
+            <objects>
+                <viewController id="R8T-0b-tVZ" customClass="LoginController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ApX-Yf-4N2"/>
+                        <viewControllerLayoutGuide type="bottom" id="cus-9V-bed"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="1B9-2O-szd">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MXb-Ij-kte">
+                                <rect key="frame" x="85" y="72" width="151" height="30"/>
+                                <state key="normal" title="Log In With Facebook">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loginButtonPressed:" destination="R8T-0b-tVZ" eventType="touchUpInside" id="hAm-j7-Q6G"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="MXb-Ij-kte" firstAttribute="top" secondItem="ApX-Yf-4N2" secondAttribute="bottom" constant="8" id="JGc-aC-EQJ"/>
+                            <constraint firstAttribute="centerX" secondItem="MXb-Ij-kte" secondAttribute="centerX" id="xFT-tS-BJq"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="fxo-PT-oRu">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="5vt-0b-slv">
+                            <connections>
+                                <action selector="dismiss:" destination="R8T-0b-tVZ" id="qPK-dR-lHP"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xJA-3U-sng" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="392" y="1166"/>
+        </scene>
         <!--Vote-->
         <scene sceneID="VVH-fN-2gA">
             <objects>
@@ -204,48 +244,7 @@
                     <view key="view" contentMode="scaleToFill" id="jw7-7V-LtB">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y6C-lx-1Eg" userLabel="Login Container">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="No5-U5-llI">
-                                        <rect key="frame" x="89" y="201" width="143" height="30"/>
-                                        <state key="normal" title="Login with Facebook">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FtK-di-nJu">
-                                        <rect key="frame" x="140" y="172" width="42" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OjH-tE-Vud">
-                                        <rect key="frame" x="129" y="100" width="64" height="64"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="64" id="Aul-0E-5N9"/>
-                                            <constraint firstAttribute="height" constant="64" id="nrJ-eE-QeD"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="FtK-di-nJu" firstAttribute="top" secondItem="OjH-tE-Vud" secondAttribute="bottom" constant="8" id="Alc-GO-zf0"/>
-                                    <constraint firstAttribute="centerY" secondItem="No5-U5-llI" secondAttribute="centerY" id="C8n-fd-2Nm"/>
-                                    <constraint firstItem="OjH-tE-Vud" firstAttribute="centerX" secondItem="FtK-di-nJu" secondAttribute="centerX" id="RhL-XY-lLY"/>
-                                    <constraint firstAttribute="centerX" secondItem="No5-U5-llI" secondAttribute="centerX" id="jWq-hF-G1e"/>
-                                    <constraint firstItem="No5-U5-llI" firstAttribute="top" secondItem="FtK-di-nJu" secondAttribute="bottom" constant="8" id="o2G-ec-wdH"/>
-                                    <constraint firstItem="FtK-di-nJu" firstAttribute="centerX" secondItem="No5-U5-llI" secondAttribute="centerX" id="rsa-Xc-DIs"/>
-                                </constraints>
-                            </view>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="y6C-lx-1Eg" firstAttribute="leading" secondItem="jw7-7V-LtB" secondAttribute="leading" id="JXr-T8-x9v"/>
-                            <constraint firstAttribute="bottom" secondItem="y6C-lx-1Eg" secondAttribute="bottom" id="QEW-Ke-vjK"/>
-                            <constraint firstItem="y6C-lx-1Eg" firstAttribute="top" secondItem="jw7-7V-LtB" secondAttribute="top" id="Xbo-5x-vfZ"/>
-                            <constraint firstAttribute="trailing" secondItem="y6C-lx-1Eg" secondAttribute="trailing" id="cYh-0e-mYB"/>
-                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Me" id="ebj-yB-2vL"/>
                     <nil key="simulatedBottomBarMetrics"/>
@@ -253,6 +252,23 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pKy-yz-n0a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="866" y="1023.5"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="el2-Pc-Fa5">
+            <objects>
+                <navigationController id="Sdq-1k-Ot2" sceneMemberID="viewController">
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FrL-sN-pK7">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="R8T-0b-tVZ" kind="relationship" relationship="rootViewController" id="yUM-7f-eK8"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZWg-bD-FMf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="13" y="1166"/>
         </scene>
         <!--Root Controller-->
         <scene sceneID="VWY-sA-d8t">
@@ -294,6 +310,7 @@
                         <outlet property="contentBottomMargin" destination="BdJ-H8-Sct" id="l75-mz-IA0"/>
                         <outlet property="tabBar" destination="JbN-M6-WyN" id="Yis-Wy-gte"/>
                         <outlet property="tabBarBottomMargin" destination="9L9-ZY-5aW" id="mRY-sK-vfe"/>
+                        <segue destination="Sdq-1k-Ot2" kind="presentation" identifier="Login Controller" id="rPL-Vl-AK7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ROQ-hr-Qt0" userLabel="First Responder" sceneMemberID="firstResponder"/>

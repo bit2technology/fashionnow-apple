@@ -57,16 +57,15 @@ class PostPollController: UIViewController, PhotoComparisonControllerDelegate {
         photoComparisonController.delegate = self
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
-        self.rootController?.delegate = self
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        self.rootController?.delegate = nil
+        rootController?.delegate = self
+
+        if PFAnonymousUtils.isLinkedWithUser(PFUser.currentUser()) {
+
+            rootController?.presentLoginController()
+        }
     }
     
     override func supportedInterfaceOrientations() -> Int {
