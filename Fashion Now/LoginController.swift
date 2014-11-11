@@ -20,10 +20,19 @@ class LoginController: UIViewController {
                 FBRequestConnection.startForMeWithCompletionHandler() { (requestConnection, object, error) -> Void in
                     if let graphObject = object as? FBGraphObject {
                         customUser.updateCustomInfo(graphObject: graphObject)
-                        customUser.saveInBackgroundWithBlock(nil)
+                        customUser.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+                            self.dismissViewControllerAnimated(true, completion: nil)
+                        }
                     }
                 }
             }
         }
+    }
+}
+
+extension UIViewController {
+    
+    func needsLogin() -> Bool {
+        return false
     }
 }

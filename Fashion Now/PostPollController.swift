@@ -22,14 +22,18 @@ class PostPollController: UIViewController, PhotoComparisonControllerDelegate {
         loadingView.hidden = false
         textField.enabled = false
         
-//        photoComparisonController.poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
-//            
-//            self.photoComparisonController.clean(animated: true)
-//            self.loadingView.hidden = true
-//        }
+        photoComparisonController.poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+            
+            self.photoComparisonController.clean(animated: true)
+            self.loadingView.hidden = true
+        }
     }
     
     // MARK: UIViewController
+    
+    override func needsLogin() -> Bool {
+        return true
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
@@ -61,11 +65,6 @@ class PostPollController: UIViewController, PhotoComparisonControllerDelegate {
         super.viewWillAppear(animated)
         
         rootController?.delegate = self
-
-        if PFAnonymousUtils.isLinkedWithUser(PFUser.currentUser()) {
-
-            rootController?.presentLoginController()
-        }
     }
     
     override func supportedInterfaceOrientations() -> Int {

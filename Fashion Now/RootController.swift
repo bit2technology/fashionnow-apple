@@ -8,9 +8,7 @@
 
 import UIKit
 
-class RootController: UIViewController {
-    
-    weak var innerTabBarController: TabBarController!
+class RootController: UIViewController, UITabBarControllerDelegate {
     
     @IBOutlet weak var contentBottomMargin: NSLayoutConstraint!
     @IBOutlet weak var tabBar: UITabBar!
@@ -21,23 +19,16 @@ class RootController: UIViewController {
 
     var delegate: UIViewController?
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
         
-        if let unwrappedSegueId = segue.identifier {
-            
-            switch unwrappedSegueId {
-                
-            case "Tab Bar Controller":
-                innerTabBarController = segue.destinationViewController as TabBarController
-                
-            default:
-                return
-            }
+        if PFAnonymousUtils.isLinkedWithUser(PFUser.currentUser()) && viewController.needsLogin() {
+            presentLoginController()
+            return false
         }
+        return true
     }
 
     func presentLoginController() {
-
         performSegueWithIdentifier("Login Controller", sender: self)
     }
     
@@ -97,12 +88,17 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         tabBar.hidden = true
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if delegate == nil {
+            delegate = rootController
+            println("\(delegate) = \(rootController)")
+        }
 
         rootController?.tabBar.items = tabBar.items
         rootController?.tabBar.selectedItem = tabBar.selectedItem

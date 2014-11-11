@@ -25,16 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Get current user (or create an anonymous one)
         PFUser.enableAutomaticUser()
-        let currentUser = PFUser.currentUser() as User
-        // Update Facebook information if it's linked
-        if PFFacebookUtils.session() != nil && PFFacebookUtils.session().isOpen {
-            FBRequestConnection.startForMeWithCompletionHandler { (requestConnection, object, error) -> Void in
-                if let graphObject = object as? FBGraphObject {
-                    currentUser.updateCustomInfo(graphObject: graphObject)
-                    currentUser.saveInBackgroundWithBlock(nil)
-                }
-            }
-        } else {
+        let currentUser = PFUser.currentUser()
+        if currentUser.isDirty() {
             currentUser.saveInBackgroundWithBlock(nil)
         }
         
