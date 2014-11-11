@@ -11,20 +11,18 @@ import UIKit
 class LoginController: UIViewController {
 
     @IBAction func dismiss(sender: UIBarButtonItem) {
-
         dismissViewControllerAnimated(true, completion: nil)
     }
 
     @IBAction func loginButtonPressed(sender: UIButton) {
-
         PFFacebookUtils.logInWithPermissions(nil) { (user, error) -> Void in
-
-            println("teste")
-            FBRequestConnection.startForMeWithCompletionHandler() { (requestConnection, object, error) -> Void in
-
-                println("objec:\(object)")
-                user.email = (object as FBGraphObject).objectForKey("email") as String
-                user.saveInBackgroundWithBlock(nil)
+            if let customUser = user as? User {
+                FBRequestConnection.startForMeWithCompletionHandler() { (requestConnection, object, error) -> Void in
+                    if let graphObject = object as? FBGraphObject {
+                        customUser.updateCustomInfo(graphObject: graphObject)
+                        customUser.saveInBackgroundWithBlock(nil)
+                    }
+                }
             }
         }
     }

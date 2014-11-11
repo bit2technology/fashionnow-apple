@@ -23,12 +23,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         PFFacebookUtils.initializeFacebook()
         
-        // Parse login
+        // Get current user (or create an anonymous one)
         PFUser.enableAutomaticUser()
-        PFUser.currentUser().saveInBackgroundWithBlock { (succeeded, error) -> Void in
-            if !succeeded {
-                println("Save user in backgound error: \(error)")
+        let currentUser = PFUser.currentUser() as User
+        // Update Facebook information if it's linked
+        if PFFacebookUtils.session() != nil && PFFacebookUtils.session().isOpen {
+            FBRequestConnection.startForMeWithCompletionHandler { (requestConnection, object, error) -> Void in
+                if let graphObject = object as? FBGraphObject {
+                    currentUser.updateCustomInfo(graphObject: graphObject)
+                    currentUser.saveInBackgroundWithBlock(nil)
+                }
             }
+        } else {
+            currentUser.saveInBackgroundWithBlock(nil)
         }
         
         return true
@@ -114,6 +121,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     */
+}
+
+extension UIColor {
+    
+    class func defaultTintColor() -> UIColor {
+        return purpleColor()
+    }
 }
 
 extension UIStoryboard {

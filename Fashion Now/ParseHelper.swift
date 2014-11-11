@@ -14,20 +14,68 @@ private func newValueOrNSNull(newValue: AnyObject?) -> AnyObject {
 
 public class User: PFUser, PFSubclassing {
 
+    private let NameKey = "name"
+    private let GenderKey = "gender"
     private let BirthdayKey = "birthday"
+    private let LocationNameKey = "locationName"
 
     override public class func load() {
         superclass()?.load()
         registerSubclass()
+    }
+    
+    var name: String? {
+        get {
+            return self[NameKey] as? String
+        }
+        set {
+            self[NameKey] = newValueOrNSNull(newValue)
+        }
+    }
+    
+    var gender: String? {
+        get {
+            return self[GenderKey] as? String
+        }
+        set {
+            self[GenderKey] = newValueOrNSNull(newValue)
+        }
     }
 
     var birthday: NSDate? {
         get {
             return self[BirthdayKey] as? NSDate
         }
-        set {
-            self[BirthdayKey] = newValueOrNSNull(newValue)
+    }
+    func setBirthday(#dateString: String?) {
+        if let unwrappedDateString = dateString {
+            
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "MM/dd/yyyy"
+            dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+            self[BirthdayKey] = dateFormatter.dateFromString(unwrappedDateString)
+            
+        } else {
+            self[BirthdayKey] = NSNull()
         }
+    }
+    
+    var locationName: String? {
+        get {
+            return self[LocationNameKey] as? String
+        }
+        set {
+            self[LocationNameKey] = newValueOrNSNull(newValue)
+        }
+    }
+    
+    func updateCustomInfo(#graphObject: FBGraphObject) {
+        
+        self.name = graphObject.objectForKey("name") as? String
+        self.email = graphObject.objectForKey("email") as String
+        self.gender = graphObject.objectForKey("gender") as? String
+        self.setBirthday(dateString: graphObject.objectForKey("birthday") as? String)
+        self.locationName = graphObject.objectForKey("location").objectForKey("name") as? String
     }
 }
 
