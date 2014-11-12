@@ -15,11 +15,17 @@ class LoginController: UIViewController {
     }
 
     @IBAction func loginButtonPressed(sender: UIButton) {
-        PFFacebookUtils.logInWithPermissions(nil) { (user, error) -> Void in
+        PFFacebookUtils.logInWithPermissions(["public_profile", "user_friends", "email"]) { (user, error) -> Void in
             if let customUser = user as? User {
                 FBRequestConnection.startForMeWithCompletionHandler() { (requestConnection, object, error) -> Void in
                     if let graphObject = object as? FBGraphObject {
-                        customUser.updateCustomInfo(graphObject: graphObject)
+                        println("user:\(graphObject)")
+                        // Add Facebook information
+                        customUser.name = graphObject.objectForKey("name") as? String
+                        customUser.email = graphObject.objectForKey("email") as? String
+                        customUser.gender = graphObject.objectForKey("gender") as? String
+                        customUser.setBirthday(dateString: graphObject.objectForKey("birthday") as? String)
+                        customUser.locationName = graphObject.objectForKey("location").objectForKey("name") as? String
                         customUser.saveInBackgroundWithBlock { (succeeded, error) -> Void in
                             self.dismissViewControllerAnimated(true, completion: nil)
                         }

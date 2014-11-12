@@ -1,0 +1,48 @@
+/* Class = "IBUIButton"; normalTitle = "Follow"; ObjectID = "1iE-fK-YeD"; */
+"1iE-fK-YeD.normalTitle" = "Seguir";
+
+/* Class = "IBUITabBarItem"; title = "Post"; ObjectID = "2O1-Ra-Pjk"; */
+"2O1-Ra-Pjk.title" = "Postar";
+
+/* Class = "IBUIButton"; normalTitle = "Sign up with e-mail"; ObjectID = "5eZ-fB-11K"; */
+"5eZ-fB-11K.normalTitle" = "Registrar com e-mail";
+
+/* Class = "IBUIButton"; normalTitle = "Delete"; ObjectID = "GxD-Vg-L3y"; */
+"GxD-Vg-L3y.normalTitle" = "Deletar";
+
+/* Class = "IBUIButton"; normalTitle = "Log in with Facebook"; ObjectID = "MXb-Ij-kte"; */
+"MXb-Ij-kte.normalTitle" = "Log in com Facebook";
+
+/* Class = "IBUITextField"; placeholder = "Optional"; ObjectID = "Q0h-Pl-zKd"; */
+"Q0h-Pl-zKd.placeholder" = "Opcional";
+
+/* Class = "IBUIButton"; normalTitle = "I already have an account"; ObjectID = "UVf-dJ-3oB"; */
+"UVf-dJ-3oB.normalTitle" = "Eu já tenho uma conta";
+
+/* Class = "IBUILabel"; text = "#hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag"; ObjectID = "Zly-2v-7UO"; */
+"Zly-2v-7UO.text" = "#hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag";
+
+/* Class = "IBUITextField"; placeholder = "Add hashtags"; ObjectID = "aa7-aO-RqI"; */
+"aa7-aO-RqI.placeholder" = "Adicionar hashtags";
+
+/* Class = "IBUIButton"; normalTitle = "Send"; ObjectID = "bgG-Zw-FU2"; */
+"bgG-Zw-FU2.normalTitle" = "Enviar";
+
+/* Class = "IBUITabBarItem"; title = "Vote"; ObjectID = "cp0-V5-EKB"; */
+"cp0-V5-EKB.title" = "Votar";
+
+/* Class = "IBUITabBarItem"; title = "Me"; ObjectID = "ebj-yB-2vL"; */
+"ebj-yB-2vL.title" = "Eu";
+
+/* Class = "IBUINavigationItem"; title = "Sign up"; ObjectID = "fxo-PT-oRu"; */
+"fxo-PT-oRu.title" = "Registrar";
+
+/* Class = "IBUILabel"; text = "Name"; ObjectID = "mhc-nx-wcX"; */
+"mhc-nx-wcX.text" = "Nome";
+
+/* Class = "IBUILabel"; text = "Date"; ObjectID = "oWN-q7-Q6r"; */
+"oWN-q7-Q6r.text" = "Data";
+
+/* Class = "IBUILabel"; text = "Fashion Now works better with Facebook. Don't worry, we'll respect your privacy."; ObjectID = "sIE-qd-ls5"; */
+"sIE-qd-ls5.text" = "Fashion Now funciona melhor com Facebook. Não se preocupe, respeitaremos sua privacidade.";
+

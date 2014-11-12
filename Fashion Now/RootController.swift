@@ -18,6 +18,12 @@ class RootController: UIViewController, UITabBarControllerDelegate {
     var contentBehindTabBar = false
 
     var delegate: UIViewController?
+
+    func presentLoginController() {
+        performSegueWithIdentifier("Login Controller", sender: self)
+    }
+    
+    // MARK: UITabBarControllerDelegate
     
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
         
@@ -26,10 +32,6 @@ class RootController: UIViewController, UITabBarControllerDelegate {
             return false
         }
         return true
-    }
-
-    func presentLoginController() {
-        performSegueWithIdentifier("Login Controller", sender: self)
     }
     
     // MARK: Rotation

@@ -68,15 +68,6 @@ public class User: PFUser, PFSubclassing {
             self[LocationNameKey] = newValueOrNSNull(newValue)
         }
     }
-    
-    func updateCustomInfo(#graphObject: FBGraphObject) {
-        
-        self.name = graphObject.objectForKey("name") as? String
-        self.email = graphObject.objectForKey("email") as String
-        self.gender = graphObject.objectForKey("gender") as? String
-        self.setBirthday(dateString: graphObject.objectForKey("birthday") as? String)
-        self.locationName = graphObject.objectForKey("location").objectForKey("name") as? String
-    }
 }
 
 // MARK: - Poll class
