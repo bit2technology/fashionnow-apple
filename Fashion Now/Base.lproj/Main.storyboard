@@ -91,8 +91,8 @@
         <!--Log In-->
         <scene sceneID="9od-5e-1Db">
             <objects>
-                <tableViewController id="34U-YS-Pbl" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="xog-eb-X2o">
+                <tableViewController id="34U-YS-Pbl" customClass="LoginEmailController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="xog-eb-X2o">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -107,7 +107,7 @@
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ost-XS-Gaw">
                                                     <rect key="frame" x="15" y="0.0" width="305" height="43"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="43" id="A6z-yO-9B2"/>
+                                                        <constraint firstAttribute="height" priority="750" constant="43" id="A6z-yO-9B2"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
@@ -129,7 +129,7 @@
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tXu-ZQ-igo">
                                                     <rect key="frame" x="15" y="0.0" width="305" height="43"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="43" id="32l-sI-B9H"/>
+                                                        <constraint firstAttribute="height" priority="750" constant="43" id="32l-sI-B9H"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
@@ -145,15 +145,45 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="RGd-u8-3yp">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="6QR-F5-xcz">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6QR-F5-xcz" id="wrm-dZ-Uus">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="exf-D7-gGy" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" priority="750" constant="43" id="qS7-sD-18x"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Log in" backgroundImage="ButtonLoginBackground"/>
+                                                    <connections>
+                                                        <action selector="loginButtonPressed:" destination="34U-YS-Pbl" eventType="touchUpInside" id="izw-Z8-q1C"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="exf-D7-gGy" secondAttribute="bottom" id="3GC-ma-Am8"/>
+                                                <constraint firstItem="exf-D7-gGy" firstAttribute="top" secondItem="wrm-dZ-Uus" secondAttribute="top" id="G9n-GE-t33"/>
+                                                <constraint firstAttribute="trailing" secondItem="exf-D7-gGy" secondAttribute="trailing" id="IFg-m9-Yi7"/>
+                                                <constraint firstItem="exf-D7-gGy" firstAttribute="leading" secondItem="wrm-dZ-Uus" secondAttribute="leading" id="e7O-PI-aZv"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="34U-YS-Pbl" id="CYj-VU-uft"/>
                             <outlet property="delegate" destination="34U-YS-Pbl" id="NMX-HV-Ke8"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Log In" id="dwE-iZ-ESc">
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="tyr-Dh-oDx"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Log In" id="dwE-iZ-ESc"/>
+                    <connections>
+                        <outlet property="passwordField" destination="tXu-ZQ-igo" id="401-8K-cLl"/>
+                        <outlet property="usernameField" destination="Ost-XS-Gaw" id="zy4-QJ-yo2"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gA1-ed-9m9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
