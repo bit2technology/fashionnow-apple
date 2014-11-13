@@ -118,8 +118,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension UIColor {
     
     class func defaultTintColor() -> UIColor {
-        //return purpleColor()
+//        return purpleColor()
         return UIColor(red: 24.0/255.0, green: 156.0/255.0, blue: 125.0/255.0, alpha: 1)
+    }
+    
+    func toImage() -> UIImage! {
+        let rect = CGRect(x: 0, y: 0, width: 1, height: 1);
+        UIGraphicsBeginImageContext(rect.size);
+        let context = UIGraphicsGetCurrentContext();
+        
+        CGContextSetFillColorWithColor(context, CGColor);
+        CGContextFillRect(context, rect);
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return image
     }
 }
 

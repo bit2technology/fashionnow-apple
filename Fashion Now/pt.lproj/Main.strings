@@ -7,14 +7,20 @@
 /* Class = "IBUIButton"; normalTitle = "Sign up with e-mail"; ObjectID = "5eZ-fB-11K"; */
 "5eZ-fB-11K.normalTitle" = "Registrar com e-mail";
 
+/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "9H3-pz-qNB"; */
+"9H3-pz-qNB.title" = "Voltar";
+
+/* Class = "IBUINavigationItem"; title = "Sign Up"; ObjectID = "9LK-rm-73H"; */
+"9LK-rm-73H.title" = "Registrar";
+
 /* Class = "IBUIButton"; normalTitle = "Delete"; ObjectID = "GxD-Vg-L3y"; */
 "GxD-Vg-L3y.normalTitle" = "Deletar";
 
 /* Class = "IBUIButton"; normalTitle = "Log in with Facebook"; ObjectID = "MXb-Ij-kte"; */
 "MXb-Ij-kte.normalTitle" = "Log in com Facebook";
 
-/* Class = "IBUITextField"; placeholder = "Optional"; ObjectID = "Q0h-Pl-zKd"; */
-"Q0h-Pl-zKd.placeholder" = "Opcional";
+/* Class = "IBUITextField"; placeholder = "Username"; ObjectID = "Ost-XS-Gaw"; */
+"Ost-XS-Gaw.placeholder" = "Nome de usuário";
 
 /* Class = "IBUIButton"; normalTitle = "I already have an account"; ObjectID = "UVf-dJ-3oB"; */
 "UVf-dJ-3oB.normalTitle" = "Eu já tenho uma conta";
@@ -31,11 +37,14 @@
 /* Class = "IBUITabBarItem"; title = "Vote"; ObjectID = "cp0-V5-EKB"; */
 "cp0-V5-EKB.title" = "Votar";
 
+/* Class = "IBUINavigationItem"; title = "Log In"; ObjectID = "dwE-iZ-ESc"; */
+"dwE-iZ-ESc.title" = "Log In";
+
 /* Class = "IBUITabBarItem"; title = "Me"; ObjectID = "ebj-yB-2vL"; */
 "ebj-yB-2vL.title" = "Eu";
 
-/* Class = "IBUINavigationItem"; title = "Sign up"; ObjectID = "fxo-PT-oRu"; */
-"fxo-PT-oRu.title" = "Registrar";
+/* Class = "IBUIButton"; normalTitle = "Log in"; ObjectID = "exf-D7-gGy"; */
+"exf-D7-gGy.normalTitle" = "Log in";
 
 /* Class = "IBUILabel"; text = "Name"; ObjectID = "mhc-nx-wcX"; */
 "mhc-nx-wcX.text" = "Nome";
@@ -45,4 +54,7 @@
 
 /* Class = "IBUILabel"; text = "Fashion Now works better with Facebook. Don't worry, we'll respect your privacy."; ObjectID = "sIE-qd-ls5"; */
 "sIE-qd-ls5.text" = "Fashion Now funciona melhor com Facebook. Não se preocupe, respeitaremos sua privacidade.";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "tXu-ZQ-igo"; */
+"tXu-ZQ-igo.placeholder" = "Senha";
 

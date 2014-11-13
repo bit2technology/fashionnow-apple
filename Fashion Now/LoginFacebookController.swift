@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginController: UIViewController {
+class LoginFacebookController: UIViewController {
 
     @IBAction func dismiss(sender: UIBarButtonItem) {
         dismissViewControllerAnimated(true, completion: nil)

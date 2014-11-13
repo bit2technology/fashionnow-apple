@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PostPollController: UIViewController, PhotoComparisonControllerDelegate {
+class PostPollController: UIViewController, PhotoControllerDelegate {
     
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var textField: UITextField!
@@ -24,7 +24,7 @@ class PostPollController: UIViewController, PhotoComparisonControllerDelegate {
         
         photoComparisonController.poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             
-            self.photoComparisonController.clean(animated: true)
+//            self.photoComparisonController.clean(animated: true)
             self.loadingView.hidden = true
         }
     }
@@ -58,7 +58,8 @@ class PostPollController: UIViewController, PhotoComparisonControllerDelegate {
         sendButton.hidden = true
         loadingView.hidden = true
         
-        photoComparisonController.delegate = self
+        photoComparisonController.leftPhotoController.delegate = self
+        photoComparisonController.rightPhotoController.delegate = self
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -68,14 +69,12 @@ class PostPollController: UIViewController, PhotoComparisonControllerDelegate {
     }
     
     override func supportedInterfaceOrientations() -> Int {
-        return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
+        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
     }
 
-    // MARK: PhotoComparisonControllerDelegate
+    // MARK: PhotoControllerDelegate
     
-    func photoComparisonController(photoComparisonController: PhotoComparisonController, didEditPoll poll: Poll) {
-
-        // If poll is valid, show send button
-        sendButton.hidden = (poll.createdBy == nil || poll.photos?.count < 2)
+    func photoController(photoController: PhotoController, didEditPhoto photo: Photo) {
+        
     }
 }

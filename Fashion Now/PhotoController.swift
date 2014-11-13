@@ -11,86 +11,29 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
     var photo: Photo = Photo() {
         didSet {
             photo.image?.getDataInBackgroundWithBlock { (data, error) -> Void in
-                self.imageView.image = UIImage(data: data)
+                if let unwrappedData = data {
+                    self.imageView.image = UIImage(data: unwrappedData)
+                }
+            }
+        }
+    }
+    
+    var imageButtonsHidden: Bool = true {
+        didSet {
+            for button in [cameraButton, libraryButton, previousButton] {
+                button.hidden = imageButtonsHidden
             }
         }
     }
 
-    var delegate: PhotoControllerDelegate?
-
-    enum Layout {
-        case Left, Right
-    }
-    var layout: Layout = Layout.Left {
-        didSet {
-            adjustForLayout(layout)
-        }
-    }
-
-    enum Mode {
-        case Edit, Vote
-    }
-    var mode: Mode = .Edit {
-        didSet {
-            adjustForMode(mode)
-        }
-    }
+    weak var delegate: PhotoControllerDelegate?
 
     @IBOutlet var cameraButton: UIButton!
     @IBOutlet var libraryButton: UIButton!
     @IBOutlet var previousButton: UIButton!
-
     @IBOutlet var imageView: UIImageView!
-    @IBOutlet var deleteOrVoteButton: UIButton!
-    @IBOutlet var buttonsCenterX: NSLayoutConstraint!
 
-    private func adjustForLayout(layout: Layout) {
-
-        let adjustedMaxConstant = CGFloat(9999)
-
-        switch layout {
-
-        case .Left:
-            buttonsCenterX.constant = -adjustedMaxConstant
-            deleteOrVoteButton.setBackgroundImage(UIImage(named: "ButtonBackgroundLeft"), forState: .Normal)
-
-        case .Right:
-            buttonsCenterX.constant = adjustedMaxConstant
-            deleteOrVoteButton.setBackgroundImage(UIImage(named: "ButtonBackgroundRight"), forState: .Normal)
-        }
-    }
-
-    private func adjustForMode(mode: Mode) {
-
-        switch mode {
-
-        case .Edit:
-            cameraButton.hidden = false
-            libraryButton.hidden = false
-            previousButton.hidden = false
-            imageView.superview?.hidden = true
-            imageView.image = nil
-            deleteOrVoteButton.setTitle("Delete", forState: .Normal)
-
-        case .Vote:
-            cameraButton.hidden = true
-            libraryButton.hidden = true
-            previousButton.hidden = true
-            imageView.superview?.hidden = false
-            deleteOrVoteButton.setTitle("Vote", forState: .Normal)
-        }
-    }
-
-    @IBAction func deleteOrVoteButtonPressed(sender: UIButton) {
-
-        if mode == .Edit {
-            photo.image = nil
-            imageView.superview?.hidden = true
-            imageView.image = nil
-        }
-    }
-
-    @IBAction func getImageButtonPressed(sender: UIButton) {
+    @IBAction func imageButtonPressed(sender: UIButton) {
 
         // Define image source
         var source: UIImagePickerControllerSourceType!
@@ -99,6 +42,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         case cameraButton:
             // If camera is unavailable, do nothing
             if !UIImagePickerController.isSourceTypeAvailable(.Camera) {
+                // TODO: Error handling
                 return
             }
             source = .Camera
@@ -121,17 +65,15 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         imagePickerController.sourceType = source
         presentViewController(imagePickerController, animated: true, completion: nil)
     }
-
-    // MARK: Controller lifecycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    
+    func deleteImage() {
         
-        photo.uploadedBy = PFUser.currentUser()
-
-        deleteOrVoteButton.tintColor = UIColor.defaultTintColor().colorWithAlphaComponent(0.6)
-
-        adjustForMode(mode)
+        // Set photo properties
+        photo.image = nil
+        imageView.image = nil
+        
+        // Call delegate
+        delegate?.photoController?(self, didEditPhoto: photo)
     }
 
     // MARK: UIImagePickerControllerDelegate
@@ -144,12 +86,10 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
             image = info[UIImagePickerControllerOriginalImage] as UIImage!
         }
 
-        // Set photo property
-        let imageData = UIImageJPEGRepresentation(image, 0.4)
+        // Set photo properties
+        let imageData = UIImageJPEGRepresentation(image, 0.4) // FIXME: Optimize image
         photo.image = PFFile(data: imageData, contentType: "image/jpeg")
-
         imageView.image = image
-        imageView.superview?.hidden = false
 
         // Call delegate
         delegate?.photoController?(self, didEditPhoto: photo)

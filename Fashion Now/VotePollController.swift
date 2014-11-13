@@ -53,11 +53,6 @@ class VotePollController: UIViewController {
         super.viewWillLayoutSubviews()
         
         navBarTopMargin.constant = (rootController!.cleanInterface ? -navBar.frame.height : 0)
-        
-//        var tagsGradientBackgroundLayerFrame = tagsGradientBackgroundLayer.superlayer.bounds
-//        tagsGradientBackgroundLayerFrame.size.width *= 1.5
-//        tagsGradientBackgroundLayerFrame.size.height *= 1.4
-//        tagsGradientBackgroundLayer.frame = tagsGradientBackgroundLayerFrame
     }
     
     // MARK: View lifecycle
@@ -69,15 +64,6 @@ class VotePollController: UIViewController {
         
         avatarView.layer.cornerRadius = 20
         avatarView.layer.masksToBounds = true
-        
-//        let gradientLayer = CAGradientLayer()
-//        gradientLayer.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
-//        gradientLayer.colors = [UIColor(white: 0, alpha: 0.25).CGColor, UIColor(white: 0, alpha: 0.2).CGColor, UIColor(white: 0, alpha: 0).CGColor]
-//        tagsLabel.superview?.layer.insertSublayer(gradientLayer, atIndex: 0)
-//        tagsLabel.superview?.backgroundColor = nil
-//        tagsGradientBackgroundLayer = gradientLayer
-        
-        photoComparisonController.mode = .Vote
     }
 
     override func viewWillAppear(animated: Bool) {

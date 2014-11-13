@@ -13,68 +13,37 @@ internal class PhotoComparisonController: UIViewController, PhotoControllerDeleg
     
     var poll: Poll = Poll() {
         didSet {
-            let photos = poll.photos
-            
-            leftPhoto = photos?[0]
-            leftPhotoViewController.photo = leftPhoto!
-            
-            rightPhoto = photos?[1]
-            rightPhotoViewController.photo = rightPhoto!
+            if let unwrappedPhotos = poll.photos {
+                leftPhotoController.photo = unwrappedPhotos[0]
+                rightPhotoController.photo = unwrappedPhotos[1]
+            }
         }
     }
-
-    var delegate: PhotoComparisonControllerDelegate?
     
-    var leftPhotoViewController: PhotoController!
-    var rightPhotoViewController: PhotoController!
+    private(set) var leftPhotoController: PhotoController!
+    private(set) var rightPhotoController: PhotoController!
 
     @IBOutlet var leftPhotoView: UIView!
     @IBOutlet var rightPhotoView: UIView!
     
-    var leftPhoto: Photo?
-    var rightPhoto: Photo?
-    
-    var mode: PhotoController.Mode = .Edit {
-        didSet {
-            leftPhotoViewController.mode = mode
-            rightPhotoViewController.mode = mode
-        }
-    }
-    
-    let maskReferenceSize: CGFloat = 1024
+    var maskReferenceSize: CGFloat = 0
     
     func adjustMaskSizeWithAnimationDuration(duration: Double) {
         let rightPhotoViewSize = rightPhotoView.bounds.size
-//        CATransaction.begin()
-//        CATransaction.setAnimationDuration(duration)
-//        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(duration)
+        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         self.rightPhotoView.layer.mask.transform = CATransform3DMakeScale(rightPhotoViewSize.width / maskReferenceSize, rightPhotoViewSize.height / maskReferenceSize, 1)
-//        CATransaction.commit()
-    }
-    
-    func clean(#animated: Bool) {
-        
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        leftPhotoViewController.layout = .Left
-        rightPhotoViewController.layout = .Right
-        
-        leftPhotoViewController.delegate = self
-        rightPhotoViewController.delegate = self
+        CATransaction.commit()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        poll.createdBy = PFUser.currentUser()
-
         if rightPhotoView.layer.mask == nil {
 
-//            let viewSize = view.bounds.size
-//            maskReferenceSize = max(viewSize.width, viewSize.height)
+            let viewSize = view.bounds.size
+            maskReferenceSize = max(viewSize.width, viewSize.height)
             let pathReferenceSize = maskReferenceSize * 1.5
 
             let rightMaskPath = UIBezierPath()
@@ -98,7 +67,7 @@ internal class PhotoComparisonController: UIViewController, PhotoControllerDeleg
 
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animateAlongsideTransition({ (context) -> Void in
-            self.adjustMaskSizeWithAnimationDuration(0)
+            self.adjustMaskSizeWithAnimationDuration(context.transitionDuration())
         }, completion: nil)
     }
 
@@ -109,39 +78,14 @@ internal class PhotoComparisonController: UIViewController, PhotoControllerDeleg
             switch identifier {
 
             case "Left Photo Controller":
-                leftPhotoViewController = segue.destinationViewController as PhotoController
+                leftPhotoController = segue.destinationViewController as PhotoController
 
             case "Right Photo Controller":
-                rightPhotoViewController = segue.destinationViewController as PhotoController
+                rightPhotoController = segue.destinationViewController as PhotoController
 
             default:
                 return
             }
         }
     }
-    
-    // MARK: - PhotoControllerDelegate
-    
-    func photoController(photoController: PhotoController, didEditPhoto photo: Photo) {
-        
-        switch photoController {
-            
-        case leftPhotoViewController:
-            leftPhoto = photo
-            
-        case rightPhotoViewController:
-            rightPhoto = photo
-            
-        default:
-            return
-        }
-        
-        poll.photos = (leftPhoto != nil && rightPhoto != nil ? [leftPhoto!, rightPhoto!] : nil)
-        delegate?.photoComparisonController?(self, didEditPoll: poll)
-    }
-}
-
-@objc protocol PhotoComparisonControllerDelegate {
-    
-    optional func photoComparisonController(photoComparisonController: PhotoComparisonController, didEditPoll poll: Poll)
 }

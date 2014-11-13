@@ -85,6 +85,11 @@ public class Poll: PFObject, PFSubclassing {
     public class func parseClassName() -> String {
         return "Poll"
     }
+    
+    override init() {
+        super.init()
+        createdBy = PFUser.currentUser()
+    }
 
     var createdBy: PFUser? {
         get {
@@ -119,6 +124,11 @@ public class Photo: PFObject, PFSubclassing {
 
     public class func parseClassName() -> String {
         return "Photo"
+    }
+    
+    override init() {
+        super.init()
+        uploadedBy = PFUser.currentUser()
     }
 
     var uploadedBy: PFUser? {

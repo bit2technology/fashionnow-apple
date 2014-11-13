@@ -6,10 +6,10 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--FN ❤️ FB-->
+        <!--FN 💜 FB-->
         <scene sceneID="dax-F6-DHD">
             <objects>
-                <viewController id="R8T-0b-tVZ" customClass="LoginController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="R8T-0b-tVZ" customClass="LoginFacebookController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ApX-Yf-4N2"/>
                         <viewControllerLayoutGuide type="bottom" id="cus-9V-bed"/>
@@ -30,38 +30,49 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H1R-73-2vW">
                                 <rect key="frame" x="0.0" y="64" width="320" height="366"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fashion Now works better with Facebook. Don't worry, we'll respect your privacy." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="sIE-qd-ls5">
-                                        <rect key="frame" x="60" y="92" width="200" height="54"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tP5-G2-WZW">
+                                        <rect key="frame" x="0.0" y="108" width="320" height="150"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fashion Now works better with Facebook. Don't worry, we'll respect your privacy." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="sIE-qd-ls5">
+                                                <rect key="frame" x="60" y="0.0" width="200" height="54"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="200" id="sJn-P3-hEl"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MXb-Ij-kte" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                                <rect key="frame" x="53" y="70" width="214" height="42"/>
+                                                <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
+                                                <state key="normal" title="Log in with Facebook" backgroundImage="ButtonLoginBackground">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5eZ-fB-11K">
+                                                <rect key="frame" x="94" y="120" width="132" height="30"/>
+                                                <state key="normal" title="Sign up with e-mail">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <segue destination="n9L-hk-vfW" kind="show" id="MbD-zh-jCS"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="200" id="sJn-P3-hEl"/>
+                                            <constraint firstAttribute="centerX" secondItem="5eZ-fB-11K" secondAttribute="centerX" id="071-1r-AS9"/>
+                                            <constraint firstAttribute="centerX" secondItem="sIE-qd-ls5" secondAttribute="centerX" id="AYb-lT-XPi"/>
+                                            <constraint firstItem="sIE-qd-ls5" firstAttribute="top" secondItem="tP5-G2-WZW" secondAttribute="top" id="Ljn-BI-b9B"/>
+                                            <constraint firstItem="MXb-Ij-kte" firstAttribute="top" secondItem="sIE-qd-ls5" secondAttribute="bottom" constant="16" id="hKc-Xx-P44"/>
+                                            <constraint firstItem="5eZ-fB-11K" firstAttribute="top" secondItem="MXb-Ij-kte" secondAttribute="bottom" constant="8" id="ifx-B9-nw5"/>
+                                            <constraint firstAttribute="centerX" secondItem="MXb-Ij-kte" secondAttribute="centerX" id="nqJ-4g-spi"/>
+                                            <constraint firstAttribute="bottom" secondItem="5eZ-fB-11K" secondAttribute="bottom" id="sNX-MU-eVv"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MXb-Ij-kte" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                        <rect key="frame" x="53" y="162" width="214" height="42"/>
-                                        <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
-                                        <state key="normal" title="Log in with Facebook" backgroundImage="ButtonLoginBackground">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5eZ-fB-11K">
-                                        <rect key="frame" x="94" y="212" width="132" height="30"/>
-                                        <state key="normal" title="Sign up with e-mail">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <segue destination="n9L-hk-vfW" kind="show" id="MbD-zh-jCS"/>
-                                        </connections>
-                                    </button>
+                                    </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="centerY" secondItem="MXb-Ij-kte" secondAttribute="centerY" id="6Oq-aD-GN4"/>
-                                    <constraint firstItem="MXb-Ij-kte" firstAttribute="centerX" secondItem="sIE-qd-ls5" secondAttribute="centerX" id="HxH-1p-5lf"/>
-                                    <constraint firstItem="5eZ-fB-11K" firstAttribute="top" secondItem="MXb-Ij-kte" secondAttribute="bottom" constant="8" id="SE4-JK-XMZ"/>
-                                    <constraint firstAttribute="centerX" secondItem="MXb-Ij-kte" secondAttribute="centerX" id="eK2-3i-QUe"/>
-                                    <constraint firstItem="MXb-Ij-kte" firstAttribute="centerX" secondItem="5eZ-fB-11K" secondAttribute="centerX" id="rAa-7A-jUF"/>
-                                    <constraint firstItem="MXb-Ij-kte" firstAttribute="top" secondItem="sIE-qd-ls5" secondAttribute="bottom" constant="16" id="vMh-NW-hEV"/>
+                                    <constraint firstAttribute="centerY" secondItem="tP5-G2-WZW" secondAttribute="centerY" id="2fv-Fb-Zfp"/>
+                                    <constraint firstAttribute="trailing" secondItem="tP5-G2-WZW" secondAttribute="trailing" id="F14-sg-xJ3"/>
+                                    <constraint firstItem="tP5-G2-WZW" firstAttribute="leading" secondItem="H1R-73-2vW" secondAttribute="leading" id="ggV-XL-wk8"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -75,7 +86,7 @@
                             <constraint firstItem="UVf-dJ-3oB" firstAttribute="top" secondItem="H1R-73-2vW" secondAttribute="bottom" id="lzM-X6-L7x"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="FN ❤️ FB" id="fxo-PT-oRu">
+                    <navigationItem key="navigationItem" title="FN 💜 FB" id="fxo-PT-oRu">
                         <barButtonItem key="backBarButtonItem" title="Back" id="9H3-pz-qNB"/>
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="5vt-0b-slv">
                             <connections>
@@ -92,10 +103,24 @@
         <scene sceneID="9od-5e-1Db">
             <objects>
                 <tableViewController id="34U-YS-Pbl" customClass="LoginEmailController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="xog-eb-X2o">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="xog-eb-X2o">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="qPl-yK-BMs">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="M2C-qf-3gP">
+                                    <rect key="frame" x="142" y="3" width="37" height="37"/>
+                                    <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </activityIndicatorView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="centerX" secondItem="M2C-qf-3gP" secondAttribute="centerX" id="a6D-J4-wd1"/>
+                                <constraint firstAttribute="centerY" secondItem="M2C-qf-3gP" secondAttribute="centerY" id="dea-na-gyI"/>
+                            </constraints>
+                        </view>
                         <sections>
                             <tableViewSection id="c91-lW-ZlK">
                                 <cells>
@@ -152,7 +177,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6QR-F5-xcz" id="wrm-dZ-Uus">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="exf-D7-gGy" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="exf-D7-gGy">
                                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" priority="750" constant="43" id="qS7-sD-18x"/>
@@ -181,6 +206,8 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Log In" id="dwE-iZ-ESc"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="M2C-qf-3gP" id="pce-fQ-8ni"/>
+                        <outlet property="loginButton" destination="exf-D7-gGy" id="eCQ-l3-acz"/>
                         <outlet property="passwordField" destination="tXu-ZQ-igo" id="401-8K-cLl"/>
                         <outlet property="usernameField" destination="Ost-XS-Gaw" id="zy4-QJ-yo2"/>
                     </connections>
@@ -442,7 +469,7 @@
         <!--Navigation Controller-->
         <scene sceneID="el2-Pc-Fa5">
             <objects>
-                <navigationController id="Sdq-1k-Ot2" sceneMemberID="viewController">
+                <navigationController modalPresentationStyle="formSheet" id="Sdq-1k-Ot2" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="FrL-sN-pK7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -593,7 +620,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="getImageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="QRn-Ti-vwo"/>
+                                    <action selector="imageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="HH1-oc-pKd"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vhz-QE-CMT" userLabel="Library Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
@@ -602,7 +629,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="getImageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="E8D-mt-TsM"/>
+                                    <action selector="imageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="HkG-p8-bXR"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3W7-Sc-zrt" userLabel="Previous Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
@@ -611,57 +638,33 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="getImageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="HN4-ZH-RyI"/>
+                                    <action selector="imageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="hL9-6z-MSB"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bRL-AR-0mD" userLabel="Image Container">
-                                <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yhO-Ld-1tg">
-                                        <rect key="frame" x="-16" y="0.0" width="192" height="367"/>
-                                    </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GxD-Vg-L3y" userLabel="DeleteOrVote Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                        <rect key="frame" x="48" y="299" width="64" height="64"/>
-                                        <state key="normal" title="Delete" backgroundImage="ButtonBackground"/>
-                                        <connections>
-                                            <action selector="deleteOrVoteButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="XVi-PI-XZJ"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="GxD-Vg-L3y" secondAttribute="bottom" constant="4" id="DEM-Wx-svT"/>
-                                    <constraint firstItem="GxD-Vg-L3y" firstAttribute="centerX" secondItem="bRL-AR-0mD" secondAttribute="centerX" priority="750" id="Kx7-FH-riD"/>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="GxD-Vg-L3y" secondAttribute="trailing" constant="-4" id="O0j-hj-tXP"/>
-                                    <constraint firstAttribute="bottom" secondItem="yhO-Ld-1tg" secondAttribute="bottom" id="OGn-Rg-M4y"/>
-                                    <constraint firstItem="yhO-Ld-1tg" firstAttribute="width" secondItem="bRL-AR-0mD" secondAttribute="width" multiplier="1.2" id="fgW-Zf-WdL"/>
-                                    <constraint firstItem="GxD-Vg-L3y" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bRL-AR-0mD" secondAttribute="leading" constant="-4" id="h4U-kE-vAm"/>
-                                    <constraint firstItem="yhO-Ld-1tg" firstAttribute="top" secondItem="bRL-AR-0mD" secondAttribute="top" id="uCy-zG-5db"/>
-                                    <constraint firstAttribute="centerX" secondItem="yhO-Ld-1tg" secondAttribute="centerX" id="zKK-Q2-PpZ"/>
-                                </constraints>
-                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yhO-Ld-1tg">
+                                <rect key="frame" x="-16" y="0.0" width="192" height="367"/>
+                            </imageView>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="OuB-lJ-89T" firstAttribute="width" secondItem="yhO-Ld-1tg" secondAttribute="width" id="4VP-sb-s0I"/>
+                            <constraint firstItem="lwi-Vt-MNP" firstAttribute="top" secondItem="yhO-Ld-1tg" secondAttribute="bottom" id="92S-7w-tDT"/>
                             <constraint firstItem="OuB-lJ-89T" firstAttribute="top" secondItem="5Xe-GT-hcA" secondAttribute="top" id="9Mk-O4-0Tg"/>
                             <constraint firstAttribute="bottom" secondItem="OuB-lJ-89T" secondAttribute="bottom" id="CF0-cL-aEg"/>
                             <constraint firstAttribute="centerY" secondItem="vhz-QE-CMT" secondAttribute="centerY" id="Ekj-UV-2ca"/>
-                            <constraint firstItem="bRL-AR-0mD" firstAttribute="top" secondItem="5Xe-GT-hcA" secondAttribute="top" id="OMy-oM-SSr"/>
+                            <constraint firstItem="yhO-Ld-1tg" firstAttribute="width" secondItem="5Xe-GT-hcA" secondAttribute="width" multiplier="1.2" id="Lws-GF-jkZ"/>
                             <constraint firstItem="vhz-QE-CMT" firstAttribute="centerX" secondItem="FBu-Eh-kK4" secondAttribute="centerX" id="PkY-VB-eor"/>
-                            <constraint firstItem="bRL-AR-0mD" firstAttribute="leading" secondItem="5Xe-GT-hcA" secondAttribute="leading" id="Squ-OY-6Pj"/>
-                            <constraint firstItem="yhO-Ld-1tg" firstAttribute="width" secondItem="OuB-lJ-89T" secondAttribute="width" id="Yfa-HX-Cjv"/>
                             <constraint firstAttribute="centerX" secondItem="vhz-QE-CMT" secondAttribute="centerX" id="ety-VB-STS"/>
-                            <constraint firstAttribute="trailing" secondItem="bRL-AR-0mD" secondAttribute="trailing" id="fYZ-jy-JeE"/>
-                            <constraint firstAttribute="bottom" secondItem="bRL-AR-0mD" secondAttribute="bottom" id="hb2-XZ-SXL"/>
                             <constraint firstItem="vhz-QE-CMT" firstAttribute="top" secondItem="FBu-Eh-kK4" secondAttribute="bottom" constant="8" id="iLj-zo-oOR"/>
                             <constraint firstItem="3W7-Sc-zrt" firstAttribute="centerX" secondItem="vhz-QE-CMT" secondAttribute="centerX" id="rXR-py-GNC"/>
                             <constraint firstAttribute="centerX" secondItem="OuB-lJ-89T" secondAttribute="centerX" id="szd-pw-PIp"/>
+                            <constraint firstAttribute="centerX" secondItem="yhO-Ld-1tg" secondAttribute="centerX" id="tcs-wd-Uto"/>
                             <constraint firstItem="3W7-Sc-zrt" firstAttribute="top" secondItem="vhz-QE-CMT" secondAttribute="bottom" constant="8" id="uc2-8i-rSC"/>
+                            <constraint firstItem="yhO-Ld-1tg" firstAttribute="top" secondItem="J5z-13-Iut" secondAttribute="bottom" id="uox-jN-7cj"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
                     <connections>
-                        <outlet property="buttonsCenterX" destination="Kx7-FH-riD" id="tRj-Eo-KgI"/>
                         <outlet property="cameraButton" destination="FBu-Eh-kK4" id="YFa-VO-0p1"/>
-                        <outlet property="deleteOrVoteButton" destination="GxD-Vg-L3y" id="3Kf-Q9-hV2"/>
                         <outlet property="imageView" destination="yhO-Ld-1tg" id="NjT-wD-fFX"/>
                         <outlet property="libraryButton" destination="vhz-QE-CMT" id="JXu-0p-2Lw"/>
                         <outlet property="previousButton" destination="3W7-Sc-zrt" id="zjY-4U-wrR"/>
