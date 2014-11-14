@@ -26,50 +26,56 @@ internal class PollController: UIViewController {
     @IBOutlet var leftPhotoView: UIView!
     @IBOutlet var rightPhotoView: UIView!
     
-    var maskReferenceSize: CGFloat = 0
-    
-    func adjustMaskSizeWithAnimationDuration(duration: Double) {
-        let rightPhotoViewSize = rightPhotoView.bounds.size
-        CATransaction.begin()
-        CATransaction.setAnimationDuration(duration)
-        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
-        self.rightPhotoView.layer.mask.transform = CATransform3DMakeScale(rightPhotoViewSize.width / maskReferenceSize, rightPhotoViewSize.height / maskReferenceSize, 1)
-        CATransaction.commit()
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        println("viewframe:\(view.frame)")
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if rightPhotoView.layer.mask == nil {
-
-            let viewSize = view.bounds.size
-            maskReferenceSize = max(viewSize.width, viewSize.height)
-            let pathReferenceSize = maskReferenceSize * 1.5
-
-            let rightMaskPath = UIBezierPath()
-            rightMaskPath.moveToPoint(CGPoint(x: pathReferenceSize, y: 0))
-            rightMaskPath.addLineToPoint(CGPoint(x: pathReferenceSize / 15, y: 0))
-            rightMaskPath.addLineToPoint(CGPoint(x: pathReferenceSize / -7.5, y: pathReferenceSize))
-            rightMaskPath.addLineToPoint(CGPoint(x: pathReferenceSize, y: pathReferenceSize))
-            rightMaskPath.closePath()
-
-            let rightMask = CAShapeLayer()
-            rightMask.path = rightMaskPath.CGPath
-            rightPhotoView.layer.mask = rightMask
-        }
-        
-        adjustMaskSizeWithAnimationDuration(0)
-    }
-
-    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        adjustMaskSizeWithAnimationDuration(duration)
-    }
-
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        coordinator.animateAlongsideTransition({ (context) -> Void in
-            self.adjustMaskSizeWithAnimationDuration(context.transitionDuration())
-        }, completion: nil)
-    }
+//    var maskReferenceSize: CGFloat = 0
+//    
+//    func adjustMaskSizeWithAnimationDuration(duration: Double) {
+//        let rightPhotoViewSize = rightPhotoView.bounds.size
+//        CATransaction.begin()
+//        CATransaction.setAnimationDuration(duration)
+//        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+//        self.rightPhotoView.layer.mask.transform = CATransform3DMakeScale(rightPhotoViewSize.width / maskReferenceSize, rightPhotoViewSize.height / maskReferenceSize, 1)
+//        CATransaction.commit()
+//    }
+//    
+//    override func viewWillAppear(animated: Bool) {
+//        super.viewWillAppear(animated)
+//        
+//        if rightPhotoView.layer.mask == nil {
+//
+//            let viewSize = view.bounds.size
+//            maskReferenceSize = max(viewSize.width, viewSize.height)
+//            let pathReferenceSize = maskReferenceSize * 1.5
+//
+//            let rightMaskPath = UIBezierPath()
+//            rightMaskPath.moveToPoint(CGPoint(x: pathReferenceSize, y: 0))
+//            rightMaskPath.addLineToPoint(CGPoint(x: pathReferenceSize / 15, y: 0))
+//            rightMaskPath.addLineToPoint(CGPoint(x: pathReferenceSize / -7.5, y: pathReferenceSize))
+//            rightMaskPath.addLineToPoint(CGPoint(x: pathReferenceSize, y: pathReferenceSize))
+//            rightMaskPath.closePath()
+//
+//            let rightMask = CAShapeLayer()
+//            rightMask.path = rightMaskPath.CGPath
+//            rightPhotoView.layer.mask = rightMask
+//        }
+//        
+//        adjustMaskSizeWithAnimationDuration(0)
+//    }
+//
+//    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+//        adjustMaskSizeWithAnimationDuration(duration)
+//    }
+//
+//    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+//        coordinator.animateAlongsideTransition({ (context) -> Void in
+//            self.adjustMaskSizeWithAnimationDuration(context.transitionDuration())
+//        }, completion: nil)
+//    }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 

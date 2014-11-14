@@ -12,14 +12,10 @@ class VotePollController: UIViewController {
     
     var pollController: PollController!
 
-    @IBOutlet weak var navBarTopMargin: NSLayoutConstraint!
-    @IBOutlet weak var navBar: UINavigationBar!
-    
     @IBOutlet weak var avatarView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var tagsLabel: UILabel!
-    weak var tagsGradientBackgroundLayer: CAGradientLayer!
     
     // MARK: UIViewController
     
@@ -36,17 +32,6 @@ class VotePollController: UIViewController {
                 return
             }
         }
-    }
-    
-    // MARK: Rotation
-
-    override func supportedInterfaceOrientations() -> Int {
-        
-        var supportedInterfaceOrientations = UIInterfaceOrientationMask.AllButUpsideDown
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            supportedInterfaceOrientations = UIInterfaceOrientationMask.All
-        }
-        return Int(supportedInterfaceOrientations.rawValue)
     }
     
     // MARK: View lifecycle
@@ -66,19 +51,22 @@ class VotePollController: UIViewController {
         query.includeKey("createdBy")
         query.orderByDescending("createdAt")
         
-        query.getFirstObjectInBackgroundWithBlock { (object, error) -> Void in
+        query.getObjectInBackgroundWithId("s98wUwk2f4") { (object, error) -> Void in
+//        query.getFirstObjectInBackgroundWithBlock { (object, error) -> Void in
             
-            let poll = object as Poll
-            self.pollController.poll = poll
-            
-            // Name
-            self.nameLabel.text = poll.createdBy?.username
-            // Date
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateStyle = .ShortStyle
-            dateFormatter.timeStyle = .ShortStyle
-            dateFormatter.doesRelativeDateFormatting = true
-            self.dateLabel.text = dateFormatter.stringFromDate(poll.createdAt)
+            if let poll = object as? Poll {
+                
+                self.pollController.poll = poll
+                
+                // Name
+                self.nameLabel.text = poll.createdBy?.username
+                // Date
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateStyle = .ShortStyle
+                dateFormatter.timeStyle = .ShortStyle
+                dateFormatter.doesRelativeDateFormatting = true
+                self.dateLabel.text = dateFormatter.stringFromDate(poll.createdAt)
+            }
         }
     }
 }

@@ -86,6 +86,10 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
             image = info[UIImagePickerControllerOriginalImage] as UIImage!
         }
 
+        let img = UIImageOrientation(rawValue: 3)
+        println("imageorientation \(img))")
+        
+        
         // Set photo properties
         let imageData = UIImageJPEGRepresentation(image, 0.4) // FIXME: Optimize image
         photo.image = PFFile(data: imageData, contentType: "image/jpeg")

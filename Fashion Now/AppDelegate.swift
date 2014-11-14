@@ -45,14 +45,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     // MARK: UITabBarControllerDelegate
 
     func tabBarControllerSupportedInterfaceOrientations(tabBarController: UITabBarController) -> Int {
-        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+        // iPhone: portrait only; iPad: all.
+        var supportedInterfaceOrientations = UIInterfaceOrientationMask.Portrait
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            supportedInterfaceOrientations = .All
+        }
+        return Int(supportedInterfaceOrientations.rawValue)
     }
 }
 
 extension UIColor {
     
     class func defaultTintColor() -> UIColor {
-//        return purpleColor()
         return UIColor(red: 24.0/255.0, green: 156.0/255.0, blue: 125.0/255.0, alpha: 1)
     }
     
