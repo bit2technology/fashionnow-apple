@@ -14,7 +14,7 @@ class PostPollController: UIViewController, PhotoControllerDelegate {
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var loadingView: UIView!
     
-    weak var photoComparisonController: PhotoComparisonController!
+    private weak var pollController: PollController!
     
     @IBAction func sendButtonPressed(sender: UIButton) {
         
@@ -22,7 +22,7 @@ class PostPollController: UIViewController, PhotoControllerDelegate {
         loadingView.hidden = false
         textField.enabled = false
         
-        photoComparisonController.poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+        pollController.poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             
 //            self.photoComparisonController.clean(animated: true)
             self.loadingView.hidden = true
@@ -41,8 +41,8 @@ class PostPollController: UIViewController, PhotoControllerDelegate {
             
             switch identifier {
                 
-            case "Photo Comparison Controller":
-                photoComparisonController = segue.destinationViewController as PhotoComparisonController
+            case "Poll Controller":
+                pollController = segue.destinationViewController as PollController
                 
             default:
                 return
@@ -58,14 +58,8 @@ class PostPollController: UIViewController, PhotoControllerDelegate {
         sendButton.hidden = true
         loadingView.hidden = true
         
-        photoComparisonController.leftPhotoController.delegate = self
-        photoComparisonController.rightPhotoController.delegate = self
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        rootController?.delegate = self
+        pollController.leftPhotoController.delegate = self
+        pollController.rightPhotoController.delegate = self
     }
     
     override func supportedInterfaceOrientations() -> Int {

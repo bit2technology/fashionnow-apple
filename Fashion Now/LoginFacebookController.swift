@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginFacebookController: UIViewController {
+class LoginFacebookController: UIViewController, UINavigationControllerDelegate {
 
     @IBAction func dismiss(sender: UIBarButtonItem) {
         dismissViewControllerAnimated(true, completion: nil)
@@ -33,6 +33,24 @@ class LoginFacebookController: UIViewController {
                 }
             }
         }
+    }
+
+    // MARK: View lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        navigationController?.delegate = self
+    }
+
+    // MARK: UINavigationControllerDelegate
+
+    func navigationControllerSupportedInterfaceOrientations(navigationController: UINavigationController) -> Int {
+        var supportedOrientations = UIInterfaceOrientationMask.Portrait
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            supportedOrientations = .All
+        }
+        return Int(supportedOrientations.rawValue)
     }
 }
 

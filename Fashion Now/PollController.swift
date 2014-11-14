@@ -9,7 +9,7 @@
 import UIKit
 import QuartzCore
 
-internal class PhotoComparisonController: UIViewController, PhotoControllerDelegate {
+internal class PollController: UIViewController {
     
     var poll: Poll = Poll() {
         didSet {

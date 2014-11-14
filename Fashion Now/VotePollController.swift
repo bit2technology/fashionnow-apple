@@ -10,7 +10,7 @@ import UIKit
 
 class VotePollController: UIViewController {
     
-    var photoComparisonController: PhotoComparisonController!
+    var pollController: PollController!
 
     @IBOutlet weak var navBarTopMargin: NSLayoutConstraint!
     @IBOutlet weak var navBar: UINavigationBar!
@@ -29,8 +29,8 @@ class VotePollController: UIViewController {
             
             switch identifier {
                 
-            case "Photo Comparison Controller":
-                photoComparisonController = segue.destinationViewController as PhotoComparisonController
+            case "Poll Controller":
+                pollController = segue.destinationViewController as PollController
                 
             default:
                 return
@@ -49,27 +49,13 @@ class VotePollController: UIViewController {
         return Int(supportedInterfaceOrientations.rawValue)
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
-        navBarTopMargin.constant = (rootController!.cleanInterface ? -navBar.frame.height : 0)
-    }
-    
     // MARK: View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        rootController?.delegate = self
-        
         avatarView.layer.cornerRadius = 20
         avatarView.layer.masksToBounds = true
-    }
-
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-
-        rootController?.delegate = self
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -83,7 +69,7 @@ class VotePollController: UIViewController {
         query.getFirstObjectInBackgroundWithBlock { (object, error) -> Void in
             
             let poll = object as Poll
-            self.photoComparisonController.poll = poll
+            self.pollController.poll = poll
             
             // Name
             self.nameLabel.text = poll.createdBy?.username

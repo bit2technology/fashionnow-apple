@@ -24,7 +24,7 @@ class LoginEmailController: UITableViewController {
             if user != nil {
                 self.dismissViewControllerAnimated(true, completion: nil)
             } else {
-                UIAlertView(title: nil, message: error.localizedDescription, delegate: nil, cancelButtonTitle: NSLocalizedString("LOGIN_EMAIL_ERROR_OK", comment: "Log in with e-mail error cancel button title")).show()
+                UIAlertView(title: nil, message: error.localizedDescription, delegate: nil, cancelButtonTitle: NSLocalizedString("LOGIN_EMAIL_ERROR_OK", value: "OK", comment: "Log in with e-mail error cancel button title")).show()
                 self.usernameField.enabled = true
                 self.usernameField.becomeFirstResponder()
                 self.passwordField.enabled = true
