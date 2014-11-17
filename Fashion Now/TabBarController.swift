@@ -25,7 +25,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
     override func supportedInterfaceOrientations() -> Int {
         // iPhone: portrait only; iPad: all.
-        var supportedInterfaceOrientations = UIInterfaceOrientationMask.Portrait
+        var supportedInterfaceOrientations = UIInterfaceOrientationMask.AllButUpsideDown
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             supportedInterfaceOrientations = .All
         }

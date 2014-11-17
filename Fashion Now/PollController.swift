@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import QuartzCore
 
 internal class PollController: UIViewController {
     
@@ -26,28 +25,29 @@ internal class PollController: UIViewController {
     @IBOutlet var leftPhotoView: UIView!
     @IBOutlet var rightPhotoView: UIView!
     
-    var maskReferenceSize: CGFloat!
+    var masked = false
 
-    @IBAction func didDragPhotoView(sender: UIPanGestureRecognizer) {
+    @IBAction func didDrag(sender: UIPanGestureRecognizer) {
         
         switch sender.state {
         case .Possible: // the recognizer has not yet recognized its gesture, but may be evaluating touch events. this is the default state
             break
-        case .Began: // the recognizer has received touches recognized as the gesture. the action method will be called at the next turn of the run loop
-            break
+        case .Began:
+            for photoView in [leftPhotoView, rightPhotoView] {
+                photoView.layer.zPosition = 0
+            }
+            sender.view?.layer.zPosition = 1
         case .Changed: // the recognizer has received touches recognized as a change to the gesture. the action method will be called at the next turn of the run loop
             var photoViewFrame = sender.view!.frame
             photoViewFrame.origin.x += sender.translationInView(view).x / 2
             sender.view!.frame = photoViewFrame
-        case .Ended: // the recognizer has received touches recognized as the end of the gesture. the action method will be called at the next turn of the run loop and the recognizer will be reset to UIGestureRecognizerStatePossible
-            fallthrough
-        case .Cancelled: // the recognizer has received touches resulting in the cancellation of the gesture. the action method will be called at the next turn of the run loop. the recognizer will be reset to UIGestureRecognizerStatePossible
-            fallthrough
-        case .Failed: // the recognizer has received a touch sequence that can not be recognized as the gesture. the action method will not be called and the recognizer will be reset to UIGestureRecognizerStatePossible
-            UIView.animateWithDuration(0.15, animations: { () -> Void in
+        case .Ended: fallthrough
+        case .Cancelled: fallthrough
+        case .Failed:
+            UIView.animateWithDuration(0.15) { () -> Void in
                 self.view.setNeedsLayout()
                 self.view.layoutIfNeeded()
-            })
+            }
         }
         
         sender.setTranslation(CGPointZero, inView: view)
@@ -64,8 +64,13 @@ internal class PollController: UIViewController {
             CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         }
         
-        self.rightPhotoView.layer.mask.transform = CATransform3DMakeScale(photoViewSize.width / maskReferenceSize, photoViewSize.height / maskReferenceSize, 1)
-        self.leftPhotoView.layer.mask.transform = CATransform3DMakeScale(photoViewSize.width / maskReferenceSize, photoViewSize.height / maskReferenceSize, 1)
+        for photoView in [leftPhotoView, rightPhotoView] {
+            // 2D scale
+            var layerMaskTransform = photoView.layer.mask.transform
+            layerMaskTransform.m11 = photoViewSize.width
+            layerMaskTransform.m22 = photoViewSize.height
+            photoView.layer.mask.transform = layerMaskTransform
+        }
         
         if duration != nil {
             CATransaction.commit()
@@ -75,8 +80,8 @@ internal class PollController: UIViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        if maskReferenceSize == nil {
-            maskReferenceSize = 1024
+        if !masked {
+            let maskReferenceSize: CGFloat = 1
             let spaceBetween: CGFloat = maskReferenceSize / 100
             
             let rightMaskPath = UIBezierPath()
@@ -99,6 +104,7 @@ internal class PollController: UIViewController {
             leftMask.path = leftMaskPath.CGPath
             leftPhotoView.layer.mask = leftMask
             
+            masked = true
             adjustMaskSizeWithAnimationDuration(nil)
         }
     }
