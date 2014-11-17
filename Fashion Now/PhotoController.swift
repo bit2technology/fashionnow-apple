@@ -15,6 +15,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
             photo.image?.getDataInBackgroundWithBlock { (data, error) -> Void in
                 if let unwrappedData = data {
                     self.imageView.image = UIImage(data: unwrappedData)
+                    self.imageView.superview?.hidden = false
                 }
             }
         }
@@ -45,7 +46,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
 
         // Set photo properties
         photo.image = nil
-        imageView.hidden = true
+        imageView.superview?.hidden = true
         imageView.image = nil
 
         // Call delegate
@@ -85,7 +86,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         super.viewDidLoad()
 
         cameraView.hidden = true
-        imageView.hidden = true
+        imageView.superview?.hidden = true
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "willStartCameraCapture", name: PhotoControllerWillStartCameraCaptureNotification, object: nil)
     }
@@ -104,7 +105,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         let imageData = UIImageJPEGRepresentation(image, 0.4) // FIXME: Optimize image
         photo.image = PFFile(data: imageData, contentType: "image/jpeg")
         imageView.image = image
-        imageView.hidden = false
+        imageView.superview?.hidden = false
 
         // Call delegate
         delegate?.photoController?(self, didEditPhoto: photo)

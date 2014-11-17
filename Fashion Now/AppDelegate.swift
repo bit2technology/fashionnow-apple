@@ -44,35 +44,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension UIColor {
     
-    class func defaultTintColor() -> UIColor {
-        return defaultTintColor(alpha: 1)
+    // MARK: Colors
+    
+    class func defaultBlackColor(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(red: 27/255.0, green: 27/255.0, blue: 27/255.0, alpha: alpha)
     }
-
-    class func defaultTintColor(#alpha: CGFloat) -> UIColor {
-        return UIColor(red: 24.0/255.0, green: 156.0/255.0, blue: 125.0/255.0, alpha: alpha)
+    
+    class func defaultDetailColor(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(red: 7/255.0, green: 131/255.0, blue: 123/255.0, alpha: alpha)
     }
+    
+    class func defaultLightColor(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(red: 10/255.0, green: 206/255.0, blue: 188/255.0, alpha: alpha)
+    }
+    
+    class func defaultDarkColor(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(red: 6/255.0, green: 137/255.0, blue: 132/255.0, alpha: alpha)
+    }
+    
+    class func defaultTintColor(alpha: CGFloat = 1) -> UIColor {
+//        return UIColor(red: 24.0/255.0, green: 156.0/255.0, blue: 125.0/255.0, alpha: alpha)
+        return defaultDetailColor(alpha: alpha)
+    }
+    
+    // MARK: Helpers
     
     func toImage() -> UIImage {
         return toImage(size: CGSize(width: 1, height: 1))
     }
-
+    
     func toImage(#size: CGSize) -> UIImage {
-
+        
         UIGraphicsBeginImageContext(size);
         let context = UIGraphicsGetCurrentContext();
-
+        
         CGContextSetFillColorWithColor(context, CGColor);
         CGContextFillRect(context, CGRect(origin: CGPointZero, size: size));
-
+        
         let image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         return image
-    }
-}
-
-extension UIStoryboard {
-
-    class func mainStoryboard() -> UIStoryboard {
-        return UIStoryboard(name: "Main", bundle: nil)
     }
 }
