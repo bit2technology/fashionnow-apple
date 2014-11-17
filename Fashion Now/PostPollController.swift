@@ -53,17 +53,13 @@ class PostPollController: UIViewController, PhotoControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        sendButton.tintColor = UIColor.defaultTintColor().colorWithAlphaComponent(0.6)
+        sendButton.tintColor = UIColor.defaultTintColor(alpha: 0.6)
 
         sendButton.hidden = true
         loadingView.hidden = true
         
         pollController.leftPhotoController.delegate = self
         pollController.rightPhotoController.delegate = self
-    }
-    
-    override func supportedInterfaceOrientations() -> Int {
-        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
     }
 
     // MARK: PhotoControllerDelegate

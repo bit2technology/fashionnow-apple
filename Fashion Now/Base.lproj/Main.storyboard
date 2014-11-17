@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6QH-p8-eFG">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6QH-p8-eFG">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -47,6 +47,9 @@
                                                 <state key="normal" title="Log in with Facebook" backgroundImage="ButtonLoginBackground">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="loginButtonPressed:" destination="R8T-0b-tVZ" eventType="touchUpInside" id="2qz-Ws-5u0"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5eZ-fB-11K">
                                                 <rect key="frame" x="94" y="120" width="132" height="30"/>
@@ -495,7 +498,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="CJf-es-BZO">
             <objects>
-                <tabBarController id="6QH-p8-eFG" sceneMemberID="viewController">
+                <tabBarController id="6QH-p8-eFG" customClass="TabBarController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="3ZA-w6-eH8">
@@ -507,7 +510,7 @@
                         <segue destination="6wq-1Y-TiB" kind="relationship" relationship="viewControllers" id="EOH-kZ-a3B"/>
                         <segue destination="37Z-1j-EcS" kind="relationship" relationship="viewControllers" id="dIm-df-iYM"/>
                         <segue destination="h96-mz-Qs4" kind="relationship" relationship="viewControllers" id="bkr-aw-b7e"/>
-                        <segue destination="0Nc-ub-aly" kind="presentation" modalPresentationStyle="formSheet" id="neE-T0-GYT"/>
+                        <segue destination="0Nc-ub-aly" kind="presentation" identifier="Login Controller" modalPresentationStyle="formSheet" id="neE-T0-GYT"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fpy-e7-ti8" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -601,6 +604,9 @@
                                     <action selector="imageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="hL9-6z-MSB"/>
                                 </connections>
                             </button>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eGK-ea-m0V" userLabel="Camera View">
+                                <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
+                            </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yhO-Ld-1tg">
                                 <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
                             </imageView>
@@ -609,11 +615,15 @@
                             <constraint firstItem="yhO-Ld-1tg" firstAttribute="leading" secondItem="5Xe-GT-hcA" secondAttribute="leading" id="D4N-3j-icb"/>
                             <constraint firstAttribute="centerY" secondItem="vhz-QE-CMT" secondAttribute="centerY" id="Ekj-UV-2ca"/>
                             <constraint firstAttribute="trailing" secondItem="yhO-Ld-1tg" secondAttribute="trailing" id="Kpn-rU-Mjt"/>
+                            <constraint firstItem="eGK-ea-m0V" firstAttribute="top" secondItem="5Xe-GT-hcA" secondAttribute="top" id="Luv-14-6nF"/>
                             <constraint firstItem="vhz-QE-CMT" firstAttribute="centerX" secondItem="FBu-Eh-kK4" secondAttribute="centerX" id="PkY-VB-eor"/>
+                            <constraint firstAttribute="trailing" secondItem="eGK-ea-m0V" secondAttribute="trailing" id="QbO-Y2-2zS"/>
                             <constraint firstItem="yhO-Ld-1tg" firstAttribute="top" secondItem="5Xe-GT-hcA" secondAttribute="top" id="Uf0-RP-DCl"/>
                             <constraint firstAttribute="bottom" secondItem="yhO-Ld-1tg" secondAttribute="bottom" id="a0i-fs-gNg"/>
                             <constraint firstAttribute="centerX" secondItem="vhz-QE-CMT" secondAttribute="centerX" id="ety-VB-STS"/>
+                            <constraint firstAttribute="bottom" secondItem="eGK-ea-m0V" secondAttribute="bottom" id="gdm-lo-hqY"/>
                             <constraint firstItem="vhz-QE-CMT" firstAttribute="top" secondItem="FBu-Eh-kK4" secondAttribute="bottom" constant="8" id="iLj-zo-oOR"/>
+                            <constraint firstItem="eGK-ea-m0V" firstAttribute="leading" secondItem="5Xe-GT-hcA" secondAttribute="leading" id="ogk-bf-jCr"/>
                             <constraint firstItem="3W7-Sc-zrt" firstAttribute="centerX" secondItem="vhz-QE-CMT" secondAttribute="centerX" id="rXR-py-GNC"/>
                             <constraint firstItem="3W7-Sc-zrt" firstAttribute="top" secondItem="vhz-QE-CMT" secondAttribute="bottom" constant="8" id="uc2-8i-rSC"/>
                         </constraints>
@@ -621,6 +631,7 @@
                     <toolbarItems/>
                     <connections>
                         <outlet property="cameraButton" destination="FBu-Eh-kK4" id="YFa-VO-0p1"/>
+                        <outlet property="cameraView" destination="eGK-ea-m0V" id="nYd-ZT-mFh"/>
                         <outlet property="imageView" destination="yhO-Ld-1tg" id="NjT-wD-fFX"/>
                         <outlet property="libraryButton" destination="vhz-QE-CMT" id="JXu-0p-2Lw"/>
                         <outlet property="previousButton" destination="3W7-Sc-zrt" id="zjY-4U-wrR"/>

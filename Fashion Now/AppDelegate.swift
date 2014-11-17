@@ -9,7 +9,7 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
@@ -17,7 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
 
         // App basic configuration
         window?.tintColor = UIColor.defaultTintColor()
-        (window?.rootViewController as UITabBarController).delegate = self
         
         // Parse configuration
         Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
@@ -41,36 +40,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     func applicationDidBecomeActive(application: UIApplication) {
         FBAppCall.handleDidBecomeActiveWithSession(PFFacebookUtils.session())
     }
-
-    // MARK: UITabBarControllerDelegate
-
-    func tabBarControllerSupportedInterfaceOrientations(tabBarController: UITabBarController) -> Int {
-        // iPhone: portrait only; iPad: all.
-        var supportedInterfaceOrientations = UIInterfaceOrientationMask.Portrait
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            supportedInterfaceOrientations = .All
-        }
-        return Int(supportedInterfaceOrientations.rawValue)
-    }
 }
 
 extension UIColor {
     
     class func defaultTintColor() -> UIColor {
-        return UIColor(red: 24.0/255.0, green: 156.0/255.0, blue: 125.0/255.0, alpha: 1)
+        return defaultTintColor(alpha: 1)
+    }
+
+    class func defaultTintColor(#alpha: CGFloat) -> UIColor {
+        return UIColor(red: 24.0/255.0, green: 156.0/255.0, blue: 125.0/255.0, alpha: alpha)
     }
     
     func toImage() -> UIImage {
-        return toImage(rect: CGRect(x: 0, y: 0, width: 1, height: 1))
+        return toImage(size: CGSize(width: 1, height: 1))
     }
 
-    func toImage(#rect: CGRect) -> UIImage {
+    func toImage(#size: CGSize) -> UIImage {
 
-        UIGraphicsBeginImageContext(rect.size);
+        UIGraphicsBeginImageContext(size);
         let context = UIGraphicsGetCurrentContext();
 
         CGContextSetFillColorWithColor(context, CGColor);
-        CGContextFillRect(context, rect);
+        CGContextFillRect(context, CGRect(origin: CGPointZero, size: size));
 
         let image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();

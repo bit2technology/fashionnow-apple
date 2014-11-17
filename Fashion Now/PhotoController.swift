@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
+private let PhotoControllerWillStartCameraCaptureNotification = "PhotoControllerWillStartCameraCaptureNotification"
+
 class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     var photo: Photo = Photo() {
@@ -31,29 +33,40 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
     @IBOutlet var cameraButton: UIButton!
     @IBOutlet var libraryButton: UIButton!
     @IBOutlet var previousButton: UIButton!
+
+    @IBOutlet var cameraView: UIView!
     @IBOutlet var imageView: UIImageView!
+
+    func willStartCameraCapture() {
+        cameraView.hidden = true
+    }
+
+    func deleteImage() {
+
+        // Set photo properties
+        photo.image = nil
+        imageView.hidden = true
+        imageView.image = nil
+
+        // Call delegate
+        delegate?.photoController?(self, didEditPhoto: photo)
+    }
 
     @IBAction func imageButtonPressed(sender: UIButton) {
 
         // Define image source
         var source: UIImagePickerControllerSourceType!
         switch sender {
-
         case cameraButton:
-            // If camera is unavailable, do nothing
-            if !UIImagePickerController.isSourceTypeAvailable(.Camera) {
-                // TODO: Error handling
-                return
-            }
-            source = .Camera
-
+            NSNotificationCenter.defaultCenter().postNotificationName(PhotoControllerWillStartCameraCaptureNotification, object: self, userInfo: nil)
+            cameraView.hidden = false
+            CameraManager.sharedInstance.addPreviewLayerToView(cameraView)
+            return
         case libraryButton:
             source = .PhotoLibrary
-
         case previousButton:
             // TODO: Previous photos
             return
-
         default:
             // If unknown source, do nothing
             return
@@ -65,15 +78,16 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         imagePickerController.sourceType = source
         presentViewController(imagePickerController, animated: true, completion: nil)
     }
-    
-    func deleteImage() {
-        
-        // Set photo properties
-        photo.image = nil
-        imageView.image = nil
-        
-        // Call delegate
-        delegate?.photoController?(self, didEditPhoto: photo)
+
+    // MARK: View lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        cameraView.hidden = true
+        imageView.hidden = true
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "willStartCameraCapture", name: PhotoControllerWillStartCameraCaptureNotification, object: nil)
     }
 
     // MARK: UIImagePickerControllerDelegate
@@ -85,15 +99,12 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         if image == nil {
             image = info[UIImagePickerControllerOriginalImage] as UIImage!
         }
-
-        let img = UIImageOrientation(rawValue: 3)
-        println("imageorientation \(img))")
-        
         
         // Set photo properties
         let imageData = UIImageJPEGRepresentation(image, 0.4) // FIXME: Optimize image
         photo.image = PFFile(data: imageData, contentType: "image/jpeg")
         imageView.image = image
+        imageView.hidden = false
 
         // Call delegate
         delegate?.photoController?(self, didEditPhoto: photo)
