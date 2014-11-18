@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6QH-p8-eFG">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6QH-p8-eFG">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -31,7 +31,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H1R-73-2vW">
                                 <rect key="frame" x="0.0" y="44" width="320" height="386"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tP5-G2-WZW">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tP5-G2-WZW">
                                         <rect key="frame" x="0.0" y="118" width="320" height="150"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fashion Now works better with Facebook. Don't worry, we'll respect your privacy." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="sIE-qd-ls5">
@@ -42,7 +42,7 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MXb-Ij-kte" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MXb-Ij-kte" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                                 <rect key="frame" x="53" y="70" width="214" height="42"/>
                                                 <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
                                                 <state key="normal" title="Log in with Facebook" backgroundImage="ButtonLoginBackground">
@@ -52,7 +52,7 @@
                                                     <action selector="loginButtonPressed:" destination="R8T-0b-tVZ" eventType="touchUpInside" id="2qz-Ws-5u0"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5eZ-fB-11K">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5eZ-fB-11K">
                                                 <rect key="frame" x="94" y="120" width="132" height="30"/>
                                                 <state key="normal" title="Sign up with e-mail">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -556,6 +556,9 @@
                             <constraint firstItem="TYB-j4-um4" firstAttribute="width" secondItem="22F-CN-JDl" secondAttribute="width" id="ohe-Du-ENH"/>
                             <constraint firstItem="22F-CN-JDl" firstAttribute="top" secondItem="Ngt-gb-2Qu" secondAttribute="top" id="zFJ-tk-Ovo"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="kgl-Bo-434" appends="YES" id="D6O-sz-LXB"/>
+                        </connections>
                     </view>
                     <toolbarItems/>
                     <connections>
@@ -564,6 +567,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t7F-ab-SSQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="kgl-Bo-434">
+                    <connections>
+                        <action selector="didDrag:" destination="hpa-fw-Ay5" id="9o6-0T-99r"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1893" y="-14.5"/>
         </scene>
@@ -610,10 +618,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H8b-Ws-oM2" userLabel="Image Container">
-                                <rect key="frame" x="-80" y="0.0" width="320" height="367"/>
+                                <rect key="frame" x="-160" y="0.0" width="480" height="367"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yhO-Ld-1tg">
-                                        <rect key="frame" x="64" y="0.0" width="192" height="367"/>
+                                        <rect key="frame" x="144" y="0.0" width="192" height="367"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -633,7 +641,7 @@
                             <constraint firstItem="H8b-Ws-oM2" firstAttribute="top" secondItem="5Xe-GT-hcA" secondAttribute="top" id="UyP-7d-YCi"/>
                             <constraint firstAttribute="centerX" secondItem="H8b-Ws-oM2" secondAttribute="centerX" id="ZHN-hw-yYE"/>
                             <constraint firstAttribute="bottom" secondItem="H8b-Ws-oM2" secondAttribute="bottom" id="ZXS-lC-BAJ"/>
-                            <constraint firstItem="H8b-Ws-oM2" firstAttribute="width" secondItem="5Xe-GT-hcA" secondAttribute="width" multiplier="2" id="cfS-9Q-JWk"/>
+                            <constraint firstItem="H8b-Ws-oM2" firstAttribute="width" secondItem="5Xe-GT-hcA" secondAttribute="width" multiplier="3" id="cfS-9Q-JWk"/>
                             <constraint firstAttribute="centerX" secondItem="vhz-QE-CMT" secondAttribute="centerX" id="ety-VB-STS"/>
                             <constraint firstAttribute="bottom" secondItem="eGK-ea-m0V" secondAttribute="bottom" id="gdm-lo-hqY"/>
                             <constraint firstItem="vhz-QE-CMT" firstAttribute="top" secondItem="FBu-Eh-kK4" secondAttribute="bottom" constant="8" id="iLj-zo-oOR"/>
