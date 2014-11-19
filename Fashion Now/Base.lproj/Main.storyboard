@@ -521,16 +521,19 @@
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="22F-CN-JDl">
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
                                         <connections>
+                                            <outletCollection property="gestureRecognizers" destination="aQj-E4-gl5" appends="YES" id="erB-aE-mck"/>
                                             <segue destination="rPD-KC-83S" kind="embed" identifier="Left Photo Controller" id="4GQ-Aa-EaP"/>
                                         </connections>
                                     </containerView>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TYB-j4-um4">
                                         <rect key="frame" x="160" y="0.0" width="160" height="367"/>
                                         <connections>
+                                            <outletCollection property="gestureRecognizers" destination="t7x-cR-kO3" appends="YES" id="Jf1-Ji-obS"/>
                                             <segue destination="rPD-KC-83S" kind="embed" identifier="Right Photo Controller" id="uM3-tb-eTB"/>
                                         </connections>
                                     </containerView>
                                 </subviews>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstItem="22F-CN-JDl" firstAttribute="top" secondItem="Xjm-MJ-dOi" secondAttribute="top" id="7jy-nu-GRH"/>
                                     <constraint firstItem="TYB-j4-um4" firstAttribute="width" secondItem="22F-CN-JDl" secondAttribute="width" id="BLi-i6-jTj"/>
@@ -581,16 +584,27 @@
                     <toolbarItems/>
                     <connections>
                         <outlet property="containerView" destination="Xjm-MJ-dOi" id="QkU-AL-3Si"/>
+                        <outlet property="drager" destination="kgl-Bo-434" id="gK9-Zx-6gF"/>
                         <outlet property="leftPhotoView" destination="22F-CN-JDl" id="Xgc-LM-En5"/>
                         <outlet property="rightPhotoView" destination="TYB-j4-um4" id="jhq-Wr-tpH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t7F-ab-SSQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="kgl-Bo-434">
+                <panGestureRecognizer minimumNumberOfTouches="1" id="kgl-Bo-434" userLabel="Drager">
                     <connections>
                         <action selector="didDrag:" destination="hpa-fw-Ay5" id="9o6-0T-99r"/>
                     </connections>
                 </panGestureRecognizer>
+                <tapGestureRecognizer numberOfTapsRequired="2" id="aQj-E4-gl5" userLabel="Left Double Tap">
+                    <connections>
+                        <action selector="didDoubleTap:" destination="hpa-fw-Ay5" id="7Lr-UO-GDr"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer numberOfTapsRequired="2" id="t7x-cR-kO3" userLabel="Right Double Tap">
+                    <connections>
+                        <action selector="didDoubleTap:" destination="hpa-fw-Ay5" id="qT7-Kw-opT"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1893" y="-14.5"/>
         </scene>

@@ -18,63 +18,20 @@ internal class PollController: UIViewController {
             }
         }
     }
+
+    var dragEnabled: Bool = true {
+        didSet {
+            drager.enabled = dragEnabled
+        }
+    }
     
     private(set) var leftPhotoController: PhotoController!
     private(set) var rightPhotoController: PhotoController!
 
-    var photoViews: [UIView]!
+    private var photoViews: [UIView]!
     @IBOutlet var leftPhotoView: UIView!
     @IBOutlet var rightPhotoView: UIView!
     @IBOutlet var containerView: UIView!
-    
-    @IBAction func didDrag(sender: UIPanGestureRecognizer) {
-
-        func setMaskTranslateX(translate: CGFloat, #view: UIView) {
-            var layerMaskTransform = view.layer.mask.transform
-            layerMaskTransform.m41 = translate
-            view.layer.mask.transform = layerMaskTransform
-        }
-
-        switch sender.state {
-
-        case .Changed:
-            var translationX = sender.translationInView(containerView).x
-            let rate = translationX / self.containerView.bounds.width
-            if abs(rate) > 0.5 {
-                translationX -= (rate - (rate > 0 ? 0.5 : -0.5)) * containerView.bounds.width * 0.75
-            }
-            let draggingView = (translationX > 0 ? leftPhotoView : rightPhotoView)
-            
-            CATransaction.begin()
-            CATransaction.setDisableActions(true)
-            for photoView in photoViews {
-                let isDraggingView = (photoView == draggingView)
-                photoView.layer.transform = CATransform3DMakeTranslation((isDraggingView ? translationX / 2 : 0), 0, 0)
-                setMaskTranslateX(translationX * (isDraggingView ? 0.75 : 1.25), view: photoView)
-            }
-            CATransaction.commit()
-            
-        case .Ended: fallthrough
-        case .Cancelled: fallthrough
-        case .Failed:
-            CATransaction.begin()
-            CATransaction.setAnimationDuration(0.25)
-            CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
-            for photoView in photoViews {
-                let animation = CABasicAnimation(keyPath: "transform")
-                animation.fromValue = NSValue(CATransform3D: photoView.layer.transform)
-                animation.toValue = NSValue(CATransform3D: CATransform3DIdentity)
-                animation.timingFunction = CATransaction.animationTimingFunction()
-                photoView.layer.addAnimation(animation, forKey: "transform")
-                photoView.layer.transform = CATransform3DIdentity
-                setMaskTranslateX(0, view: photoView)
-            }
-            CATransaction.commit()
-            
-        default:
-            return
-        }
-    }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 
@@ -91,9 +48,78 @@ internal class PollController: UIViewController {
         }
     }
 
+    // MARK: Vote animation
+
+    private func animateAndVote(#index: Int) {
+
+    }
+
+    @IBAction func didDoubleTap(sender: UITapGestureRecognizer) {
+
+        switch sender.view! {
+
+        case leftPhotoView:
+            println("vote 0")
+        case rightPhotoView:
+            println("vote 1")
+        default:
+            break
+        }
+    }
+
+    @IBOutlet var drager: UIPanGestureRecognizer!
+    @IBAction func didDrag(sender: UIPanGestureRecognizer) {
+
+        switch sender.state {
+
+        case .Changed:
+            var translationX = sender.translationInView(containerView).x
+            let rate = translationX / self.containerView.bounds.width
+            if abs(rate) > 0.5 {
+                translationX -= (rate - (rate > 0 ? 0.5 : -0.5)) * containerView.bounds.width * 0.75
+            }
+            let draggingView = (translationX > 0 ? leftPhotoView : rightPhotoView)
+
+            CATransaction.begin()
+            CATransaction.setDisableActions(true)
+            for photoView in photoViews {
+                let isDraggingView = (photoView == draggingView)
+                photoView.layer.transform = CATransform3DMakeTranslation((isDraggingView ? translationX / 2 : 0), 0, 0)
+                setMaskTranslateX(translationX * (isDraggingView ? 0.75 : 1.25), view: photoView)
+            }
+            CATransaction.commit()
+
+        case .Ended: fallthrough
+        case .Cancelled: fallthrough
+        case .Failed:
+            CATransaction.begin()
+            CATransaction.setAnimationDuration(0.25)
+            CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+            for photoView in photoViews {
+                let animation = CABasicAnimation(keyPath: "transform")
+                animation.fromValue = NSValue(CATransform3D: photoView.layer.transform)
+                animation.toValue = NSValue(CATransform3D: CATransform3DIdentity)
+                animation.timingFunction = CATransaction.animationTimingFunction()
+                photoView.layer.addAnimation(animation, forKey: "transform")
+                photoView.layer.transform = CATransform3DIdentity
+                setMaskTranslateX(0, view: photoView)
+            }
+            CATransaction.commit()
+
+        default:
+            return
+        }
+    }
+
+    private func setMaskTranslateX(translate: CGFloat, view: UIView) {
+        var layerMaskTransform = view.layer.mask.transform
+        layerMaskTransform.m41 = translate
+        view.layer.mask.transform = layerMaskTransform
+    }
+
     // MARK: Layout
 
-    func adjustMaskSizeWithAnimationDuration(duration: CFTimeInterval) {
+    private func adjustMaskSizeWithAnimationDuration(duration: CFTimeInterval) {
 
         var photoViewSize = containerView.bounds.size
         photoViewSize.width /= 2
@@ -107,7 +133,7 @@ internal class PollController: UIViewController {
         CATransaction.commit()
     }
 
-    var masked = false
+    private var masked = false
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
