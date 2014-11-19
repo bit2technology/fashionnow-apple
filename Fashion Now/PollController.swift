@@ -50,71 +50,129 @@ internal class PollController: UIViewController {
 
     // MARK: Vote animation
 
-    private func animateAndVote(#index: Int) {
-
+    private func animateAndVote(#index: Int, easeIn: Bool) {
+        println("vote: \(index)")
+        var rate: CGFloat!
+        switch index {
+        case 0:
+            rate = 1
+        case 1:
+            rate = -1
+        default:
+            return
+        }
+        adjustVoteLayout(rate, animationTimingFunction: CAMediaTimingFunction(name: (easeIn ? kCAMediaTimingFunctionEaseInEaseOut : kCAMediaTimingFunctionEaseOut)))
     }
 
     @IBAction func didDoubleTap(sender: UITapGestureRecognizer) {
 
+        var index: Int!
+        
         switch sender.view! {
-
         case leftPhotoView:
-            println("vote 0")
+            index = 0
         case rightPhotoView:
-            println("vote 1")
+            index = 1
         default:
-            break
+            return
         }
+        
+        animateAndVote(index: index, easeIn: true)
     }
 
     @IBOutlet var drager: UIPanGestureRecognizer!
     @IBAction func didDrag(sender: UIPanGestureRecognizer) {
 
+        var translationX = sender.translationInView(containerView).x * 1.6
+        let rate = translationX / self.containerView.bounds.width
+        
         switch sender.state {
-
         case .Changed:
-            var translationX = sender.translationInView(containerView).x
-            let rate = translationX / self.containerView.bounds.width
-            if abs(rate) > 0.5 {
-                translationX -= (rate - (rate > 0 ? 0.5 : -0.5)) * containerView.bounds.width * 0.75
+            adjustVoteLayout(rate, animationTimingFunction: nil)
+        case .Ended:
+            let velocityX = sender.velocityInView(containerView).x
+            if abs(velocityX) > 1000 {
+                animateAndVote(index: (velocityX > 0 ? 0 : 1), easeIn: false)
+                return
             }
-            let draggingView = (translationX > 0 ? leftPhotoView : rightPhotoView)
-
-            CATransaction.begin()
-            CATransaction.setDisableActions(true)
-            for photoView in photoViews {
-                let isDraggingView = (photoView == draggingView)
-                photoView.layer.transform = CATransform3DMakeTranslation((isDraggingView ? translationX / 2 : 0), 0, 0)
-                setMaskTranslateX(translationX * (isDraggingView ? 0.75 : 1.25), view: photoView)
+            if abs(rate) > 0.75 {
+                if rate > 0 && velocityX > 0 {
+                    animateAndVote(index: 0, easeIn: false)
+                    return
+                } else if rate < 0 && velocityX < 0 {
+                    animateAndVote(index: 1, easeIn: false)
+                    return
+                }
             }
-            CATransaction.commit()
-
-        case .Ended: fallthrough
+            fallthrough
         case .Cancelled: fallthrough
         case .Failed:
-            CATransaction.begin()
-            CATransaction.setAnimationDuration(0.25)
-            CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
-            for photoView in photoViews {
-                let animation = CABasicAnimation(keyPath: "transform")
-                animation.fromValue = NSValue(CATransform3D: photoView.layer.transform)
-                animation.toValue = NSValue(CATransform3D: CATransform3DIdentity)
-                animation.timingFunction = CATransaction.animationTimingFunction()
-                photoView.layer.addAnimation(animation, forKey: "transform")
-                photoView.layer.transform = CATransform3DIdentity
-                setMaskTranslateX(0, view: photoView)
-            }
-            CATransaction.commit()
-
+            adjustVoteLayout(nil, animationTimingFunction: nil)
         default:
             return
         }
     }
-
-    private func setMaskTranslateX(translate: CGFloat, view: UIView) {
-        var layerMaskTransform = view.layer.mask.transform
-        layerMaskTransform.m41 = translate
-        view.layer.mask.transform = layerMaskTransform
+    
+    private func adjustVoteLayout(rate: CGFloat?, animationTimingFunction: CAMediaTimingFunction?) {
+        
+        // Helper functions
+        
+        func setLayerTransform(transform: CATransform3D, toView view: UIView, explicitAnimated animated: Bool) {
+            if animated {
+                let animation = CABasicAnimation(keyPath: "transform")
+                animation.fromValue = NSValue(CATransform3D: view.layer.transform)
+                animation.toValue = NSValue(CATransform3D: transform)
+                view.layer.addAnimation(animation, forKey: "transform")
+            }
+            view.layer.transform = transform
+        }
+        
+        func setMaskTranslateX(translate: CGFloat, #view: UIView) {
+            var layerMaskTransform = view.layer.mask.transform
+            layerMaskTransform.m41 = translate
+            view.layer.mask.transform = layerMaskTransform
+        }
+        
+        // If rate == nil, back to original layout animated
+        
+        if (rate == nil) {
+            CATransaction.begin()
+            CATransaction.setAnimationDuration(0.25)
+            if let unwrappedAnimationTimingFunction = animationTimingFunction {
+                CATransaction.setAnimationTimingFunction(unwrappedAnimationTimingFunction)
+            } else {
+                CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut))
+            }
+            for photoView in photoViews {
+                setLayerTransform(CATransform3DIdentity, toView: photoView, explicitAnimated: true)
+                setMaskTranslateX(0, view: photoView)
+            }
+            CATransaction.commit()
+            return
+        }
+        
+        // If rate != nil, adjust layout
+        
+        var translationX = rate! * containerView.bounds.width / 2
+        if abs(rate!) > 1 {
+            translationX -= (rate! - (rate > 0 ? 1 : -1)) * containerView.bounds.width / 2 * 0.75
+        }
+        
+        let draggingView = (translationX > 0 ? leftPhotoView : rightPhotoView)
+        
+        CATransaction.begin()
+        if let unwrappedAnimationTimingFunction = animationTimingFunction {
+            CATransaction.setAnimationDuration(0.25)
+            CATransaction.setAnimationTimingFunction(unwrappedAnimationTimingFunction)
+        } else {
+            CATransaction.setDisableActions(true)
+        }
+        for photoView in photoViews {
+            let isDraggingView = (photoView == draggingView)
+            setLayerTransform(CATransform3DMakeTranslation((isDraggingView ? translationX / 2 : 0), 0, 0), toView: photoView, explicitAnimated: (animationTimingFunction != nil))
+            setMaskTranslateX(translationX * (isDraggingView ? 0.75 : 1.25), view: photoView)
+        }
+        CATransaction.commit()
     }
 
     // MARK: Layout
