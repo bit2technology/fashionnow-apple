@@ -16,6 +16,9 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
                 if let unwrappedData = data {
                     self.imageView.image = UIImage(data: unwrappedData)
                     self.imageView.superview?.hidden = false
+                    self.delegate?.photoController?(self, didLoadPhoto: self.photo, data: unwrappedData)
+                } else {
+                    self.delegate?.photoController?(self, loadPhoto: self.photo, error: error)
                 }
             }
         }
@@ -80,6 +83,8 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         presentViewController(imagePickerController, animated: true, completion: nil)
     }
 
+    
+
     // MARK: View lifecycle
 
     override func viewDidLoad() {
@@ -116,6 +121,9 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
 }
 
 @objc protocol PhotoControllerDelegate {
+
+    optional func photoController(photoController: PhotoController, didLoadPhoto photo: Photo, data: NSData)
+    optional func photoController(photoController: PhotoController, loadPhoto photo: Photo, error: NSError)
 
     optional func photoController(photoController: PhotoController, didEditPhoto photo: Photo)
 }

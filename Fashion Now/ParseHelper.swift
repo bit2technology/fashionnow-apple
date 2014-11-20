@@ -76,6 +76,7 @@ public class Poll: PFObject, PFSubclassing {
 
     private let CreatedByKey = "createdBy"
     private let PhotosKey = "photos"
+    private let TagsKey = "tags"
     
     override public class func load() {
         superclass()?.load()
@@ -106,6 +107,15 @@ public class Poll: PFObject, PFSubclassing {
         }
         set {
             self[PhotosKey] = newValueOrNSNull(newValue)
+        }
+    }
+
+    var tags: [String]? {
+        get {
+            return self[TagsKey] as? [String]
+        }
+        set {
+            self[TagsKey] = newValueOrNSNull(newValue)
         }
     }
 }

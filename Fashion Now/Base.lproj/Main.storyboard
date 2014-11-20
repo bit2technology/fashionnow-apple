@@ -45,7 +45,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MXb-Ij-kte" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                                 <rect key="frame" x="53" y="70" width="214" height="42"/>
                                                 <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
-                                                <state key="normal" title="Log in with Facebook" backgroundImage="ButtonLoginBackground">
+                                                <state key="normal" title="Log in with Facebook" backgroundImage="ButtonRoundBordersBackground">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -274,26 +274,26 @@
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9J2-Wj-jqA" userLabel="Hashtags">
                                 <rect key="frame" x="0.0" y="64" width="320" height="37"/>
                                 <subviews>
-                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zly-2v-7UO">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zly-2v-7UO">
                                         <rect key="frame" x="4" y="2" width="312" height="31"/>
                                         <gestureRecognizers/>
                                         <string key="text">Cupcake ipsum dolor sit amet soufflé ice cream sweet roll fruitcake. Donut pie sugar plum jelly beans brownie cake. Applicake bonbon dessert. Marshmallow I love candy canes. Dragée brownie I love. Caramels chocolate cake dessert.</string>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="ryf-uA-2j6" appends="YES" id="mqa-5b-6Ad"/>
-                                            <outletCollection property="gestureRecognizers" destination="Erq-EH-WP3" appends="YES" id="aLW-CY-fpC"/>
-                                        </connections>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="Zly-2v-7UO" secondAttribute="trailing" constant="4" id="Kd1-sc-R4E"/>
                                     <constraint firstItem="Zly-2v-7UO" firstAttribute="leading" secondItem="9J2-Wj-jqA" secondAttribute="leading" constant="4" id="otu-sN-j6e"/>
                                     <constraint firstItem="Zly-2v-7UO" firstAttribute="top" secondItem="9J2-Wj-jqA" secondAttribute="top" constant="2" id="ra7-Cn-wvy"/>
                                     <constraint firstAttribute="bottom" secondItem="Zly-2v-7UO" secondAttribute="bottom" constant="4" id="xIK-NG-74w"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="ryf-uA-2j6" appends="YES" id="kgl-8o-yLr"/>
+                                    <outletCollection property="gestureRecognizers" destination="Erq-EH-WP3" appends="YES" id="nRW-Hz-LOg"/>
+                                </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4XI-L8-6Pr" userLabel="Left Vote" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                 <rect key="frame" x="-5" y="375" width="86" height="52"/>
@@ -319,6 +319,20 @@
                                     <action selector="voteButtonWillBePressed:" destination="6wq-1Y-TiB" eventType="touchDown" id="m09-Mf-dRt"/>
                                 </connections>
                             </button>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BmU-jg-A8g" userLabel="Loading Interface">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Tzv-0J-o6e">
+                                        <rect key="frame" x="142" y="222" width="37" height="37"/>
+                                        <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerY" secondItem="Tzv-0J-o6e" secondAttribute="centerY" id="0Kd-zA-cHY"/>
+                                    <constraint firstAttribute="centerX" secondItem="Tzv-0J-o6e" secondAttribute="centerX" id="8eu-Ft-A6h"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -328,6 +342,7 @@
                             <constraint firstAttribute="trailing" secondItem="9J2-Wj-jqA" secondAttribute="trailing" id="5Jq-aY-1ni"/>
                             <constraint firstItem="mhc-nx-wcX" firstAttribute="leading" secondItem="BpX-JS-d9h" secondAttribute="trailing" constant="4" id="5oi-fL-hAG"/>
                             <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="bottom" secondItem="1iE-fK-YeD" secondAttribute="bottom" id="6uI-ea-ARS"/>
+                            <constraint firstAttribute="bottom" secondItem="BmU-jg-A8g" secondAttribute="bottom" id="9IL-eH-icQ"/>
                             <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="trailing" secondItem="1iE-fK-YeD" secondAttribute="trailing" id="GcB-hT-TOC"/>
                             <constraint firstItem="9J2-Wj-jqA" firstAttribute="top" secondItem="ORJ-Y7-Dhf" secondAttribute="bottom" id="ILV-DE-ku2"/>
                             <constraint firstItem="3bW-d0-UfL" firstAttribute="top" secondItem="GPX-GA-SAX" secondAttribute="bottom" constant="4" id="J7L-V4-r0m"/>
@@ -337,6 +352,7 @@
                             <constraint firstItem="oWN-q7-Q6r" firstAttribute="leading" secondItem="BpX-JS-d9h" secondAttribute="trailing" constant="4" id="Xjk-oM-KYs"/>
                             <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" id="aIv-c4-DMz"/>
                             <constraint firstItem="1iE-fK-YeD" firstAttribute="leading" secondItem="mhc-nx-wcX" secondAttribute="trailing" id="aPF-ms-JYA"/>
+                            <constraint firstItem="BmU-jg-A8g" firstAttribute="top" secondItem="0mu-nJ-pcc" secondAttribute="top" id="ceY-nX-7Ep"/>
                             <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="bottom" secondItem="BpX-JS-d9h" secondAttribute="bottom" constant="2" id="gCy-Da-kdI"/>
                             <constraint firstItem="4XI-L8-6Pr" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" constant="-5" id="gqj-lz-256"/>
                             <constraint firstAttribute="trailing" secondItem="GPX-GA-SAX" secondAttribute="trailing" constant="-5" id="gtx-Kx-8sL"/>
@@ -345,8 +361,10 @@
                             <constraint firstItem="mhc-nx-wcX" firstAttribute="top" secondItem="BpX-JS-d9h" secondAttribute="top" id="qUd-Hn-oCD"/>
                             <constraint firstItem="oWN-q7-Q6r" firstAttribute="top" secondItem="mhc-nx-wcX" secondAttribute="bottom" id="sTN-JQ-Kf4"/>
                             <constraint firstAttribute="trailing" secondItem="ORJ-Y7-Dhf" secondAttribute="trailing" id="saH-f4-N2N"/>
+                            <constraint firstAttribute="trailing" secondItem="BmU-jg-A8g" secondAttribute="trailing" id="u9e-ng-tb2"/>
                             <constraint firstItem="3bW-d0-UfL" firstAttribute="top" secondItem="4XI-L8-6Pr" secondAttribute="bottom" constant="4" id="vSD-M7-Q12"/>
                             <constraint firstItem="BpX-JS-d9h" firstAttribute="leading" secondItem="ORJ-Y7-Dhf" secondAttribute="leading" constant="8" id="vwk-fJ-qkX"/>
+                            <constraint firstItem="BmU-jg-A8g" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" id="xs7-Be-6Tc"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="zzA-bz-q3J"/>
@@ -354,6 +372,7 @@
                         <outlet property="avatarView" destination="BpX-JS-d9h" id="SE6-8l-wck"/>
                         <outlet property="dateLabel" destination="oWN-q7-Q6r" id="Ycb-Hm-4og"/>
                         <outlet property="leftVoteButton" destination="4XI-L8-6Pr" id="Vaj-fJ-9Sg"/>
+                        <outlet property="loadingInterface" destination="BmU-jg-A8g" id="HCo-f3-GKq"/>
                         <outlet property="nameLabel" destination="mhc-nx-wcX" id="xZm-bx-t6W"/>
                         <outlet property="rightVoteButton" destination="GPX-GA-SAX" id="bC1-wq-sV9"/>
                         <outlet property="tagsLabel" destination="Zly-2v-7UO" id="TZV-99-cWD"/>
@@ -393,7 +412,7 @@
                             </containerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bgG-Zw-FU2" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                 <rect key="frame" x="128" y="216" width="64" height="64"/>
-                                <state key="normal" title="Send" backgroundImage="ButtonBackground">
+                                <state key="normal" title="Send" backgroundImage="ButtonCircleBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -784,7 +803,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ButtonBackground" width="64" height="64"/>
         <image name="ButtonCamera" width="32" height="32"/>
         <image name="ButtonCircleBackground" width="64" height="64"/>
         <image name="ButtonLibrary" width="32" height="32"/>
