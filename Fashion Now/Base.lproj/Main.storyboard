@@ -238,13 +238,13 @@
                                     <segue destination="hpa-fw-Ay5" kind="embed" identifier="Poll Controller" id="apZ-Yv-541"/>
                                 </connections>
                             </containerView>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ORJ-Y7-Dhf">
+                            <navigationBar opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ORJ-Y7-Dhf">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="76A-wr-syV"/>
                                 </constraints>
                             </navigationBar>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BpX-JS-d9h">
+                            <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BpX-JS-d9h">
                                 <rect key="frame" x="8" y="22" width="40" height="40"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -252,6 +252,12 @@
                                     <constraint firstAttribute="width" constant="40" id="Rc3-qr-QBv"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mhc-nx-wcX">
+                                <rect key="frame" x="52" y="22" width="211" height="21"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oWN-q7-Q6r">
                                 <rect key="frame" x="52" y="43" width="211" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -265,41 +271,53 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mhc-nx-wcX">
-                                <rect key="frame" x="52" y="22" width="211" height="21"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9J2-Wj-jqA" userLabel="Hashtags background">
-                                <rect key="frame" x="0.0" y="64" width="320" height="36"/>
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9J2-Wj-jqA" userLabel="Hashtags">
+                                <rect key="frame" x="0.0" y="64" width="320" height="37"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zly-2v-7UO">
-                                        <rect key="frame" x="2" y="0.0" width="316" height="34"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zly-2v-7UO">
+                                        <rect key="frame" x="4" y="2" width="312" height="31"/>
+                                        <gestureRecognizers/>
+                                        <string key="text">Cupcake ipsum dolor sit amet soufflé ice cream sweet roll fruitcake. Donut pie sugar plum jelly beans brownie cake. Applicake bonbon dessert. Marshmallow I love candy canes. Dragée brownie I love. Caramels chocolate cake dessert.</string>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="ryf-uA-2j6" appends="YES" id="mqa-5b-6Ad"/>
+                                            <outletCollection property="gestureRecognizers" destination="Erq-EH-WP3" appends="YES" id="aLW-CY-fpC"/>
+                                        </connections>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="Zly-2v-7UO" secondAttribute="trailing" constant="2" id="Kd1-sc-R4E"/>
-                                    <constraint firstItem="Zly-2v-7UO" firstAttribute="leading" secondItem="9J2-Wj-jqA" secondAttribute="leading" constant="2" id="otu-sN-j6e"/>
-                                    <constraint firstItem="Zly-2v-7UO" firstAttribute="top" secondItem="9J2-Wj-jqA" secondAttribute="top" id="ra7-Cn-wvy"/>
-                                    <constraint firstAttribute="bottom" secondItem="Zly-2v-7UO" secondAttribute="bottom" constant="2" id="xIK-NG-74w"/>
+                                    <constraint firstAttribute="trailing" secondItem="Zly-2v-7UO" secondAttribute="trailing" constant="4" id="Kd1-sc-R4E"/>
+                                    <constraint firstItem="Zly-2v-7UO" firstAttribute="leading" secondItem="9J2-Wj-jqA" secondAttribute="leading" constant="4" id="otu-sN-j6e"/>
+                                    <constraint firstItem="Zly-2v-7UO" firstAttribute="top" secondItem="9J2-Wj-jqA" secondAttribute="top" constant="2" id="ra7-Cn-wvy"/>
+                                    <constraint firstAttribute="bottom" secondItem="Zly-2v-7UO" secondAttribute="bottom" constant="4" id="xIK-NG-74w"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GPX-GA-SAX" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="260" y="365" width="64" height="64"/>
-                                <state key="normal" title="Vote" backgroundImage="ButtonBackgroundRight">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4XI-L8-6Pr" userLabel="Left Vote" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="-5" y="375" width="86" height="52"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <inset key="contentEdgeInsets" minX="25" minY="15" maxX="25" maxY="15"/>
+                                <state key="normal" title="Vote" backgroundImage="ButtonRoundBordersBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="voteButtonPressed:" destination="6wq-1Y-TiB" eventType="touchUpInside" id="FYi-qG-WyV"/>
+                                    <action selector="voteButtonWillBePressed:" destination="6wq-1Y-TiB" eventType="touchDown" id="7ST-U4-lHB"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4XI-L8-6Pr" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="-4" y="365" width="64" height="64"/>
-                                <state key="normal" title="Vote" backgroundImage="ButtonBackgroundLeft">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GPX-GA-SAX" userLabel="Right Vote" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="239" y="375" width="86" height="52"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <inset key="contentEdgeInsets" minX="25" minY="15" maxX="25" maxY="15"/>
+                                <state key="normal" title="Vote" backgroundImage="ButtonRoundBordersBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="voteButtonPressed:" destination="6wq-1Y-TiB" eventType="touchUpInside" id="usS-Ri-iXT"/>
+                                    <action selector="voteButtonWillBePressed:" destination="6wq-1Y-TiB" eventType="touchDown" id="m09-Mf-dRt"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -312,7 +330,7 @@
                             <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="bottom" secondItem="1iE-fK-YeD" secondAttribute="bottom" id="6uI-ea-ARS"/>
                             <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="trailing" secondItem="1iE-fK-YeD" secondAttribute="trailing" id="GcB-hT-TOC"/>
                             <constraint firstItem="9J2-Wj-jqA" firstAttribute="top" secondItem="ORJ-Y7-Dhf" secondAttribute="bottom" id="ILV-DE-ku2"/>
-                            <constraint firstItem="3bW-d0-UfL" firstAttribute="top" secondItem="GPX-GA-SAX" secondAttribute="bottom" constant="2" id="J7L-V4-r0m"/>
+                            <constraint firstItem="3bW-d0-UfL" firstAttribute="top" secondItem="GPX-GA-SAX" secondAttribute="bottom" constant="4" id="J7L-V4-r0m"/>
                             <constraint firstItem="EtK-fa-XtU" firstAttribute="top" secondItem="ORJ-Y7-Dhf" secondAttribute="bottom" id="Qke-Bu-XOR"/>
                             <constraint firstItem="9J2-Wj-jqA" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" id="SPk-0Y-9Xy"/>
                             <constraint firstItem="1iE-fK-YeD" firstAttribute="leading" secondItem="oWN-q7-Q6r" secondAttribute="trailing" id="WbQ-GN-9l4"/>
@@ -320,14 +338,14 @@
                             <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" id="aIv-c4-DMz"/>
                             <constraint firstItem="1iE-fK-YeD" firstAttribute="leading" secondItem="mhc-nx-wcX" secondAttribute="trailing" id="aPF-ms-JYA"/>
                             <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="bottom" secondItem="BpX-JS-d9h" secondAttribute="bottom" constant="2" id="gCy-Da-kdI"/>
-                            <constraint firstItem="4XI-L8-6Pr" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" constant="-4" id="gqj-lz-256"/>
-                            <constraint firstAttribute="trailing" secondItem="GPX-GA-SAX" secondAttribute="trailing" constant="-4" id="gtx-Kx-8sL"/>
+                            <constraint firstItem="4XI-L8-6Pr" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" constant="-5" id="gqj-lz-256"/>
+                            <constraint firstAttribute="trailing" secondItem="GPX-GA-SAX" secondAttribute="trailing" constant="-5" id="gtx-Kx-8sL"/>
                             <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="top" secondItem="0mu-nJ-pcc" secondAttribute="top" id="hM7-SD-Sht"/>
                             <constraint firstItem="EtK-fa-XtU" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" id="nVd-6u-jt0"/>
                             <constraint firstItem="mhc-nx-wcX" firstAttribute="top" secondItem="BpX-JS-d9h" secondAttribute="top" id="qUd-Hn-oCD"/>
                             <constraint firstItem="oWN-q7-Q6r" firstAttribute="top" secondItem="mhc-nx-wcX" secondAttribute="bottom" id="sTN-JQ-Kf4"/>
                             <constraint firstAttribute="trailing" secondItem="ORJ-Y7-Dhf" secondAttribute="trailing" id="saH-f4-N2N"/>
-                            <constraint firstItem="3bW-d0-UfL" firstAttribute="top" secondItem="4XI-L8-6Pr" secondAttribute="bottom" constant="2" id="vSD-M7-Q12"/>
+                            <constraint firstItem="3bW-d0-UfL" firstAttribute="top" secondItem="4XI-L8-6Pr" secondAttribute="bottom" constant="4" id="vSD-M7-Q12"/>
                             <constraint firstItem="BpX-JS-d9h" firstAttribute="leading" secondItem="ORJ-Y7-Dhf" secondAttribute="leading" constant="8" id="vwk-fJ-qkX"/>
                         </constraints>
                     </view>
@@ -335,11 +353,23 @@
                     <connections>
                         <outlet property="avatarView" destination="BpX-JS-d9h" id="SE6-8l-wck"/>
                         <outlet property="dateLabel" destination="oWN-q7-Q6r" id="Ycb-Hm-4og"/>
+                        <outlet property="leftVoteButton" destination="4XI-L8-6Pr" id="Vaj-fJ-9Sg"/>
                         <outlet property="nameLabel" destination="mhc-nx-wcX" id="xZm-bx-t6W"/>
+                        <outlet property="rightVoteButton" destination="GPX-GA-SAX" id="bC1-wq-sV9"/>
                         <outlet property="tagsLabel" destination="Zly-2v-7UO" id="TZV-99-cWD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vvg-GW-0gy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer maximumNumberOfTouches="1" id="ryf-uA-2j6">
+                    <connections>
+                        <action selector="tagsLabelDidLongPress:" destination="6wq-1Y-TiB" id="Fxv-f3-1Qp"/>
+                    </connections>
+                </panGestureRecognizer>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.0" id="Erq-EH-WP3">
+                    <connections>
+                        <action selector="tagsLabelDidLongPress:" destination="6wq-1Y-TiB" id="ibh-Qv-4zI"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1411" y="-276"/>
         </scene>
@@ -622,7 +652,7 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FBu-Eh-kK4" userLabel="Camera Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                 <rect key="frame" x="48" y="80" width="64" height="64"/>
-                                <state key="normal" image="ButtonCamera" backgroundImage="ButtonBackground">
+                                <state key="normal" image="ButtonCamera" backgroundImage="ButtonCircleBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -631,7 +661,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vhz-QE-CMT" userLabel="Library Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                 <rect key="frame" x="48" y="152" width="64" height="64"/>
-                                <state key="normal" image="ButtonLibrary" backgroundImage="ButtonBackground">
+                                <state key="normal" image="ButtonLibrary" backgroundImage="ButtonCircleBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -640,7 +670,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3W7-Sc-zrt" userLabel="Previous Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                 <rect key="frame" x="48" y="224" width="64" height="64"/>
-                                <state key="normal" image="ButtonPrevious" backgroundImage="ButtonBackground">
+                                <state key="normal" image="ButtonPrevious" backgroundImage="ButtonCircleBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -755,12 +785,12 @@
     </scenes>
     <resources>
         <image name="ButtonBackground" width="64" height="64"/>
-        <image name="ButtonBackgroundLeft" width="64" height="64"/>
-        <image name="ButtonBackgroundRight" width="64" height="64"/>
         <image name="ButtonCamera" width="32" height="32"/>
+        <image name="ButtonCircleBackground" width="64" height="64"/>
         <image name="ButtonLibrary" width="32" height="32"/>
         <image name="ButtonLoginBackground" width="11" height="11"/>
         <image name="ButtonPrevious" width="32" height="32"/>
+        <image name="ButtonRoundBordersBackground" width="11" height="11"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="apZ-Yv-541"/>

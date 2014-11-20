@@ -58,8 +58,8 @@ class PostPollController: UIViewController, PhotoControllerDelegate {
         sendButton.hidden = true
         loadingView.hidden = true
         
-        pollController.leftPhotoController.delegate = self
-        pollController.rightPhotoController.delegate = self
+//        pollController.leftPhotoController.delegate = self
+//        pollController.rightPhotoController.delegate = self
     }
 
     // MARK: PhotoControllerDelegate

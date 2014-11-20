@@ -13,9 +13,6 @@
 /* Class = "IBUINavigationItem"; title = "Sign Up"; ObjectID = "9LK-rm-73H"; */
 "9LK-rm-73H.title" = "Registrar";
 
-/* Class = "IBUIButton"; normalTitle = "Delete"; ObjectID = "GxD-Vg-L3y"; */
-"GxD-Vg-L3y.normalTitle" = "Deletar";
-
 /* Class = "IBUIButton"; normalTitle = "Log in with Facebook"; ObjectID = "MXb-Ij-kte"; */
 "MXb-Ij-kte.normalTitle" = "Log in com Facebook";
 
@@ -24,9 +21,6 @@
 
 /* Class = "IBUIButton"; normalTitle = "I already have an account"; ObjectID = "UVf-dJ-3oB"; */
 "UVf-dJ-3oB.normalTitle" = "Eu já tenho uma conta";
-
-/* Class = "IBUILabel"; text = "#hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag"; ObjectID = "Zly-2v-7UO"; */
-"Zly-2v-7UO.text" = "#hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag #hashtag";
 
 /* Class = "IBUITextField"; placeholder = "Add hashtags"; ObjectID = "aa7-aO-RqI"; */
 "aa7-aO-RqI.placeholder" = "Adicionar hashtags";

@@ -19,14 +19,10 @@ internal class PollController: UIViewController {
         }
     }
 
-    var dragEnabled: Bool = true {
-        didSet {
-            drager.enabled = dragEnabled
-        }
-    }
+    var delegate: PollControllerDelegate?
     
-    private(set) var leftPhotoController: PhotoController!
-    private(set) var rightPhotoController: PhotoController!
+    private var leftPhotoController: PhotoController!
+    private var rightPhotoController: PhotoController!
 
     private var photoViews: [UIView]!
     @IBOutlet var leftPhotoView: UIView!
@@ -50,8 +46,8 @@ internal class PollController: UIViewController {
 
     // MARK: Vote animation
 
-    private func animateAndVote(#index: Int, easeIn: Bool) {
-        println("vote: \(index)")
+    func animateAndVote(#index: Int, easeIn: Bool) {
+
         var rate: CGFloat!
         switch index {
         case 0:
@@ -76,10 +72,16 @@ internal class PollController: UIViewController {
         default:
             return
         }
-        
+
+        delegate?.pollControllerDidInteractVote?(self)
         animateAndVote(index: index, easeIn: true)
     }
 
+    var dragEnabled: Bool = true {
+        didSet {
+            drager.enabled = dragEnabled
+        }
+    }
     @IBOutlet var drager: UIPanGestureRecognizer!
     @IBAction func didDrag(sender: UIPanGestureRecognizer) {
 
@@ -87,6 +89,8 @@ internal class PollController: UIViewController {
         let rate = translationX / self.containerView.bounds.width
         
         switch sender.state {
+        case .Began:
+            delegate?.pollControllerDidInteractVote?(self)
         case .Changed:
             adjustVoteLayout(rate, animationTimingFunction: nil)
         case .Ended:
@@ -246,6 +250,12 @@ internal class PollController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        dragEnabled = false
         photoViews = [leftPhotoView, rightPhotoView]
     }
+}
+
+@objc protocol PollControllerDelegate {
+
+    optional func pollControllerDidInteractVote(pollController: PollController)
 }
