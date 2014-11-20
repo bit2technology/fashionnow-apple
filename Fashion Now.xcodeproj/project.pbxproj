@@ -23,7 +23,6 @@
 		4BEB9E1E1A01AC8500A71764 /* PostPollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEB9E1D1A01AC8500A71764 /* PostPollController.swift */; };
 		4BEB9E201A01ACA200A71764 /* VotePollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEB9E1F1A01ACA200A71764 /* VotePollController.swift */; };
 		4BF1D05B1A00F1EB00818658 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF1D05A1A00F1EB00818658 /* AppDelegate.swift */; };
-		4BF1D05E1A00F1EB00818658 /* Fashion_Now.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4BF1D05C1A00F1EB00818658 /* Fashion_Now.xcdatamodeld */; };
 		4BF1D0631A00F1EB00818658 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BF1D0611A00F1EB00818658 /* Main.storyboard */; };
 		4BF1D0651A00F1EB00818658 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BF1D0641A00F1EB00818658 /* Images.xcassets */; };
 		4BF1D0681A00F1EB00818658 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BF1D0661A00F1EB00818658 /* LaunchScreen.xib */; };
@@ -61,7 +60,6 @@
 		4BF1D0551A00F1EB00818658 /* Fashion Now.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fashion Now.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BF1D0591A00F1EB00818658 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4BF1D05A1A00F1EB00818658 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4BF1D05D1A00F1EB00818658 /* Fashion_Now.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Fashion_Now.xcdatamodel; sourceTree = "<group>"; };
 		4BF1D0621A00F1EB00818658 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4BF1D0641A00F1EB00818658 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4BF1D0671A00F1EB00818658 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -128,7 +126,6 @@
 				4BEB9E191A01ABD200A71764 /* PhotoController.swift */,
 				4BEB9E171A01AA9A00A71764 /* ParseHelper.swift */,
 				4B8941481A03B3530017F6FC /* TemplateBackgroundButton.swift */,
-				4BF1D05C1A00F1EB00818658 /* Fashion_Now.xcdatamodeld */,
 				4BF1D0641A00F1EB00818658 /* Images.xcassets */,
 				4BF1D0581A00F1EB00818658 /* Supporting Files */,
 			);
@@ -329,7 +326,6 @@
 				4BEB9E1E1A01AC8500A71764 /* PostPollController.swift in Sources */,
 				4B4BFA671A14239200BFD23F /* LoginEmailController.swift in Sources */,
 				4BF1D05B1A00F1EB00818658 /* AppDelegate.swift in Sources */,
-				4BF1D05E1A00F1EB00818658 /* Fashion_Now.xcdatamodeld in Sources */,
 				4BEB9E181A01AA9A00A71764 /* ParseHelper.swift in Sources */,
 				4B3864651A178B80004ECAB8 /* TabBarController.swift in Sources */,
 				4B8941491A03B3530017F6FC /* TemplateBackgroundButton.swift in Sources */,
@@ -576,19 +572,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		4BF1D05C1A00F1EB00818658 /* Fashion_Now.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				4BF1D05D1A00F1EB00818658 /* Fashion_Now.xcdatamodel */,
-			);
-			currentVersion = 4BF1D05D1A00F1EB00818658 /* Fashion_Now.xcdatamodel */;
-			path = Fashion_Now.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 4BF1D04D1A00F1EB00818658 /* Project object */;
 }

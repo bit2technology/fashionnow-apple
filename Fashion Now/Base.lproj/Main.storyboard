@@ -186,7 +186,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" priority="750" constant="43" id="qS7-sD-18x"/>
                                                     </constraints>
-                                                    <state key="normal" title="Log in" backgroundImage="ButtonLoginBackground"/>
+                                                    <state key="normal" title="Log in" backgroundImage="ButtonRoundBordersBackground"/>
                                                     <connections>
                                                         <action selector="loginButtonPressed:" destination="34U-YS-Pbl" eventType="touchUpInside" id="izw-Z8-q1C"/>
                                                     </connections>
@@ -806,12 +806,11 @@
         <image name="ButtonCamera" width="32" height="32"/>
         <image name="ButtonCircleBackground" width="64" height="64"/>
         <image name="ButtonLibrary" width="32" height="32"/>
-        <image name="ButtonLoginBackground" width="11" height="11"/>
         <image name="ButtonPrevious" width="32" height="32"/>
         <image name="ButtonRoundBordersBackground" width="11" height="11"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="apZ-Yv-541"/>
+        <segue reference="IZA-Rh-gPV"/>
         <segue reference="uM3-tb-eTB"/>
     </inferredMetricsTieBreakers>
 </document>
