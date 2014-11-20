@@ -60,3 +60,10 @@ extension UIViewController {
         return false
     }
 }
+
+extension UINavigationController {
+
+    override func needsLogin() -> Bool {
+        return self.topViewController.needsLogin()
+    }
+}
