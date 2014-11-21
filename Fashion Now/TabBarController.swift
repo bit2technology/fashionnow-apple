@@ -29,7 +29,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
     // MARK: UITabBarControllerDelegate and other selection methods
 
-    // The controller that will be selected with a successed login
+    // The controller index that will be selected with a successful login
     var controllerIndex: Int?
 
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
@@ -43,7 +43,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
     }
 
     func willDismissLoginController() {
-        // If successed login, select new controleller
+        // If successful login, select new controleller
         if !PFAnonymousUtils.isLinkedWithUser(PFUser.currentUser()) {
             selectedIndex = controllerIndex!
         }

@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-private let PhotoControllerWillStartCameraCaptureNotification = "PhotoControllerWillStartCameraCaptureNotification"
-
 class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     var photo: Photo = Photo() {
@@ -62,10 +60,13 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         var source: UIImagePickerControllerSourceType!
         switch sender {
         case cameraButton:
-            NSNotificationCenter.defaultCenter().postNotificationName(PhotoControllerWillStartCameraCaptureNotification, object: self, userInfo: nil)
-            cameraView.hidden = false
-            CameraManager.sharedInstance.addPreviewLayerToView(cameraView)
-            return
+            // If camera is unavailable, do nothing
+            if !UIImagePickerController.isSourceTypeAvailable(.Camera) {
+                // TODO: Error handling
+                return
+            }
+            source = .Camera
+
         case libraryButton:
             source = .PhotoLibrary
         case previousButton:
@@ -92,8 +93,6 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
 
         cameraView.hidden = true
         imageView.superview?.hidden = true
-
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "willStartCameraCapture", name: PhotoControllerWillStartCameraCaptureNotification, object: nil)
     }
 
     // MARK: UIImagePickerControllerDelegate
