@@ -10,19 +10,6 @@ import UIKit
 
 class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-
-        if let unwrappedId = segue.identifier {
-            
-            switch unwrappedId {
-            case "Login Controller":
-                return
-            default:
-                return
-            }
-        }
-    }
-
     override func supportedInterfaceOrientations() -> Int {
         // iPhone: portrait only; iPad: all.
         var supportedInterfaceOrientations = UIInterfaceOrientationMask.Portrait
@@ -40,15 +27,26 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         delegate = self
     }
 
-    // MARK: UITabBarControllerDelegate
+    // MARK: UITabBarControllerDelegate and other selection methods
+
+    // The controller that will be selected with a successed login
+    var controllerIndex: Int?
 
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
-
+        // If controller needs login and user is loged out, show login controller
         if viewController.needsLogin() && PFAnonymousUtils.isLinkedWithUser(PFUser.currentUser()) {
-            let controllerIndex = find((tabBarController.viewControllers as [UIViewController]), viewController)
-            tabBarController.performSegueWithIdentifier("Login Controller", sender: controllerIndex)
+            controllerIndex = find((tabBarController.viewControllers as [UIViewController]), viewController)
+            tabBarController.performSegueWithIdentifier("Login Controller", sender: self)
             return false
         }
         return true
+    }
+
+    func willDismissLoginController() {
+        // If successed login, select new controleller
+        if !PFAnonymousUtils.isLinkedWithUser(PFUser.currentUser()) {
+            selectedIndex = controllerIndex!
+        }
+        controllerIndex = nil
     }
 }

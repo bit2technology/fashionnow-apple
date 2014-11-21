@@ -513,7 +513,7 @@
         <!--Me-->
         <scene sceneID="6EB-zh-XRs">
             <objects>
-                <viewController id="h96-mz-Qs4" sceneMemberID="viewController">
+                <viewController id="h96-mz-Qs4" customClass="MeController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GxN-sP-BWC"/>
                         <viewControllerLayoutGuide type="bottom" id="ImA-kO-RKZ"/>
@@ -521,7 +521,23 @@
                     <view key="view" contentMode="scaleToFill" id="jw7-7V-LtB">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pb3-dg-CUr" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="107" y="219" width="106" height="42"/>
+                                <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
+                                <state key="normal" title="Log Out" backgroundImage="ButtonRoundBordersBackground">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="logOut:" destination="h96-mz-Qs4" eventType="touchUpInside" id="sNU-qg-pKQ"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="pb3-dg-CUr" secondAttribute="centerY" id="T8n-qD-a4e"/>
+                            <constraint firstAttribute="centerX" secondItem="pb3-dg-CUr" secondAttribute="centerX" id="fbC-TC-0k8"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Me" id="ebj-yB-2vL"/>
                     <nil key="simulatedBottomBarMetrics"/>
@@ -767,7 +783,7 @@
         <scene sceneID="w3X-gR-82r">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="lMD-1Q-cPe" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Vote" id="cp0-V5-EKB"/>
+                    <tabBarItem key="tabBarItem" title="Vote" image="TabBarIconFriendsPolls" badgeValue="3" id="cp0-V5-EKB"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="KNa-EU-ntH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -808,6 +824,7 @@
         <image name="ButtonLibrary" width="32" height="32"/>
         <image name="ButtonPrevious" width="32" height="32"/>
         <image name="ButtonRoundBordersBackground" width="11" height="11"/>
+        <image name="TabBarIconFriendsPolls" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="IZA-Rh-gPV"/>

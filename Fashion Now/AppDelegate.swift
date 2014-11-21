@@ -64,17 +64,12 @@ extension UIColor {
     }
     
     class func defaultTintColor(alpha: CGFloat = 1) -> UIColor {
-//        return UIColor(red: 24.0/255.0, green: 156.0/255.0, blue: 125.0/255.0, alpha: alpha)
         return defaultDetailColor(alpha: alpha)
     }
     
     // MARK: Helpers
     
-    func toImage() -> UIImage {
-        return toImage(size: CGSize(width: 1, height: 1))
-    }
-    
-    func toImage(#size: CGSize) -> UIImage {
+    func toImage(size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
         
         UIGraphicsBeginImageContext(size);
         let context = UIGraphicsGetCurrentContext();

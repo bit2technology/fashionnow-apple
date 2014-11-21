@@ -27,6 +27,7 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
                         customUser.setBirthday(dateString: graphObject.objectForKey("birthday") as? String)
                         customUser.locationName = graphObject.objectForKey("location").objectForKey("name") as? String
                         customUser.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+                            (self.presentingViewController as TabBarController).willDismissLoginController()
                             self.dismissViewControllerAnimated(true, completion: nil)
                         }
                     }
