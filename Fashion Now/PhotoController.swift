@@ -10,19 +10,27 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
 
     var photo: ParsePhoto = ParsePhoto() {
         didSet {
-            photo.image?.getDataInBackgroundWithBlock { (data, error) -> Void in
-                if let unwrappedData = data {
-                    self.imageView.image = UIImage(data: unwrappedData)
-                    self.imageView.superview?.hidden = false
-                    self.delegate?.photoController?(self, didLoadPhoto: self.photo, data: unwrappedData)
-                } else {
-                    self.delegate?.photoController?(self, loadPhoto: self.photo, error: error)
-                }
+            if let imagePath = photo.image?.url {
+                imageContainerHidden = false
+                imageView.setImageWithURL(NSURL(string: imagePath), placeholderImage: nil, completed: { (image, error, imageCacheType, url) -> Void in
+                    if let unwrappedImage = image {
+                        self.delegate?.photoController?(self, didLoadPhoto: self.photo)
+                    } else {
+                        self.delegate?.photoController?(self, didFailToLoadPhoto: self.photo, error: error)
+                    }
+                }, usingActivityIndicatorStyle: .Gray)
+            } else {
+                imageContainerHidden = true
             }
         }
     }
-    
-    var imageButtonsHidden: Bool = true {
+
+    weak var delegate: PhotoControllerDelegate?
+
+    @IBOutlet weak var cameraButton: UIButton!
+    @IBOutlet weak var libraryButton: UIButton!
+    @IBOutlet weak var previousButton: UIButton!
+    var imageButtonsHidden: Bool = false {
         didSet {
             for button in [cameraButton, libraryButton, previousButton] {
                 button.hidden = imageButtonsHidden
@@ -30,24 +38,18 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         }
     }
 
-    weak var delegate: PhotoControllerDelegate?
-
-    @IBOutlet var cameraButton: UIButton!
-    @IBOutlet var libraryButton: UIButton!
-    @IBOutlet var previousButton: UIButton!
-
-    @IBOutlet var cameraView: UIView!
-    @IBOutlet var imageView: UIImageView!
-
-    func willStartCameraCapture() {
-        cameraView.hidden = true
+    @IBOutlet weak var imageView: UIImageView!
+    var imageContainerHidden: Bool = true {
+        didSet {
+            imageView.superview?.hidden = imageContainerHidden
+        }
     }
 
     func deleteImage() {
 
         // Set photo properties
         photo.image = nil
-        imageView.superview?.hidden = true
+        imageContainerHidden = true
         imageView.image = nil
 
         // Call delegate
@@ -84,17 +86,6 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         presentViewController(imagePickerController, animated: true, completion: nil)
     }
 
-    
-
-    // MARK: View lifecycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        cameraView.hidden = true
-        imageView.superview?.hidden = true
-    }
-
     // MARK: UIImagePickerControllerDelegate
 
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
@@ -106,10 +97,10 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         }
         
         // Set photo properties
-        let imageData = UIImageJPEGRepresentation(image, 0.4) // FIXME: Optimize image
+        let imageData = UIImageJPEGRepresentation(image, 0.85) // FIXME: Optimize image
         photo.image = PFFile(data: imageData, contentType: "image/jpeg")
         imageView.image = image
-        imageView.superview?.hidden = false
+        imageContainerHidden = false
 
         // Call delegate
         delegate?.photoController?(self, didEditPhoto: photo)
@@ -121,8 +112,17 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
 
 @objc protocol PhotoControllerDelegate {
 
-    optional func photoController(photoController: PhotoController, didLoadPhoto photo: ParsePhoto, data: NSData)
-    optional func photoController(photoController: PhotoController, loadPhoto photo: ParsePhoto, error: NSError)
+    optional func photoController(photoController: PhotoController, didLoadPhoto photo: ParsePhoto)
+    optional func photoController(photoController: PhotoController, didFailToLoadPhoto photo: ParsePhoto, error: NSError)
 
     optional func photoController(photoController: PhotoController, didEditPhoto photo: ParsePhoto)
+}
+
+class PhotoBackgroundView: UIView {
+
+    override func tintColorDidChange() {
+        super.tintColorDidChange()
+
+        backgroundColor = tintColor
+    }
 }

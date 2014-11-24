@@ -7,7 +7,7 @@
 //
 
 private func newValueOrNSNull(newValue: AnyObject?) -> AnyObject {
-    return (newValue != nil ? newValue! : NSNull())
+    return newValue ?? NSNull()
 }
 
 let ParseObjectCreatedAtKey = "createdAt"
@@ -17,8 +17,11 @@ let ParseObjectIdKey = "objectId"
 // MARK: - User class
 
 let ParseUserAvatarKey = "avatar"
+let ParseUserBirthdayKey = "birthday"
+let ParseUserBirthdayDateFormat = "yyyy-MM-dd"
 let ParseUserFacebookIdKey = "facebookId"
 let ParseUserGenderKey = "gender"
+let ParseUserLocationKey = "location"
 let ParseUserNameKey = "name"
 
 public class ParseUser: PFUser, PFSubclassing {
@@ -35,6 +38,25 @@ public class ParseUser: PFUser, PFSubclassing {
         set {
             self[ParseUserAvatarKey] = newValueOrNSNull(newValue)
         }
+    }
+
+    var birthday: String? {
+        get {
+            return self[ParseUserBirthdayKey] as? String
+        }
+        set {
+            self[ParseUserBirthdayKey] = newValueOrNSNull(newValue)
+        }
+    }
+    func birthdayDate(format: String = ParseUserBirthdayDateFormat) -> NSDate? {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = format
+        return self.birthday != nil ? dateFormatter.dateFromString(birthday!) : nil
+    }
+    func setBirthday(#date: NSDate) {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = ParseUserBirthdayDateFormat
+        birthday = dateFormatter.stringFromDate(date)
     }
 
     var facebookId: String? {
@@ -55,6 +77,15 @@ public class ParseUser: PFUser, PFSubclassing {
         }
     }
 
+    var location: String? {
+        get {
+            return self[ParseUserLocationKey] as? String
+        }
+        set {
+            self[ParseUserLocationKey] = newValueOrNSNull(newValue)
+        }
+    }
+
     var name: String? {
         get {
             return self[ParseUserNameKey] as? String
@@ -63,24 +94,6 @@ public class ParseUser: PFUser, PFSubclassing {
             self[ParseUserNameKey] = newValueOrNSNull(newValue)
         }
     }
-
-//    var birthday: NSDate? {
-//        get {
-//            return self[BirthdayKey] as? NSDate
-//        }
-//    }
-//    func setBirthday(#dateString: String?) {
-//        if let unwrappedDateString = dateString {
-//            
-//            let dateFormatter = NSDateFormatter()
-//            dateFormatter.dateFormat = "MM/dd/yyyy"
-//            dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-//            self[BirthdayKey] = dateFormatter.dateFromString(unwrappedDateString)
-//            
-//        } else {
-//            self[BirthdayKey] = NSNull()
-//        }
-//    }
 }
 
 // MARK: - Poll class

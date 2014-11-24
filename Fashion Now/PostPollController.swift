@@ -9,13 +9,13 @@
 import UIKit
 
 class PostPollController: UIViewController, PhotoControllerDelegate {
-    
+
+    private weak var pollController: PollController!
+
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var loadingView: UIView!
-    
-    private weak var pollController: PollController!
-    
+
     @IBAction func sendButtonPressed(sender: UIButton) {
         
         sender.enabled = false
@@ -24,7 +24,6 @@ class PostPollController: UIViewController, PhotoControllerDelegate {
         
         pollController.poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             
-//            self.photoComparisonController.clean(animated: true)
             self.loadingView.hidden = true
         }
     }

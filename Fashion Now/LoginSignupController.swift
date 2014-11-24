@@ -8,30 +8,44 @@
 
 import UIKit
 
-class LoginSignupController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class LoginSignupController: StaticDataTableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
     var parseUser: ParseUser?
     var facebookUser: FBGraphObject?
 
     @IBOutlet weak var nameField: UITextField!
+    @IBOutlet weak var locationField: UITextField!
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
 
     @IBAction func cancelButtonPressed(sender: UITabBarItem) {
+        view.endEditing(true)
         (self.presentingViewController as TabBarController).willDismissLoginController()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 
-    @IBAction func doneButtonPressed(sender: UITabBarItem) {
+    private var barButtonItems: [UIBarButtonItem] {
+        get {
+            var buttonItems = (navigationItem.leftBarButtonItems as? [UIBarButtonItem]) ?? []
+            if let rightButtonItems = navigationItem.rightBarButtonItems as? [UIBarButtonItem] {
+                buttonItems.extend(rightButtonItems)
+            }
+            return buttonItems
+        }
+    }
+    @IBAction func doneButtonPressed(sender: UIBarButtonItem) {
         // Interface tweak
-        sender.enabled = false
+        for barButtonItem in barButtonItems {
+            barButtonItem.enabled = false
+        }
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
         activityIndicator.startAnimating()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: activityIndicator)
+        navigationItem.rightBarButtonItems = [sender, UIBarButtonItem(customView: activityIndicator)]
 
-        // Disable text fields
-        for textField in [nameField, emailField, passwordField] {
+        // Dismiss keyboard and disable text fields
+        view.endEditing(true)
+        for textField in [nameField, locationField, emailField, passwordField] {
             textField.enabled = false
         }
 
@@ -39,8 +53,10 @@ class LoginSignupController: UITableViewController, UIPickerViewDataSource, UIPi
         let currentUser = PFUser.currentUser() as ParseUser
         if let unwrappedFacebookUser = facebookUser {
             currentUser.facebookId = unwrappedFacebookUser.objectId
+            currentUser.gender = unwrappedFacebookUser.gender // FIXME: Remove gender
         }
         currentUser.name = nameField.text
+        currentUser.location = locationField.text
         currentUser.email = emailField.text
         currentUser.password = passwordField.text
         currentUser.saveInBackgroundWithBlock { (succeeded, error) -> Void in
@@ -49,32 +65,34 @@ class LoginSignupController: UITableViewController, UIPickerViewDataSource, UIPi
                 self.dismissViewControllerAnimated(true, completion: nil)
             } else {
                 // TODO: Better error handling
+                for barButtonItem in self.barButtonItems {
+                    barButtonItem.enabled = true
+                }
+                self.navigationItem.rightBarButtonItems = [sender]
                 UIAlertView(title: nil, message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK").show()
             }
         }
     }
 
+    @IBOutlet weak var genderCell: UITableViewCell!
     @IBOutlet weak var genderPicker: UIPickerView!
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath == genderCellIndexPath {
-            return genderPickerHidden ? 0 : 162
-        }
-        if indexPath == NSIndexPath(forRow: 4, inSection: 0) {
-            return 0
-        }
-        return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
-    }
-
-    private let birthdayCellIndexPath = NSIndexPath(forRow: 4, inSection: 0)
-
-    private let genderCellIndexPath = NSIndexPath(forRow: 2, inSection: 0)
-    var genderPickerHidden: Bool = true {
-        didSet {
-            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
-        }
-    }
     @IBAction func genderButtonPressed(sender: UIButton) {
-        genderPickerHidden = !genderPickerHidden
+        cell(genderCell, setHidden: !cellIsHidden(genderCell))
+        reloadDataAnimated(true)
+    }
+
+    @IBOutlet weak var birthdayButton: UIButton!
+    @IBOutlet weak var birthdayCell: UITableViewCell!
+    @IBOutlet weak var birthdayPicker: UIDatePicker!
+    @IBAction func birthdayButtonPressed(sender: UIButton) {
+        cell(birthdayCell, setHidden: !cellIsHidden(birthdayCell))
+        reloadDataAnimated(true)
+    }
+    @IBAction func birthdayPicerValueDidChange(sender: UIDatePicker) {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateStyle = .LongStyle
+        dateFormatter.timeStyle = .NoStyle
+        birthdayButton.setTitle(dateFormatter.stringFromDate(sender.date), forState: .Normal)
     }
 
     // MARK: UIViewController
@@ -82,8 +100,16 @@ class LoginSignupController: UITableViewController, UIPickerViewDataSource, UIPi
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Setting static table view properties
+        insertTableViewRowAnimation = .Middle
+        deleteTableViewRowAnimation = .Middle
+        cells([genderCell, birthdayCell], setHidden: true)
+        reloadDataAnimated(false)
+
         genderPicker.dataSource = self
         genderPicker.delegate = self
+
+        birthdayPicker.maximumDate = NSDate()
 
         avatarImageView.layer.cornerRadius = 32
         avatarImageView.layer.masksToBounds = true
@@ -111,7 +137,9 @@ class LoginSignupController: UITableViewController, UIPickerViewDataSource, UIPi
 
         // Fill fields with Parse or Facebook information
         nameField.text = parseUser?.name ?? facebookUser?.first_name
+        locationField.text = parseUser?.location
         emailField.text = parseUser?.email ?? facebookUser?.email
+        passwordField.placeholder = "Optional" // FIXME: Better handlig password change
 
         // Avatar
         if let unwrappedFacebookUserPicture = facebookUser?.picturePath {

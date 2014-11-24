@@ -97,9 +97,9 @@ class VotePollController: UIViewController, PollControllerDelegate {
         // Tags
         if let unwrappedTags = newPoll.tags {
             tagsLabel.text = ", ".join(unwrappedTags)
-            tagsLabel.hidden = false
+            tagsLabel.superview?.hidden = false
         } else {
-            tagsLabel.hidden = true
+            tagsLabel.superview?.hidden = true
         }
     }
 

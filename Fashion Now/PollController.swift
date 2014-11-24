@@ -252,7 +252,7 @@ internal class PollController: UIViewController, PhotoControllerDelegate {
     // MARK: PhotoControllerDelegate
 
     var loadedPhotos = 0
-    func photoController(photoController: PhotoController, didLoadPhoto photo: ParsePhoto, data: NSData) {
+    func photoController(photoController: PhotoController, didLoadPhoto photo: ParsePhoto) {
         loadedPhotos++
         if loadedPhotos >= 2 {
             delegate?.pollControllerDidDidFinishLoad?(self)
