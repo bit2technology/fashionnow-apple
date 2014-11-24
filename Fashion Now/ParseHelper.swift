@@ -115,7 +115,11 @@ public class ParsePoll: PFObject, PFSubclassing {
     
     override init() {
         super.init()
-        createdBy = PFUser.currentUser() as? ParseUser
+        let currentUser = PFUser.currentUser() as ParseUser
+        let defaultACL = PFACL(user: currentUser)
+        defaultACL.setPublicReadAccess(true)
+        ACL = defaultACL
+        createdBy = currentUser
     }
 
     var createdBy: ParseUser? {
@@ -144,6 +148,24 @@ public class ParsePoll: PFObject, PFSubclassing {
             self[ParsePollTagsKey] = newValueOrNSNull(newValue)
         }
     }
+
+
+
+
+
+    var isValid: Bool {
+        get {
+            if photos == nil {
+                return false
+            }
+            for photo in photos! {
+                if photo.isValid != true {
+                    return false
+                }
+            }
+            return true
+        }
+    }
 }
 
 // MARK: - Photo class
@@ -164,7 +186,11 @@ public class ParsePhoto: PFObject, PFSubclassing {
     
     override init() {
         super.init()
-        uploadedBy = PFUser.currentUser()
+        let currentUser = PFUser.currentUser() as ParseUser
+        let defaultACL = PFACL(user: currentUser)
+        defaultACL.setPublicReadAccess(true)
+        ACL = defaultACL
+        uploadedBy = currentUser
     }
 
     var image: PFFile? {
@@ -176,12 +202,23 @@ public class ParsePhoto: PFObject, PFSubclassing {
         }
     }
 
-    var uploadedBy: PFUser? {
+    var uploadedBy: ParseUser? {
         get {
-            return self[ParsePhotoUploadedByKey] as? PFUser
+            return self[ParsePhotoUploadedByKey] as? ParseUser
         }
         set {
             self[ParsePhotoUploadedByKey] = newValueOrNSNull(newValue)
+        }
+    }
+
+
+
+
+
+
+    var isValid: Bool {
+        get {
+            return image != nil && uploadedBy != nil
         }
     }
 }

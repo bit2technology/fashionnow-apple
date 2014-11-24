@@ -127,7 +127,8 @@ class VotePollController: UIViewController, PollControllerDelegate {
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconFriendsPollsSelected")
 
         pollController.delegate = self
-        pollController.dragEnabled = true
+        pollController.imageButtonsHidden = true
+        pollController.voteGesturesEnabled = true
         
         avatarView.layer.cornerRadius = 20
         avatarView.layer.masksToBounds = true

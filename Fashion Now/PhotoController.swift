@@ -30,22 +30,16 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var libraryButton: UIButton!
     @IBOutlet weak var previousButton: UIButton!
+    @IBOutlet weak var deleteButton: UIButton!
     var imageButtonsHidden: Bool = false {
         didSet {
-            for button in [cameraButton, libraryButton, previousButton] {
+            for button in [cameraButton, libraryButton, previousButton, deleteButton] {
                 button.hidden = imageButtonsHidden
             }
         }
     }
 
-    @IBOutlet weak var imageView: UIImageView!
-    var imageContainerHidden: Bool = true {
-        didSet {
-            imageView.superview?.hidden = imageContainerHidden
-        }
-    }
-
-    func deleteImage() {
+    @IBAction func deleteImage(sender: UIButton) {
 
         // Set photo properties
         photo.image = nil
@@ -84,6 +78,21 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         imagePickerController.delegate = self
         imagePickerController.sourceType = source
         presentViewController(imagePickerController, animated: true, completion: nil)
+    }
+
+    @IBOutlet weak var imageView: UIImageView!
+    var imageContainerHidden: Bool = true {
+        didSet {
+            imageView.superview?.hidden = imageContainerHidden
+        }
+    }
+
+    // MARK: UIViewController
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        deleteButton.tintColor = UIColor.defaultTintColor(alpha: 0.6)
     }
 
     // MARK: UIImagePickerControllerDelegate

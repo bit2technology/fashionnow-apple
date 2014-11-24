@@ -307,9 +307,9 @@
                                 </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4XI-L8-6Pr" userLabel="Left Vote" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="-5" y="375" width="86" height="52"/>
+                                <rect key="frame" x="-5" y="375" width="91" height="52"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <inset key="contentEdgeInsets" minX="25" minY="15" maxX="25" maxY="15"/>
+                                <inset key="contentEdgeInsets" minX="30" minY="15" maxX="25" maxY="15"/>
                                 <state key="normal" title="Vote" backgroundImage="ButtonRoundBordersBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -319,9 +319,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GPX-GA-SAX" userLabel="Right Vote" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="239" y="375" width="86" height="52"/>
+                                <rect key="frame" x="234" y="375" width="91" height="52"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <inset key="contentEdgeInsets" minX="25" minY="15" maxX="25" maxY="15"/>
+                                <inset key="contentEdgeInsets" minX="25" minY="15" maxX="30" maxY="15"/>
                                 <state key="normal" title="Vote" backgroundImage="ButtonRoundBordersBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -471,6 +471,7 @@
                     <connections>
                         <outlet property="loadingView" destination="rgf-j2-tkN" id="wua-Js-3Xe"/>
                         <outlet property="sendButton" destination="bgG-Zw-FU2" id="hFN-N5-M1q"/>
+                        <outlet property="textField" destination="aa7-aO-RqI" id="kXu-dH-CIW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hmV-tg-bv8" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -939,21 +940,23 @@
                         <outlet property="containerView" destination="Xjm-MJ-dOi" id="QkU-AL-3Si"/>
                         <outlet property="drager" destination="kgl-Bo-434" id="gK9-Zx-6gF"/>
                         <outlet property="leftPhotoView" destination="22F-CN-JDl" id="Xgc-LM-En5"/>
+                        <outlet property="leftdoubleTap" destination="aQj-E4-gl5" id="THR-f1-7T0"/>
                         <outlet property="rightPhotoView" destination="TYB-j4-um4" id="jhq-Wr-tpH"/>
+                        <outlet property="rightdoubleTap" destination="t7x-cR-kO3" id="7uh-SJ-8Zb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t7F-ab-SSQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="kgl-Bo-434" userLabel="Drager">
+                <panGestureRecognizer enabled="NO" minimumNumberOfTouches="1" id="kgl-Bo-434" userLabel="Drager">
                     <connections>
                         <action selector="didDrag:" destination="hpa-fw-Ay5" id="9o6-0T-99r"/>
                     </connections>
                 </panGestureRecognizer>
-                <tapGestureRecognizer numberOfTapsRequired="2" id="aQj-E4-gl5" userLabel="Left Double Tap">
+                <tapGestureRecognizer enabled="NO" numberOfTapsRequired="2" id="aQj-E4-gl5" userLabel="Left Double Tap">
                     <connections>
                         <action selector="didDoubleTap:" destination="hpa-fw-Ay5" id="7Lr-UO-GDr"/>
                     </connections>
                 </tapGestureRecognizer>
-                <tapGestureRecognizer numberOfTapsRequired="2" id="t7x-cR-kO3" userLabel="Right Double Tap">
+                <tapGestureRecognizer enabled="NO" numberOfTapsRequired="2" id="t7x-cR-kO3" userLabel="Right Double Tap">
                     <connections>
                         <action selector="didDoubleTap:" destination="hpa-fw-Ay5" id="qT7-Kw-opT"/>
                     </connections>
@@ -1006,12 +1009,23 @@
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yhO-Ld-1tg">
                                         <rect key="frame" x="464" y="0.0" width="192" height="367"/>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YYI-4A-sio" userLabel="Delete Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                        <rect key="frame" x="528" y="299" width="64" height="64"/>
+                                        <state key="normal" title="Delete" backgroundImage="ButtonCircleBackground">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="deleteImage:" destination="rPD-KC-83S" eventType="touchUpInside" id="4Q4-YS-7lM"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="centerX" secondItem="yhO-Ld-1tg" secondAttribute="centerX" id="IwN-V6-SM8"/>
                                     <constraint firstItem="yhO-Ld-1tg" firstAttribute="top" secondItem="H8b-Ws-oM2" secondAttribute="top" id="YfS-wH-E0a"/>
+                                    <constraint firstAttribute="centerX" secondItem="YYI-4A-sio" secondAttribute="centerX" id="lLp-F2-r0I"/>
                                     <constraint firstAttribute="bottom" secondItem="yhO-Ld-1tg" secondAttribute="bottom" id="maz-NH-143"/>
+                                    <constraint firstAttribute="bottom" secondItem="YYI-4A-sio" secondAttribute="bottom" constant="4" id="thC-b0-b5z"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -1032,6 +1046,7 @@
                     <toolbarItems/>
                     <connections>
                         <outlet property="cameraButton" destination="FBu-Eh-kK4" id="YFa-VO-0p1"/>
+                        <outlet property="deleteButton" destination="YYI-4A-sio" id="P8K-H0-smO"/>
                         <outlet property="imageView" destination="yhO-Ld-1tg" id="NjT-wD-fFX"/>
                         <outlet property="libraryButton" destination="vhz-QE-CMT" id="JXu-0p-2Lw"/>
                         <outlet property="previousButton" destination="3W7-Sc-zrt" id="zjY-4U-wrR"/>
@@ -1108,7 +1123,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="oem-Cm-nHK"/>
-        <segue reference="apZ-Yv-541"/>
+        <segue reference="IZA-Rh-gPV"/>
         <segue reference="uM3-tb-eTB"/>
     </inferredMetricsTieBreakers>
 </document>

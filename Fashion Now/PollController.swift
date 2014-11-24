@@ -62,6 +62,24 @@ internal class PollController: UIViewController, PhotoControllerDelegate {
         adjustVoteLayout(rate, animationTimingFunction: CAMediaTimingFunction(name: (easeIn ? kCAMediaTimingFunctionEaseInEaseOut : kCAMediaTimingFunctionEaseOut)), voteCompleted: true)
     }
 
+    var imageButtonsHidden: Bool = false {
+        didSet {
+            for photoController in [leftPhotoController, rightPhotoController] {
+                photoController.imageButtonsHidden = self.imageButtonsHidden
+            }
+        }
+    }
+
+    var voteGesturesEnabled: Bool = false {
+        didSet {
+            for gesture in [drager, leftdoubleTap, rightdoubleTap] {
+                gesture.enabled = voteGesturesEnabled
+            }
+        }
+    }
+
+    @IBOutlet weak var leftdoubleTap: UITapGestureRecognizer!
+    @IBOutlet weak var rightdoubleTap: UITapGestureRecognizer!
     @IBAction func didDoubleTap(sender: UITapGestureRecognizer) {
 
         var index: Int!
@@ -79,11 +97,7 @@ internal class PollController: UIViewController, PhotoControllerDelegate {
         animateAndVote(index: index, easeIn: true)
     }
 
-    var dragEnabled: Bool = true {
-        didSet {
-            drager.enabled = dragEnabled
-        }
-    }
+
     @IBOutlet var drager: UIPanGestureRecognizer!
     @IBAction func didDrag(sender: UIPanGestureRecognizer) {
 
@@ -242,7 +256,6 @@ internal class PollController: UIViewController, PhotoControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        dragEnabled = false
         photoViews = [leftPhotoView, rightPhotoView]
 
         leftPhotoController.delegate = self
@@ -258,9 +271,20 @@ internal class PollController: UIViewController, PhotoControllerDelegate {
             delegate?.pollControllerDidDidFinishLoad?(self)
         }
     }
+
+    func photoController(photoController: PhotoController, didEditPhoto photo: ParsePhoto) {
+        if leftPhotoController.photo.isValid && rightPhotoController.photo.isValid {
+            poll.photos = [leftPhotoController.photo, rightPhotoController.photo]
+        } else {
+            poll.photos = nil
+        }
+        delegate?.pollController?(self, didEditPoll: poll)
+    }
 }
 
 @objc protocol PollControllerDelegate {
+
+    optional func pollController(pollController: PollController, didEditPoll poll:ParsePoll)
 
     optional func pollControllerDidInteractWithVoteInterface(pollController: PollController)
     optional func pollControllerDidVote(pollController: PollController, animated: Bool)
