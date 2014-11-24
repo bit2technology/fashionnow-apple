@@ -10,7 +10,7 @@ import UIKit
 
 internal class PollController: UIViewController, PhotoControllerDelegate {
     
-    var poll: Poll = Poll() {
+    var poll: ParsePoll = ParsePoll() {
         didSet {
             if let unwrappedPhotos = poll.photos {
                 loadedPhotos = 0
@@ -252,7 +252,7 @@ internal class PollController: UIViewController, PhotoControllerDelegate {
     // MARK: PhotoControllerDelegate
 
     var loadedPhotos = 0
-    func photoController(photoController: PhotoController, didLoadPhoto photo: Photo, data: NSData) {
+    func photoController(photoController: PhotoController, didLoadPhoto photo: ParsePhoto, data: NSData) {
         loadedPhotos++
         if loadedPhotos >= 2 {
             delegate?.pollControllerDidDidFinishLoad?(self)

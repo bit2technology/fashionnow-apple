@@ -64,7 +64,7 @@ class PostPollController: UIViewController, PhotoControllerDelegate {
 
     // MARK: PhotoControllerDelegate
     
-    func photoController(photoController: PhotoController, didEditPhoto photo: Photo) {
+    func photoController(photoController: PhotoController, didEditPhoto photo: ParsePhoto) {
         
     }
 }

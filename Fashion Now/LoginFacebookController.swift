@@ -10,17 +10,17 @@ import UIKit
 
 class LoginFacebookController: UIViewController, UINavigationControllerDelegate {
 
-    @IBAction func betaWarning(sender: AnyObject) {
-        UIAlertView(title: NSLocalizedString("BETA_WARNING_ALERT_TITLE", value: "Fashion Now Beta", comment: "Title in alert warning users about Beta limitations"), message: NSLocalizedString("BETA_WARNING_ALERT_MESSAGE", value: "We're sorry, but in this version of Fashion Now, you can only log in with your Facebook account.", comment: "Message in alert warning users about Beta limitations"), delegate: nil, cancelButtonTitle: NSLocalizedString("BETA_WARNING_ALERT_CANCEL_BUTTON", value: "OK", comment: "Dismiss alert")).show()
+    @IBAction func showBetaWarning(sender: AnyObject) {
+        UIAlertView(title: NSLocalizedString("BETA_WARNING_ALERT_TITLE", value: "Fashion Now Beta", comment: "Title in alert warning users about beta limitations"), message: NSLocalizedString("BETA_WARNING_ALERT_MESSAGE", value: "We're sorry, but in this version of Fashion Now, you can only log in with your Facebook account.", comment: "Message in alert warning users about beta limitations"), delegate: nil, cancelButtonTitle: NSLocalizedString("BETA_WARNING_ALERT_CANCEL_BUTTON", value: "OK", comment: "Dismiss alert")).show()
     }
 
-    @IBAction func dismiss(sender: UITabBarItem) {
+    @IBAction func cancelButtonPressed(sender: UITabBarItem) {
         (self.presentingViewController as TabBarController).willDismissLoginController()
         dismissViewControllerAnimated(true, completion: nil)
     }
 
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBAction func loginButtonPressed(sender: UIButton) {
+    @IBAction func loginWithFacebookButtonPressed(sender: UIButton) {
 
         // Set loading interface
         sender.enabled = false
@@ -28,25 +28,26 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
 
         // Login
         PFFacebookUtils.logInWithPermissions(["public_profile", "user_friends", "email"]) { (user, error) -> Void in
-            if let customUser = user as? User {
+            if let customUser = user as? ParseUser {
 
                 // Successful login. Now get Facebook information.
-                FBRequestConnection.startForMeWithCompletionHandler() { (requestConnection, object, error) -> Void in
-                    if let graphObject = object as? FBGraphObject {
+                let avatarSize = Int(64 * UIScreen.mainScreen().scale)
+                FBRequestConnection.startWithGraphPath("me?fields=id,first_name,email,gender,picture.height(\(avatarSize)).width(\(avatarSize)).redirect(false)") { (requestConnection, result, error) -> Void in
+                    if error == nil {
                         // Send Facebook information for review in next screen
-                        self.performSegueWithIdentifier("Sign Up", sender: graphObject)
+                        self.performSegueWithIdentifier("Sign Up", sender: result)
                     } else {
                         // TODO: Better Facebook request error handler
                         sender.enabled = true
                         self.activityIndicator.stopAnimating()
-                        UIAlertView(title: nil, message: error.localizedDescription, delegate: nil, cancelButtonTitle: NSLocalizedString("FACEBOOK_LOGIN_ERROR_ALERT_CANCEL_BUTTON", value: "OK", comment: "Dismiss alert")).show()
+                        UIAlertView(title: nil, message: error.localizedDescription, delegate: nil, cancelButtonTitle:"OK").show()
                     }
                 }
             } else {
                 // TODO: Better login error handler
                 sender.enabled = true
                 self.activityIndicator.stopAnimating()
-                UIAlertView(title: nil, message: error.localizedDescription, delegate: nil, cancelButtonTitle: NSLocalizedString("FACEBOOK_LOGIN_ERROR_ALERT_CANCEL_BUTTON", value: "OK", comment: "Dismiss alert")).show()
+                UIAlertView(title: nil, message: error.localizedDescription, delegate: nil, cancelButtonTitle:"OK").show()
             }
         }
     }
@@ -58,7 +59,7 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
             switch unwrappedId {
 
             case "Sign Up":
-                (segue.destinationViewController as LoginSignupController).userObject = sender as? FBGraphObject
+                (segue.destinationViewController as LoginSignupController).facebookUser = sender as? FBGraphObject
             default:
                 return
             }

@@ -1,11 +1,17 @@
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "0f5-U3-bCy"; */
+"0f5-U3-bCy.placeholder" = "Senha";
+
 /* Class = "IBUIButton"; normalTitle = "Follow"; ObjectID = "1iE-fK-YeD"; */
 "1iE-fK-YeD.normalTitle" = "Seguir";
 
 /* Class = "IBUITabBarItem"; title = "Post"; ObjectID = "2O1-Ra-Pjk"; */
 "2O1-Ra-Pjk.title" = "Postar";
 
-/* Class = "IBUIButton"; normalTitle = "Sign up with e-mail"; ObjectID = "5eZ-fB-11K"; */
-"5eZ-fB-11K.normalTitle" = "Registrar com e-mail";
+/* Class = "IBUIButton"; normalTitle = "Vote"; ObjectID = "4XI-L8-6Pr"; */
+"4XI-L8-6Pr.normalTitle" = "Votar";
+
+/* Class = "IBUIButton"; normalTitle = "Log in with e-mail"; ObjectID = "5eZ-fB-11K"; */
+"5eZ-fB-11K.normalTitle" = "Login com e-mail";
 
 /* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "9H3-pz-qNB"; */
 "9H3-pz-qNB.title" = "Voltar";
@@ -13,14 +19,26 @@
 /* Class = "IBUINavigationItem"; title = "Sign Up"; ObjectID = "9LK-rm-73H"; */
 "9LK-rm-73H.title" = "Registrar";
 
+/* Class = "IBUIButton"; normalTitle = "Change photo..."; ObjectID = "A9K-mP-qOL"; */
+"A9K-mP-qOL.normalTitle" = "Mudar foto...";
+
+/* Class = "IBUIButton"; normalTitle = "Vote"; ObjectID = "GPX-GA-SAX"; */
+"GPX-GA-SAX.normalTitle" = "Votar";
+
+/* Class = "IBUITableViewSection"; headerTitle = "About"; ObjectID = "MRE-Ba-kQK"; */
+"MRE-Ba-kQK.headerTitle" = "Sobre";
+
 /* Class = "IBUIButton"; normalTitle = "Log in with Facebook"; ObjectID = "MXb-Ij-kte"; */
-"MXb-Ij-kte.normalTitle" = "Log in com Facebook";
+"MXb-Ij-kte.normalTitle" = "Login com Facebook";
 
 /* Class = "IBUITextField"; placeholder = "Username"; ObjectID = "Ost-XS-Gaw"; */
 "Ost-XS-Gaw.placeholder" = "Nome de usuário";
 
-/* Class = "IBUIButton"; normalTitle = "I already have an account"; ObjectID = "UVf-dJ-3oB"; */
-"UVf-dJ-3oB.normalTitle" = "Eu já tenho uma conta";
+/* Class = "IBUITextField"; placeholder = "Name"; ObjectID = "RGQ-tI-plV"; */
+"RGQ-tI-plV.placeholder" = "Nome";
+
+/* Class = "IBUIButton"; normalTitle = "Sign up with e-mail"; ObjectID = "UVf-dJ-3oB"; */
+"UVf-dJ-3oB.normalTitle" = "Registrar com e-mail";
 
 /* Class = "IBUITextField"; placeholder = "Add hashtags"; ObjectID = "aa7-aO-RqI"; */
 "aa7-aO-RqI.placeholder" = "Adicionar hashtags";
@@ -28,23 +46,32 @@
 /* Class = "IBUIButton"; normalTitle = "Send"; ObjectID = "bgG-Zw-FU2"; */
 "bgG-Zw-FU2.normalTitle" = "Enviar";
 
+/* Class = "IBUITableViewSection"; headerTitle = "Login credentials"; ObjectID = "cAD-Za-ZPA"; */
+"cAD-Za-ZPA.headerTitle" = "Credenciais";
+
 /* Class = "IBUITabBarItem"; title = "Vote"; ObjectID = "cp0-V5-EKB"; */
 "cp0-V5-EKB.title" = "Votar";
 
 /* Class = "IBUINavigationItem"; title = "Log In"; ObjectID = "dwE-iZ-ESc"; */
-"dwE-iZ-ESc.title" = "Log In";
+"dwE-iZ-ESc.title" = "Login";
 
 /* Class = "IBUITabBarItem"; title = "Me"; ObjectID = "ebj-yB-2vL"; */
 "ebj-yB-2vL.title" = "Eu";
 
 /* Class = "IBUIButton"; normalTitle = "Log in"; ObjectID = "exf-D7-gGy"; */
-"exf-D7-gGy.normalTitle" = "Log in";
+"exf-D7-gGy.normalTitle" = "Login";
+
+/* Class = "IBUIButton"; normalTitle = "Edit profile"; ObjectID = "mQJ-0P-ZEh"; */
+"mQJ-0P-ZEh.normalTitle" = "Editar perfil";
 
 /* Class = "IBUILabel"; text = "Name"; ObjectID = "mhc-nx-wcX"; */
 "mhc-nx-wcX.text" = "Nome";
 
 /* Class = "IBUILabel"; text = "Date"; ObjectID = "oWN-q7-Q6r"; */
 "oWN-q7-Q6r.text" = "Data";
+
+/* Class = "IBUIButton"; normalTitle = "Log Out"; ObjectID = "pb3-dg-CUr"; */
+"pb3-dg-CUr.normalTitle" = "Logout";
 
 /* Class = "IBUILabel"; text = "Fashion Now works better with Facebook. Don't worry, we'll respect your privacy."; ObjectID = "sIE-qd-ls5"; */
 "sIE-qd-ls5.text" = "Fashion Now funciona melhor com Facebook. Não se preocupe, respeitaremos sua privacidade.";

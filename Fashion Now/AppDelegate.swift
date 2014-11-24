@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject:AnyObject]?) -> Bool {
 
         // App basic configuration
         window?.tintColor = UIColor.defaultTintColor()
@@ -22,10 +22,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
         PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         PFFacebookUtils.initializeFacebook()
-        
+
+        // Push notifications
+        if application.respondsToSelector("registerUserNotificationSettings:") {
+            // Register for Push Notitications, if running iOS 8
+            let userNotificationTypes = UIUserNotificationType.Alert | .Badge | .Sound
+            let settings = UIUserNotificationSettings(forTypes: userNotificationTypes, categories: nil)
+            application.registerUserNotificationSettings(settings)
+            application.registerForRemoteNotifications()
+        } else {
+            // Register for Push Notifications before iOS 8
+            application.registerForRemoteNotificationTypes(UIRemoteNotificationType.Alert | .Badge | .Sound)
+        }
+
         // Get current user (or create an anonymous one)
         PFUser.enableAutomaticUser()
-        let currentUser = PFUser.currentUser()
+        let currentUser = PFUser.currentUser() as ParseUser
         if currentUser.isDirty() {
             currentUser.saveInBackgroundWithBlock(nil)
         }
@@ -38,8 +50,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
+        // Facebook configuration
         FBAppCall.handleDidBecomeActiveWithSession(PFFacebookUtils.session())
         FBAppEvents.activateApp()
+        FacebookHelper.updateCachedAvatarPathInBackground()
+    }
+
+    // MARK: Push notifications
+
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        // Store the deviceToken in the current installation and save it to Parse.
+        let currentInstallation = PFInstallation.currentInstallation()
+        currentInstallation.setDeviceTokenFromData(deviceToken)
+        currentInstallation.saveInBackgroundWithBlock(nil)
+    }
+
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        PFPush.handlePush(userInfo)
     }
 }
 

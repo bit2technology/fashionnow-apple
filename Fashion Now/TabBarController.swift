@@ -43,8 +43,8 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
     }
 
     func willDismissLoginController() {
-        // If successful login, select new controleller
-        if !PFAnonymousUtils.isLinkedWithUser(PFUser.currentUser()) {
+        // If successful login and there is a controller to be selected, select new controleller
+        if !PFAnonymousUtils.isLinkedWithUser(PFUser.currentUser()) && controllerIndex != nil {
             selectedIndex = controllerIndex!
         }
         controllerIndex = nil

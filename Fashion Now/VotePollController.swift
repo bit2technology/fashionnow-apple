@@ -11,7 +11,7 @@ import UIKit
 class VotePollController: UIViewController, PollControllerDelegate {
     
     private weak var pollController: PollController!
-    private var polls: [Poll]?
+    private var polls: [ParsePoll]?
 
     // Navigation bar items
     @IBOutlet weak var avatarView: UIImageView!
@@ -124,6 +124,8 @@ class VotePollController: UIViewController, PollControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconFriendsPollsSelected")
+
         pollController.delegate = self
         pollController.dragEnabled = true
         
@@ -141,13 +143,13 @@ class VotePollController: UIViewController, PollControllerDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        var publicPollsQuery: PFQuery = PFQuery(className: Poll.parseClassName())
-        publicPollsQuery.includeKey("photos")
-        publicPollsQuery.includeKey("createdBy")
-        publicPollsQuery.orderByAscending("createdAt")
+        var publicPollsQuery: PFQuery = PFQuery(className: ParsePoll.parseClassName())
+        publicPollsQuery.includeKey(ParsePollPhotosKey)
+        publicPollsQuery.includeKey(ParsePollCreatedByKey)
+        publicPollsQuery.orderByAscending(ParseObjectCreatedAtKey)
         publicPollsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
 
-            if let unwrappedObjects = objects as? [Poll] {
+            if let unwrappedObjects = objects as? [ParsePoll] {
                 self.polls = unwrappedObjects
                 self.showNextPoll()
             }

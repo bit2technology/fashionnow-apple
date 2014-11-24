@@ -10,74 +10,87 @@ private func newValueOrNSNull(newValue: AnyObject?) -> AnyObject {
     return (newValue != nil ? newValue! : NSNull())
 }
 
+let ParseObjectCreatedAtKey = "createdAt"
+let ParseObjectUpdatedAtKey = "updatedAt"
+let ParseObjectIdKey = "objectId"
+
 // MARK: - User class
 
-public class User: PFUser, PFSubclassing {
+let ParseUserAvatarKey = "avatar"
+let ParseUserFacebookIdKey = "facebookId"
+let ParseUserGenderKey = "gender"
+let ParseUserNameKey = "name"
 
-    private let NameKey = "name"
-    private let GenderKey = "gender"
-    private let BirthdayKey = "birthday"
-    private let LocationNameKey = "locationName"
+public class ParseUser: PFUser, PFSubclassing {
 
     override public class func load() {
         superclass()?.load()
         registerSubclass()
     }
-    
-    var name: String? {
+
+    var avatar: ParsePhoto? {
         get {
-            return self[NameKey] as? String
+            return self[ParseUserAvatarKey] as? ParsePhoto
         }
         set {
-            self[NameKey] = newValueOrNSNull(newValue)
-        }
-    }
-    
-    var gender: String? {
-        get {
-            return self[GenderKey] as? String
-        }
-        set {
-            self[GenderKey] = newValueOrNSNull(newValue)
+            self[ParseUserAvatarKey] = newValueOrNSNull(newValue)
         }
     }
 
-    var birthday: NSDate? {
+    var facebookId: String? {
         get {
-            return self[BirthdayKey] as? NSDate
-        }
-    }
-    func setBirthday(#dateString: String?) {
-        if let unwrappedDateString = dateString {
-            
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "MM/dd/yyyy"
-            dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-            self[BirthdayKey] = dateFormatter.dateFromString(unwrappedDateString)
-            
-        } else {
-            self[BirthdayKey] = NSNull()
-        }
-    }
-    
-    var locationName: String? {
-        get {
-            return self[LocationNameKey] as? String
+            return self[ParseUserFacebookIdKey] as? String
         }
         set {
-            self[LocationNameKey] = newValueOrNSNull(newValue)
+            self[ParseUserFacebookIdKey] = newValueOrNSNull(newValue)
         }
     }
+
+    var gender: String? {
+        get {
+            return self[ParseUserGenderKey] as? String
+        }
+        set {
+            self[ParseUserGenderKey] = newValueOrNSNull(newValue)
+        }
+    }
+
+    var name: String? {
+        get {
+            return self[ParseUserNameKey] as? String
+        }
+        set {
+            self[ParseUserNameKey] = newValueOrNSNull(newValue)
+        }
+    }
+
+//    var birthday: NSDate? {
+//        get {
+//            return self[BirthdayKey] as? NSDate
+//        }
+//    }
+//    func setBirthday(#dateString: String?) {
+//        if let unwrappedDateString = dateString {
+//            
+//            let dateFormatter = NSDateFormatter()
+//            dateFormatter.dateFormat = "MM/dd/yyyy"
+//            dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+//            self[BirthdayKey] = dateFormatter.dateFromString(unwrappedDateString)
+//            
+//        } else {
+//            self[BirthdayKey] = NSNull()
+//        }
+//    }
 }
 
 // MARK: - Poll class
 
-public class Poll: PFObject, PFSubclassing {
+let ParsePollCreatedByKey = "createdBy"
+let ParsePollPhotosKey = "photos"
+let ParsePollTagsKey = "tags"
 
-    private let CreatedByKey = "createdBy"
-    private let PhotosKey = "photos"
-    private let TagsKey = "tags"
-    
+public class ParsePoll: PFObject, PFSubclassing {
+
     override public class func load() {
         superclass()?.load()
         registerSubclass()
@@ -89,43 +102,43 @@ public class Poll: PFObject, PFSubclassing {
     
     override init() {
         super.init()
-        createdBy = PFUser.currentUser()
+        createdBy = PFUser.currentUser() as? ParseUser
     }
 
-    var createdBy: PFUser? {
+    var createdBy: ParseUser? {
         get {
-            return self[CreatedByKey] as? PFUser
+            return self[ParsePollCreatedByKey] as? ParseUser
         }
         set {
-            self[CreatedByKey] = newValueOrNSNull(newValue)
+            self[ParsePollCreatedByKey] = newValueOrNSNull(newValue)
         }
     }
 
-    var photos: [Photo]? {
+    var photos: [ParsePhoto]? {
         get {
-            return self[PhotosKey] as? [Photo]
+            return self[ParsePollPhotosKey] as? [ParsePhoto]
         }
         set {
-            self[PhotosKey] = newValueOrNSNull(newValue)
+            self[ParsePollPhotosKey] = newValueOrNSNull(newValue)
         }
     }
 
     var tags: [String]? {
         get {
-            return self[TagsKey] as? [String]
+            return self[ParsePollTagsKey] as? [String]
         }
         set {
-            self[TagsKey] = newValueOrNSNull(newValue)
+            self[ParsePollTagsKey] = newValueOrNSNull(newValue)
         }
     }
 }
 
 // MARK: - Photo class
 
-public class Photo: PFObject, PFSubclassing {
+let ParsePhotoImageKey = "image"
+let ParsePhotoUploadedByKey = "uploadedBy"
 
-    private let UploadedByKey = "uploadedBy"
-    private let ImageKey = "image"
+public class ParsePhoto: PFObject, PFSubclassing {
     
     override public class func load() {
         superclass()?.load()
@@ -141,21 +154,21 @@ public class Photo: PFObject, PFSubclassing {
         uploadedBy = PFUser.currentUser()
     }
 
-    var uploadedBy: PFUser? {
+    var image: PFFile? {
         get {
-            return self[UploadedByKey] as? PFUser
+            return self[ParsePhotoImageKey] as? PFFile
         }
         set {
-            self[UploadedByKey] = newValueOrNSNull(newValue)
+            self[ParsePhotoImageKey] = newValueOrNSNull(newValue)
         }
     }
 
-    var image: PFFile? {
+    var uploadedBy: PFUser? {
         get {
-            return self[ImageKey] as? PFFile
+            return self[ParsePhotoUploadedByKey] as? PFUser
         }
         set {
-            self[ImageKey] = newValueOrNSNull(newValue)
+            self[ParsePhotoUploadedByKey] = newValueOrNSNull(newValue)
         }
     }
 }

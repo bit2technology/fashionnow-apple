@@ -8,7 +8,7 @@
 
 class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    var photo: Photo = Photo() {
+    var photo: ParsePhoto = ParsePhoto() {
         didSet {
             photo.image?.getDataInBackgroundWithBlock { (data, error) -> Void in
                 if let unwrappedData = data {
@@ -121,8 +121,8 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
 
 @objc protocol PhotoControllerDelegate {
 
-    optional func photoController(photoController: PhotoController, didLoadPhoto photo: Photo, data: NSData)
-    optional func photoController(photoController: PhotoController, loadPhoto photo: Photo, error: NSError)
+    optional func photoController(photoController: PhotoController, didLoadPhoto photo: ParsePhoto, data: NSData)
+    optional func photoController(photoController: PhotoController, loadPhoto photo: ParsePhoto, error: NSError)
 
-    optional func photoController(photoController: PhotoController, didEditPhoto photo: Photo)
+    optional func photoController(photoController: PhotoController, didEditPhoto photo: ParsePhoto)
 }

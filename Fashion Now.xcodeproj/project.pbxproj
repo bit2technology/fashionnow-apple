@@ -18,6 +18,7 @@
 		4B8941491A03B3530017F6FC /* TemplateBackgroundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8941481A03B3530017F6FC /* TemplateBackgroundButton.swift */; };
 		4BAAAF8E1A14C5FB00AAFAFB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */; };
 		4BC4CF0B1A01164F0000A231 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4BC4CF0A1A01164F0000A231 /* .gitignore */; };
+		4BDB6D151A221033003D56C1 /* FacebookHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDB6D141A221033003D56C1 /* FacebookHelper.swift */; };
 		4BEB9E181A01AA9A00A71764 /* ParseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEB9E171A01AA9A00A71764 /* ParseHelper.swift */; };
 		4BEB9E1A1A01ABD200A71764 /* PhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEB9E191A01ABD200A71764 /* PhotoController.swift */; };
 		4BEB9E1C1A01ABF800A71764 /* PollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEB9E1B1A01ABF800A71764 /* PollController.swift */; };
@@ -54,6 +55,7 @@
 		4B8941481A03B3530017F6FC /* TemplateBackgroundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateBackgroundButton.swift; sourceTree = "<group>"; };
 		4BAAAF8F1A14C5FB00AAFAFB /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4BC4CF0A1A01164F0000A231 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
+		4BDB6D141A221033003D56C1 /* FacebookHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookHelper.swift; sourceTree = "<group>"; };
 		4BEB9E171A01AA9A00A71764 /* ParseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseHelper.swift; sourceTree = "<group>"; };
 		4BEB9E191A01ABD200A71764 /* PhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoController.swift; sourceTree = "<group>"; };
 		4BEB9E1B1A01ABF800A71764 /* PollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollController.swift; sourceTree = "<group>"; };
@@ -92,6 +94,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4B5712451A20A8BE0097A4FC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4BDB6D141A221033003D56C1 /* FacebookHelper.swift */,
+				4BEB9E171A01AA9A00A71764 /* ParseHelper.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		4BF1D04C1A00F1EB00818658 = {
 			isa = PBXGroup;
 			children = (
@@ -115,8 +126,7 @@
 		4BF1D0571A00F1EB00818658 /* Fashion Now */ = {
 			isa = PBXGroup;
 			children = (
-				4BF1D0611A00F1EB00818658 /* Main.storyboard */,
-				4BF1D0661A00F1EB00818658 /* LaunchScreen.xib */,
+				4B5712451A20A8BE0097A4FC /* Model */,
 				4BF1D05A1A00F1EB00818658 /* AppDelegate.swift */,
 				4B3864641A178B80004ECAB8 /* TabBarController.swift */,
 				4B79AABA1A0E4D740097B069 /* LoginFacebookController.swift */,
@@ -127,8 +137,9 @@
 				4BEB9E1B1A01ABF800A71764 /* PollController.swift */,
 				4BEB9E191A01ABD200A71764 /* PhotoController.swift */,
 				4B7C3DEA1A1EB610004A4D37 /* MeController.swift */,
-				4BEB9E171A01AA9A00A71764 /* ParseHelper.swift */,
 				4B8941481A03B3530017F6FC /* TemplateBackgroundButton.swift */,
+				4BF1D0611A00F1EB00818658 /* Main.storyboard */,
+				4BF1D0661A00F1EB00818658 /* LaunchScreen.xib */,
 				4BF1D0641A00F1EB00818658 /* Images.xcassets */,
 				4BF1D0581A00F1EB00818658 /* Supporting Files */,
 			);
@@ -194,6 +205,7 @@
 				4BF1D0521A00F1EB00818658 /* Frameworks */,
 				4BF1D0531A00F1EB00818658 /* Resources */,
 				75813197C4A225B2AEDD361A /* Copy Pods Resources */,
+				4BDB6D131A21FD6C003D56C1 /* Build Number Increment */,
 			);
 			buildRules = (
 			);
@@ -300,6 +312,20 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		4BDB6D131A21FD6C003D56C1 /* Build Number Increment */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Build Number Increment";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"";
+		};
 		75813197C4A225B2AEDD361A /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -325,6 +351,7 @@
 				4B79AABB1A0E4D740097B069 /* LoginFacebookController.swift in Sources */,
 				4BEB9E1A1A01ABD200A71764 /* PhotoController.swift in Sources */,
 				4BEB9E201A01ACA200A71764 /* VotePollController.swift in Sources */,
+				4BDB6D151A221033003D56C1 /* FacebookHelper.swift in Sources */,
 				4B7C3DEB1A1EB610004A4D37 /* MeController.swift in Sources */,
 				4BEB9E1C1A01ABF800A71764 /* PollController.swift in Sources */,
 				4BEB9E1E1A01AC8500A71764 /* PostPollController.swift in Sources */,
@@ -461,7 +488,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -503,7 +530,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				INFOPLIST_FILE = "Fashion Now/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
