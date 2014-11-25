@@ -6,30 +6,28 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-import UIKit
-
-internal class PollController: UIViewController, PhotoControllerDelegate {
+class PollController: UIViewController, PhotoControllerDelegate {
     
-    var poll: ParsePoll = ParsePoll() {
+    var poll: ParsePoll = ParsePoll(user: PFUser.currentUser() as ParseUser) {
         didSet {
             if let unwrappedPhotos = poll.photos {
                 loadedPhotos = 0
                 adjustVoteLayout(0, animationTimingFunction: nil, voteCompleted: false)
-                leftPhotoController.photo = unwrappedPhotos[0]
-                rightPhotoController.photo = unwrappedPhotos[1]
+                leftPhotoController.photo = unwrappedPhotos.first!
+                rightPhotoController.photo = unwrappedPhotos.last!
             }
         }
     }
 
-    var delegate: PollControllerDelegate?
+    weak var delegate: PollControllerDelegate?
 
-    private var leftPhotoController: PhotoController!
-    private var rightPhotoController: PhotoController!
+    private weak var leftPhotoController: PhotoController!
+    private weak var rightPhotoController: PhotoController!
 
     private var photoViews: [UIView]!
-    @IBOutlet var leftPhotoView: UIView!
-    @IBOutlet var rightPhotoView: UIView!
-    @IBOutlet var containerView: UIView!
+    @IBOutlet weak var leftPhotoView: UIView!
+    @IBOutlet weak var rightPhotoView: UIView!
+    @IBOutlet weak var containerView: UIView!
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 
@@ -52,9 +50,9 @@ internal class PollController: UIViewController, PhotoControllerDelegate {
 
         var rate: CGFloat!
         switch index {
-        case 0:
-            rate = 1
         case 1:
+            rate = 1
+        case 2:
             rate = -1
         default:
             return
@@ -86,9 +84,9 @@ internal class PollController: UIViewController, PhotoControllerDelegate {
         
         switch sender.view! {
         case leftPhotoView:
-            index = 0
-        case rightPhotoView:
             index = 1
+        case rightPhotoView:
+            index = 2
         default:
             return
         }
@@ -112,15 +110,15 @@ internal class PollController: UIViewController, PhotoControllerDelegate {
         case .Ended:
             let velocityX = sender.velocityInView(containerView).x
             if abs(velocityX) > 1000 {
-                animateAndVote(index: (velocityX > 0 ? 0 : 1), easeIn: false)
+                animateAndVote(index: (velocityX > 0 ? 1 : 2), easeIn: false)
                 return
             }
             if abs(rate) > 0.75 {
                 if rate > 0 && velocityX > 0 {
-                    animateAndVote(index: 0, easeIn: false)
+                    animateAndVote(index: 1, easeIn: false)
                     return
                 } else if rate < 0 && velocityX < 0 {
-                    animateAndVote(index: 1, easeIn: false)
+                    animateAndVote(index: 2, easeIn: false)
                     return
                 }
             }

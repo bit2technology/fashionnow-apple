@@ -23,7 +23,8 @@ class PostPollController: UIViewController, PollControllerDelegate {
         textField.enabled = false
 
         let poll = pollController.poll
-        poll.tags = textField.text?.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        let spaceAndNewline = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+        poll.tags = textField.text?.stringByTrimmingCharactersInSet(spaceAndNewline).componentsSeparatedByCharactersInSet(spaceAndNewline)
         poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             
             sender.enabled = false

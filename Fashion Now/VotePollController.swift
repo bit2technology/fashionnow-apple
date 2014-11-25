@@ -39,7 +39,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
         setCleanInterfaceIfNeeded(false, animationDuration: 0.2)
     }
     @IBAction func voteButtonPressed(sender: UIButton) {
-        pollController.animateAndVote(index: find(voteButtons, sender)!, easeIn: true)
+        pollController.animateAndVote(index: find(voteButtons, sender)! + 1, easeIn: true)
     }
 
     // Clean interface
@@ -63,7 +63,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
     private func setLoadingInterfaceHiddenIfNeededAnimated(hidden: Bool, delay: NSTimeInterval, showNextPollWhenDone showNextPoll: Bool) {
         if hidden != loadingInterface.hidden {
             loadingInterface.hidden = false
-            UIView.animateWithDuration(0.5, delay: delay, options: nil, animations: { () -> Void in
+            UIView.animateWithDuration(0.25, delay: delay, options: nil, animations: { () -> Void in
                 // animations
                 self.loadingInterface.alpha = (hidden ? 0 : 1)
             }, completion: { (succeeded) -> Void in
@@ -79,6 +79,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
     private func showNextPoll() {
 
         if polls == nil || polls!.count < 1 {
+            UIAlertView(title: "Oh no!", message: "There's no more polls to vote", delegate: nil, cancelButtonTitle: ":(").show()
             return
         }
 
@@ -87,7 +88,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
 
         pollController.poll = newPoll
         // Name
-        nameLabel.text = newPoll.createdBy?.username
+        nameLabel.text = newPoll.createdBy?.name ?? newPoll.createdBy?.email ?? "unknown"
         // Date
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = .ShortStyle

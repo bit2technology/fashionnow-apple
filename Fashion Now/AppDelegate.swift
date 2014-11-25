@@ -122,4 +122,3 @@ class TemplateBackgroundButton: UIButton {
         super.setBackgroundImage(image?.imageWithRenderingMode(.AlwaysTemplate), forState: state)
     }
 }
-

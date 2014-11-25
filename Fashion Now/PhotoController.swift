@@ -8,9 +8,10 @@
 
 class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    var photo: ParsePhoto = ParsePhoto() {
+    var photo: ParsePhoto = ParsePhoto(user: PFUser.currentUser() as ParseUser) {
         didSet {
             if let imagePath = photo.image?.url {
+                // There is an URL. Show image view and load data.
                 imageContainerHidden = false
                 imageView.setImageWithURL(NSURL(string: imagePath), placeholderImage: nil, completed: { (image, error, imageCacheType, url) -> Void in
                     if let unwrappedImage = image {
@@ -20,12 +21,22 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
                     }
                 }, usingActivityIndicatorStyle: .Gray)
             } else {
+                // No URL, hide image view.
                 imageContainerHidden = true
             }
         }
     }
 
     weak var delegate: PhotoControllerDelegate?
+
+    @IBOutlet weak var imageView: UIImageView!
+    var imageContainerHidden: Bool = true {
+        didSet {
+            imageView.superview?.hidden = imageContainerHidden
+        }
+    }
+
+    // MARK: Edition buttons
 
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var libraryButton: UIButton!
@@ -58,7 +69,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         case cameraButton:
             // If camera is unavailable, do nothing
             if !UIImagePickerController.isSourceTypeAvailable(.Camera) {
-                // TODO: Error handling
+                UIAlertView(title: NSLocalizedString("PHOTO_CAMERA_UNAVAILABLE_ALERT_TITLE", value: "Camera unavailable", comment: "Impossible to load camera"), message: nil, delegate: nil, cancelButtonTitle: NSLocalizedString("PHOTO_CAMERA_UNAVAILABLE_ALERT_CANCEL_BUTTON", value: "OK", comment: "Impossible to load camera"))
                 return
             }
             source = .Camera
@@ -80,13 +91,6 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         presentViewController(imagePickerController, animated: true, completion: nil)
     }
 
-    @IBOutlet weak var imageView: UIImageView!
-    var imageContainerHidden: Bool = true {
-        didSet {
-            imageView.superview?.hidden = imageContainerHidden
-        }
-    }
-
     // MARK: UIViewController
 
     override func viewDidLoad() {
@@ -106,7 +110,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         }
         
         // Set photo properties
-        let imageData = UIImageJPEGRepresentation(image, 0.85) // FIXME: Optimize image
+        let imageData = image.compressedJPEGData()
         photo.image = PFFile(data: imageData, contentType: "image/jpeg")
         imageView.image = image
         imageContainerHidden = false
@@ -133,5 +137,48 @@ class PhotoBackgroundView: UIView {
         super.tintColorDidChange()
 
         backgroundColor = tintColor
+    }
+}
+
+extension UIImage {
+
+    func compressedJPEGData() -> NSData {
+
+        var actualHeight = size.height
+        var actualWidth = size.width
+        let maxHeight: CGFloat = 600
+        let maxWidth: CGFloat = 800
+        var imgRatio = actualWidth / actualHeight
+        let maxRatio = maxWidth / maxHeight
+        let compressionQuality: CGFloat = 0.5
+
+        if actualHeight > maxHeight || actualWidth > maxWidth {
+
+            if imgRatio < maxRatio {
+                // Adjust width according to maxHeight
+                imgRatio = maxHeight / actualHeight
+                actualWidth = imgRatio * actualWidth
+                actualHeight = maxHeight
+            }
+            else if imgRatio > maxRatio {
+                //adjust height according to maxWidth
+                imgRatio = maxWidth / actualWidth
+                actualHeight = imgRatio * actualHeight
+                actualWidth = maxWidth
+            }
+            else{
+                actualHeight = maxHeight
+                actualWidth = maxWidth
+            }
+        }
+
+        let rect = CGRect(x: 0, y: 0, width: actualWidth, height: actualHeight)
+        UIGraphicsBeginImageContext(rect.size);
+        drawInRect(rect)
+        let img = UIGraphicsGetImageFromCurrentImageContext();
+        let imageData = UIImageJPEGRepresentation(img, compressionQuality);
+        UIGraphicsEndImageContext();
+
+        return imageData
     }
 }

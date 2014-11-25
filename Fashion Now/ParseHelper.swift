@@ -113,13 +113,12 @@ public class ParsePoll: PFObject, PFSubclassing {
         return "Poll"
     }
     
-    override init() {
-        super.init()
-        let currentUser = PFUser.currentUser() as ParseUser
-        let defaultACL = PFACL(user: currentUser)
+    convenience init(user: ParseUser) {
+        self.init()
+        let defaultACL = PFACL(user: user)
         defaultACL.setPublicReadAccess(true)
         ACL = defaultACL
-        createdBy = currentUser
+        createdBy = user
     }
 
     var createdBy: ParseUser? {
@@ -184,13 +183,12 @@ public class ParsePhoto: PFObject, PFSubclassing {
         return "Photo"
     }
     
-    override init() {
-        super.init()
-        let currentUser = PFUser.currentUser() as ParseUser
-        let defaultACL = PFACL(user: currentUser)
+    convenience init(user: ParseUser) {
+        self.init()
+        let defaultACL = PFACL(user: user)
         defaultACL.setPublicReadAccess(true)
         ACL = defaultACL
-        uploadedBy = currentUser
+        uploadedBy = user
     }
 
     var image: PFFile? {
