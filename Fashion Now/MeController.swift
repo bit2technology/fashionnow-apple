@@ -22,7 +22,7 @@ class MeController: UIViewController {
     }
 
     @IBAction func logOut(snder: UIButton) {
-        PFUser.logOut()
+        ParseUser.logOut()
     }
 
     override func needsLogin() -> Bool {

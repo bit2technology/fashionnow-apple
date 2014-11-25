@@ -96,6 +96,57 @@ public class ParseUser: PFUser, PFSubclassing {
     }
 }
 
+// MARK: - Photo class
+
+let ParsePhotoImageKey = "image"
+let ParsePhotoUploadedByKey = "uploadedBy"
+
+public class ParsePhoto: PFObject, PFSubclassing {
+
+    override public class func load() {
+        superclass()?.load()
+        registerSubclass()
+    }
+
+    public class func parseClassName() -> String {
+        return "Photo"
+    }
+
+    convenience init(user: ParseUser) {
+        self.init()
+        let defaultACL = PFACL(user: user)
+        defaultACL.setPublicReadAccess(true)
+        ACL = defaultACL
+        uploadedBy = user
+    }
+
+    var image: PFFile? {
+        get {
+            return self[ParsePhotoImageKey] as? PFFile
+        }
+        set {
+            self[ParsePhotoImageKey] = newValueOrNSNull(newValue)
+        }
+    }
+
+    var uploadedBy: ParseUser? {
+        get {
+            return self[ParsePhotoUploadedByKey] as? ParseUser
+        }
+        set {
+            self[ParsePhotoUploadedByKey] = newValueOrNSNull(newValue)
+        }
+    }
+
+    // MARK: Helper methods
+
+    var isValid: Bool {
+        get {
+            return image != nil && uploadedBy != nil
+        }
+    }
+}
+
 // MARK: - Poll class
 
 let ParsePollCreatedByKey = "createdBy"
@@ -148,9 +199,7 @@ public class ParsePoll: PFObject, PFSubclassing {
         }
     }
 
-
-
-
+    // MARK: Helper methods
 
     var isValid: Bool {
         get {
@@ -167,56 +216,64 @@ public class ParsePoll: PFObject, PFSubclassing {
     }
 }
 
-// MARK: - Photo class
+// MARK: - Vote class
 
-let ParsePhotoImageKey = "image"
-let ParsePhotoUploadedByKey = "uploadedBy"
+let ParseVoteByKey = "voteBy"
+let ParseVotePollKey = "poll"
+let ParseVoteVoteKey = "vote"
 
-public class ParsePhoto: PFObject, PFSubclassing {
-    
+public class ParseVote: PFObject, PFSubclassing {
+
     override public class func load() {
         superclass()?.load()
         registerSubclass()
     }
 
     public class func parseClassName() -> String {
-        return "Photo"
+        return "Vote"
     }
-    
+
     convenience init(user: ParseUser) {
         self.init()
-        let defaultACL = PFACL(user: user)
+        let defaultACL = PFACL()
         defaultACL.setPublicReadAccess(true)
         ACL = defaultACL
-        uploadedBy = user
+        voteBy = user
     }
 
-    var image: PFFile? {
+    var voteBy: ParseUser? {
         get {
-            return self[ParsePhotoImageKey] as? PFFile
+            return self[ParseVoteByKey] as? ParseUser
         }
         set {
-            self[ParsePhotoImageKey] = newValueOrNSNull(newValue)
+            self[ParseVoteByKey] = newValueOrNSNull(newValue)
         }
     }
 
-    var uploadedBy: ParseUser? {
+    var poll: ParsePoll? {
         get {
-            return self[ParsePhotoUploadedByKey] as? ParseUser
+            return self[ParseVotePollKey] as? ParsePoll
         }
         set {
-            self[ParsePhotoUploadedByKey] = newValueOrNSNull(newValue)
+            self[ParseVotePollKey] = newValueOrNSNull(newValue)
         }
     }
 
+    var vote: NSNumber? {
+        get {
+            return self[ParseVoteVoteKey] as? NSNumber
+        }
+        set {
+            self[ParseVoteVoteKey] = newValueOrNSNull(newValue)
+        }
+    }
 
-
-
-
+    // MARK: Helper methods
 
     var isValid: Bool {
         get {
-            return image != nil && uploadedBy != nil
+            return voteBy != nil && poll != nil && vote != nil
         }
     }
 }
+

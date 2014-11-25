@@ -50,7 +50,7 @@ class LoginSignupController: StaticDataTableViewController, UIPickerViewDataSour
         }
 
         // Update Parse user info
-        let currentUser = PFUser.currentUser() as ParseUser
+        let currentUser = ParseUser.currentUser()
         if let unwrappedFacebookUser = facebookUser {
             currentUser.facebookId = unwrappedFacebookUser.objectId
             currentUser.gender = unwrappedFacebookUser.gender // FIXME: Remove gender
@@ -115,7 +115,7 @@ class LoginSignupController: StaticDataTableViewController, UIPickerViewDataSour
         avatarImageView.layer.masksToBounds = true
         
         // Verify if there is a logged user
-        let currentUser = PFUser.currentUser() as ParseUser
+        let currentUser = ParseUser.currentUser()
         if !PFAnonymousUtils.isLinkedWithUser(currentUser) {
             parseUser = currentUser
         }

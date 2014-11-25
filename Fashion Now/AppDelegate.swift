@@ -36,8 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // Get current user (or create an anonymous one)
-        PFUser.enableAutomaticUser()
-        let currentUser = PFUser.currentUser() as ParseUser
+        ParseUser.enableAutomaticUser()
+        let currentUser = ParseUser.currentUser()
         if currentUser.isDirty() {
             currentUser.saveInBackgroundWithBlock(nil)
         }

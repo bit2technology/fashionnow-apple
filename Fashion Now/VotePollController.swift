@@ -9,16 +9,17 @@
 import UIKit
 
 class VotePollController: UIViewController, PollControllerDelegate {
-    
-    private weak var pollController: PollController!
+
     private var polls: [ParsePoll]?
+
+    private weak var pollController: PollController!
 
     // Navigation bar items
     @IBOutlet weak var avatarView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
 
-    // Tags and actions
+    // Tags and related actions
     @IBOutlet weak var tagsLabel: UILabel!
     @IBAction func tagsLabelDidLongPress(sender: UIGestureRecognizer) {
 
@@ -36,10 +37,10 @@ class VotePollController: UIViewController, PollControllerDelegate {
     @IBOutlet weak var rightVoteButton: UIButton!
     // Press actions
     @IBAction func voteButtonWillBePressed(sender: UIButton) {
-        setCleanInterfaceIfNeeded(false, animationDuration: 0.2)
+        setCleanInterfaceIfNeeded(false, animationDuration: 0.15)
     }
     @IBAction func voteButtonPressed(sender: UIButton) {
-        pollController.animateAndVote(index: find(voteButtons, sender)! + 1, easeIn: true)
+        pollController.animateHighlight(index: find(voteButtons, sender)!, withEaseInAnimation: true)
     }
 
     // Clean interface
@@ -63,7 +64,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
     private func setLoadingInterfaceHiddenIfNeededAnimated(hidden: Bool, delay: NSTimeInterval, showNextPollWhenDone showNextPoll: Bool) {
         if hidden != loadingInterface.hidden {
             loadingInterface.hidden = false
-            UIView.animateWithDuration(0.25, delay: delay, options: nil, animations: { () -> Void in
+            UIView.animateWithDuration(0.15, delay: delay, options: nil, animations: { () -> Void in
                 // animations
                 self.loadingInterface.alpha = (hidden ? 0 : 1)
             }, completion: { (succeeded) -> Void in
@@ -102,6 +103,10 @@ class VotePollController: UIViewController, PollControllerDelegate {
         } else {
             tagsLabel.superview?.hidden = true
         }
+
+        // Vote control
+        voteSaved = false
+        finishedShowVote = false
     }
 
     // MARK: UIViewController
@@ -144,8 +149,34 @@ class VotePollController: UIViewController, PollControllerDelegate {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+
+        let myPollsQuery = PFQuery(className: ParsePoll.parseClassName())
+        myPollsQuery.whereKey(ParsePollCreatedByKey, equalTo: ParseUser.currentUser())
         
-        var publicPollsQuery: PFQuery = PFQuery(className: ParsePoll.parseClassName())
+
+
+
+
+        let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
+        votesByMeQuery.whereKey(ParseVoteByKey, equalTo: ParseUser.currentUser())
+
+
+
+
+
+
+        let pollsToVote = PFQuery(className: ParsePoll.parseClassName())
+        pollsToVote.includeKey(ParsePollPhotosKey)
+        pollsToVote.includeKey(ParsePollCreatedByKey)
+        pollsToVote.whereKey("objectId", doesNotMatchKey: "pollId", inQuery: votesByMeQuery)
+        pollsToVote.whereKey(ParsePollCreatedByKey, notEqualTo: ParseUser.currentUser())
+        pollsToVote.orderByAscending(ParseObjectCreatedAtKey)
+
+        pollsToVote.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            println("polls to vote:\n\(objects)")
+        }
+        
+        var publicPollsQuery = PFQuery(className: ParsePoll.parseClassName())
         publicPollsQuery.includeKey(ParsePollPhotosKey)
         publicPollsQuery.includeKey(ParsePollCreatedByKey)
         publicPollsQuery.orderByAscending(ParseObjectCreatedAtKey)
@@ -160,15 +191,40 @@ class VotePollController: UIViewController, PollControllerDelegate {
 
     // MARK: PollControllerDelegate
 
-    func pollControllerDidInteractWithVoteInterface(pollController: PollController) {
-        setCleanInterfaceIfNeeded(true, animationDuration: 0.5)
-    }
-
-    func pollControllerDidVote(pollController: PollController, animated: Bool) {
-        setLoadingInterfaceHiddenIfNeededAnimated(false, delay: 1, showNextPollWhenDone: true)
-    }
-
     func pollControllerDidDidFinishLoad(pollController: PollController) {
         setLoadingInterfaceHiddenIfNeededAnimated(true, delay: 0, showNextPollWhenDone: false)
+    }
+
+    func pollControllerDidInteractWithInterface(pollController: PollController) {
+        setCleanInterfaceIfNeeded(true, animationDuration: 0.15)
+    }
+
+    private var voteSaved = false
+    func pollControllerWillHighlight(pollController: PollController, index: Int) {
+        let vote = ParseVote(user: ParseUser.currentUser())
+        vote.poll = pollController.poll
+        vote["pollId"] = pollController.poll.objectId // FIXME: test if it is right
+        vote.vote = index
+        vote.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+            if succeeded {
+                self.voteSaved = true
+                self.showLoadingInterfaceAndNextPollIfVoteSaved(nil)
+            } else {
+                UIAlertView(title: "Vote Error :(", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK").show()
+            }
+        }
+    }
+
+    private var finishedShowVote = false
+    func pollControllerDidHighlight(pollController: PollController) {
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "showLoadingInterfaceAndNextPollIfVoteSaved:", userInfo: nil, repeats: false).fire()
+    }
+    func showLoadingInterfaceAndNextPollIfVoteSaved(sender: NSTimer?) {
+        if sender != nil {
+            finishedShowVote = true
+        }
+        if finishedShowVote && voteSaved {
+            setLoadingInterfaceHiddenIfNeededAnimated(false, delay: 0, showNextPollWhenDone: true)
+        }
     }
 }

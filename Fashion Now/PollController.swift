@@ -8,11 +8,11 @@
 
 class PollController: UIViewController, PhotoControllerDelegate {
     
-    var poll: ParsePoll = ParsePoll(user: PFUser.currentUser() as ParseUser) {
+    var poll: ParsePoll = ParsePoll(user: ParseUser.currentUser()) {
         didSet {
             if let unwrappedPhotos = poll.photos {
                 loadedPhotos = 0
-                adjustVoteLayout(0, animationTimingFunction: nil, voteCompleted: false)
+                adjustLayout(0, animationTimingFunction: nil, callCompleteDelegate: false)
                 leftPhotoController.photo = unwrappedPhotos.first!
                 rightPhotoController.photo = unwrappedPhotos.last!
             }
@@ -28,37 +28,6 @@ class PollController: UIViewController, PhotoControllerDelegate {
     @IBOutlet weak var leftPhotoView: UIView!
     @IBOutlet weak var rightPhotoView: UIView!
     @IBOutlet weak var containerView: UIView!
-
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-
-        if let identifier = segue.identifier {
-            switch identifier {
-
-            case "Left Photo Controller":
-                leftPhotoController = segue.destinationViewController as PhotoController
-            case "Right Photo Controller":
-                rightPhotoController = segue.destinationViewController as PhotoController
-            default:
-                return
-            }
-        }
-    }
-
-    // MARK: Vote animation
-
-    func animateAndVote(#index: Int, easeIn: Bool) {
-
-        var rate: CGFloat!
-        switch index {
-        case 1:
-            rate = 1
-        case 2:
-            rate = -1
-        default:
-            return
-        }
-        adjustVoteLayout(rate, animationTimingFunction: CAMediaTimingFunction(name: (easeIn ? kCAMediaTimingFunctionEaseInEaseOut : kCAMediaTimingFunctionEaseOut)), voteCompleted: true)
-    }
 
     var imageButtonsHidden: Bool = false {
         didSet {
@@ -76,6 +45,23 @@ class PollController: UIViewController, PhotoControllerDelegate {
         }
     }
 
+    // MARK: Vote and animation
+
+    func animateHighlight(#index: Int, withEaseInAnimation easeIn: Bool) {
+
+        var rate: CGFloat!
+        switch index {
+        case 1:
+            rate = 1
+        case 2:
+            rate = -1
+        default:
+            return
+        }
+        delegate?.pollControllerWillHighlight?(self, index: index)
+        adjustLayout(rate, animationTimingFunction: CAMediaTimingFunction(name: (easeIn ? kCAMediaTimingFunctionEaseInEaseOut : kCAMediaTimingFunctionEaseOut)), callCompleteDelegate: true)
+    }
+
     @IBOutlet weak var leftdoubleTap: UITapGestureRecognizer!
     @IBOutlet weak var rightdoubleTap: UITapGestureRecognizer!
     @IBAction func didDoubleTap(sender: UITapGestureRecognizer) {
@@ -91,12 +77,12 @@ class PollController: UIViewController, PhotoControllerDelegate {
             return
         }
 
-        delegate?.pollControllerDidInteractWithVoteInterface?(self)
-        animateAndVote(index: index, easeIn: true)
+        delegate?.pollControllerDidInteractWithInterface?(self)
+        animateHighlight(index: index, withEaseInAnimation: true)
     }
 
 
-    @IBOutlet var drager: UIPanGestureRecognizer!
+    @IBOutlet weak var drager: UIPanGestureRecognizer!
     @IBAction func didDrag(sender: UIPanGestureRecognizer) {
 
         var translationX = sender.translationInView(containerView).x * 1.6
@@ -104,34 +90,34 @@ class PollController: UIViewController, PhotoControllerDelegate {
         
         switch sender.state {
         case .Began:
-            delegate?.pollControllerDidInteractWithVoteInterface?(self)
+            delegate?.pollControllerDidInteractWithInterface?(self)
         case .Changed:
-            adjustVoteLayout(rate, animationTimingFunction: nil, voteCompleted: false)
+            adjustLayout(rate, animationTimingFunction: nil, callCompleteDelegate: false)
         case .Ended:
             let velocityX = sender.velocityInView(containerView).x
             if abs(velocityX) > 1000 {
-                animateAndVote(index: (velocityX > 0 ? 1 : 2), easeIn: false)
+                animateHighlight(index: (velocityX > 0 ? 1 : 2), withEaseInAnimation: false)
                 return
             }
             if abs(rate) > 0.75 {
                 if rate > 0 && velocityX > 0 {
-                    animateAndVote(index: 1, easeIn: false)
+                    animateHighlight(index: 1, withEaseInAnimation: false)
                     return
                 } else if rate < 0 && velocityX < 0 {
-                    animateAndVote(index: 2, easeIn: false)
+                    animateHighlight(index: 2, withEaseInAnimation: false)
                     return
                 }
             }
             fallthrough
         case .Cancelled: fallthrough
         case .Failed:
-            adjustVoteLayout(0, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut), voteCompleted: false)
+            adjustLayout(0, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut), callCompleteDelegate: false)
         default:
             return
         }
     }
     
-    private func adjustVoteLayout(rate: CGFloat, animationTimingFunction: CAMediaTimingFunction?, voteCompleted: Bool) {
+    private func adjustLayout(rate: CGFloat, animationTimingFunction: CAMediaTimingFunction?, callCompleteDelegate: Bool) {
 
         // Helper functions
         
@@ -161,9 +147,15 @@ class PollController: UIViewController, PhotoControllerDelegate {
         let draggingView = (translationX > 0 ? leftPhotoView : rightPhotoView)
         
         CATransaction.begin()
+        if callCompleteDelegate {
+            CATransaction.setCompletionBlock({ () -> Void in
+                self.delegate?.pollControllerDidHighlight?(self)
+                return
+            })
+        }
         var animated = false
         if let unwrappedAnimationTimingFunction = animationTimingFunction {
-            CATransaction.setAnimationDuration(0.25)
+            CATransaction.setAnimationDuration(0.15)
             CATransaction.setAnimationTimingFunction(unwrappedAnimationTimingFunction)
             animated = true
         } else {
@@ -173,12 +165,6 @@ class PollController: UIViewController, PhotoControllerDelegate {
             let isDraggingView = (photoView == draggingView)
             setLayerTransform(CATransform3DMakeTranslation((isDraggingView ? translationX / 2 : 0), 0, 0), toView: photoView, explicitAnimated: (animationTimingFunction != nil))
             setMaskTranslateX(translationX * (isDraggingView ? 0.75 : 1.25), view: photoView)
-        }
-        if voteCompleted {
-            CATransaction.setCompletionBlock({ () -> Void in
-                self.delegate?.pollControllerDidVote?(self, animated: animated)
-                return
-            })
         }
         CATransaction.commit()
     }
@@ -230,26 +216,8 @@ class PollController: UIViewController, PhotoControllerDelegate {
             masked = true
         }
     }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        adjustMaskSizeWithAnimationDuration(0)
-    }
 
-    // MARK: Rotation
-
-//    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-//        coordinator.animateAlongsideTransition({ (context) -> Void in
-//            self.adjustMaskSizeWithAnimationDuration(context.transitionDuration())
-//        }, completion: nil)
-//    }
-
-    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        adjustMaskSizeWithAnimationDuration(duration)
-    }
-
-    // MARK: View lifecycle
+    // MARK: UIViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -258,6 +226,37 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
         leftPhotoController.delegate = self
         rightPhotoController.delegate = self
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        adjustMaskSizeWithAnimationDuration(0)
+    }
+
+//    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+//        coordinator.animateAlongsideTransition({ (context) -> Void in
+//            self.adjustMaskSizeWithAnimationDuration(context.transitionDuration())
+//            }, completion: nil)
+//    }
+
+    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        adjustMaskSizeWithAnimationDuration(duration)
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+
+        if let identifier = segue.identifier {
+            switch identifier {
+
+            case "Left Photo Controller":
+                leftPhotoController = segue.destinationViewController as PhotoController
+            case "Right Photo Controller":
+                rightPhotoController = segue.destinationViewController as PhotoController
+            default:
+                return
+            }
+        }
     }
 
     // MARK: PhotoControllerDelegate
@@ -284,8 +283,8 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
     optional func pollController(pollController: PollController, didEditPoll poll:ParsePoll)
 
-    optional func pollControllerDidInteractWithVoteInterface(pollController: PollController)
-    optional func pollControllerDidVote(pollController: PollController, animated: Bool)
-
+    optional func pollControllerDidInteractWithInterface(pollController: PollController)
+    optional func pollControllerWillHighlight(pollController: PollController, index: Int)
+    optional func pollControllerDidHighlight(pollController: PollController)
     optional func pollControllerDidDidFinishLoad(pollController: PollController)
 }

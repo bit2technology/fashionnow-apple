@@ -8,7 +8,7 @@
 
 class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    var photo: ParsePhoto = ParsePhoto(user: PFUser.currentUser() as ParseUser) {
+    var photo: ParsePhoto = ParsePhoto(user: ParseUser.currentUser()) {
         didSet {
             if let imagePath = photo.image?.url {
                 // There is an URL. Show image view and load data.
@@ -30,9 +30,10 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
     weak var delegate: PhotoControllerDelegate?
 
     @IBOutlet weak var imageView: UIImageView!
-    var imageContainerHidden: Bool = true {
+    private var imageContainerHidden: Bool = true {
         didSet {
             imageView.superview?.hidden = imageContainerHidden
+            imageView.superview?.alpha = (imageContainerHidden ? 0 : 1)
         }
     }
 
@@ -52,16 +53,32 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
 
     @IBAction func deleteImage(sender: UIButton) {
 
-        // Set photo properties
-        photo.image = nil
-        imageContainerHidden = true
-        imageView.image = nil
+        // Edit only if user has write access
+        if !photo.ACL.getWriteAccessForUser(ParseUser.currentUser()) {
+            return
+        }
+
+        // Delete in model
+        self.photo.image = nil
+
+        // Delete in view
+        UIView.animateWithDuration(0.15, animations: { () -> Void in
+            self.imageView.superview!.alpha = 0
+        }) { (completed) -> Void in
+            self.imageContainerHidden = true
+            self.imageView.image = nil
+        }
 
         // Call delegate
         delegate?.photoController?(self, didEditPhoto: photo)
     }
 
     @IBAction func imageButtonPressed(sender: UIButton) {
+
+        // Edit only if user has write access
+        if !photo.ACL.getWriteAccessForUser(ParseUser.currentUser()) {
+            return
+        }
 
         // Define image source
         var source: UIImagePickerControllerSourceType!
@@ -108,7 +125,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         if image == nil {
             image = info[UIImagePickerControllerOriginalImage] as UIImage!
         }
-        
+
         // Set photo properties
         let imageData = image.compressedJPEGData()
         photo.image = PFFile(data: imageData, contentType: "image/jpeg")
@@ -142,7 +159,7 @@ class PhotoBackgroundView: UIView {
 
 extension UIImage {
 
-    func compressedJPEGData() -> NSData {
+    func compressedJPEGData(compressionQuality: CGFloat = 0.5) -> NSData {
 
         var actualHeight = size.height
         var actualWidth = size.width
@@ -150,7 +167,6 @@ extension UIImage {
         let maxWidth: CGFloat = 800
         var imgRatio = actualWidth / actualHeight
         let maxRatio = maxWidth / maxHeight
-        let compressionQuality: CGFloat = 0.5
 
         if actualHeight > maxHeight || actualWidth > maxWidth {
 

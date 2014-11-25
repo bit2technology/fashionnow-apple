@@ -972,7 +972,7 @@
                         <viewControllerLayoutGuide type="top" id="J5z-13-Iut"/>
                         <viewControllerLayoutGuide type="bottom" id="lwi-Vt-MNP"/>
                     </layoutGuides>
-                    <view key="view" opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="5Xe-GT-hcA">
+                    <view key="view" opaque="NO" multipleTouchEnabled="YES" contentMode="center" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" id="5Xe-GT-hcA">
                         <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>

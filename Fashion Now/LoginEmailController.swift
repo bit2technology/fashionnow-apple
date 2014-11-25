@@ -20,7 +20,7 @@ class LoginEmailController: UITableViewController {
         passwordField.enabled = false
         sender.enabled = false
         activityIndicator.startAnimating()
-        PFUser.logInWithUsernameInBackground(usernameField.text, password: passwordField.text) { (user, error) -> Void in
+        ParseUser.logInWithUsernameInBackground(usernameField.text, password: passwordField.text) { (user, error) -> Void in
             if user != nil {
                 self.dismissViewControllerAnimated(true, completion: nil)
             } else {

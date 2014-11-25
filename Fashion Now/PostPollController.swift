@@ -63,14 +63,16 @@ class PostPollController: UIViewController, PollControllerDelegate {
         loadingView.hidden = true
 
         pollController.delegate = self
-        
-//        pollController.leftPhotoController.delegate = self
-//        pollController.rightPhotoController.delegate = self
     }
 
     // MARK: PollControllerDelegate
     
     func pollController(pollController: PollController, didEditPoll poll: ParsePoll) {
-        sendButton.hidden = !poll.isValid
+        sendButton.hidden = false
+        UIView.animateWithDuration(0.15, animations: { () -> Void in
+            self.sendButton.alpha = (poll.isValid ? 1 : 0)
+        }, completion: { (completed) -> Void in
+            self.sendButton.hidden = !poll.isValid
+        })
     }
 }
