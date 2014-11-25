@@ -22,13 +22,15 @@ class FacebookHelper {
     }
 
     class func updateCachedAvatarPathInBackground() {
-        let avatarSize = Int(64 * UIScreen.mainScreen().scale)
-        FBRequestConnection.startWithGraphPath("me?fields=picture.height(\(avatarSize)).width(\(avatarSize)).redirect(false)") { (connection, result, error) -> Void in
-            if error == nil {
-                self.cachedAvatarPath = (result as? FBGraphObject)?.picturePath
-            } else {
-                // TODO: Better error handling
-                UIAlertView(title: nil, message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK")
+        if let facebookSessionIsOpen = PFFacebookUtils.session()?.isOpen {
+            let avatarSize = Int(64 * UIScreen.mainScreen().scale)
+            FBRequestConnection.startWithGraphPath("me?fields=picture.height(\(avatarSize)).width(\(avatarSize)).redirect(false)") { (connection, result, error) -> Void in
+                if error == nil {
+                    self.cachedAvatarPath = (result as? FBGraphObject)?.picturePath
+                } else {
+                    // TODO: Better error handling
+                    UIAlertView(title: nil, message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK")
+                }
             }
         }
     }

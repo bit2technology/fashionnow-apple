@@ -219,7 +219,7 @@ public class ParsePoll: PFObject, PFSubclassing {
 // MARK: - Vote class
 
 let ParseVoteByKey = "voteBy"
-let ParseVotePollKey = "poll"
+let ParseVotePollIdKey = "pollId"
 let ParseVoteVoteKey = "vote"
 
 public class ParseVote: PFObject, PFSubclassing {
@@ -250,12 +250,12 @@ public class ParseVote: PFObject, PFSubclassing {
         }
     }
 
-    var poll: ParsePoll? {
+    var pollId: String? {
         get {
-            return self[ParseVotePollKey] as? ParsePoll
+            return self[ParseVotePollIdKey] as? String
         }
         set {
-            self[ParseVotePollKey] = newValueOrNSNull(newValue)
+            self[ParseVotePollIdKey] = newValueOrNSNull(newValue)
         }
     }
 
@@ -272,7 +272,7 @@ public class ParseVote: PFObject, PFSubclassing {
 
     var isValid: Bool {
         get {
-            return voteBy != nil && poll != nil && vote != nil
+            return voteBy != nil && pollId != nil && vote != nil
         }
     }
 }

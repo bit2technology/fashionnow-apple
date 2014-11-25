@@ -80,7 +80,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
     private func showNextPoll() {
 
         if polls == nil || polls!.count < 1 {
-            UIAlertView(title: "Oh no!", message: "There's no more polls to vote", delegate: nil, cancelButtonTitle: ":(").show()
+            UIAlertView(title: "Oh no! :(", message: "There's no more polls to vote", delegate: nil, cancelButtonTitle: "OK").show()
             return
         }
 
@@ -150,41 +150,22 @@ class VotePollController: UIViewController, PollControllerDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        let myPollsQuery = PFQuery(className: ParsePoll.parseClassName())
-        myPollsQuery.whereKey(ParsePollCreatedByKey, equalTo: ParseUser.currentUser())
-        
-
-
-
-
+        // Selecting only polls I did not voted
         let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
         votesByMeQuery.whereKey(ParseVoteByKey, equalTo: ParseUser.currentUser())
-
-
-
-
-
-
         let pollsToVote = PFQuery(className: ParsePoll.parseClassName())
         pollsToVote.includeKey(ParsePollPhotosKey)
         pollsToVote.includeKey(ParsePollCreatedByKey)
-        pollsToVote.whereKey("objectId", doesNotMatchKey: "pollId", inQuery: votesByMeQuery)
+        pollsToVote.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)
         pollsToVote.whereKey(ParsePollCreatedByKey, notEqualTo: ParseUser.currentUser())
         pollsToVote.orderByAscending(ParseObjectCreatedAtKey)
 
         pollsToVote.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            println("polls to vote:\n\(objects)")
-        }
-        
-        var publicPollsQuery = PFQuery(className: ParsePoll.parseClassName())
-        publicPollsQuery.includeKey(ParsePollPhotosKey)
-        publicPollsQuery.includeKey(ParsePollCreatedByKey)
-        publicPollsQuery.orderByAscending(ParseObjectCreatedAtKey)
-        publicPollsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-
-            if let unwrappedObjects = objects as? [ParsePoll] {
-                self.polls = unwrappedObjects
-                self.showNextPoll()
+            if self.polls == nil {
+                if let unwrappedObjects = objects as? [ParsePoll] {
+                    self.polls = unwrappedObjects
+                    self.showNextPoll()
+                }
             }
         }
     }
@@ -202,8 +183,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
     private var voteSaved = false
     func pollControllerWillHighlight(pollController: PollController, index: Int) {
         let vote = ParseVote(user: ParseUser.currentUser())
-        vote.poll = pollController.poll
-        vote["pollId"] = pollController.poll.objectId // FIXME: test if it is right
+        vote.pollId = pollController.poll.objectId
         vote.vote = index
         vote.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             if succeeded {

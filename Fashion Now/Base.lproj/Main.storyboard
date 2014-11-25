@@ -112,7 +112,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xJA-3U-sng" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-81" y="1916"/>
+            <point key="canvasLocation" x="824" y="2300"/>
         </scene>
         <!--Log In-->
         <scene sceneID="9od-5e-1Db">
@@ -229,7 +229,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gA1-ed-9m9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-81" y="2516"/>
+            <point key="canvasLocation" x="824" y="2900"/>
         </scene>
         <!--Vote Poll Controller-->
         <scene sceneID="VVH-fN-2gA">
@@ -478,6 +478,23 @@
                 <tapGestureRecognizer id="F06-Br-Xho" userLabel="Navigation Bar Tapped"/>
             </objects>
             <point key="canvasLocation" x="1411" y="265"/>
+        </scene>
+        <!--Item-->
+        <scene sceneID="H8i-C2-7Wl">
+            <objects>
+                <navigationController id="yJf-au-aBx" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="yIu-tG-KRu"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="s4e-vF-TF0">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="h96-mz-Qs4" kind="relationship" relationship="rootViewController" id="ff3-uU-kjL"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xdr-Ar-mLn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1032" y="821"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="reA-p0-HcY">
@@ -771,7 +788,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xq6-l7-NYw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="335" y="2216"/>
+            <point key="canvasLocation" x="1240" y="2600"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sT9-WB-ml1">
@@ -787,9 +804,9 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gRT-Sz-dcX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="335" y="1333"/>
+            <point key="canvasLocation" x="1240" y="1717"/>
         </scene>
-        <!--Me-->
+        <!--Name-->
         <scene sceneID="6EB-zh-XRs">
             <objects>
                 <viewController id="h96-mz-Qs4" customClass="MeController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
@@ -800,40 +817,24 @@
                     <view key="view" contentMode="scaleToFill" id="jw7-7V-LtB">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pb3-dg-CUr" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="107" y="219" width="106" height="42"/>
-                                <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
-                                <state key="normal" title="Log Out" backgroundImage="ButtonRoundBordersBackground">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="logOut:" destination="h96-mz-Qs4" eventType="touchUpInside" id="sNU-qg-pKQ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mQJ-0P-ZEh">
-                                <rect key="frame" x="123" y="181" width="74" height="30"/>
-                                <state key="normal" title="Edit profile">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="OJC-JN-eaN" kind="presentation" modalPresentationStyle="formSheet" id="6hB-XR-mZt"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="centerY" secondItem="pb3-dg-CUr" secondAttribute="centerY" id="T8n-qD-a4e"/>
-                            <constraint firstAttribute="centerX" secondItem="pb3-dg-CUr" secondAttribute="centerX" id="fbC-TC-0k8"/>
-                            <constraint firstItem="mQJ-0P-ZEh" firstAttribute="centerX" secondItem="pb3-dg-CUr" secondAttribute="centerX" id="fye-Mz-Nje"/>
-                            <constraint firstItem="pb3-dg-CUr" firstAttribute="top" secondItem="mQJ-0P-ZEh" secondAttribute="bottom" constant="8" id="oGF-7B-paJ"/>
-                        </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Me" id="ebj-yB-2vL"/>
+                    <navigationItem key="navigationItem" title="Name" id="Fe2-iu-7zu">
+                        <barButtonItem key="leftBarButtonItem" title="Log Out" id="Wbo-w6-noc">
+                            <connections>
+                                <action selector="logOut:" destination="h96-mz-Qs4" id="4NO-5T-PCt"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="dTC-5O-45C">
+                            <connections>
+                                <segue destination="OJC-JN-eaN" kind="presentation" modalPresentationStyle="formSheet" id="iE4-kB-YsT"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pKy-yz-n0a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1032" y="821"/>
+            <point key="canvasLocation" x="1411" y="821"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="CJf-es-BZO">
@@ -849,8 +850,8 @@
                     <connections>
                         <segue destination="lMD-1Q-cPe" kind="relationship" relationship="viewControllers" id="EOH-kZ-a3B"/>
                         <segue destination="oUO-1p-KSF" kind="relationship" relationship="viewControllers" id="dIm-df-iYM"/>
-                        <segue destination="h96-mz-Qs4" kind="relationship" relationship="viewControllers" id="bkr-aw-b7e"/>
                         <segue destination="0Nc-ub-aly" kind="presentation" identifier="Login Controller" modalPresentationStyle="formSheet" id="neE-T0-GYT"/>
+                        <segue destination="yJf-au-aBx" kind="relationship" relationship="viewControllers" id="URf-sy-6Z3"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fpy-e7-ti8" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1072,7 +1073,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ox9-Wq-caD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-81" y="1333"/>
+            <point key="canvasLocation" x="824" y="1717"/>
         </scene>
         <!--Voting-->
         <scene sceneID="w3X-gR-82r">

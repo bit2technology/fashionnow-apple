@@ -8,36 +8,22 @@
 
 import UIKit
 
-class MeController: UIViewController {
+class MeController: UIViewController/*, UITableViewDataSource, UITableViewDelegate*/ {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
 
-        // Do any additional setup after loading the view.
+        navigationItem.title = ParseUser.currentUser().name
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    @IBAction func logOut(snder: UIButton) {
+    @IBAction func logOut(snder: UITabBarItem) {
         ParseUser.logOut()
+        (self.tabBarController as TabBarController).selectedIndex = 0
     }
 
     override func needsLogin() -> Bool {
         return true
     }
-    
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    // MARK: UITableViewController
 }
