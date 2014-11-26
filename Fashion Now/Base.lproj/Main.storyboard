@@ -488,12 +488,42 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="h96-mz-Qs4" kind="relationship" relationship="rootViewController" id="ff3-uU-kjL"/>
+                        <segue destination="pDT-RO-t70" kind="relationship" relationship="rootViewController" id="eEV-zB-gCu"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xdr-Ar-mLn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1032" y="821"/>
+        </scene>
+        <!--Me-->
+        <scene sceneID="G0c-JZ-rZN">
+            <objects>
+                <tableViewController id="pDT-RO-t70" customClass="MeController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Ed4-au-0NM">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="pDT-RO-t70" id="riW-rA-JUr"/>
+                            <outlet property="delegate" destination="pDT-RO-t70" id="2Z6-oA-TLh"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Me" id="SHi-hj-ibv">
+                        <barButtonItem key="leftBarButtonItem" title="Log Out" id="M8u-sa-PEm">
+                            <connections>
+                                <action selector="logOut:" destination="pDT-RO-t70" id="xsY-s8-QHu"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="Ohw-fp-ppp">
+                            <connections>
+                                <segue destination="OJC-JN-eaN" kind="presentation" modalPresentationStyle="formSheet" id="cNh-Ef-5F6"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DeG-bS-b4m" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1411" y="821"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="reA-p0-HcY">
@@ -805,36 +835,6 @@
             </objects>
             <point key="canvasLocation" x="1240" y="1717"/>
         </scene>
-        <!--Me-->
-        <scene sceneID="6EB-zh-XRs">
-            <objects>
-                <viewController id="h96-mz-Qs4" customClass="MeController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="GxN-sP-BWC"/>
-                        <viewControllerLayoutGuide type="bottom" id="ImA-kO-RKZ"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="jw7-7V-LtB">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Me" id="Fe2-iu-7zu">
-                        <barButtonItem key="leftBarButtonItem" title="Log Out" id="Wbo-w6-noc">
-                            <connections>
-                                <action selector="logOut:" destination="h96-mz-Qs4" id="4NO-5T-PCt"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="dTC-5O-45C">
-                            <connections>
-                                <segue destination="OJC-JN-eaN" kind="presentation" modalPresentationStyle="formSheet" id="iE4-kB-YsT"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="pKy-yz-n0a" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1411" y="821"/>
-        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="CJf-es-BZO">
             <objects>
@@ -1085,7 +1085,7 @@
         <scene sceneID="w3X-gR-82r">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="lMD-1Q-cPe" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Voting" image="TabBarIconFriendsPollsUnselected" badgeValue="3" id="cp0-V5-EKB"/>
+                    <tabBarItem key="tabBarItem" title="Voting" image="TabBarIconFriendsPollsUnselected" id="cp0-V5-EKB"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="KNa-EU-ntH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1132,7 +1132,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="3E2-oz-Poo"/>
-        <segue reference="IZA-Rh-gPV"/>
+        <segue reference="apZ-Yv-541"/>
         <segue reference="uM3-tb-eTB"/>
     </inferredMetricsTieBreakers>
 </document>

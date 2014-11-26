@@ -40,7 +40,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
         setCleanInterfaceIfNeeded(false, animationDuration: 0.15)
     }
     @IBAction func voteButtonPressed(sender: UIButton) {
-        pollController.animateHighlight(index: find(voteButtons, sender)!, withEaseInAnimation: true)
+        pollController.animateHighlight(index: find(voteButtons, sender)! + 1, withEaseInAnimation: true)
     }
 
     // Clean interface
@@ -102,6 +102,13 @@ class VotePollController: UIViewController, PollControllerDelegate {
             tagsLabel.superview?.hidden = false
         } else {
             tagsLabel.superview?.hidden = true
+        }
+
+        // Avatar
+        if let authorFacebookId = newPoll.createdBy?.facebookId {
+            let avatarSize = Int(40 * UIScreen.mainScreen().scale)
+            let avatarPath = "http://graph.facebook.com/\(authorFacebookId)/picture?height=\(avatarSize)&width=\(avatarSize)"
+            self.avatarView.setImageWithURL(NSURL(string: avatarPath), usingActivityIndicatorStyle: .White)
         }
 
         // Vote control

@@ -8,18 +8,20 @@
 
 import UIKit
 
-class MeController: UIViewController/*, UITableViewDataSource, UITableViewDelegate*/ {
+class MeController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconMeSelected")
-    }
 
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+        let backgroundLabel = UILabel()
+        backgroundLabel.text = "In Construction"
+        backgroundLabel.textAlignment = .Center
+        backgroundLabel.textColor = UIColor.darkGrayColor()
+        tableView.backgroundView = backgroundLabel
 
-        navigationItem.title = ParseUser.currentUser().name
+        tableView.separatorStyle = .None
     }
 
     @IBAction func logOut(snder: UITabBarItem) {
