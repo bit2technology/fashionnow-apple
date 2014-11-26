@@ -150,15 +150,19 @@ class VotePollController: UIViewController, PollControllerDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        // Selecting only polls I did not voted
-        let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
-        votesByMeQuery.whereKey(ParseVoteByKey, equalTo: ParseUser.currentUser())
+        // Downloading poll list
         let pollsToVote = PFQuery(className: ParsePoll.parseClassName())
         pollsToVote.includeKey(ParsePollPhotosKey)
         pollsToVote.includeKey(ParsePollCreatedByKey)
-        pollsToVote.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)
-        pollsToVote.whereKey(ParsePollCreatedByKey, notEqualTo: ParseUser.currentUser())
         pollsToVote.orderByAscending(ParseObjectCreatedAtKey)
+        // Selecting only polls I did not vote and I did not send
+        let currentUser = ParseUser.currentUser()
+        if !currentUser.isDirty() { // TODO: improve poll selection
+            let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
+            votesByMeQuery.whereKey(ParseVoteByKey, equalTo: currentUser)
+            pollsToVote.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)
+            pollsToVote.whereKey(ParsePollCreatedByKey, notEqualTo: currentUser)
+        }
 
         pollsToVote.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if self.polls == nil {

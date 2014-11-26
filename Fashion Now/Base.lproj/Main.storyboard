@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -479,11 +478,11 @@
             </objects>
             <point key="canvasLocation" x="1411" y="265"/>
         </scene>
-        <!--Item-->
+        <!--Me-->
         <scene sceneID="H8i-C2-7Wl">
             <objects>
                 <navigationController id="yJf-au-aBx" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="yIu-tG-KRu"/>
+                    <tabBarItem key="tabBarItem" title="Me" image="TabBarIconMeUnselected" id="yIu-tG-KRu"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="s4e-vF-TF0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -806,7 +805,7 @@
             </objects>
             <point key="canvasLocation" x="1240" y="1717"/>
         </scene>
-        <!--Name-->
+        <!--Me-->
         <scene sceneID="6EB-zh-XRs">
             <objects>
                 <viewController id="h96-mz-Qs4" customClass="MeController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
@@ -819,7 +818,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Name" id="Fe2-iu-7zu">
+                    <navigationItem key="navigationItem" title="Me" id="Fe2-iu-7zu">
                         <barButtonItem key="leftBarButtonItem" title="Log Out" id="Wbo-w6-noc">
                             <connections>
                                 <action selector="logOut:" destination="h96-mz-Qs4" id="4NO-5T-PCt"/>
@@ -875,6 +874,9 @@
                                 <subviews>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="22F-CN-JDl">
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
+                                        <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                            <rect key="frame" x="0.0" y="0.0" width="160" height="207"/>
+                                        </variation>
                                         <connections>
                                             <outletCollection property="gestureRecognizers" destination="aQj-E4-gl5" appends="YES" id="erB-aE-mck"/>
                                             <segue destination="rPD-KC-83S" kind="embed" identifier="Left Photo Controller" id="4GQ-Aa-EaP"/>
@@ -882,6 +884,9 @@
                                     </containerView>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TYB-j4-um4">
                                         <rect key="frame" x="160" y="0.0" width="160" height="367"/>
+                                        <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                            <rect key="frame" x="160" y="0.0" width="160" height="207"/>
+                                        </variation>
                                         <connections>
                                             <outletCollection property="gestureRecognizers" destination="t7x-cR-kO3" appends="YES" id="Jf1-Ji-obS"/>
                                             <segue destination="rPD-KC-83S" kind="embed" identifier="Right Photo Controller" id="uM3-tb-eTB"/>
@@ -892,43 +897,44 @@
                                 <constraints>
                                     <constraint firstItem="22F-CN-JDl" firstAttribute="top" secondItem="Xjm-MJ-dOi" secondAttribute="top" id="7jy-nu-GRH"/>
                                     <constraint firstItem="TYB-j4-um4" firstAttribute="width" secondItem="22F-CN-JDl" secondAttribute="width" id="BLi-i6-jTj"/>
-                                    <constraint firstAttribute="width" secondItem="Xjm-MJ-dOi" secondAttribute="height" multiplier="768:904" id="M50-kg-dHJ"/>
                                     <constraint firstItem="22F-CN-JDl" firstAttribute="leading" secondItem="Xjm-MJ-dOi" secondAttribute="leading" id="Mff-6c-m6b"/>
                                     <constraint firstAttribute="bottom" secondItem="22F-CN-JDl" secondAttribute="bottom" id="RPg-nD-26H"/>
                                     <constraint firstItem="TYB-j4-um4" firstAttribute="leading" secondItem="22F-CN-JDl" secondAttribute="trailing" id="SzK-9Q-v06"/>
                                     <constraint firstItem="TYB-j4-um4" firstAttribute="top" secondItem="Xjm-MJ-dOi" secondAttribute="top" id="UCZ-7U-bis"/>
                                     <constraint firstAttribute="bottom" secondItem="TYB-j4-um4" secondAttribute="bottom" id="bbI-aD-sR3"/>
+                                    <constraint firstAttribute="width" constant="768" id="c7p-l9-YWg"/>
                                     <constraint firstAttribute="trailing" secondItem="TYB-j4-um4" secondAttribute="trailing" id="gsr-5s-qGb"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="M50-kg-dHJ"/>
+                                        <exclude reference="c7p-l9-YWg"/>
                                     </mask>
                                 </variation>
-                                <variation key="heightClass=regular-widthClass=regular">
+                                <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="207"/>
                                     <mask key="constraints">
-                                        <include reference="M50-kg-dHJ"/>
+                                        <include reference="c7p-l9-YWg"/>
                                     </mask>
                                 </variation>
                             </view>
                         </subviews>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstAttribute="centerX" secondItem="Xjm-MJ-dOi" secondAttribute="centerX" id="8Ut-KJ-Pcd"/>
                             <constraint firstItem="Xjm-MJ-dOi" firstAttribute="leading" secondItem="Ngt-gb-2Qu" secondAttribute="leading" id="TtH-Ah-kYX"/>
                             <constraint firstItem="Xjm-MJ-dOi" firstAttribute="top" secondItem="Ngt-gb-2Qu" secondAttribute="top" id="b3g-A1-Tv7"/>
                             <constraint firstAttribute="bottom" secondItem="Xjm-MJ-dOi" secondAttribute="bottom" id="fXK-8M-lKe"/>
+                            <constraint firstAttribute="centerX" secondItem="Xjm-MJ-dOi" secondAttribute="centerX" id="pNH-p1-fBX"/>
                             <constraint firstAttribute="trailing" secondItem="Xjm-MJ-dOi" secondAttribute="trailing" id="scg-d7-2OE"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="8Ut-KJ-Pcd"/>
+                                <exclude reference="pNH-p1-fBX"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
                             <mask key="constraints">
-                                <include reference="8Ut-KJ-Pcd"/>
                                 <exclude reference="TtH-Ah-kYX"/>
+                                <include reference="pNH-p1-fBX"/>
                                 <exclude reference="scg-d7-2OE"/>
                             </mask>
                         </variation>
@@ -973,7 +979,7 @@
                         <viewControllerLayoutGuide type="top" id="J5z-13-Iut"/>
                         <viewControllerLayoutGuide type="bottom" id="lwi-Vt-MNP"/>
                     </layoutGuides>
-                    <view key="view" opaque="NO" multipleTouchEnabled="YES" contentMode="center" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" id="5Xe-GT-hcA">
+                    <view key="view" opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="5Xe-GT-hcA">
                         <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -1098,7 +1104,7 @@
         <scene sceneID="7Mt-CD-10B">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="oUO-1p-KSF" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="New Poll" id="2O1-Ra-Pjk"/>
+                    <tabBarItem key="tabBarItem" title="New Poll" image="TabBarIconPostPollUnselected" id="2O1-Ra-Pjk"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="cG8-B3-08M">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1121,9 +1127,11 @@
         <image name="ButtonPrevious" width="32" height="32"/>
         <image name="ButtonRoundBordersBackground" width="11" height="11"/>
         <image name="TabBarIconFriendsPollsUnselected" width="25" height="25"/>
+        <image name="TabBarIconMeUnselected" width="25" height="25"/>
+        <image name="TabBarIconPostPollUnselected" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="oem-Cm-nHK"/>
+        <segue reference="3E2-oz-Poo"/>
         <segue reference="IZA-Rh-gPV"/>
         <segue reference="uM3-tb-eTB"/>
     </inferredMetricsTieBreakers>

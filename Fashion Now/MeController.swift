@@ -10,6 +10,12 @@ import UIKit
 
 class MeController: UIViewController/*, UITableViewDataSource, UITableViewDelegate*/ {
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconMeSelected")
+    }
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 

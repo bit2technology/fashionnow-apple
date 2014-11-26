@@ -1,17 +1,8 @@
-/* Dismiss alert */
-"BETA_WARNING_ALERT_CANCEL_BUTTON" = "OK";
-
 /* Message in alert warning users about beta limitations */
 "BETA_WARNING_ALERT_MESSAGE" = "Desculpe, mas nesta versão do Fashion Now você só pode logar com sua conta do Facebook.";
 
-/* Title in alert warning users about beta limitations */
-"BETA_WARNING_ALERT_TITLE" = "Fashion Now Beta";
-
-/* Dismiss alert */
-"FACEBOOK_LOGIN_ERROR_ALERT_CANCEL_BUTTON" = "OK";
-
-/* Log in with e-mail error cancel button title */
-"LOGIN_EMAIL_ERROR_OK" = "OK";
+/* Impossible to load camera */
+"PHOTO_CAMERA_UNAVAILABLE_ALERT_TITLE" = "Câmera indisponível";
 
 /* User logged in with a Facebook account and must review his/her information. */
 "SIGNUP_REVIEW_TITLE" = "Editar Perfil";

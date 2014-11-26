@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "VoteSel.png"
+      "filename" : "MeSelected.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "VoteSel@2x.png"
+      "filename" : "MeSelected@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "VoteSel@3x.png"
+      "filename" : "MeSelected@3x.png"
     }
   ],
   "info" : {

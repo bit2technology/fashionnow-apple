@@ -56,6 +56,8 @@ class PostPollController: UIViewController, PollControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconPostPollSelected")
         
         sendButton.tintColor = UIColor.defaultTintColor(alpha: 0.6)
 
