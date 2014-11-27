@@ -6,33 +6,11 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-private let FacebookAvatarURLKey = "facebookAvatarURL"
-
 class FacebookHelper {
 
-    // MARK: Avatar
-
-    class var cachedAvatarPath: String? {
-        get {
-            return NSUserDefaults.standardUserDefaults().stringForKey(FacebookAvatarURLKey)
-        }
-        set {
-            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: FacebookAvatarURLKey)
-        }
-    }
-
-    class func updateCachedAvatarPathInBackground() {
-        if let facebookSessionIsOpen = PFFacebookUtils.session()?.isOpen {
-            let avatarSize = Int(64 * UIScreen.mainScreen().scale)
-            FBRequestConnection.startWithGraphPath("me?fields=picture.height(\(avatarSize)).width(\(avatarSize)).redirect(false)") { (connection, result, error) -> Void in
-                if error == nil {
-                    self.cachedAvatarPath = (result as? FBGraphObject)?.picturePath
-                } else {
-                    // TODO: Better error handling
-                    UIAlertView(title: nil, message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK")
-                }
-            }
-        }
+    class func urlForPictureOfUser(id facebookId: String, size avatarSize: Int) -> NSURL? {
+        let avatarPath = "http://graph.facebook.com/\(facebookId)/picture?height=\(avatarSize)&width=\(avatarSize)"
+        return NSURL(string: avatarPath)
     }
 }
 

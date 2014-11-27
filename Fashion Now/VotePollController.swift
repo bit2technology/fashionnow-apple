@@ -105,10 +105,8 @@ class VotePollController: UIViewController, PollControllerDelegate {
         }
 
         // Avatar
-        if let authorFacebookId = newPoll.createdBy?.facebookId {
-            let avatarSize = Int(40 * UIScreen.mainScreen().scale)
-            let avatarPath = "http://graph.facebook.com/\(authorFacebookId)/picture?height=\(avatarSize)&width=\(avatarSize)"
-            self.avatarView.setImageWithURL(NSURL(string: avatarPath), usingActivityIndicatorStyle: .White)
+        if let unwrappedAuthorFacebookId = newPoll.createdBy?.facebookId {
+            self.avatarView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedAuthorFacebookId, size: Int(40 * UIScreen.mainScreen().scale)), usingActivityIndicatorStyle: .White)
         }
 
         // Vote control

@@ -142,11 +142,9 @@ class LoginSignupController: StaticDataTableViewController, UIPickerViewDataSour
         passwordField.placeholder = "Optional" // FIXME: Better handlig password change
 
         // Avatar
-        if let unwrappedFacebookUserPicture = facebookUser?.picturePath {
-            FacebookHelper.cachedAvatarPath = unwrappedFacebookUserPicture
-        }
-        if let unwrappedCachedAvatarPath = FacebookHelper.cachedAvatarPath {
-            avatarImageView.setImageWithURL(NSURL(string: unwrappedCachedAvatarPath), usingActivityIndicatorStyle: .Gray)
+        let facebookId = parseUser?.facebookId ?? facebookUser?.objectId
+        if let unwrappedFacebookId = facebookId {
+            avatarImageView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedFacebookId, size: Int(64 * UIScreen.mainScreen().scale)), usingActivityIndicatorStyle: .WhiteLarge)
         }
     }
 

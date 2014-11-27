@@ -39,11 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ParseUser.enableAutomaticUser()
         let currentUser = ParseUser.currentUser()
         if currentUser.isDirty() {
-            println("willCallSaveCurrentUser:\(currentUser)")
-            currentUser.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
-                println("didSaveCurrentUser:\(error)")
-            })
-            println("willSaveCurrentUser:\(currentUser)")
+            currentUser.saveInBackgroundWithBlock(nil)
         }
         
         return true
@@ -57,7 +53,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Facebook configuration
         FBAppCall.handleDidBecomeActiveWithSession(PFFacebookUtils.session())
         FBAppEvents.activateApp()
-        FacebookHelper.updateCachedAvatarPathInBackground()
     }
 
     // MARK: Push notifications
@@ -66,7 +61,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Store the deviceToken in the current installation and save it to Parse.
         let currentInstallation = PFInstallation.currentInstallation()
         currentInstallation.setDeviceTokenFromData(deviceToken)
-        println("currentInstallation:\(currentInstallation)")
         currentInstallation.saveInBackgroundWithBlock(nil)
     }
 
