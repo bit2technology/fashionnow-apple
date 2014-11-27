@@ -144,7 +144,7 @@ class LoginSignupController: StaticDataTableViewController, UIPickerViewDataSour
         // Avatar
         let facebookId = parseUser?.facebookId ?? facebookUser?.objectId
         if let unwrappedFacebookId = facebookId {
-            avatarImageView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedFacebookId, size: Int(64 * UIScreen.mainScreen().scale)), usingActivityIndicatorStyle: .WhiteLarge)
+            avatarImageView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedFacebookId, size: 64), usingActivityIndicatorStyle: .WhiteLarge)
         }
     }
 

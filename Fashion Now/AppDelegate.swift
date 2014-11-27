@@ -94,7 +94,10 @@ extension UIColor {
     }
     
     // MARK: Helpers
-    
+
+    /**
+    :returns: An image with this color and the specified size
+    */
     func toImage(size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
         
         UIGraphicsBeginImageContext(size);
@@ -109,6 +112,7 @@ extension UIColor {
     }
 }
 
+/// UIButton that gets the background image and apply template rendering mode
 class TemplateBackgroundButton: UIButton {
 
     override func awakeFromNib() {

@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// Custom UITabBarController, for login behavior
 class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
     override func supportedInterfaceOrientations() -> Int {

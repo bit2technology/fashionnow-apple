@@ -20,11 +20,21 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
     }
 
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    /// Label with connection related errors
+    @IBOutlet weak var connectionErrorMessage: UILabel!
+    /// Label with Facebook/server related errors
+    @IBOutlet weak var facebookErrorMessage: UILabel!
     @IBAction func loginWithFacebookButtonPressed(sender: UIButton) {
+        loginWithFacebookButtonPressed(sender, countdown: 1)
+    }
+    func loginWithFacebookButtonPressed(sender: UIButton, countdown: Int) {
 
         // Set loading interface
         sender.enabled = false
         activityIndicator.startAnimating()
+        // Hide error messages
+        connectionErrorMessage.hidden = true
+        facebookErrorMessage.hidden = true
 
         // Login
         PFFacebookUtils.logInWithPermissions(["public_profile", "user_friends", "email"]) { (user, error) -> Void in
@@ -32,22 +42,24 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
 
                 // Successful login. Now get Facebook information.
                 let avatarSize = Int(64 * UIScreen.mainScreen().scale)
-                FBRequestConnection.startWithGraphPath("me?fields=id,first_name,email,gender,picture.height(\(avatarSize)).width(\(avatarSize)).redirect(false)") { (requestConnection, result, error) -> Void in
-                    if error == nil {
-                        // Send Facebook information for review in next screen
-                        self.performSegueWithIdentifier("Sign Up", sender: result)
-                    } else {
-                        // TODO: Better Facebook request error handler
-                        sender.enabled = true
-                        self.activityIndicator.stopAnimating()
-                        UIAlertView(title: nil, message: error.localizedDescription, delegate: nil, cancelButtonTitle:"OK").show()
-                    }
+                FBRequestConnection.startWithGraphPath("me?fields=id,first_name,email,gender") { (requestConnection, result, error) -> Void in
+                    // Send Facebook information for review in next screen
+                    self.performSegueWithIdentifier("Sign Up", sender: result)
                 }
             } else {
-                // TODO: Better login error handler
-                sender.enabled = true
-                self.activityIndicator.stopAnimating()
-                UIAlertView(title: nil, message: error.localizedDescription, delegate: nil, cancelButtonTitle:"OK").show()
+
+                // Unsuccessful. The user might have disabled Fashion Now app in Facebook. In this case, the SDK needs to try to connect once, to clean token. That's why the app tries to connect to Facebook twice, unless user has explicitly rejected.
+                if countdown > 0 && error.fberrorCategory != .UserCancelled {
+                    self.loginWithFacebookButtonPressed(sender, countdown: countdown - 1)
+                } else {
+                    sender.enabled = true
+                    switch error.fberrorCategory {
+                    case .Server, .AuthenticationReopenSession, .Permissions, .UserCancelled:
+                        self.facebookErrorMessage.hidden = false
+                    default:
+                        self.connectionErrorMessage.hidden = false
+                    }
+                }
             }
         }
     }

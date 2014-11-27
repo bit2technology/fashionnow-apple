@@ -106,7 +106,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
 
         // Avatar
         if let unwrappedAuthorFacebookId = newPoll.createdBy?.facebookId {
-            self.avatarView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedAuthorFacebookId, size: Int(40 * UIScreen.mainScreen().scale)), usingActivityIndicatorStyle: .White)
+            self.avatarView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedAuthorFacebookId, size: 40), usingActivityIndicatorStyle: .White)
         }
 
         // Vote control

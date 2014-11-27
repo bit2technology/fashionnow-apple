@@ -75,13 +75,37 @@
                                         <rect key="frame" x="142" y="276" width="37" height="37"/>
                                         <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     </activityIndicatorView>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Impossible to proceed. Are you connected to the Internet?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="4UF-ot-JIx">
+                                        <rect key="frame" x="60" y="276" width="200" height="54"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="d95-MF-VeW"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sorry, Fashion Now might be disallowed to connect to your account. Go to Settings &gt; Facebook to verify and try again." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="260" translatesAutoresizingMaskIntoConstraints="NO" id="pcR-hn-i1Q">
+                                        <rect key="frame" x="30" y="276" width="260" height="72"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="260" id="v00-sS-n0K"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="centerY" secondItem="tP5-G2-WZW" secondAttribute="centerY" id="2fv-Fb-Zfp"/>
                                     <constraint firstAttribute="centerX" secondItem="Y7y-gn-L6g" secondAttribute="centerX" id="3PX-7C-7ao"/>
                                     <constraint firstAttribute="trailing" secondItem="tP5-G2-WZW" secondAttribute="trailing" id="F14-sg-xJ3"/>
+                                    <constraint firstAttribute="centerX" secondItem="pcR-hn-i1Q" secondAttribute="centerX" id="QDS-uy-VHE"/>
+                                    <constraint firstItem="4UF-ot-JIx" firstAttribute="top" secondItem="tP5-G2-WZW" secondAttribute="bottom" constant="8" id="e7N-5J-G4e"/>
                                     <constraint firstItem="tP5-G2-WZW" firstAttribute="leading" secondItem="H1R-73-2vW" secondAttribute="leading" id="ggV-XL-wk8"/>
+                                    <constraint firstItem="pcR-hn-i1Q" firstAttribute="top" secondItem="tP5-G2-WZW" secondAttribute="bottom" constant="8" id="i7e-uy-USF"/>
                                     <constraint firstItem="Y7y-gn-L6g" firstAttribute="top" secondItem="tP5-G2-WZW" secondAttribute="bottom" constant="8" id="y7g-c4-nR0"/>
+                                    <constraint firstAttribute="centerX" secondItem="4UF-ot-JIx" secondAttribute="centerX" id="yQb-Ws-5h8"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -105,6 +129,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="Y7y-gn-L6g" id="bra-uo-MYn"/>
+                        <outlet property="connectionErrorMessage" destination="4UF-ot-JIx" id="jWN-ys-PM7"/>
+                        <outlet property="facebookErrorMessage" destination="pcR-hn-i1Q" id="WQC-mC-u0P"/>
                         <segue destination="n9L-hk-vfW" kind="show" identifier="Sign Up" id="3E2-oz-Poo"/>
                         <segue destination="34U-YS-Pbl" kind="show" identifier="Log In" id="lF0-b8-IsT"/>
                     </connections>

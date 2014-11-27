@@ -8,8 +8,18 @@
 
 class FacebookHelper {
 
+    /**
+    Get user picture URL from Facebook
+
+    :param: id Facebook ID of the user
+
+    :param: size Size (in points) of the square picture
+
+    :returns: The URL of the picture
+    */
     class func urlForPictureOfUser(id facebookId: String, size avatarSize: Int) -> NSURL? {
-        let avatarPath = "http://graph.facebook.com/\(facebookId)/picture?height=\(avatarSize)&width=\(avatarSize)"
+        let avatarRealSize = avatarSize * Int(UIScreen.mainScreen().scale)
+        let avatarPath = "http://graph.facebook.com/\(facebookId)/picture?height=\(avatarRealSize)&width=\(avatarRealSize)"
         return NSURL(string: avatarPath)
     }
 }
@@ -40,6 +50,9 @@ extension FBGraphObject {
         }
     }
 
+    /**
+    Only use this if picture was requested along with user info
+    */
     var picturePath: String? {
         get {
             let pictureDict = self["picture"] as? [NSObject:AnyObject]
