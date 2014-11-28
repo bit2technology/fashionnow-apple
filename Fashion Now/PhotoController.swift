@@ -40,12 +40,11 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
     // MARK: Edition buttons
 
     @IBOutlet weak var cameraButton: UIButton!
-    @IBOutlet weak var libraryButton: UIButton!
     @IBOutlet weak var previousButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
     var imageButtonsHidden: Bool = false {
         didSet {
-            for button in [cameraButton, libraryButton, previousButton, deleteButton] {
+            for button in [cameraButton, previousButton, deleteButton] {
                 button.hidden = imageButtonsHidden
             }
         }
@@ -80,17 +79,8 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
             return
         }
 
-        // Define image source
-        var source: UIImagePickerControllerSourceType!
         switch sender {
         case cameraButton:
-            // If camera is unavailable, do nothing
-//            if !UIImagePickerController.isSourceTypeAvailable(.Camera) {
-//                UIAlertView(title: NSLocalizedString("PHOTO_CAMERA_UNAVAILABLE_ALERT_TITLE", value: "Camera unavailable", comment: "Impossible to load camera"), message: nil, delegate: nil, cancelButtonTitle: NSLocalizedString("PHOTO_CAMERA_UNAVAILABLE_ALERT_CANCEL_BUTTON", value: "OK", comment: "Impossible to load camera"))
-//                return
-//            }
-//            source = .Camera
-
             let cameraContainer = DBCameraContainerViewController(delegate: self)
             cameraContainer.setFullScreenMode()
             let nav = UINavigationController(rootViewController: cameraContainer)
@@ -98,23 +88,14 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
             nav.navigationBarHidden = true
             presentViewController(nav, animated: true, completion: nil)
 
-            return
-
-        case libraryButton:
-            source = .PhotoLibrary
         case previousButton:
             // TODO: Previous photos
             return
+
         default:
             // If unknown source, do nothing
             return
         }
-
-        // If camera or photo library
-        let imagePickerController = UIImagePickerController()
-        imagePickerController.delegate = self
-        imagePickerController.sourceType = source
-        presentViewController(imagePickerController, animated: true, completion: nil)
     }
 
     // MARK: UIViewController
@@ -125,16 +106,15 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         deleteButton.tintColor = UIColor.defaultTintColor(alpha: 0.6)
     }
 
-    // MARK: UIImagePickerControllerDelegate
+    // MARK: UINavigationControllerDelegate
 
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+    func navigationControllerSupportedInterfaceOrientations(navigationController: UINavigationController) -> Int {
+        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+    }
 
-        // Get edited or original image
-        var image = info[UIImagePickerControllerEditedImage] as UIImage!
-        if image == nil {
-            image = info[UIImagePickerControllerOriginalImage] as UIImage!
-        }
+    // MARK: DBCameraViewControllerDelegate
 
+    func camera(cameraViewController: AnyObject!, didFinishWithImage image: UIImage!, withMetadata metadata: [NSObject : AnyObject]!) {
         // Set photo properties
         let imageData = image.compressedJPEGData()
         photo.image = PFFile(data: imageData, contentType: "image/jpeg")
@@ -145,13 +125,12 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         delegate?.photoController?(self, didEditPhoto: photo)
 
         // Dismiss
-        picker.dismissViewControllerAnimated(true, completion: nil)
+        (cameraViewController as? UIViewController)?.dismissViewControllerAnimated(true, completion: nil)
     }
 
-    // MARK: UINavigationControllerDelegate
-
-    func navigationControllerSupportedInterfaceOrientations(navigationController: UINavigationController) -> Int {
-        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+    func dismissCamera(cameraViewController: AnyObject!) {
+        // Dismiss
+        (cameraViewController as? UIViewController)?.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 

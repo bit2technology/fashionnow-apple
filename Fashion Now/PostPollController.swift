@@ -26,8 +26,12 @@ class PostPollController: UIViewController, PollControllerDelegate {
         let spaceAndNewline = NSCharacterSet.whitespaceAndNewlineCharacterSet()
         poll.tags = textField.text?.stringByTrimmingCharactersInSet(spaceAndNewline).componentsSeparatedByCharactersInSet(spaceAndNewline)
         poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+
+            if succeeded {
+                self.pollController.poll = ParsePoll(user: ParseUser.currentUser())
+            }
             
-            sender.enabled = false
+            sender.enabled = true
             self.loadingView.hidden = true
             self.textField.enabled = true
         }
