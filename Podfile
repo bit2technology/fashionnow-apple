@@ -1,12 +1,14 @@
 platform :ios, '7.0'
 
 pod 'AFNetworking'
+pod 'DBCamera'
 pod 'Facebook-iOS-SDK'
 #pod 'MHVideoPhotoGallery'
 #pod 'NYXImagesKit'
 pod 'Parse'
 pod 'ParseFacebookUtils'
 pod 'StaticDataTableViewController'
+#pod 'TGCameraViewController'
 pod 'UIActivityIndicator-for-SDWebImage'
 pod 'UIPhotoGallery'
 

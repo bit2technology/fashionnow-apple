@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DBCameraViewControllerDelegate {
 
     var photo: ParsePhoto = ParsePhoto(user: ParseUser.currentUser()) {
         didSet {
@@ -85,11 +85,20 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         switch sender {
         case cameraButton:
             // If camera is unavailable, do nothing
-            if !UIImagePickerController.isSourceTypeAvailable(.Camera) {
-                UIAlertView(title: NSLocalizedString("PHOTO_CAMERA_UNAVAILABLE_ALERT_TITLE", value: "Camera unavailable", comment: "Impossible to load camera"), message: nil, delegate: nil, cancelButtonTitle: NSLocalizedString("PHOTO_CAMERA_UNAVAILABLE_ALERT_CANCEL_BUTTON", value: "OK", comment: "Impossible to load camera"))
-                return
-            }
-            source = .Camera
+//            if !UIImagePickerController.isSourceTypeAvailable(.Camera) {
+//                UIAlertView(title: NSLocalizedString("PHOTO_CAMERA_UNAVAILABLE_ALERT_TITLE", value: "Camera unavailable", comment: "Impossible to load camera"), message: nil, delegate: nil, cancelButtonTitle: NSLocalizedString("PHOTO_CAMERA_UNAVAILABLE_ALERT_CANCEL_BUTTON", value: "OK", comment: "Impossible to load camera"))
+//                return
+//            }
+//            source = .Camera
+
+            let cameraContainer = DBCameraContainerViewController(delegate: self)
+            cameraContainer.setFullScreenMode()
+            let nav = UINavigationController(rootViewController: cameraContainer)
+            nav.delegate = self
+            nav.navigationBarHidden = true
+            presentViewController(nav, animated: true, completion: nil)
+
+            return
 
         case libraryButton:
             source = .PhotoLibrary
@@ -137,6 +146,12 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
 
         // Dismiss
         picker.dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    // MARK: UINavigationControllerDelegate
+
+    func navigationControllerSupportedInterfaceOrientations(navigationController: UINavigationController) -> Int {
+        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
     }
 }
 
