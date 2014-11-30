@@ -1,16 +1,18 @@
 platform :ios, '7.0'
 
 pod 'AFNetworking'
-pod 'DBCamera'
+pod 'Bolts'
+#pod 'DBCamera'
 pod 'Facebook-iOS-SDK'
 #pod 'MHVideoPhotoGallery'
 #pod 'NYXImagesKit'
 pod 'Parse'
 pod 'ParseFacebookUtils'
+pod 'SDWebImage'
 pod 'StaticDataTableViewController'
-#pod 'TGCameraViewController'
+pod 'TGCameraViewController'
 pod 'UIActivityIndicator-for-SDWebImage'
-pod 'UIPhotoGallery'
+#pod 'UIPhotoGallery'
 
 post_install do | installer |
     require 'fileutils'

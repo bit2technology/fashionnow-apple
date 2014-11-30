@@ -97,7 +97,10 @@ class VotePollController: UIViewController, PollControllerDelegate {
         dateFormatter.doesRelativeDateFormatting = true
         dateLabel.text = dateFormatter.stringFromDate(newPoll.createdAt)
         // Tags
-        if let unwrappedTags = newPoll.tags {
+        if let unwrappedCaption = newPoll.caption {
+            tagsLabel.text = unwrappedCaption
+            tagsLabel.superview?.hidden = false
+        } else if let unwrappedTags = newPoll.tags {
             tagsLabel.text = ", ".join(unwrappedTags)
             tagsLabel.superview?.hidden = false
         } else {

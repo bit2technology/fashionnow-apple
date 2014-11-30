@@ -92,6 +92,14 @@ extension UIColor {
     class func defaultTintColor(alpha: CGFloat = 1) -> UIColor {
         return defaultDetailColor(alpha: alpha)
     }
+
+    class func defaultDestructiveColor(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(red: 1, green: 102/255.0, blue: 102/255.0, alpha: alpha)
+    }
+
+    class func randomColor(alpha: CGFloat = 1) -> UIColor{
+        return UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: alpha)
+    }
     
     // MARK: Helpers
 

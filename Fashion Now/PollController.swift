@@ -15,6 +15,10 @@ class PollController: UIViewController, PhotoControllerDelegate {
                 adjustLayout(0, animationTimingFunction: nil, callCompleteDelegate: false)
                 leftPhotoController.photo = unwrappedPhotos.first!
                 rightPhotoController.photo = unwrappedPhotos.last!
+            } else {
+                adjustLayout(0, animationTimingFunction: nil, callCompleteDelegate: false)
+                leftPhotoController.photo = ParsePhoto(user: poll.createdBy!)
+                rightPhotoController.photo = ParsePhoto(user: poll.createdBy!)
             }
         }
     }
@@ -226,6 +230,8 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
         leftPhotoController.delegate = self
         rightPhotoController.delegate = self
+
+        rightPhotoController.layout = .Right
     }
 
     override func viewDidAppear(animated: Bool) {

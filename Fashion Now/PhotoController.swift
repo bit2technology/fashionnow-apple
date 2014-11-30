@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DBCameraViewControllerDelegate {
+class PhotoController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, TGCameraDelegate {
 
     var photo: ParsePhoto = ParsePhoto(user: ParseUser.currentUser()) {
         didSet {
@@ -19,10 +19,12 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
                     } else {
                         self.delegate?.photoController?(self, didFailToLoadPhoto: self.photo, error: error)
                     }
-                }, usingActivityIndicatorStyle: .Gray)
+                }, usingActivityIndicatorStyle: .White)
             } else {
-                // No URL, hide image view.
+                // No URL, hide image view and call delegate.
                 imageContainerHidden = true
+                let error = NSError() // TODO: Better error
+                delegate?.photoController?(self, didFailToLoadPhoto: photo, error: error)
             }
         }
     }
@@ -37,15 +39,35 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         }
     }
 
+    @IBOutlet weak var sendButton: UIButton!
+
     // MARK: Edition buttons
 
     @IBOutlet weak var cameraButton: UIButton!
+    @IBOutlet weak var libraryButton: UIButton!
     @IBOutlet weak var previousButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
     var imageButtonsHidden: Bool = false {
         didSet {
-            for button in [cameraButton, previousButton, deleteButton] {
+            for button in [cameraButton, libraryButton, previousButton, deleteButton] {
                 button.hidden = imageButtonsHidden
+            }
+        }
+    }
+
+    // MARK: Layout
+    
+    @IBOutlet weak var deleteButtonCenterX: NSLayoutConstraint!
+    enum PhotoControllerLayout {
+        case Left, Right
+    }
+    var layout: PhotoControllerLayout = .Left {
+        didSet {
+            switch layout {
+            case .Left:
+                deleteButtonCenterX.constant = -9999
+            case .Right:
+                deleteButtonCenterX.constant = 9999
             }
         }
     }
@@ -72,6 +94,17 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         delegate?.photoController?(self, didEditPhoto: photo)
     }
 
+    private func setPhotoImage(image: UIImage) {
+        // Set photo properties
+        let imageData = image.compressedJPEGData()
+        photo.image = PFFile(data: imageData, contentType: "image/jpeg")
+        imageView.image = image
+        imageContainerHidden = false
+
+        // Call delegate
+        delegate?.photoController?(self, didEditPhoto: photo)
+    }
+
     @IBAction func imageButtonPressed(sender: UIButton) {
 
         // Edit only if user has write access
@@ -80,20 +113,22 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         }
 
         switch sender {
+        // Present camera
         case cameraButton:
-            let cameraContainer = DBCameraContainerViewController(delegate: self)
-            cameraContainer.setFullScreenMode()
-            let nav = UINavigationController(rootViewController: cameraContainer)
-            nav.delegate = self
-            nav.navigationBarHidden = true
-            presentViewController(nav, animated: true, completion: nil)
-
+            let cameraController = TGCameraNavigationController.newWithCameraDelegate(self)
+            presentViewController(cameraController, animated: true, completion: nil)
+        // Present albuns
+        case libraryButton:
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.sourceType = .PhotoLibrary
+            presentViewController(imagePickerController, animated: true, completion: nil)
+        // Present previous sent photos
         case previousButton:
             // TODO: Previous photos
             return
-
+        // Unknown source, do nothing
         default:
-            // If unknown source, do nothing
             return
         }
     }
@@ -103,7 +138,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        deleteButton.tintColor = UIColor.defaultTintColor(alpha: 0.6)
+        deleteButton.tintColor = UIColor.defaultDestructiveColor(alpha: 0.6)
     }
 
     // MARK: UINavigationControllerDelegate
@@ -112,25 +147,26 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         return Int(UIInterfaceOrientationMask.Portrait.rawValue)
     }
 
-    // MARK: DBCameraViewControllerDelegate
+    // MARK: UIPickerViewDelegate
 
-    func camera(cameraViewController: AnyObject!, didFinishWithImage image: UIImage!, withMetadata metadata: [NSObject : AnyObject]!) {
-        // Set photo properties
-        let imageData = image.compressedJPEGData()
-        photo.image = PFFile(data: imageData, contentType: "image/jpeg")
-        imageView.image = image
-        imageContainerHidden = false
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
 
-        // Call delegate
-        delegate?.photoController?(self, didEditPhoto: photo)
-
-        // Dismiss
-        (cameraViewController as? UIViewController)?.dismissViewControllerAnimated(true, completion: nil)
+        // Get edited or original image
+        var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as UIImage
+        setPhotoImage(image)
+        dismissViewControllerAnimated(true, completion: nil)
     }
 
-    func dismissCamera(cameraViewController: AnyObject!) {
-        // Dismiss
-        (cameraViewController as? UIViewController)?.dismissViewControllerAnimated(true, completion: nil)
+    // MARK: TGCameraDelegate
+
+    func cameraDidTakePhoto(image: UIImage!) {
+        setPhotoImage(image)
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    func cameraDidCancel() {
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }
 
@@ -142,7 +178,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
     optional func photoController(photoController: PhotoController, didEditPhoto photo: ParsePhoto)
 }
 
-class PhotoBackgroundView: UIView {
+class PhotoBackgroundView: UIImageView {
 
     override func tintColorDidChange() {
         super.tintColorDidChange()
@@ -153,42 +189,19 @@ class PhotoBackgroundView: UIView {
 
 extension UIImage {
 
-    func compressedJPEGData(compressionQuality: CGFloat = 0.5) -> NSData {
+    func compressedJPEGData(maxSize: CGFloat = 1024, compressionQuality: CGFloat = 0.5) -> NSData {
 
-        var actualHeight = size.height
-        var actualWidth = size.width
-        let maxHeight: CGFloat = 600
-        let maxWidth: CGFloat = 800
-        var imgRatio = actualWidth / actualHeight
-        let maxRatio = maxWidth / maxHeight
+        let resizeScale = maxSize / max(size.width, size.height)
 
-        if actualHeight > maxHeight || actualWidth > maxWidth {
-
-            if imgRatio < maxRatio {
-                // Adjust width according to maxHeight
-                imgRatio = maxHeight / actualHeight
-                actualWidth = imgRatio * actualWidth
-                actualHeight = maxHeight
-            }
-            else if imgRatio > maxRatio {
-                //adjust height according to maxWidth
-                imgRatio = maxWidth / actualWidth
-                actualHeight = imgRatio * actualHeight
-                actualWidth = maxWidth
-            }
-            else{
-                actualHeight = maxHeight
-                actualWidth = maxWidth
-            }
+        var img: UIImage?
+        if resizeScale < 1 {
+            let resizeRect = CGRect(x: 0, y: 0, width: size.width * resizeScale, height: size.height * resizeScale)
+            UIGraphicsBeginImageContext(resizeRect.size)
+            drawInRect(resizeRect)
+            img = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
         }
 
-        let rect = CGRect(x: 0, y: 0, width: actualWidth, height: actualHeight)
-        UIGraphicsBeginImageContext(rect.size);
-        drawInRect(rect)
-        let img = UIGraphicsGetImageFromCurrentImageContext();
-        let imageData = UIImageJPEGRepresentation(img, compressionQuality);
-        UIGraphicsEndImageContext();
-
-        return imageData
+        return UIImageJPEGRepresentation(img ?? self, compressionQuality)
     }
 }

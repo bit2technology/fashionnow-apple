@@ -24,10 +24,12 @@ class PostPollController: UIViewController, PollControllerDelegate {
 
         let poll = pollController.poll
         let spaceAndNewline = NSCharacterSet.whitespaceAndNewlineCharacterSet()
-        poll.tags = textField.text?.stringByTrimmingCharactersInSet(spaceAndNewline).componentsSeparatedByCharactersInSet(spaceAndNewline)
+        poll.caption = textField.text
         poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
 
             if succeeded {
+                sender.hidden = true
+                self.textField.text = nil
                 self.pollController.poll = ParsePoll(user: ParseUser.currentUser())
             }
             
@@ -62,7 +64,12 @@ class PostPollController: UIViewController, PollControllerDelegate {
         super.viewDidLoad()
 
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconPostPollSelected")
-        
+
+        sendButton.layer.shadowColor = UIColor.whiteColor().CGColor
+        sendButton.layer.shadowOffset = CGSizeZero
+        sendButton.layer.shadowOpacity = 1
+        sendButton.layer.shadowRadius = 3
+
         sendButton.hidden = true
         loadingView.hidden = true
 

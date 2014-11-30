@@ -8,23 +8,21 @@
 
 import UIKit
 
-class MeController: UITableViewController {
+class MeController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconMeSelected")
-
-        let backgroundLabel = UILabel()
-        backgroundLabel.text = "In Construction"
-        backgroundLabel.textAlignment = .Center
-        backgroundLabel.textColor = UIColor.darkGrayColor()
-        tableView.backgroundView = backgroundLabel
-
-        tableView.separatorStyle = .None
     }
 
-    @IBAction func logOut(snder: UITabBarItem) {
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationItem.title = ParseUser.currentUser().name
+    }
+
+    @IBAction func logOutButtonPressed(snder: AnyObject) {
         ParseUser.logOut()
         (self.tabBarController as TabBarController).selectedIndex = 0
     }
@@ -33,5 +31,17 @@ class MeController: UITableViewController {
         return true
     }
 
-    // MARK: UITableViewController
+    // MARK: UICollectionoViewController
+
+    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 20
+    }
+
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Test", forIndexPath: indexPath) as UICollectionViewCell
+
+        cell.backgroundColor = UIColor.randomColor()
+
+        return cell
+    }
 }

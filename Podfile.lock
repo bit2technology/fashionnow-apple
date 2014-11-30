@@ -21,11 +21,8 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Bolts (1.1.3)
-  - DBCamera (2.3.5):
-    - GPUImage (~> 0.1)
   - Facebook-iOS-SDK (3.20.0):
     - Bolts (~> 1.0)
-  - GPUImage (0.1.6)
   - Parse (1.5.0):
     - Bolts (~> 1.1.3)
   - ParseFacebookUtils (1.5.0.1):
@@ -35,32 +32,30 @@ PODS:
     - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
   - StaticDataTableViewController (2.0.3)
+  - TGCameraViewController (1.2)
   - UIActivityIndicator-for-SDWebImage (1.2):
     - SDWebImage (~> 3.7)
-  - UIPhotoGallery (0.1.2):
-    - SDWebImage (~> 3.0)
 
 DEPENDENCIES:
   - AFNetworking
-  - DBCamera
+  - Bolts
   - Facebook-iOS-SDK
   - Parse
   - ParseFacebookUtils
+  - SDWebImage
   - StaticDataTableViewController
+  - TGCameraViewController
   - UIActivityIndicator-for-SDWebImage
-  - UIPhotoGallery
 
 SPEC CHECKSUMS:
   AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
   Bolts: 3db0a875235e0c9042b013af13af0f00f79b102c
-  DBCamera: 0095227e0d2d0292c5a2cc400fe75687120e6f29
   Facebook-iOS-SDK: 5854404b4b651f612a8ef79ca06d766858f4cb8e
-  GPUImage: cecb0830bb9428f50192042e3c7b53810f51388e
   Parse: 7de25b6f70f0b233e5d25835f62eabfa91e4f9d7
   ParseFacebookUtils: df2c8634a66883326629099af3690f1862fe126d
   SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
   StaticDataTableViewController: 171ee35f17f6176baa98ce05c1e4769a628732ad
+  TGCameraViewController: 78fcee21c27461da8dcb7fb1a005bb308f95596b
   UIActivityIndicator-for-SDWebImage: 8bd92c15280fbe54816448c6b14674145eee05c7
-  UIPhotoGallery: 1dd2dbe4ea352ab42f8092ded8c1ac3d9e6be708
 
 COCOAPODS: 0.35.0

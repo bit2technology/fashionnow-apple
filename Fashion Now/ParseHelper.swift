@@ -6,10 +6,6 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-private func newValueOrNSNull(newValue: AnyObject?) -> AnyObject {
-    return newValue ?? NSNull()
-}
-
 let ParseObjectCreatedAtKey = "createdAt"
 let ParseObjectUpdatedAtKey = "updatedAt"
 let ParseObjectIdKey = "objectId"
@@ -36,7 +32,7 @@ public class ParseUser: PFUser, PFSubclassing {
             return self[ParseUserAvatarKey] as? ParsePhoto
         }
         set {
-            self[ParseUserAvatarKey] = newValueOrNSNull(newValue)
+            self[ParseUserAvatarKey] = newValue ?? NSNull()
         }
     }
 
@@ -45,13 +41,16 @@ public class ParseUser: PFUser, PFSubclassing {
             return self[ParseUserBirthdayKey] as? String
         }
         set {
-            self[ParseUserBirthdayKey] = newValueOrNSNull(newValue)
+            self[ParseUserBirthdayKey] = newValue ?? NSNull()
         }
     }
     func birthdayDate(format: String = ParseUserBirthdayDateFormat) -> NSDate? {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = format
-        return self.birthday != nil ? dateFormatter.dateFromString(birthday!) : nil
+        if let unwrappedBirthday = birthday {
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = format
+            return dateFormatter.dateFromString(unwrappedBirthday)
+        }
+        return nil
     }
     func setBirthday(#date: NSDate) {
         let dateFormatter = NSDateFormatter()
@@ -64,7 +63,7 @@ public class ParseUser: PFUser, PFSubclassing {
             return self[ParseUserFacebookIdKey] as? String
         }
         set {
-            self[ParseUserFacebookIdKey] = newValueOrNSNull(newValue)
+            self[ParseUserFacebookIdKey] = newValue ?? NSNull()
         }
     }
 
@@ -73,7 +72,7 @@ public class ParseUser: PFUser, PFSubclassing {
             return self[ParseUserGenderKey] as? String
         }
         set {
-            self[ParseUserGenderKey] = newValueOrNSNull(newValue)
+            self[ParseUserGenderKey] = newValue ?? NSNull()
         }
     }
 
@@ -82,7 +81,7 @@ public class ParseUser: PFUser, PFSubclassing {
             return self[ParseUserLocationKey] as? String
         }
         set {
-            self[ParseUserLocationKey] = newValueOrNSNull(newValue)
+            self[ParseUserLocationKey] = newValue ?? NSNull()
         }
     }
 
@@ -91,7 +90,7 @@ public class ParseUser: PFUser, PFSubclassing {
             return self[ParseUserNameKey] as? String
         }
         set {
-            self[ParseUserNameKey] = newValueOrNSNull(newValue)
+            self[ParseUserNameKey] = newValue ?? NSNull()
         }
     }
 }
@@ -125,7 +124,7 @@ public class ParsePhoto: PFObject, PFSubclassing {
             return self[ParsePhotoImageKey] as? PFFile
         }
         set {
-            self[ParsePhotoImageKey] = newValueOrNSNull(newValue)
+            self[ParsePhotoImageKey] = newValue ?? NSNull()
         }
     }
 
@@ -134,7 +133,7 @@ public class ParsePhoto: PFObject, PFSubclassing {
             return self[ParsePhotoUploadedByKey] as? ParseUser
         }
         set {
-            self[ParsePhotoUploadedByKey] = newValueOrNSNull(newValue)
+            self[ParsePhotoUploadedByKey] = newValue ?? NSNull()
         }
     }
 
@@ -149,6 +148,7 @@ public class ParsePhoto: PFObject, PFSubclassing {
 
 // MARK: - Poll class
 
+let ParsePollCaptionKey = "caption"
 let ParsePollCreatedByKey = "createdBy"
 let ParsePollPhotosKey = "photos"
 let ParsePollTagsKey = "tags"
@@ -172,12 +172,21 @@ public class ParsePoll: PFObject, PFSubclassing {
         createdBy = user
     }
 
+    var caption: String? {
+        get {
+            return self[ParsePollCaptionKey] as? String
+        }
+        set {
+            self[ParsePollCaptionKey] = newValue ?? NSNull()
+        }
+    }
+
     var createdBy: ParseUser? {
         get {
             return self[ParsePollCreatedByKey] as? ParseUser
         }
         set {
-            self[ParsePollCreatedByKey] = newValueOrNSNull(newValue)
+            self[ParsePollCreatedByKey] = newValue ?? NSNull()
         }
     }
 
@@ -186,7 +195,7 @@ public class ParsePoll: PFObject, PFSubclassing {
             return self[ParsePollPhotosKey] as? [ParsePhoto]
         }
         set {
-            self[ParsePollPhotosKey] = newValueOrNSNull(newValue)
+            self[ParsePollPhotosKey] = newValue ?? NSNull()
         }
     }
 
@@ -195,7 +204,7 @@ public class ParsePoll: PFObject, PFSubclassing {
             return self[ParsePollTagsKey] as? [String]
         }
         set {
-            self[ParsePollTagsKey] = newValueOrNSNull(newValue)
+            self[ParsePollTagsKey] = newValue ?? NSNull()
         }
     }
 
@@ -211,7 +220,7 @@ public class ParsePoll: PFObject, PFSubclassing {
                     return false
                 }
             }
-            return true
+            return createdBy != nil
         }
     }
 }
@@ -241,21 +250,12 @@ public class ParseVote: PFObject, PFSubclassing {
         voteBy = user
     }
 
-    var voteBy: ParseUser? {
-        get {
-            return self[ParseVoteByKey] as? ParseUser
-        }
-        set {
-            self[ParseVoteByKey] = newValueOrNSNull(newValue)
-        }
-    }
-
     var pollId: String? {
         get {
             return self[ParseVotePollIdKey] as? String
         }
         set {
-            self[ParseVotePollIdKey] = newValueOrNSNull(newValue)
+            self[ParseVotePollIdKey] = newValue ?? NSNull()
         }
     }
 
@@ -264,7 +264,16 @@ public class ParseVote: PFObject, PFSubclassing {
             return self[ParseVoteVoteKey] as? NSNumber
         }
         set {
-            self[ParseVoteVoteKey] = newValueOrNSNull(newValue)
+            self[ParseVoteVoteKey] = newValue ?? NSNull()
+        }
+    }
+
+    var voteBy: ParseUser? {
+        get {
+            return self[ParseVoteByKey] as? ParseUser
+        }
+        set {
+            self[ParseVoteByKey] = newValue ?? NSNull()
         }
     }
 
@@ -272,7 +281,7 @@ public class ParseVote: PFObject, PFSubclassing {
 
     var isValid: Bool {
         get {
-            return voteBy != nil && pollId != nil && vote != nil
+            return pollId != nil && vote != nil && voteBy != nil
         }
     }
 }
