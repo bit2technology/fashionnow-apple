@@ -89,12 +89,7 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
     // MARK: UINavigationControllerDelegate
 
     func navigationControllerSupportedInterfaceOrientations(navigationController: UINavigationController) -> Int {
-        // iPhone: portrait only; iPad: all.
-        var supportedInterfaceOrientations = UIInterfaceOrientationMask.Portrait
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            supportedInterfaceOrientations = .All
-        }
-        return Int(supportedInterfaceOrientations.rawValue)
+        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
     }
 }
 

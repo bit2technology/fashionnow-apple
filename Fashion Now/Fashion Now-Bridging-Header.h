@@ -7,5 +7,4 @@
 #import <Parse/PFObject+Subclass.h>
 #import <ParseFacebookUtils/PFFacebookUtils.h>
 #import <StaticDataTableViewController.h>
-#import <TGCameraViewController.h>
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>

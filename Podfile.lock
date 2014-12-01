@@ -32,7 +32,6 @@ PODS:
     - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
   - StaticDataTableViewController (2.0.3)
-  - TGCameraViewController (1.2)
   - UIActivityIndicator-for-SDWebImage (1.2):
     - SDWebImage (~> 3.7)
 
@@ -44,7 +43,6 @@ DEPENDENCIES:
   - ParseFacebookUtils
   - SDWebImage
   - StaticDataTableViewController
-  - TGCameraViewController
   - UIActivityIndicator-for-SDWebImage
 
 SPEC CHECKSUMS:
@@ -55,7 +53,6 @@ SPEC CHECKSUMS:
   ParseFacebookUtils: df2c8634a66883326629099af3690f1862fe126d
   SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
   StaticDataTableViewController: 171ee35f17f6176baa98ce05c1e4769a628732ad
-  TGCameraViewController: 78fcee21c27461da8dcb7fb1a005bb308f95596b
   UIActivityIndicator-for-SDWebImage: 8bd92c15280fbe54816448c6b14674145eee05c7
 
 COCOAPODS: 0.35.0

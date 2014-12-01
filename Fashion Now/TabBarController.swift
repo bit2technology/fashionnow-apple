@@ -12,12 +12,7 @@ import UIKit
 class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
     override func supportedInterfaceOrientations() -> Int {
-        // iPhone: portrait only; iPad: all.
-        var supportedInterfaceOrientations = UIInterfaceOrientationMask.Portrait
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            supportedInterfaceOrientations = .All
-        }
-        return Int(supportedInterfaceOrientations.rawValue)
+        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
     }
 
     // MARK: View lifecycle

@@ -10,7 +10,7 @@ pod 'Parse'
 pod 'ParseFacebookUtils'
 pod 'SDWebImage'
 pod 'StaticDataTableViewController'
-pod 'TGCameraViewController'
+#pod 'TGCameraViewController'
 pod 'UIActivityIndicator-for-SDWebImage'
 #pod 'UIPhotoGallery'
 

@@ -307,13 +307,12 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
-                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9J2-Wj-jqA" userLabel="Hashtags">
-                                <rect key="frame" x="0.0" y="64" width="320" height="37"/>
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9J2-Wj-jqA" userLabel="Caption">
+                                <rect key="frame" x="0.0" y="64" width="320" height="21"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zly-2v-7UO">
-                                        <rect key="frame" x="4" y="2" width="312" height="31"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Caption" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zly-2v-7UO">
+                                        <rect key="frame" x="4" y="2" width="312" height="15"/>
                                         <gestureRecognizers/>
-                                        <string key="text">Cupcake ipsum dolor sit amet soufflé ice cream sweet roll fruitcake. Donut pie sugar plum jelly beans brownie cake. Applicake bonbon dessert. Marshmallow I love candy canes. Dragée brownie I love. Caramels chocolate cake dessert.</string>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -521,7 +520,7 @@
             </objects>
             <point key="canvasLocation" x="1032" y="821"/>
         </scene>
-        <!--Me-->
+        <!--Me Controller-->
         <scene sceneID="N06-YM-3cg">
             <objects>
                 <collectionViewController id="cEa-Or-vWC" customClass="MeController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
@@ -529,22 +528,44 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="2" minimumInteritemSpacing="2" id="PkG-Gn-UFM">
-                            <size key="itemSize" width="159" height="159"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="4" minimumInteritemSpacing="4" id="PkG-Gn-UFM">
+                            <size key="itemSize" width="104" height="156"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="2" maxX="0.0" maxY="2"/>
+                            <inset key="sectionInset" minX="0.0" minY="4" maxX="0.0" maxY="4"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Test" id="3dF-4c-efE">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Poll" id="3dF-4c-efE" customClass="PollCell" customModule="Fashion_Now" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="159" height="159"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="104" height="156"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Gmf-9t-Ph8">
+                                            <rect key="frame" x="0.0" y="0.0" width="52" height="156"/>
+                                        </imageView>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pwv-ff-YNq">
+                                            <rect key="frame" x="52" y="0.0" width="52" height="156"/>
+                                        </imageView>
+                                    </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Gmf-9t-Ph8" secondAttribute="bottom" id="3xq-m9-Io3"/>
+                                    <constraint firstItem="Gmf-9t-Ph8" firstAttribute="top" secondItem="3dF-4c-efE" secondAttribute="top" id="HGY-aN-IbO"/>
+                                    <constraint firstItem="Gmf-9t-Ph8" firstAttribute="leading" secondItem="3dF-4c-efE" secondAttribute="leading" id="Hzr-qr-dE7"/>
+                                    <constraint firstAttribute="trailing" secondItem="pwv-ff-YNq" secondAttribute="trailing" id="OZx-hf-a3B"/>
+                                    <constraint firstItem="pwv-ff-YNq" firstAttribute="width" secondItem="Gmf-9t-Ph8" secondAttribute="width" id="W7m-NH-LVR"/>
+                                    <constraint firstItem="pwv-ff-YNq" firstAttribute="leading" secondItem="Gmf-9t-Ph8" secondAttribute="trailing" id="ayw-bt-e6E"/>
+                                    <constraint firstItem="pwv-ff-YNq" firstAttribute="top" secondItem="3dF-4c-efE" secondAttribute="top" id="fXx-qa-8do"/>
+                                    <constraint firstAttribute="bottom" secondItem="pwv-ff-YNq" secondAttribute="bottom" id="ugY-HL-w5q"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="leftImageView" destination="Gmf-9t-Ph8" id="Scf-WU-EfK"/>
+                                    <outlet property="rightImageView" destination="pwv-ff-YNq" id="VGh-n1-KJJ"/>
+                                    <segue destination="D1M-pS-RBa" kind="show" id="9SC-Wv-5ae"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -552,7 +573,8 @@
                             <outlet property="delegate" destination="cEa-Or-vWC" id="23E-Oa-XbS"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Me" id="SHi-hj-ibv">
+                    <navigationItem key="navigationItem" id="SHi-hj-ibv">
+                        <barButtonItem key="backBarButtonItem" title="Me" id="CmS-ow-WQN"/>
                         <barButtonItem key="leftBarButtonItem" title="Log Out" id="M8u-sa-PEm">
                             <connections>
                                 <action selector="logOutButtonPressed:" destination="cEa-Or-vWC" id="1Kt-t4-qgj"/>
@@ -568,6 +590,38 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wVC-D2-I0P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1411" y="821"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="x4R-Xz-BxP">
+            <objects>
+                <viewController id="D1M-pS-RBa" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2RW-Vi-nXU"/>
+                        <viewControllerLayoutGuide type="bottom" id="Rmp-rH-6eW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="eKN-kl-5PT">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u5V-gX-nG7">
+                                <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                                <connections>
+                                    <segue destination="hpa-fw-Ay5" kind="embed" id="udm-ma-IdO"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="u5V-gX-nG7" secondAttribute="trailing" id="3bd-U2-d7i"/>
+                            <constraint firstItem="Rmp-rH-6eW" firstAttribute="top" secondItem="u5V-gX-nG7" secondAttribute="bottom" id="aUd-iA-q33"/>
+                            <constraint firstItem="u5V-gX-nG7" firstAttribute="leading" secondItem="eKN-kl-5PT" secondAttribute="leading" id="bn0-QA-qTT"/>
+                            <constraint firstItem="u5V-gX-nG7" firstAttribute="top" secondItem="2RW-Vi-nXU" secondAttribute="bottom" id="uBi-cX-IPa"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6hw-Jw-2JJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1790" y="821"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="reA-p0-HcY">
@@ -946,19 +1000,10 @@
                                     <constraint firstItem="TYB-j4-um4" firstAttribute="leading" secondItem="22F-CN-JDl" secondAttribute="trailing" id="SzK-9Q-v06"/>
                                     <constraint firstItem="TYB-j4-um4" firstAttribute="top" secondItem="Xjm-MJ-dOi" secondAttribute="top" id="UCZ-7U-bis"/>
                                     <constraint firstAttribute="bottom" secondItem="TYB-j4-um4" secondAttribute="bottom" id="bbI-aD-sR3"/>
-                                    <constraint firstAttribute="width" constant="768" id="c7p-l9-YWg"/>
                                     <constraint firstAttribute="trailing" secondItem="TYB-j4-um4" secondAttribute="trailing" id="gsr-5s-qGb"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="c7p-l9-YWg"/>
-                                    </mask>
-                                </variation>
                                 <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="207"/>
-                                    <mask key="constraints">
-                                        <include reference="c7p-l9-YWg"/>
-                                    </mask>
                                 </variation>
                             </view>
                         </subviews>
@@ -967,21 +1012,9 @@
                             <constraint firstItem="Xjm-MJ-dOi" firstAttribute="leading" secondItem="Ngt-gb-2Qu" secondAttribute="leading" id="TtH-Ah-kYX"/>
                             <constraint firstItem="Xjm-MJ-dOi" firstAttribute="top" secondItem="Ngt-gb-2Qu" secondAttribute="top" id="b3g-A1-Tv7"/>
                             <constraint firstAttribute="bottom" secondItem="Xjm-MJ-dOi" secondAttribute="bottom" id="fXK-8M-lKe"/>
-                            <constraint firstAttribute="centerX" secondItem="Xjm-MJ-dOi" secondAttribute="centerX" id="pNH-p1-fBX"/>
                             <constraint firstAttribute="trailing" secondItem="Xjm-MJ-dOi" secondAttribute="trailing" id="scg-d7-2OE"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="pNH-p1-fBX"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=regular">
-                            <mask key="constraints">
-                                <exclude reference="TtH-Ah-kYX"/>
-                                <include reference="pNH-p1-fBX"/>
-                                <exclude reference="scg-d7-2OE"/>
-                            </mask>
-                        </variation>
+                        <variation key="heightClass=regular-widthClass=regular"/>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="kgl-Bo-434" appends="YES" id="D6O-sz-LXB"/>
                         </connections>
@@ -1013,7 +1046,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1893" y="-14.5"/>
+            <point key="canvasLocation" x="2108" y="141.5"/>
         </scene>
         <!--Photo Controller-->
         <scene sceneID="oDJ-hZ-wtb">
@@ -1079,7 +1112,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YYI-4A-sio" userLabel="Delete Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                        <rect key="frame" x="4" y="311" width="134" height="52"/>
+                                        <rect key="frame" x="4" y="311" width="133" height="52"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="15" maxX="0.0" maxY="15"/>
                                         <state key="normal" title="Changed my mind" backgroundImage="ButtonRoundBordersBackground">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1123,7 +1156,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AbR-wv-pbr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2195" y="-14.5"/>
+            <point key="canvasLocation" x="2410" y="141.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pAc-yH-lCJ">
@@ -1193,8 +1226,8 @@
         <image name="TabBarIconPostPollUnselected" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="IZA-Rh-gPV"/>
-        <segue reference="uM3-tb-eTB"/>
+        <segue reference="udm-ma-IdO"/>
+        <segue reference="4GQ-Aa-EaP"/>
         <segue reference="3E2-oz-Poo"/>
     </inferredMetricsTieBreakers>
 </document>

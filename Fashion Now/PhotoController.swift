@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-class PhotoController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, TGCameraDelegate {
+class PhotoController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     var photo: ParsePhoto = ParsePhoto(user: ParseUser.currentUser()) {
         didSet {
@@ -115,8 +115,10 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         switch sender {
         // Present camera
         case cameraButton:
-            let cameraController = TGCameraNavigationController.newWithCameraDelegate(self)
-            presentViewController(cameraController, animated: true, completion: nil)
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.sourceType = .Camera
+            presentViewController(imagePickerController, animated: true, completion: nil)
         // Present albuns
         case libraryButton:
             let imagePickerController = UIImagePickerController()
