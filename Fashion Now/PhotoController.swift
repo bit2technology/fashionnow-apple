@@ -138,7 +138,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        deleteButton.tintColor = UIColor.defaultDestructiveColor(alpha: 0.6)
+        deleteButton.tintColor = UIColor.defaultTintColor(alpha: 0.6)
     }
 
     // MARK: UINavigationControllerDelegate

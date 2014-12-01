@@ -1,9 +1,6 @@
 /* Message in alert warning users about beta limitations */
 "BETA_WARNING_ALERT_MESSAGE" = "Desculpe, mas nesta versão do Fashion Now você só pode logar com sua conta do Facebook.";
 
-/* Impossible to load camera */
-"PHOTO_CAMERA_UNAVAILABLE_ALERT_TITLE" = "Câmera indisponível";
-
 /* User logged in with a Facebook account and must review his/her information. */
 "SIGNUP_REVIEW_TITLE" = "Editar Perfil";
 

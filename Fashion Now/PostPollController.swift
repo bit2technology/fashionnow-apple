@@ -65,10 +65,12 @@ class PostPollController: UIViewController, PollControllerDelegate {
 
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconPostPollSelected")
 
-        sendButton.layer.shadowColor = UIColor.whiteColor().CGColor
-        sendButton.layer.shadowOffset = CGSizeZero
-        sendButton.layer.shadowOpacity = 1
-        sendButton.layer.shadowRadius = 3
+//        sendButton.layer.shadowColor = UIColor.whiteColor().CGColor
+//        sendButton.layer.shadowOffset = CGSizeZero
+//        sendButton.layer.shadowOpacity = 1
+//        sendButton.layer.shadowRadius = 3
+        sendButton.tintColor = UIColor.whiteColor()
+        sendButton.setTitleColor(UIColor.defaultTintColor(), forState: .Normal)
 
         sendButton.hidden = true
         loadingView.hidden = true

@@ -1079,8 +1079,9 @@
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YYI-4A-sio" userLabel="Delete Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
-                                        <state key="normal" image="ButtonDelete" backgroundImage="ButtonCircleBackgroundSmall">
+                                        <rect key="frame" x="4" y="311" width="134" height="52"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="15" maxX="0.0" maxY="15"/>
+                                        <state key="normal" title="Changed my mind" backgroundImage="ButtonRoundBordersBackground">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -1089,13 +1090,14 @@
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="YYI-4A-sio" firstAttribute="top" secondItem="H8b-Ws-oM2" secondAttribute="top" id="6Oh-fj-mjZ"/>
+                                    <constraint firstAttribute="bottom" secondItem="YYI-4A-sio" secondAttribute="bottom" constant="4" id="70o-TW-SHM"/>
+                                    <constraint firstAttribute="width" secondItem="YYI-4A-sio" secondAttribute="width" multiplier="1.2" id="D3h-Lh-VE7"/>
                                     <constraint firstAttribute="centerX" secondItem="yhO-Ld-1tg" secondAttribute="centerX" id="IwN-V6-SM8"/>
                                     <constraint firstItem="yhO-Ld-1tg" firstAttribute="top" secondItem="H8b-Ws-oM2" secondAttribute="top" id="YfS-wH-E0a"/>
                                     <constraint firstItem="YYI-4A-sio" firstAttribute="centerX" secondItem="H8b-Ws-oM2" secondAttribute="centerX" priority="250" constant="-9999" id="lLp-F2-r0I"/>
                                     <constraint firstAttribute="bottom" secondItem="yhO-Ld-1tg" secondAttribute="bottom" id="maz-NH-143"/>
-                                    <constraint firstItem="YYI-4A-sio" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="H8b-Ws-oM2" secondAttribute="leading" id="vJF-o4-en0"/>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="YYI-4A-sio" secondAttribute="trailing" id="yEo-6E-Hsy"/>
+                                    <constraint firstItem="YYI-4A-sio" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="H8b-Ws-oM2" secondAttribute="leading" constant="4" id="vJF-o4-en0"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="YYI-4A-sio" secondAttribute="trailing" constant="4" id="yEo-6E-Hsy"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -1183,8 +1185,6 @@
     <resources>
         <image name="ButtonCamera" width="32" height="32"/>
         <image name="ButtonCircleBackground" width="64" height="64"/>
-        <image name="ButtonCircleBackgroundSmall" width="44" height="44"/>
-        <image name="ButtonDelete" width="25" height="25"/>
         <image name="ButtonLibrary" width="32" height="32"/>
         <image name="ButtonPrevious" width="32" height="32"/>
         <image name="ButtonRoundBordersBackground" width="11" height="11"/>

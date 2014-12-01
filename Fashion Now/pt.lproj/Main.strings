@@ -19,9 +19,6 @@
 /* Class = "IBUINavigationItem"; title = "Sign Up"; ObjectID = "9LK-rm-73H"; */
 "9LK-rm-73H.title" = "Registrar";
 
-/* Class = "IBUINavigationItem"; title = "Me"; ObjectID = "Fe2-iu-7zu"; */
-"Fe2-iu-7zu.title" = "Eu";
-
 /* Class = "IBUILabel"; text = "Location"; ObjectID = "GBx-ee-1Hn"; */
 "GBx-ee-1Hn.text" = "Localização";
 
@@ -40,19 +37,19 @@
 /* Class = "IBUILabel"; text = "Birthday"; ObjectID = "RY7-qE-jjt"; */
 "RY7-qE-jjt.text" = "Nascimento";
 
+/* Class = "IBUINavigationItem"; title = "Me"; ObjectID = "SHi-hj-ibv"; */
+"SHi-hj-ibv.title" = "Eu";
+
 /* Class = "IBUITextField"; placeholder = "Optional"; ObjectID = "TTM-un-ddi"; */
 "TTM-un-ddi.placeholder" = "Opcional";
 
 /* Class = "IBUIButton"; normalTitle = "Sign up with e-mail"; ObjectID = "UVf-dJ-3oB"; */
 "UVf-dJ-3oB.normalTitle" = "Registrar com e-mail";
 
-/* Class = "IBUIBarButtonItem"; title = "Log Out"; ObjectID = "Wbo-w6-noc"; */
-"Wbo-w6-noc.title" = "Sair";
+/* Class = "IBUIButton"; normalTitle = "Changed my mind"; ObjectID = "YYI-4A-sio"; */
+"YYI-4A-sio.normalTitle" = "Mudei de ideia";
 
-/* Class = "IBUIButton"; normalTitle = "Delete"; ObjectID = "YYI-4A-sio"; */
-"YYI-4A-sio.normalTitle" = "Deletar";
-
-/* Class = "IBUITextField"; placeholder = "Add hashtags"; ObjectID = "aa7-aO-RqI"; */
+/* Class = "IBUITextField"; placeholder = "Add caption"; ObjectID = "aa7-aO-RqI"; */
 "aa7-aO-RqI.placeholder" = "Adicionar hashtags";
 
 /* Class = "IBUIButton"; normalTitle = "Send"; ObjectID = "bgG-Zw-FU2"; */
