@@ -54,6 +54,19 @@ class MeController: UICollectionViewController {
         return true
     }
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+
+        if let unwrappedId = segue.identifier {
+
+            switch unwrappedId {
+            case "Poll Controller":
+                (segue.destinationViewController as ResultPollController)
+            default:
+                return
+            }
+        }
+    }
+
     // MARK: UICollectionoViewController
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

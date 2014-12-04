@@ -1,6 +1,6 @@
 platform :ios, '7.0'
 
-pod 'AFNetworking'
+#pod 'AFNetworking'
 pod 'Bolts'
 #pod 'DBCamera'
 pod 'Facebook-iOS-SDK'

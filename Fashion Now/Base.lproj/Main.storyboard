@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6QH-p8-eFG">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -503,10 +503,10 @@
             </objects>
             <point key="canvasLocation" x="1411" y="265"/>
         </scene>
-        <!--Me-->
+        <!--Me Navigation-->
         <scene sceneID="H8i-C2-7Wl">
             <objects>
-                <navigationController id="yJf-au-aBx" sceneMemberID="viewController">
+                <navigationController id="yJf-au-aBx" userLabel="Me Navigation" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Me" image="TabBarIconMeUnselected" id="yIu-tG-KRu"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="s4e-vF-TF0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -574,7 +574,6 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="SHi-hj-ibv">
-                        <barButtonItem key="backBarButtonItem" title="Me" id="CmS-ow-WQN"/>
                         <barButtonItem key="leftBarButtonItem" title="Log Out" id="M8u-sa-PEm">
                             <connections>
                                 <action selector="logOutButtonPressed:" destination="cEa-Or-vWC" id="1Kt-t4-qgj"/>
@@ -591,10 +590,10 @@
             </objects>
             <point key="canvasLocation" x="1411" y="821"/>
         </scene>
-        <!--View Controller-->
+        <!--Result Poll Controller-->
         <scene sceneID="x4R-Xz-BxP">
             <objects>
-                <viewController id="D1M-pS-RBa" sceneMemberID="viewController">
+                <viewController id="D1M-pS-RBa" customClass="ResultPollController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2RW-Vi-nXU"/>
                         <viewControllerLayoutGuide type="bottom" id="Rmp-rH-6eW"/>
@@ -1014,7 +1013,6 @@
                             <constraint firstAttribute="bottom" secondItem="Xjm-MJ-dOi" secondAttribute="bottom" id="fXK-8M-lKe"/>
                             <constraint firstAttribute="trailing" secondItem="Xjm-MJ-dOi" secondAttribute="trailing" id="scg-d7-2OE"/>
                         </constraints>
-                        <variation key="heightClass=regular-widthClass=regular"/>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="kgl-Bo-434" appends="YES" id="D6O-sz-LXB"/>
                         </connections>
@@ -1226,8 +1224,8 @@
         <image name="TabBarIconPostPollUnselected" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="3E2-oz-Poo"/>
         <segue reference="udm-ma-IdO"/>
         <segue reference="4GQ-Aa-EaP"/>
-        <segue reference="3E2-oz-Poo"/>
     </inferredMetricsTieBreakers>
 </document>

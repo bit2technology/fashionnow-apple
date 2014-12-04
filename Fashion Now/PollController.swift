@@ -184,41 +184,15 @@ class PollController: UIViewController, PhotoControllerDelegate {
         CATransaction.setAnimationDuration(duration)
         CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         for photoView in photoViews {
-            photoView.layer.mask.transform = CATransform3DMakeScale(photoViewSize.width, photoViewSize.height, 1)
+            photoView.layer.mask?.transform = CATransform3DMakeScale(photoViewSize.width, photoViewSize.height, 1)
         }
         CATransaction.commit()
     }
 
-    private var masked = false
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        
-        if !masked {
-            let maskReferenceSize: CGFloat = 1
-            let spaceBetween: CGFloat = maskReferenceSize / 100
-            
-            let leftMaskPath = UIBezierPath()
-            leftMaskPath.moveToPoint(CGPoint(x: -6 * maskReferenceSize, y: 0))
-            leftMaskPath.addLineToPoint(CGPoint(x: maskReferenceSize + (maskReferenceSize / 10) - spaceBetween, y: 0))
-            leftMaskPath.addLineToPoint(CGPoint(x: maskReferenceSize - (maskReferenceSize / 10) - spaceBetween, y: maskReferenceSize))
-            leftMaskPath.addLineToPoint(CGPoint(x: -6 * maskReferenceSize, y: maskReferenceSize))
-            leftMaskPath.closePath()
-            let leftMask = CAShapeLayer()
-            leftMask.path = leftMaskPath.CGPath
-            leftPhotoView.layer.mask = leftMask
-            
-            let rightMaskPath = UIBezierPath()
-            rightMaskPath.moveToPoint(CGPoint(x: 7 * maskReferenceSize, y: 0))
-            rightMaskPath.addLineToPoint(CGPoint(x: (maskReferenceSize / 10) + spaceBetween, y: 0))
-            rightMaskPath.addLineToPoint(CGPoint(x: (maskReferenceSize / -10) + spaceBetween, y: maskReferenceSize))
-            rightMaskPath.addLineToPoint(CGPoint(x: 7 * maskReferenceSize, y: maskReferenceSize))
-            rightMaskPath.closePath()
-            let rightMask = CAShapeLayer()
-            rightMask.path = rightMaskPath.CGPath
-            rightPhotoView.layer.mask = rightMask
-            
-            masked = true
-        }
+
+        adjustMaskSizeWithAnimationDuration(0)
     }
 
     // MARK: UIViewController
@@ -232,22 +206,31 @@ class PollController: UIViewController, PhotoControllerDelegate {
         rightPhotoController.delegate = self
 
         rightPhotoController.layout = .Right
-    }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+        // Masks
 
-        adjustMaskSizeWithAnimationDuration(0)
-    }
+        let maskReferenceSize: CGFloat = 1
+        let spaceBetween: CGFloat = maskReferenceSize / 100
 
-//    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-//        coordinator.animateAlongsideTransition({ (context) -> Void in
-//            self.adjustMaskSizeWithAnimationDuration(context.transitionDuration())
-//            }, completion: nil)
-//    }
+        let leftMaskPath = UIBezierPath()
+        leftMaskPath.moveToPoint(CGPoint(x: -6 * maskReferenceSize, y: 0))
+        leftMaskPath.addLineToPoint(CGPoint(x: maskReferenceSize + (maskReferenceSize / 10) - spaceBetween, y: 0))
+        leftMaskPath.addLineToPoint(CGPoint(x: maskReferenceSize - (maskReferenceSize / 10) - spaceBetween, y: maskReferenceSize))
+        leftMaskPath.addLineToPoint(CGPoint(x: -6 * maskReferenceSize, y: maskReferenceSize))
+        leftMaskPath.closePath()
+        let leftMask = CAShapeLayer()
+        leftMask.path = leftMaskPath.CGPath
+        leftPhotoView.layer.mask = leftMask
 
-    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        adjustMaskSizeWithAnimationDuration(duration)
+        let rightMaskPath = UIBezierPath()
+        rightMaskPath.moveToPoint(CGPoint(x: 7 * maskReferenceSize, y: 0))
+        rightMaskPath.addLineToPoint(CGPoint(x: (maskReferenceSize / 10) + spaceBetween, y: 0))
+        rightMaskPath.addLineToPoint(CGPoint(x: (maskReferenceSize / -10) + spaceBetween, y: maskReferenceSize))
+        rightMaskPath.addLineToPoint(CGPoint(x: 7 * maskReferenceSize, y: maskReferenceSize))
+        rightMaskPath.closePath()
+        let rightMask = CAShapeLayer()
+        rightMask.path = rightMaskPath.CGPath
+        rightPhotoView.layer.mask = rightMask
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

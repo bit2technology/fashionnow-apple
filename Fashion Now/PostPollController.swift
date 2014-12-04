@@ -23,14 +23,15 @@ class PostPollController: UIViewController, PollControllerDelegate {
         textField.enabled = false
 
         let poll = pollController.poll
-        let spaceAndNewline = NSCharacterSet.whitespaceAndNewlineCharacterSet()
-        poll.caption = textField.text
+        poll.caption = textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
         poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
 
             if succeeded {
-                sender.hidden = true
-                self.textField.text = nil
-                self.pollController.poll = ParsePoll(user: ParseUser.currentUser())
+                UIView.transitionWithView(self.navigationController!.view, duration: 0.25, options: .TransitionFlipFromRight, animations: { () -> Void in
+                    sender.hidden = true
+                    self.textField.text = nil
+                    self.pollController.poll = ParsePoll(user: ParseUser.currentUser())
+                }, completion: nil)
             }
             
             sender.enabled = true
@@ -65,10 +66,6 @@ class PostPollController: UIViewController, PollControllerDelegate {
 
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconPostPollSelected")
 
-//        sendButton.layer.shadowColor = UIColor.whiteColor().CGColor
-//        sendButton.layer.shadowOffset = CGSizeZero
-//        sendButton.layer.shadowOpacity = 1
-//        sendButton.layer.shadowRadius = 3
         sendButton.tintColor = UIColor.whiteColor()
         sendButton.setTitleColor(UIColor.defaultTintColor(), forState: .Normal)
 
@@ -81,11 +78,16 @@ class PostPollController: UIViewController, PollControllerDelegate {
     // MARK: PollControllerDelegate
     
     func pollController(pollController: PollController, didEditPoll poll: ParsePoll) {
-        sendButton.hidden = false
-        UIView.animateWithDuration(0.15, animations: { () -> Void in
-            self.sendButton.alpha = (poll.isValid ? 1 : 0)
-        }, completion: { (completed) -> Void in
-            self.sendButton.hidden = !poll.isValid
-        })
+
+        if poll.isValid {
+            sendButton.alpha = 1
+            sendButton.hidden = false
+        } else {
+            UIView.animateWithDuration(0.15, animations: { () -> Void in
+                self.sendButton.alpha = 0
+            }, completion: { (completed) -> Void in
+                self.sendButton.hidden = true
+            })
+        }
     }
 }
