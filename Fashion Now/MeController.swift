@@ -59,8 +59,9 @@ class MeController: UICollectionViewController {
         if let unwrappedId = segue.identifier {
 
             switch unwrappedId {
-            case "Poll Controller":
-                (segue.destinationViewController as ResultPollController)
+            case "Result Controller":
+                let idx = collectionView!.indexPathForCell(sender as UICollectionViewCell)!.item
+                (segue.destinationViewController as ResultPollController).poll = myPolls![idx]
             default:
                 return
             }

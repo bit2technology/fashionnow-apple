@@ -31,7 +31,6 @@ class PollController: UIViewController, PhotoControllerDelegate {
     private var photoViews: [UIView]!
     @IBOutlet weak var leftPhotoView: UIView!
     @IBOutlet weak var rightPhotoView: UIView!
-    @IBOutlet weak var containerView: UIView!
 
     var imageButtonsHidden: Bool = false {
         didSet {
@@ -89,8 +88,8 @@ class PollController: UIViewController, PhotoControllerDelegate {
     @IBOutlet weak var drager: UIPanGestureRecognizer!
     @IBAction func didDrag(sender: UIPanGestureRecognizer) {
 
-        var translationX = sender.translationInView(containerView).x * 1.6
-        let rate = translationX / self.containerView.bounds.width
+        var translationX = sender.translationInView(view).x * 1.6
+        let rate = translationX / self.view.bounds.width
         
         switch sender.state {
         case .Began:
@@ -98,7 +97,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
         case .Changed:
             adjustLayout(rate, animationTimingFunction: nil, callCompleteDelegate: false)
         case .Ended:
-            let velocityX = sender.velocityInView(containerView).x
+            let velocityX = sender.velocityInView(view).x
             if abs(velocityX) > 1000 {
                 animateHighlight(index: (velocityX > 0 ? 1 : 2), withEaseInAnimation: false)
                 return
@@ -113,8 +112,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
                 }
             }
             fallthrough
-        case .Cancelled: fallthrough
-        case .Failed:
+        case .Cancelled, .Failed:
             adjustLayout(0, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut), callCompleteDelegate: false)
         default:
             return
@@ -143,9 +141,9 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
         // Adjust layers transform for rate
         
-        var translationX = rate * containerView.bounds.width / 2
+        var translationX = rate * view.bounds.width / 2
         if abs(rate) > 1 {
-            translationX -= (rate - (rate > 0 ? 1 : -1)) * containerView.bounds.width / 2 * 0.75
+            translationX -= (rate - (rate > 0 ? 1 : -1)) * view.bounds.width / 2 * 0.75
         }
         
         let draggingView = (translationX > 0 ? leftPhotoView : rightPhotoView)
@@ -177,7 +175,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
     private func adjustMaskSizeWithAnimationDuration(duration: CFTimeInterval) {
 
-        var photoViewSize = containerView.bounds.size
+        var photoViewSize = view.bounds.size
         photoViewSize.width /= 2
 
         CATransaction.begin()

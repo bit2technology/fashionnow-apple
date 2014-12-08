@@ -96,16 +96,15 @@ class VotePollController: UIViewController, PollControllerDelegate {
         dateFormatter.timeStyle = .ShortStyle
         dateFormatter.doesRelativeDateFormatting = true
         dateLabel.text = dateFormatter.stringFromDate(newPoll.createdAt)
-        // Tags
+        // Caption
         if let unwrappedCaption = newPoll.caption {
             tagsLabel.text = unwrappedCaption
-            tagsLabel.superview?.hidden = false
         } else if let unwrappedTags = newPoll.tags {
-            tagsLabel.text = ", ".join(unwrappedTags)
-            tagsLabel.superview?.hidden = false
+            tagsLabel.text = ", ".join(unwrappedTags).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
         } else {
-            tagsLabel.superview?.hidden = true
+            tagsLabel.text = ""
         }
+        tagsLabel.superview?.hidden = countElements(tagsLabel.text!) <= 0
 
         // Avatar
         if let unwrappedAuthorFacebookId = newPoll.createdBy?.facebookId {
@@ -115,6 +114,32 @@ class VotePollController: UIViewController, PollControllerDelegate {
         // Vote control
         voteSaved = false
         finishedShowVote = false
+    }
+
+    private func downloadPollList(#update: Bool) {
+
+        // Downloading poll list
+        let pollsToVote = PFQuery(className: ParsePoll.parseClassName())
+        pollsToVote.includeKey(ParsePollPhotosKey)
+        pollsToVote.includeKey(ParsePollCreatedByKey)
+        pollsToVote.orderByAscending(ParseObjectCreatedAtKey)
+        // Selecting only polls I did not vote and I did not send
+        let currentUser = ParseUser.currentUser()
+        if !currentUser.isDirty() { // TODO: improve poll selection
+            let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
+            votesByMeQuery.whereKey(ParseVoteByKey, equalTo: currentUser)
+            pollsToVote.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)
+            pollsToVote.whereKey(ParsePollCreatedByKey, notEqualTo: currentUser)
+        }
+
+        pollsToVote.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            if self.polls == nil {
+                if let unwrappedObjects = objects as? [ParsePoll] {
+                    self.polls = unwrappedObjects
+                    self.showNextPoll()
+                }
+            }
+        }
     }
 
     // MARK: UIViewController
@@ -153,33 +178,8 @@ class VotePollController: UIViewController, PollControllerDelegate {
         }
         
         loadingInterface.hidden = false
-    }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-
-        // Downloading poll list
-        let pollsToVote = PFQuery(className: ParsePoll.parseClassName())
-        pollsToVote.includeKey(ParsePollPhotosKey)
-        pollsToVote.includeKey(ParsePollCreatedByKey)
-        pollsToVote.orderByAscending(ParseObjectCreatedAtKey)
-        // Selecting only polls I did not vote and I did not send
-        let currentUser = ParseUser.currentUser()
-        if !currentUser.isDirty() { // TODO: improve poll selection
-            let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
-            votesByMeQuery.whereKey(ParseVoteByKey, equalTo: currentUser)
-            pollsToVote.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)
-            pollsToVote.whereKey(ParsePollCreatedByKey, notEqualTo: currentUser)
-        }
-
-        pollsToVote.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            if self.polls == nil {
-                if let unwrappedObjects = objects as? [ParsePoll] {
-                    self.polls = unwrappedObjects
-                    self.showNextPoll()
-                }
-            }
-        }
+        downloadPollList(update: false)
     }
 
     // MARK: PollControllerDelegate

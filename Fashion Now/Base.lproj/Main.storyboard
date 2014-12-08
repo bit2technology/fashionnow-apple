@@ -564,7 +564,7 @@
                                 <connections>
                                     <outlet property="leftImageView" destination="Gmf-9t-Ph8" id="Scf-WU-EfK"/>
                                     <outlet property="rightImageView" destination="pwv-ff-YNq" id="VGh-n1-KJJ"/>
-                                    <segue destination="D1M-pS-RBa" kind="show" id="9SC-Wv-5ae"/>
+                                    <segue destination="D1M-pS-RBa" kind="show" identifier="Result Controller" id="9wz-o8-WiA"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -590,7 +590,7 @@
             </objects>
             <point key="canvasLocation" x="1411" y="821"/>
         </scene>
-        <!--Result Poll Controller-->
+        <!--Result-->
         <scene sceneID="x4R-Xz-BxP">
             <objects>
                 <viewController id="D1M-pS-RBa" customClass="ResultPollController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
@@ -602,21 +602,77 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u5V-gX-nG7">
+                            <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u5V-gX-nG7">
                                 <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                                 <connections>
-                                    <segue destination="hpa-fw-Ay5" kind="embed" id="udm-ma-IdO"/>
+                                    <segue destination="hpa-fw-Ay5" kind="embed" identifier="Poll Controller" id="udm-ma-IdO"/>
                                 </connections>
                             </containerView>
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j7h-4t-WkM" userLabel="Caption">
+                                <rect key="frame" x="0.0" y="64" width="320" height="21"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Caption" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AKQ-hp-5HE">
+                                        <rect key="frame" x="4" y="2" width="312" height="15"/>
+                                        <gestureRecognizers/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="AKQ-hp-5HE" secondAttribute="bottom" constant="4" id="7nD-wV-gYn"/>
+                                    <constraint firstAttribute="trailing" secondItem="AKQ-hp-5HE" secondAttribute="trailing" constant="4" id="MEc-Pv-tnQ"/>
+                                    <constraint firstItem="AKQ-hp-5HE" firstAttribute="leading" secondItem="j7h-4t-WkM" secondAttribute="leading" constant="4" id="ZA3-ym-AgH"/>
+                                    <constraint firstItem="AKQ-hp-5HE" firstAttribute="top" secondItem="j7h-4t-WkM" secondAttribute="top" constant="2" id="wKq-XS-sZG"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPu-g6-gyu">
+                                <rect key="frame" x="0.0" y="367" width="160" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="T1y-H3-tFD"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <size key="shadowOffset" width="0.0" height="0.0"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sO1-m1-YcS">
+                                <rect key="frame" x="160" y="367" width="160" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="e63-uC-U0M"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <size key="shadowOffset" width="0.0" height="0.0"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="u5V-gX-nG7" secondAttribute="trailing" id="3bd-U2-d7i"/>
+                            <constraint firstItem="jPu-g6-gyu" firstAttribute="leading" secondItem="eKN-kl-5PT" secondAttribute="leading" id="8d3-SJ-8hd"/>
+                            <constraint firstItem="Rmp-rH-6eW" firstAttribute="top" secondItem="sO1-m1-YcS" secondAttribute="bottom" id="9KO-vb-28C"/>
+                            <constraint firstAttribute="trailing" secondItem="sO1-m1-YcS" secondAttribute="trailing" id="BV7-jn-yVa"/>
+                            <constraint firstItem="sO1-m1-YcS" firstAttribute="leading" secondItem="jPu-g6-gyu" secondAttribute="trailing" id="Fbu-MT-Da1"/>
+                            <constraint firstItem="Rmp-rH-6eW" firstAttribute="top" secondItem="jPu-g6-gyu" secondAttribute="bottom" id="O4V-77-YWh"/>
+                            <constraint firstAttribute="trailing" secondItem="j7h-4t-WkM" secondAttribute="trailing" id="Rak-OK-gfI"/>
+                            <constraint firstItem="sO1-m1-YcS" firstAttribute="width" secondItem="jPu-g6-gyu" secondAttribute="width" id="ZeM-DD-jFk"/>
                             <constraint firstItem="Rmp-rH-6eW" firstAttribute="top" secondItem="u5V-gX-nG7" secondAttribute="bottom" id="aUd-iA-q33"/>
                             <constraint firstItem="u5V-gX-nG7" firstAttribute="leading" secondItem="eKN-kl-5PT" secondAttribute="leading" id="bn0-QA-qTT"/>
+                            <constraint firstItem="j7h-4t-WkM" firstAttribute="top" secondItem="2RW-Vi-nXU" secondAttribute="bottom" id="j3y-Xm-8XV"/>
+                            <constraint firstItem="j7h-4t-WkM" firstAttribute="leading" secondItem="eKN-kl-5PT" secondAttribute="leading" id="kkh-kG-HFK"/>
                             <constraint firstItem="u5V-gX-nG7" firstAttribute="top" secondItem="2RW-Vi-nXU" secondAttribute="bottom" id="uBi-cX-IPa"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Result" id="m9p-AD-oA9"/>
+                    <connections>
+                        <outlet property="captionLabel" destination="AKQ-hp-5HE" id="a19-UM-0Na"/>
+                        <outlet property="leftPercentLabel" destination="jPu-g6-gyu" id="qsD-Kn-Xj1"/>
+                        <outlet property="rightPercentLabel" destination="sO1-m1-YcS" id="lu4-yn-m4A"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6hw-Jw-2JJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -966,52 +1022,37 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xjm-MJ-dOi" userLabel="Container View">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
-                                <subviews>
-                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="22F-CN-JDl">
-                                        <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
-                                        <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                                            <rect key="frame" x="0.0" y="0.0" width="160" height="207"/>
-                                        </variation>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="aQj-E4-gl5" appends="YES" id="erB-aE-mck"/>
-                                            <segue destination="rPD-KC-83S" kind="embed" identifier="Left Photo Controller" id="4GQ-Aa-EaP"/>
-                                        </connections>
-                                    </containerView>
-                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TYB-j4-um4">
-                                        <rect key="frame" x="160" y="0.0" width="160" height="367"/>
-                                        <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                                            <rect key="frame" x="160" y="0.0" width="160" height="207"/>
-                                        </variation>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="t7x-cR-kO3" appends="YES" id="Jf1-Ji-obS"/>
-                                            <segue destination="rPD-KC-83S" kind="embed" identifier="Right Photo Controller" id="uM3-tb-eTB"/>
-                                        </connections>
-                                    </containerView>
-                                </subviews>
-                                <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstItem="22F-CN-JDl" firstAttribute="top" secondItem="Xjm-MJ-dOi" secondAttribute="top" id="7jy-nu-GRH"/>
-                                    <constraint firstItem="TYB-j4-um4" firstAttribute="width" secondItem="22F-CN-JDl" secondAttribute="width" id="BLi-i6-jTj"/>
-                                    <constraint firstItem="22F-CN-JDl" firstAttribute="leading" secondItem="Xjm-MJ-dOi" secondAttribute="leading" id="Mff-6c-m6b"/>
-                                    <constraint firstAttribute="bottom" secondItem="22F-CN-JDl" secondAttribute="bottom" id="RPg-nD-26H"/>
-                                    <constraint firstItem="TYB-j4-um4" firstAttribute="leading" secondItem="22F-CN-JDl" secondAttribute="trailing" id="SzK-9Q-v06"/>
-                                    <constraint firstItem="TYB-j4-um4" firstAttribute="top" secondItem="Xjm-MJ-dOi" secondAttribute="top" id="UCZ-7U-bis"/>
-                                    <constraint firstAttribute="bottom" secondItem="TYB-j4-um4" secondAttribute="bottom" id="bbI-aD-sR3"/>
-                                    <constraint firstAttribute="trailing" secondItem="TYB-j4-um4" secondAttribute="trailing" id="gsr-5s-qGb"/>
-                                </constraints>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="22F-CN-JDl" userLabel="Left Photo">
+                                <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
                                 <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="207"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="160" height="207"/>
                                 </variation>
-                            </view>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="aQj-E4-gl5" appends="YES" id="erB-aE-mck"/>
+                                    <segue destination="rPD-KC-83S" kind="embed" identifier="Left Photo Controller" id="4GQ-Aa-EaP"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TYB-j4-um4" userLabel="Right Photo">
+                                <rect key="frame" x="160" y="0.0" width="160" height="367"/>
+                                <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                    <rect key="frame" x="160" y="0.0" width="160" height="207"/>
+                                </variation>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="t7x-cR-kO3" appends="YES" id="Jf1-Ji-obS"/>
+                                    <segue destination="rPD-KC-83S" kind="embed" identifier="Right Photo Controller" id="uM3-tb-eTB"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="Xjm-MJ-dOi" firstAttribute="leading" secondItem="Ngt-gb-2Qu" secondAttribute="leading" id="TtH-Ah-kYX"/>
-                            <constraint firstItem="Xjm-MJ-dOi" firstAttribute="top" secondItem="Ngt-gb-2Qu" secondAttribute="top" id="b3g-A1-Tv7"/>
-                            <constraint firstAttribute="bottom" secondItem="Xjm-MJ-dOi" secondAttribute="bottom" id="fXK-8M-lKe"/>
-                            <constraint firstAttribute="trailing" secondItem="Xjm-MJ-dOi" secondAttribute="trailing" id="scg-d7-2OE"/>
+                            <constraint firstItem="22F-CN-JDl" firstAttribute="leading" secondItem="Ngt-gb-2Qu" secondAttribute="leading" id="Iqq-ko-KGk"/>
+                            <constraint firstItem="22F-CN-JDl" firstAttribute="top" secondItem="Ngt-gb-2Qu" secondAttribute="top" id="IzQ-uG-Hsv"/>
+                            <constraint firstItem="TYB-j4-um4" firstAttribute="top" secondItem="Ngt-gb-2Qu" secondAttribute="top" id="JXH-we-oRY"/>
+                            <constraint firstItem="TYB-j4-um4" firstAttribute="leading" secondItem="22F-CN-JDl" secondAttribute="trailing" id="SDm-ez-Xnd"/>
+                            <constraint firstAttribute="bottom" secondItem="TYB-j4-um4" secondAttribute="bottom" id="d34-4h-b0j"/>
+                            <constraint firstItem="22F-CN-JDl" firstAttribute="width" secondItem="TYB-j4-um4" secondAttribute="width" id="d8v-PI-idv"/>
+                            <constraint firstAttribute="bottom" secondItem="22F-CN-JDl" secondAttribute="bottom" id="etT-l5-kXL"/>
+                            <constraint firstAttribute="trailing" secondItem="TYB-j4-um4" secondAttribute="trailing" id="odu-gc-3fV"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="kgl-Bo-434" appends="YES" id="D6O-sz-LXB"/>
@@ -1019,7 +1060,6 @@
                     </view>
                     <toolbarItems/>
                     <connections>
-                        <outlet property="containerView" destination="Xjm-MJ-dOi" id="QkU-AL-3Si"/>
                         <outlet property="drager" destination="kgl-Bo-434" id="gK9-Zx-6gF"/>
                         <outlet property="leftPhotoView" destination="22F-CN-JDl" id="Xgc-LM-En5"/>
                         <outlet property="leftdoubleTap" destination="aQj-E4-gl5" id="THR-f1-7T0"/>
@@ -1226,6 +1266,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="3E2-oz-Poo"/>
         <segue reference="udm-ma-IdO"/>
-        <segue reference="4GQ-Aa-EaP"/>
+        <segue reference="uM3-tb-eTB"/>
     </inferredMetricsTieBreakers>
 </document>
