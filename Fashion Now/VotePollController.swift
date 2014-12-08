@@ -61,10 +61,10 @@ class VotePollController: UIViewController, PollControllerDelegate {
 
     // Loading interface
     @IBOutlet weak var loadingInterface: UIView!
-    private func setLoadingInterfaceHiddenIfNeededAnimated(hidden: Bool, delay: NSTimeInterval, showNextPollWhenDone showNextPoll: Bool) {
-        if hidden != loadingInterface.hidden {
+    private func setLoadingInterfaceHiddenIfNeededAnimated(hidden: Bool, duration: NSTimeInterval = 0.15, showNextPollWhenDone showNextPoll: Bool) {
+        if hidden != loadingInterface.hidden && duration > 0 {
             loadingInterface.hidden = false
-            UIView.animateWithDuration(0.15, delay: delay, options: nil, animations: { () -> Void in
+            UIView.animateWithDuration(duration, animations: { () -> Void in
                 // animations
                 self.loadingInterface.alpha = (hidden ? 0 : 1)
             }, completion: { (succeeded) -> Void in
@@ -74,6 +74,9 @@ class VotePollController: UIViewController, PollControllerDelegate {
                     self.showNextPoll()
                 }
             })
+        } else {
+            loadingInterface.hidden = hidden
+            loadingInterface.alpha = (hidden ? 0 : 1)
         }
     }
 
@@ -84,12 +87,16 @@ class VotePollController: UIViewController, PollControllerDelegate {
             return
         }
 
-        let newPoll = polls!.last!
-        polls!.removeLast()
+        // Don't show invalid polls
+        var newPoll: ParsePoll!
+        do {
+            newPoll = polls!.last!
+            polls!.removeLast()
+        } while !newPoll.isValid
 
         pollController.poll = newPoll
         // Name
-        nameLabel.text = newPoll.createdBy?.name ?? newPoll.createdBy?.email ?? "unknown"
+        nameLabel.text = newPoll.createdBy?.name ?? newPoll.createdBy?.email ?? "Unknown"
         // Date
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = .ShortStyle
@@ -118,6 +125,9 @@ class VotePollController: UIViewController, PollControllerDelegate {
 
     private func downloadPollList(#update: Bool) {
 
+        setLoadingInterfaceHiddenIfNeededAnimated(false, duration: 0, showNextPollWhenDone: false)
+        polls = nil
+
         // Downloading poll list
         let pollsToVote = PFQuery(className: ParsePoll.parseClassName())
         pollsToVote.includeKey(ParsePollPhotosKey)
@@ -133,13 +143,14 @@ class VotePollController: UIViewController, PollControllerDelegate {
         }
 
         pollsToVote.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            if self.polls == nil {
-                if let unwrappedObjects = objects as? [ParsePoll] {
-                    self.polls = unwrappedObjects
-                    self.showNextPoll()
-                }
-            }
+
+            self.polls =  objects as? [ParsePoll]
+            self.showNextPoll()
         }
+    }
+
+    func loginChanged(notification: NSNotification) {
+        downloadPollList(update: false)
     }
 
     // MARK: UIViewController
@@ -180,12 +191,18 @@ class VotePollController: UIViewController, PollControllerDelegate {
         loadingInterface.hidden = false
 
         downloadPollList(update: false)
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     // MARK: PollControllerDelegate
 
     func pollControllerDidDidFinishLoad(pollController: PollController) {
-        setLoadingInterfaceHiddenIfNeededAnimated(true, delay: 0, showNextPollWhenDone: false)
+        setLoadingInterfaceHiddenIfNeededAnimated(true, showNextPollWhenDone: false)
     }
 
     func pollControllerDidInteractWithInterface(pollController: PollController) {
@@ -216,7 +233,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
             finishedShowVote = true
         }
         if finishedShowVote && voteSaved {
-            setLoadingInterfaceHiddenIfNeededAnimated(false, delay: 0, showNextPollWhenDone: true)
+            setLoadingInterfaceHiddenIfNeededAnimated(false, showNextPollWhenDone: true)
         }
     }
 }

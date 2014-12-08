@@ -40,8 +40,10 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
         PFFacebookUtils.logInWithPermissions(["public_profile", "user_friends", "email"]) { (user, error) -> Void in
             if let customUser = user as? ParseUser {
 
-                // Successful login. Now get Facebook information.
-                let avatarSize = Int(64 * UIScreen.mainScreen().scale)
+                // Successful login
+                NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
+
+                // Get user's Facebook information
                 FBRequestConnection.startWithGraphPath("me?fields=id,first_name,email,gender") { (requestConnection, result, error) -> Void in
                     // Send Facebook information for review in next screen
                     self.performSegueWithIdentifier("Sign Up", sender: result)
@@ -90,21 +92,5 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
 
     func navigationControllerSupportedInterfaceOrientations(navigationController: UINavigationController) -> Int {
         return Int(UIInterfaceOrientationMask.Portrait.rawValue)
-    }
-}
-
-// MARK: - Login helpers
-
-extension UIViewController {
-    
-    func needsLogin() -> Bool {
-        return false
-    }
-}
-
-extension UINavigationController {
-
-    override func needsLogin() -> Bool {
-        return self.topViewController.needsLogin()
     }
 }

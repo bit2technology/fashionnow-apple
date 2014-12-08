@@ -27,27 +27,37 @@ class MeController: UICollectionViewController {
         super.viewWillAppear(animated)
 
         navigationItem.title = ParseUser.currentUser().name
+
+        downloadPollList(update: false)
     }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    private func downloadPollList(#update: Bool) {
 
-        if myPolls == nil {
-            let myPollsQuery = PFQuery(className: ParsePoll.parseClassName())
-            myPollsQuery.includeKey(ParsePollPhotosKey)
-            myPollsQuery.whereKey(ParsePollCreatedByKey, equalTo: ParseUser.currentUser())
-            myPollsQuery.orderByDescending(ParseObjectCreatedAtKey)
-            myPollsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-                self.myPolls = objects as? [ParsePoll]
-                (self.collectionView?.backgroundView as UIActivityIndicatorView).stopAnimating()
-                self.collectionView?.reloadData()
-            }
+        myPolls = nil
+        (collectionView?.backgroundView as UIActivityIndicatorView).startAnimating()
+        collectionView?.reloadData()
+
+        let currentUser = ParseUser.currentUser()!
+        if PFAnonymousUtils.isLinkedWithUser(currentUser) {
+            return
+        }
+
+        let myPollsQuery = PFQuery(className: ParsePoll.parseClassName())
+        myPollsQuery.includeKey(ParsePollPhotosKey)
+        myPollsQuery.whereKey(ParsePollCreatedByKey, equalTo: currentUser)
+        myPollsQuery.orderByDescending(ParseObjectCreatedAtKey)
+        myPollsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            self.myPolls = objects as? [ParsePoll]
+            (self.collectionView?.backgroundView as UIActivityIndicatorView).stopAnimating()
+            self.collectionView?.reloadSections(NSIndexSet(index: 0))
         }
     }
 
     @IBAction func logOutButtonPressed(snder: AnyObject) {
         ParseUser.logOut()
-        (self.tabBarController as TabBarController).selectedIndex = 0
+        NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
+        tabBarController!.selectedIndex = 0
+        downloadPollList(update: false)
     }
 
     override func needsLogin() -> Bool {
