@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PostPollController: UIViewController, PollControllerDelegate {
+class PostPollController: UIViewController, PollControllerDelegate, UITextFieldDelegate {
 
     private weak var pollController: PollController!
 
@@ -73,6 +73,8 @@ class PostPollController: UIViewController, PollControllerDelegate {
         loadingView.hidden = true
 
         pollController.delegate = self
+
+        textField.delegate = self
     }
 
     // MARK: PollControllerDelegate
@@ -89,5 +91,12 @@ class PostPollController: UIViewController, PollControllerDelegate {
                 self.sendButton.hidden = true
             })
         }
+    }
+
+    // MARK: UITextFieldDelegate
+
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return false
     }
 }

@@ -115,7 +115,9 @@ class VotePollController: UIViewController, PollControllerDelegate {
 
         // Avatar
         if let unwrappedAuthorFacebookId = newPoll.createdBy?.facebookId {
-            self.avatarView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedAuthorFacebookId, size: 40), usingActivityIndicatorStyle: .White)
+            avatarView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedAuthorFacebookId, size: 40), usingActivityIndicatorStyle: .White)
+        } else {
+            avatarView.image = nil
         }
 
         // Vote control
@@ -132,7 +134,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
         let pollsToVote = PFQuery(className: ParsePoll.parseClassName())
         pollsToVote.includeKey(ParsePollPhotosKey)
         pollsToVote.includeKey(ParsePollCreatedByKey)
-        pollsToVote.orderByAscending(ParseObjectCreatedAtKey)
+        pollsToVote.orderByDescending(ParseObjectCreatedAtKey)
         // Selecting only polls I did not vote and I did not send
         let currentUser = ParseUser.currentUser()
         if !currentUser.isDirty() { // TODO: improve poll selection

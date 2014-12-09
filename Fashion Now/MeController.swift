@@ -21,13 +21,23 @@ class MeController: UICollectionViewController {
         activityIndicator.color = UIColor.lightGrayColor()
         activityIndicator.startAnimating()
         collectionView?.backgroundView = activityIndicator
+
+        downloadPollList(update: false)
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
         navigationItem.title = ParseUser.currentUser().name
+    }
 
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
+    func loginChanged(notification: NSNotification) {
         downloadPollList(update: false)
     }
 
@@ -57,7 +67,6 @@ class MeController: UICollectionViewController {
         ParseUser.logOut()
         NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
         tabBarController!.selectedIndex = 0
-        downloadPollList(update: false)
     }
 
     override func needsLogin() -> Bool {
