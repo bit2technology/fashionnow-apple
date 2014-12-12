@@ -1,0 +1,11 @@
+{
+    "applications": {
+        "Fashion Now": {
+            "applicationId": "Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", 
+            "masterKey": "4PxMnaGeJX5mKQrkF6OzjjrY2G7M7whTMECGkJdO"
+        }, 
+        "_default": {
+            "link": "Fashion Now"
+        }
+    }
+}

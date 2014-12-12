@@ -216,6 +216,7 @@
 				4BF1D0531A00F1EB00818658 /* Resources */,
 				75813197C4A225B2AEDD361A /* Copy Pods Resources */,
 				4BDB6D131A21FD6C003D56C1 /* Build Number Increment */,
+				4BD55F2D1A3AFFB00028F026 /* Send Symbol Files to Parse */,
 			);
 			buildRules = (
 			);
@@ -321,6 +322,20 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		4BD55F2D1A3AFFB00028F026 /* Send Symbol Files to Parse */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Send Symbol Files to Parse";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=/usr/local/bin:$PATH\ncd \"${PROJECT_DIR}/parse\"\nparse symbols \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"";
 		};
 		4BDB6D131A21FD6C003D56C1 /* Build Number Increment */ = {
 			isa = PBXShellScriptBuildPhase;
