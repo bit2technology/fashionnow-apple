@@ -295,6 +295,12 @@ public class ParsePublicVotePollList: Printable, DebugPrintable {
     private func forceUpdate(completionHandler: ((NSError!) -> Void)?) {
         pollsToVoteQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
 
+            // Error handling
+            if error != nil {
+                completionHandler?(error)
+                return
+            }
+
             // Add unique objects if poll list is not empty
             if self.polls.count > 0 {
                 for pollToAdd in (objects as [ParsePoll]) {
@@ -330,20 +336,15 @@ public class ParsePublicVotePollList: Printable, DebugPrintable {
 
     func nextPoll(remove: Bool = true) -> ParsePoll! {
 
-        var nextPoll: ParsePoll?
+        var nextPoll = polls.first
 
-        do {
+        while nextPoll?.isValid == false {
+            polls.removeAtIndex(0)
+            nextPoll = polls.first
+        }
 
-        } while nextPoll?.isValid != true
-
-        for (idx, poll) in enumerate(polls) {
-            if poll.isValid {
-                nextPoll = poll
-                if remove {
-                    polls.removeAtIndex(idx)
-                }
-                break
-            }
+        if remove {
+            polls.removeAtIndex(0)
         }
 
         return nextPoll

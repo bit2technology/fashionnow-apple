@@ -170,7 +170,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
 
         voteButtons = [leftVoteButton, rightVoteButton]
         for voteButton in voteButtons {
-            voteButton.tintColor = UIColor.defaultTintColor(alpha: 0.6)
+            voteButton.tintColor = UIColor.defaultTintColor(alpha: 0.5)
         }
         
         loadingInterface.hidden = false

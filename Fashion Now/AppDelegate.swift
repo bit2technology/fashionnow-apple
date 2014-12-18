@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Parse configuration
         ParseCrashReporting.enable()
         Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
-        ParseUser.enableAutomaticUser()
         PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         PFFacebookUtils.initializeFacebook()
 
@@ -65,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Store the deviceToken in the current installation and send it to Parse
         let currentInstallation = ParseInstallation.currentInstallation()
         currentInstallation.setDeviceTokenFromData(deviceToken)
-        currentInstallation.updateUserInBackground()
+        currentInstallation.updateUserInBackground() // This saves the installation
     }
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {

@@ -331,9 +331,9 @@
                                 </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4XI-L8-6Pr" userLabel="Left Vote" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="-5" y="375" width="91" height="52"/>
+                                <rect key="frame" x="-5" y="383" width="71" height="44"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <inset key="contentEdgeInsets" minX="30" minY="15" maxX="25" maxY="15"/>
+                                <inset key="contentEdgeInsets" minX="20" minY="11" maxX="15" maxY="11"/>
                                 <state key="normal" title="Vote" backgroundImage="ButtonRoundBordersBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -343,9 +343,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GPX-GA-SAX" userLabel="Right Vote" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="234" y="375" width="91" height="52"/>
+                                <rect key="frame" x="254" y="383" width="71" height="44"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <inset key="contentEdgeInsets" minX="25" minY="15" maxX="30" maxY="15"/>
+                                <inset key="contentEdgeInsets" minX="15" minY="11" maxX="20" maxY="11"/>
                                 <state key="normal" title="Vote" backgroundImage="ButtonRoundBordersBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -1150,9 +1150,9 @@
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YYI-4A-sio" userLabel="Delete Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                        <rect key="frame" x="4" y="311" width="133" height="52"/>
-                                        <inset key="contentEdgeInsets" minX="0.0" minY="15" maxX="0.0" maxY="15"/>
-                                        <state key="normal" title="Changed my mind" backgroundImage="ButtonRoundBordersBackground">
+                                        <rect key="frame" x="4" y="319" width="93" height="44"/>
+                                        <inset key="contentEdgeInsets" minX="15" minY="11" maxX="15" maxY="11"/>
+                                        <state key="normal" title="Change" backgroundImage="ButtonRoundBordersBackground">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -1162,7 +1162,6 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="YYI-4A-sio" secondAttribute="bottom" constant="4" id="70o-TW-SHM"/>
-                                    <constraint firstAttribute="width" secondItem="YYI-4A-sio" secondAttribute="width" multiplier="1.2" id="D3h-Lh-VE7"/>
                                     <constraint firstAttribute="centerX" secondItem="yhO-Ld-1tg" secondAttribute="centerX" id="IwN-V6-SM8"/>
                                     <constraint firstItem="yhO-Ld-1tg" firstAttribute="top" secondItem="H8b-Ws-oM2" secondAttribute="top" id="YfS-wH-E0a"/>
                                     <constraint firstItem="YYI-4A-sio" firstAttribute="centerX" secondItem="H8b-Ws-oM2" secondAttribute="centerX" priority="250" constant="-9999" id="lLp-F2-r0I"/>
@@ -1264,8 +1263,8 @@
         <image name="TabBarIconPostPollUnselected" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="udm-ma-IdO"/>
-        <segue reference="uM3-tb-eTB"/>
+        <segue reference="IZA-Rh-gPV"/>
         <segue reference="3E2-oz-Poo"/>
+        <segue reference="uM3-tb-eTB"/>
     </inferredMetricsTieBreakers>
 </document>
