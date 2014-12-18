@@ -10,7 +10,7 @@ import UIKit
 
 class VotePollController: UIViewController, PollControllerDelegate {
 
-    private var polls: [ParsePoll]?
+    private var polls: ParsePublicVotePollList!
 
     private weak var pollController: PollController!
 
@@ -37,10 +37,10 @@ class VotePollController: UIViewController, PollControllerDelegate {
     @IBOutlet weak var rightVoteButton: UIButton!
     // Press actions
     @IBAction func voteButtonWillBePressed(sender: UIButton) {
-        setCleanInterfaceIfNeeded(false, animationDuration: 0.15)
+        setCleanInterface(false, animated: true)
     }
     @IBAction func voteButtonPressed(sender: UIButton) {
-        pollController.animateHighlight(index: find(voteButtons, sender)! + 1, withEaseInAnimation: true)
+        pollController.animateHighlight(index: find(voteButtons, sender)! + 1)
     }
 
     // Clean interface
@@ -51,9 +51,13 @@ class VotePollController: UIViewController, PollControllerDelegate {
             }
         }
     }
-    private func setCleanInterfaceIfNeeded(cleanInterface: Bool, animationDuration duration: NSTimeInterval) {
+    private func setCleanInterface(cleanInterface: Bool, animated: Bool) {
         if cleanInterface != self.cleanInterface {
-            UIView.animateWithDuration(duration) { () -> Void in
+            if animated {
+                UIView.animateWithDuration(0.15) { () -> Void in
+                    self.cleanInterface = cleanInterface
+                }
+            } else {
                 self.cleanInterface = cleanInterface
             }
         }
@@ -61,52 +65,47 @@ class VotePollController: UIViewController, PollControllerDelegate {
 
     // Loading interface
     @IBOutlet weak var loadingInterface: UIView!
-    private func setLoadingInterfaceHiddenIfNeededAnimated(hidden: Bool, duration: NSTimeInterval = 0.15, showNextPollWhenDone showNextPoll: Bool) {
-        if hidden != loadingInterface.hidden && duration > 0 {
+    private func setLoadingInterfaceHidden(hidden: Bool, animated: Bool, completion: ((finished: Bool) -> Void)? = nil) {
+        if hidden != loadingInterface.hidden && animated {
             loadingInterface.hidden = false
-            UIView.animateWithDuration(duration, animations: { () -> Void in
+            UIView.animateWithDuration(0.15, animations: { () -> Void in
                 // animations
                 self.loadingInterface.alpha = (hidden ? 0 : 1)
-            }, completion: { (succeeded) -> Void in
+            }, completion: { (finished) -> Void in
                 // completion
                 self.loadingInterface.hidden = hidden
-                if showNextPoll {
-                    self.showNextPoll()
-                }
+                completion?(finished: finished)
             })
         } else {
             loadingInterface.hidden = hidden
             loadingInterface.alpha = (hidden ? 0 : 1)
+            completion?(finished: true)
         }
     }
 
     private func showNextPoll() {
 
-        if polls == nil || polls!.count < 1 {
-            UIAlertView(title: "Oh no! :(", message: "There's no more polls to vote", delegate: nil, cancelButtonTitle: "OK").show()
+        let nextPoll = self.polls.nextPoll(remove: true)
+
+        if nextPoll == nil {
+            // TODO: No votes screen
+            NSLog("No more polls")
             return
         }
 
-        // Don't show invalid polls
-        var newPoll: ParsePoll!
-        do {
-            newPoll = polls!.last!
-            polls!.removeLast()
-        } while !newPoll.isValid
-
-        pollController.poll = newPoll
+        pollController.poll = nextPoll
         // Name
-        nameLabel.text = newPoll.createdBy?.name ?? newPoll.createdBy?.email ?? "Unknown"
+        nameLabel.text = nextPoll.createdBy?.name ?? nextPoll.createdBy?.email ?? "Unknown"
         // Date
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = .ShortStyle
         dateFormatter.timeStyle = .ShortStyle
         dateFormatter.doesRelativeDateFormatting = true
-        dateLabel.text = dateFormatter.stringFromDate(newPoll.createdAt)
+        dateLabel.text = dateFormatter.stringFromDate(nextPoll.createdAt)
         // Caption
-        if let unwrappedCaption = newPoll.caption {
+        if let unwrappedCaption = nextPoll.caption {
             tagsLabel.text = unwrappedCaption
-        } else if let unwrappedTags = newPoll.tags {
+        } else if let unwrappedTags = nextPoll.tags {
             tagsLabel.text = ", ".join(unwrappedTags).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
         } else {
             tagsLabel.text = ""
@@ -114,45 +113,25 @@ class VotePollController: UIViewController, PollControllerDelegate {
         tagsLabel.superview?.hidden = countElements(tagsLabel.text!) <= 0
 
         // Avatar
-        if let unwrappedAuthorFacebookId = newPoll.createdBy?.facebookId {
+        if let unwrappedAuthorFacebookId = nextPoll.createdBy?.facebookId {
             avatarView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedAuthorFacebookId, size: 40), usingActivityIndicatorStyle: .White)
         } else {
             avatarView.image = nil
         }
-
-        // Vote control
-        voteSaved = false
-        finishedShowVote = false
-    }
-
-    private func downloadPollList(#update: Bool) {
-
-        setLoadingInterfaceHiddenIfNeededAnimated(false, duration: 0, showNextPollWhenDone: false)
-        polls = nil
-
-        // Downloading poll list
-        let pollsToVote = PFQuery(className: ParsePoll.parseClassName())
-        pollsToVote.includeKey(ParsePollPhotosKey)
-        pollsToVote.includeKey(ParsePollCreatedByKey)
-        pollsToVote.orderByDescending(ParseObjectCreatedAtKey)
-        // Selecting only polls I did not vote and I did not send
-        let currentUser = ParseUser.currentUser()
-        if !currentUser.isDirty() { // TODO: improve poll selection
-            let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
-            votesByMeQuery.whereKey(ParseVoteByKey, equalTo: currentUser)
-            pollsToVote.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)
-            pollsToVote.whereKey(ParsePollCreatedByKey, notEqualTo: currentUser)
-        }
-
-        pollsToVote.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-
-            self.polls =  objects as? [ParsePoll]
-            self.showNextPoll()
-        }
     }
 
     func loginChanged(notification: NSNotification) {
-        downloadPollList(update: false)
+        setLoadingInterfaceHidden(false, animated: false)
+        polls = ParsePublicVotePollList()
+        polls.update { (error) -> Void in
+
+            if error != nil {
+                self.showErrorScreen()
+                return
+            }
+
+            self.showNextPoll()
+        }
     }
 
     // MARK: UIViewController
@@ -169,6 +148,10 @@ class VotePollController: UIViewController, PollControllerDelegate {
                 return
             }
         }
+    }
+
+    private func showErrorScreen() {
+        // TODO: Error Screen
     }
     
     // MARK: View lifecycle
@@ -192,7 +175,16 @@ class VotePollController: UIViewController, PollControllerDelegate {
         
         loadingInterface.hidden = false
 
-        downloadPollList(update: false)
+        polls = ParsePublicVotePollList()
+        polls.update { (error) -> Void in
+
+            if error != nil {
+                self.showErrorScreen()
+                return
+            }
+
+            self.showNextPoll()
+        }
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
     }
@@ -204,38 +196,27 @@ class VotePollController: UIViewController, PollControllerDelegate {
     // MARK: PollControllerDelegate
 
     func pollControllerDidDidFinishLoad(pollController: PollController) {
-        setLoadingInterfaceHiddenIfNeededAnimated(true, showNextPollWhenDone: false)
+        setLoadingInterfaceHidden(true, animated: false)
     }
 
     func pollControllerDidInteractWithInterface(pollController: PollController) {
-        setCleanInterfaceIfNeeded(true, animationDuration: 0.15)
+        setCleanInterface(true, animated: true)
     }
 
-    private var voteSaved = false
     func pollControllerWillHighlight(pollController: PollController, index: Int) {
+
         let vote = ParseVote(user: ParseUser.currentUser())
         vote.pollId = pollController.poll.objectId
         vote.vote = index
-        vote.saveInBackgroundWithBlock { (succeeded, error) -> Void in
-            if succeeded {
-                self.voteSaved = true
-                self.showLoadingInterfaceAndNextPollIfVoteSaved(nil)
-            } else {
-                UIAlertView(title: "Vote Error :(", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK").show()
-            }
-        }
+        vote.saveEventually()
     }
 
-    private var finishedShowVote = false
     func pollControllerDidHighlight(pollController: PollController) {
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "showLoadingInterfaceAndNextPollIfVoteSaved:", userInfo: nil, repeats: false).fire()
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "showLoadingInterfaceAndNextPoll:", userInfo: nil, repeats: false).fire()
     }
-    func showLoadingInterfaceAndNextPollIfVoteSaved(sender: NSTimer?) {
-        if sender != nil {
-            finishedShowVote = true
-        }
-        if finishedShowVote && voteSaved {
-            setLoadingInterfaceHiddenIfNeededAnimated(false, showNextPollWhenDone: true)
+    func showLoadingInterfaceAndNextPoll(sender: NSTimer?) {
+        setLoadingInterfaceHidden(false, animated: true) { (finished) -> Void in
+            self.showNextPoll()
         }
     }
 }

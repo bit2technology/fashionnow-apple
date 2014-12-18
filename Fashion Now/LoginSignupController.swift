@@ -20,34 +20,17 @@ class LoginSignupController: StaticDataTableViewController, UIPickerViewDataSour
     @IBOutlet weak var passwordField: UITextField!
 
     @IBAction func cancelButtonPressed(sender: UITabBarItem) {
+        // Dismiss keyboard
         view.endEditing(true)
+
+        // Dismiss controller
         (self.presentingViewController as TabBarController).willDismissLoginController()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 
-    private var barButtonItems: [UIBarButtonItem] {
-        get {
-            var buttonItems = (navigationItem.leftBarButtonItems as? [UIBarButtonItem]) ?? []
-            if let rightButtonItems = navigationItem.rightBarButtonItems as? [UIBarButtonItem] {
-                buttonItems.extend(rightButtonItems)
-            }
-            return buttonItems
-        }
-    }
     @IBAction func doneButtonPressed(sender: UIBarButtonItem) {
-        // Interface tweak
-        for barButtonItem in barButtonItems {
-            barButtonItem.enabled = false
-        }
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
-        activityIndicator.startAnimating()
-        navigationItem.rightBarButtonItems = [sender, UIBarButtonItem(customView: activityIndicator)]
-
-        // Dismiss keyboard and disable text fields
+        // Dismiss keyboard
         view.endEditing(true)
-        for textField in [nameField, locationField, emailField, passwordField] {
-            textField.enabled = false
-        }
 
         // Update Parse user info
         let currentUser = ParseUser.currentUser()
@@ -59,19 +42,11 @@ class LoginSignupController: StaticDataTableViewController, UIPickerViewDataSour
         currentUser.location = locationField.text
         currentUser.email = emailField.text
         currentUser.password = passwordField.text
-        currentUser.saveInBackgroundWithBlock { (succeeded, error) -> Void in
-            if succeeded {
-                (self.presentingViewController as TabBarController).willDismissLoginController()
-                self.dismissViewControllerAnimated(true, completion: nil)
-            } else {
-                // TODO: Better error handling
-                for barButtonItem in self.barButtonItems {
-                    barButtonItem.enabled = true
-                }
-                self.navigationItem.rightBarButtonItems = [sender]
-                UIAlertView(title: nil, message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK").show()
-            }
-        }
+        currentUser.saveEventually()
+
+        // Dismiss controller
+        (self.presentingViewController as TabBarController).willDismissLoginController()
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 
     @IBOutlet weak var genderCell: UITableViewCell!

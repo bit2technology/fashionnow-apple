@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Parse configuration
         ParseCrashReporting.enable()
         Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
+        ParseUser.enableAutomaticUser()
         PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         PFFacebookUtils.initializeFacebook()
 
@@ -36,12 +37,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             application.registerForRemoteNotificationTypes(UIRemoteNotificationType.Alert | .Badge | .Sound)
         }
 
-        // Get current user (or create an anonymous one)
-        ParseUser.enableAutomaticUser()
-        let currentUser = ParseUser.currentUser()
-        if currentUser.isDirty() {
-            currentUser.saveInBackgroundWithBlock(nil)
-        }
+        // Erase badge number
+        ParseInstallation.currentInstallation().badge = 0
+
+        // Observe login change and update installation
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateInstallationUser:", name: LoginChangedNotificationName, object: nil)
         
         return true
     }
@@ -51,22 +51,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
-        // Facebook configuration
         FBAppCall.handleDidBecomeActiveWithSession(PFFacebookUtils.session())
         FBAppEvents.activateApp()
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     // MARK: Push notifications
 
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        // Store the deviceToken in the current installation and save it to Parse.
-        let currentInstallation = PFInstallation.currentInstallation()
+        // Store the deviceToken in the current installation and send it to Parse
+        let currentInstallation = ParseInstallation.currentInstallation()
         currentInstallation.setDeviceTokenFromData(deviceToken)
-        currentInstallation.saveInBackgroundWithBlock(nil)
+        currentInstallation.updateUserInBackground()
     }
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
         PFPush.handlePush(userInfo)
+    }
+
+    func updateInstallationUser(notification: NSNotification) {
+        ParseInstallation.currentInstallation().updateUserInBackground()
     }
 }
 
@@ -107,7 +114,7 @@ extension UIColor {
     /**
     :returns: An image with this color and the specified size
     */
-    func toImage(size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
+    func image(size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
         
         UIGraphicsBeginImageContext(size);
         let context = UIGraphicsGetCurrentContext();

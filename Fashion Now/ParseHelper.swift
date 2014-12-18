@@ -10,6 +10,33 @@ let ParseObjectCreatedAtKey = "createdAt"
 let ParseObjectUpdatedAtKey = "updatedAt"
 let ParseObjectIdKey = "objectId"
 
+// MARK: - Installation class
+
+let ParseInstallationUserIdKey = "userId"
+
+public class ParseInstallation: PFInstallation, PFSubclassing {
+
+    override public class func load() {
+        superclass()?.load()
+        registerSubclass()
+    }
+
+    var userId: String? {
+        get {
+            return self[ParseInstallationUserIdKey] as? String
+        }
+        set {
+            self[ParseInstallationUserIdKey] = newValue ?? NSNull()
+        }
+    }
+
+    func updateUserInBackground() {
+        let currentUser = ParseUser.currentUser()
+        userId = ParseUser.currentUser().objectId
+        saveEventually()
+    }
+}
+
 // MARK: - User class
 
 let ParseUserAvatarKey = "avatar"
@@ -222,6 +249,104 @@ public class ParsePoll: PFObject, PFSubclassing {
             }
             return createdBy != nil
         }
+    }
+}
+
+public class ParsePublicVotePollList: Printable, DebugPrintable {
+
+    private var polls = [ParsePoll]()
+    private let pollsToVoteQuery: PFQuery
+
+    var count: Int {
+        get {
+            return polls.count
+        }
+    }
+
+    public var description: String {
+        get {
+            return polls.description
+        }
+    }
+    public var debugDescription: String {
+        get {
+            return polls.debugDescription
+        }
+    }
+
+    init() {
+        let currentUser = ParseUser.currentUser()
+        let pollsToVoteQueryLimit = 100
+        // Creating query
+        pollsToVoteQuery = PFQuery(className: ParsePoll.parseClassName())
+        pollsToVoteQuery.includeKey(ParsePollCreatedByKey)
+        pollsToVoteQuery.includeKey(ParsePollPhotosKey)
+        pollsToVoteQuery.limit = pollsToVoteQueryLimit
+        pollsToVoteQuery.orderByDescending(ParseObjectCreatedAtKey)
+        // Selecting only relevant polls
+        let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
+        votesByMeQuery.limit = Int.max
+        votesByMeQuery.orderByDescending(ParseObjectCreatedAtKey)
+        votesByMeQuery.whereKey(ParseVoteByKey, equalTo: currentUser)
+        pollsToVoteQuery.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)
+        pollsToVoteQuery.whereKey(ParsePollCreatedByKey, notEqualTo: currentUser)
+    }
+
+    private func forceUpdate(completionHandler: ((NSError!) -> Void)?) {
+        pollsToVoteQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+
+            // Add unique objects if poll list is not empty
+            if self.polls.count > 0 {
+                for pollToAdd in (objects as [ParsePoll]) {
+                    if find(self.polls, pollToAdd) == nil {
+                        self.polls.append(pollToAdd)
+                    }
+                }
+                // Order descending
+                self.polls.sort({ $0.createdAt.compare($1.createdAt) == NSComparisonResult.OrderedDescending })
+            } else {
+                self.polls = objects as [ParsePoll]
+            }
+
+            // Call completion handler
+            completionHandler?(error)
+        }
+    }
+
+    func update(completionHandler: ((NSError!) -> Void)? = nil) {
+        let currentUser = ParseUser.currentUser()
+        if currentUser.isDirty() {
+            currentUser.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+                if succeeded {
+                    self.forceUpdate(completionHandler)
+                } else {
+                    completionHandler?(error)
+                }
+            }
+        } else {
+            forceUpdate(completionHandler)
+        }
+    }
+
+    func nextPoll(remove: Bool = true) -> ParsePoll! {
+
+        var nextPoll: ParsePoll?
+
+        do {
+
+        } while nextPoll?.isValid != true
+
+        for (idx, poll) in enumerate(polls) {
+            if poll.isValid {
+                nextPoll = poll
+                if remove {
+                    polls.removeAtIndex(idx)
+                }
+                break
+            }
+        }
+
+        return nextPoll
     }
 }
 

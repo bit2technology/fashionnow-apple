@@ -50,7 +50,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
     // MARK: Vote and animation
 
-    func animateHighlight(#index: Int, withEaseInAnimation easeIn: Bool) {
+    func animateHighlight(#index: Int, withEaseInAnimation easeIn: Bool = true) {
 
         var rate: CGFloat!
         switch index {
@@ -81,7 +81,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
         }
 
         delegate?.pollControllerDidInteractWithInterface?(self)
-        animateHighlight(index: index, withEaseInAnimation: true)
+        animateHighlight(index: index)
     }
 
 

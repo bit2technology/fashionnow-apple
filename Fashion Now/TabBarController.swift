@@ -26,7 +26,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
     // MARK: UITabBarControllerDelegate and other selection methods
 
     // The controller index that will be selected with a successful login
-    var controllerIndex: Int?
+    private var controllerIndex: Int?
 
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
         // If controller needs login and user is loged out, show login controller

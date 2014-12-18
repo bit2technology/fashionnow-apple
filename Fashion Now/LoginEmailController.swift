@@ -37,7 +37,7 @@ class LoginEmailController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        loginButton.setBackgroundImage(UIColor.defaultTintColor().toImage(), forState: .Normal)
+        loginButton.setBackgroundImage(UIColor.defaultTintColor().image(), forState: .Normal)
 
         let tableViewHeaderHeight = view.bounds.height - 450
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: tableViewHeaderHeight))
