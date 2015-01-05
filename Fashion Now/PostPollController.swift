@@ -16,6 +16,14 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var loadingView: UIView!
 
+    @IBAction func navigationBarTapped(sender: AnyObject) {
+        textField.becomeFirstResponder()
+    }
+
+    @IBAction func pollControllerTapped(sender: AnyObject) {
+        view.endEditing(true)
+    }
+
     @IBAction func sendButtonPressed(sender: UIButton) {
         
         sender.enabled = false

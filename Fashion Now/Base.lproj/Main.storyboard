@@ -442,6 +442,7 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jhk-qh-N5O">
                                 <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                                 <connections>
+                                    <outletCollection property="gestureRecognizers" destination="mPy-Qe-4g0" appends="YES" id="bbU-iy-aNg"/>
                                     <segue destination="hpa-fw-Ay5" kind="embed" identifier="Poll Controller" id="IZA-Rh-gPV"/>
                                 </connections>
                             </containerView>
@@ -468,17 +469,27 @@
                                 </connections>
                             </navigationBar>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add caption" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aa7-aO-RqI">
-                                <rect key="frame" x="8" y="27" width="304" height="30"/>
+                                <rect key="frame" x="8" y="27" width="259" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R8A-x9-DgL">
+                                <rect key="frame" x="267" y="20" width="53" height="44"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
+                                <state key="normal" title="Send">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="R8A-x9-DgL" firstAttribute="leading" secondItem="aa7-aO-RqI" secondAttribute="trailing" id="0rc-Ge-KaY"/>
+                            <constraint firstItem="R8A-x9-DgL" firstAttribute="top" secondItem="Iyt-Jh-hZw" secondAttribute="bottom" id="2Uo-s7-NeQ"/>
                             <constraint firstAttribute="trailing" secondItem="jhk-qh-N5O" secondAttribute="trailing" id="4Fb-Mb-DRN"/>
                             <constraint firstItem="jhk-qh-N5O" firstAttribute="top" secondItem="ZR6-mL-edo" secondAttribute="bottom" id="B22-T4-EUK"/>
+                            <constraint firstAttribute="trailing" secondItem="R8A-x9-DgL" secondAttribute="trailing" id="Dy8-Wz-1kQ"/>
                             <constraint firstItem="bgG-Zw-FU2" firstAttribute="centerY" secondItem="jhk-qh-N5O" secondAttribute="centerY" id="HLJ-I0-2Rb"/>
-                            <constraint firstItem="ZR6-mL-edo" firstAttribute="trailing" secondItem="aa7-aO-RqI" secondAttribute="trailing" constant="8" id="MRB-7F-XJl"/>
                             <constraint firstItem="ZR6-mL-edo" firstAttribute="top" secondItem="dLv-IX-e0T" secondAttribute="top" id="OXW-0N-T5D"/>
                             <constraint firstItem="bgG-Zw-FU2" firstAttribute="centerX" secondItem="jhk-qh-N5O" secondAttribute="centerX" id="SaD-dm-42j"/>
                             <constraint firstItem="aa7-aO-RqI" firstAttribute="leading" secondItem="ZR6-mL-edo" secondAttribute="leading" constant="8" id="TQR-Xe-9pE"/>
@@ -486,6 +497,7 @@
                             <constraint firstAttribute="trailing" secondItem="ZR6-mL-edo" secondAttribute="trailing" id="bBU-m9-yRv"/>
                             <constraint firstItem="ZR6-mL-edo" firstAttribute="leading" secondItem="dLv-IX-e0T" secondAttribute="leading" id="cJ0-Pe-kPv"/>
                             <constraint firstItem="ZR6-mL-edo" firstAttribute="bottom" secondItem="aa7-aO-RqI" secondAttribute="bottom" constant="7" id="rvD-FL-atX"/>
+                            <constraint firstItem="R8A-x9-DgL" firstAttribute="bottom" secondItem="ZR6-mL-edo" secondAttribute="bottom" id="rwO-Ga-iE7"/>
                             <constraint firstItem="jhk-qh-N5O" firstAttribute="leading" secondItem="dLv-IX-e0T" secondAttribute="leading" id="xqv-v4-l2i"/>
                             <constraint firstItem="rgf-j2-tkN" firstAttribute="centerY" secondItem="bgG-Zw-FU2" secondAttribute="centerY" id="yFJ-LS-As8"/>
                             <constraint firstItem="JXH-OA-dU0" firstAttribute="top" secondItem="jhk-qh-N5O" secondAttribute="bottom" id="zRi-ga-B3Q"/>
@@ -499,7 +511,16 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hmV-tg-bv8" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="F06-Br-Xho" userLabel="Navigation Bar Tapped"/>
+                <tapGestureRecognizer cancelsTouchesInView="NO" id="mPy-Qe-4g0" userLabel="Poll Controller Tapped">
+                    <connections>
+                        <action selector="pollControllerTapped:" destination="37Z-1j-EcS" id="G4D-aH-PxA"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="F06-Br-Xho" userLabel="Navigation Bar Tapped">
+                    <connections>
+                        <action selector="navigationBarTapped:" destination="37Z-1j-EcS" id="naT-WX-bFI"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1411" y="265"/>
         </scene>
