@@ -25,10 +25,21 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
     }
 
     @IBAction func sendButtonPressed(sender: UIButton) {
-        
-        sender.enabled = false
-        loadingView.hidden = false
-        textField.enabled = false
+
+        view.endEditing(true)
+
+        // Adjust interface
+
+        UIView.transitionWithView(textField.superview!, duration: 0.15, options: .TransitionCrossDissolve, animations: { () -> Void in
+            self.textField.enabled = false
+        }, completion: nil)
+
+        UIView.transitionWithView(sender.superview!, duration: 0.15, options: .TransitionFlipFromRight, animations: { () -> Void in
+            sender.hidden = true
+            self.loadingView.hidden = false
+        }, completion: nil)
+
+        // Send poll to server
 
         let poll = pollController.poll
         poll.caption = textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
@@ -36,15 +47,28 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
 
             if succeeded {
                 UIView.transitionWithView(self.navigationController!.view, duration: 0.25, options: .TransitionFlipFromRight, animations: { () -> Void in
-                    sender.hidden = true
+
+                    // Clean interface to new poll
+
+                    sender.hidden = false
+                    self.loadingView.hidden = true
+                    self.textField.enabled = true
                     self.textField.text = nil
                     self.pollController.poll = ParsePoll(user: ParseUser.currentUser())
                 }, completion: nil)
+            } else {
+
+                // Revert interface adjustments
+
+                UIView.transitionWithView(self.textField.superview!, duration: 0.15, options: .TransitionCrossDissolve, animations: { () -> Void in
+                    self.textField.enabled = true
+                }, completion: nil)
+
+                UIView.transitionWithView(sender.superview!, duration: 0.15, options: .TransitionFlipFromRight, animations: { () -> Void in
+                    sender.hidden = false
+                    self.loadingView.hidden = true
+                }, completion: nil)
             }
-            
-            sender.enabled = true
-            self.loadingView.hidden = true
-            self.textField.enabled = true
         }
     }
     
@@ -74,10 +98,7 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
 
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconPostPollSelected")
 
-        sendButton.tintColor = UIColor.whiteColor()
-        sendButton.setTitleColor(UIColor.defaultTintColor(), forState: .Normal)
-
-        sendButton.hidden = true
+        sendButton.enabled = false
         loadingView.hidden = true
 
         pollController.delegate = self
@@ -88,17 +109,7 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
     // MARK: PollControllerDelegate
     
     func pollController(pollController: PollController, didEditPoll poll: ParsePoll) {
-
-        if poll.isValid {
-            sendButton.alpha = 1
-            sendButton.hidden = false
-        } else {
-            UIView.animateWithDuration(0.15, animations: { () -> Void in
-                self.sendButton.alpha = 0
-            }, completion: { (completed) -> Void in
-                self.sendButton.hidden = true
-            })
-        }
+        sendButton.enabled = poll.isValid
     }
 
     // MARK: UITextFieldDelegate
