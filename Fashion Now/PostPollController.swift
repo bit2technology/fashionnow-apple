@@ -11,6 +11,11 @@ import UIKit
 class PostPollController: UIViewController, PollControllerDelegate, UITextFieldDelegate {
 
     private weak var pollController: PollController!
+    var poll: ParsePoll? {
+        get {
+            return pollController?.poll
+        }
+    }
 
     @IBOutlet weak var textField: UITextField!
 
@@ -18,45 +23,10 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
         textField.resignFirstResponder()
     }
 
-    @IBAction func sendButtonPressed(sender: UIButton) {
-
-        view.endEditing(true)
-
-        // Adjust interface
-
-        UIView.transitionWithView(textField.superview!, duration: 0.15, options: .TransitionCrossDissolve, animations: { () -> Void in
-            self.textField.enabled = false
-        }, completion: nil)
-
-        // Send poll to server
-
-        let poll = pollController.poll
-        poll.caption = textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-        poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
-
-            if succeeded {
-                UIView.transitionWithView(self.navigationController!.view, duration: 0.25, options: .TransitionFlipFromRight, animations: { () -> Void in
-
-                    // Clean interface to new poll
-
-                    sender.hidden = false
-                    self.textField.enabled = true
-                    self.textField.text = nil
-                    self.pollController.poll = ParsePoll(user: ParseUser.currentUser())
-                }, completion: nil)
-            } else {
-
-                // Revert interface adjustments
-
-                UIView.transitionWithView(self.textField.superview!, duration: 0.15, options: .TransitionCrossDissolve, animations: { () -> Void in
-                    self.textField.enabled = true
-                }, completion: nil)
-
-                UIView.transitionWithView(sender.superview!, duration: 0.15, options: .TransitionFlipFromRight, animations: { () -> Void in
-                    sender.hidden = false
-                }, completion: nil)
-            }
-        }
+    func clean() {
+        textField.text = nil
+        navigationItem.rightBarButtonItem?.enabled = false
+        pollController.poll = ParsePoll(user: ParseUser.currentUser())
     }
     
     // MARK: UIViewController
@@ -76,6 +46,8 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
 
             case "Friends List":
                 textField.resignFirstResponder()
+                pollController.poll.caption = textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                (segue.destinationViewController as? FriendsListTableController)?.postPollController = self
 
             default:
                 return

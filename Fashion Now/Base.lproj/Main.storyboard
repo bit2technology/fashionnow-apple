@@ -458,12 +458,12 @@
                     <navigationItem key="navigationItem" id="5pw-bJ-DDv">
                         <nil key="title"/>
                         <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add caption" minimumFontSize="17" id="KUx-Xw-6OB">
-                            <rect key="frame" x="8" y="7" width="261" height="30"/>
+                            <rect key="frame" x="9" y="7" width="261" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                         </textField>
-                        <barButtonItem key="rightBarButtonItem" title="Next" style="done" id="UMb-Kl-08K">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Next" id="UMb-Kl-08K">
                             <connections>
                                 <segue destination="Awm-rd-6j1" kind="show" identifier="Friends List" id="xyo-It-ypo"/>
                             </connections>
@@ -686,7 +686,18 @@
                             <outlet property="delegate" destination="Awm-rd-6j1" id="zyI-mX-JmK"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Who can see?" id="BCe-DD-8Y6"/>
+                    <navigationItem key="navigationItem" title="Who can see?" id="BCe-DD-8Y6">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="YI8-G3-xJd">
+                            <connections>
+                                <action selector="backButtonPressed:" destination="Awm-rd-6j1" id="MhO-Vx-zPm"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Send" style="done" id="Qal-Vg-8Fh">
+                            <connections>
+                                <action selector="sendButtonPressed:" destination="Awm-rd-6j1" id="LSa-HY-uKa"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VNd-ng-GCT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

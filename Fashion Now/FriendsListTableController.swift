@@ -10,9 +10,55 @@ import UIKit
 
 class FriendsListTableController: UITableViewController {
 
-    var friendsList: [ParseUser]?
+    private var friendsList: [ParseUser]?
 
-    var checkedIndexPaths = [NSIndexPath]()
+    private var checkedIndexPaths = [NSIndexPath]()
+
+    weak var postPollController: PostPollController?
+
+    @IBAction func backButtonPressed(sender: AnyObject) {
+        navigationController?.popViewControllerAnimated(true)
+    }
+
+    @IBAction func sendButtonPressed(sender: UIBarButtonItem) {
+
+        view.endEditing(true)
+
+        // Adjust interface
+
+        let sendButtonItem = navigationItem.rightBarButtonItem
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        activityIndicator.startAnimating()
+        navigationItem.setRightBarButtonItem(UIBarButtonItem(customView: activityIndicator), animated: true)
+        navigationItem.leftBarButtonItem?.enabled = false
+
+        // Send poll to server
+
+        let poll = postPollController?.poll?
+
+        let pollACL = PFACL(user: ParseUser.currentUser())
+        pollACL.setPublicReadAccess(false)
+        for indexPath in checkedIndexPaths {
+            if indexPath.section == 0 {
+                pollACL.setPublicReadAccess(true)
+            } else {
+                pollACL.setReadAccess(true, forUser: friendsList![indexPath.row])
+            }
+        }
+        poll?.ACL = pollACL
+
+        poll?.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+
+            if succeeded {
+                self.postPollController?.clean()
+                self.navigationController?.popToRootViewControllerAnimated(true)
+            } else {
+                UIAlertView(title: "error", message: "error", delegate: nil, cancelButtonTitle: "OK").show()
+                self.navigationItem.setRightBarButtonItem(sendButtonItem, animated: true)
+                self.navigationItem.leftBarButtonItem?.enabled = true
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
