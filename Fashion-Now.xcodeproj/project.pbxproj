@@ -65,15 +65,15 @@
 		4BEB9E1B1A01ABF800A71764 /* PollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollController.swift; sourceTree = "<group>"; };
 		4BEB9E1D1A01AC8500A71764 /* PostPollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPollController.swift; sourceTree = "<group>"; };
 		4BEB9E1F1A01ACA200A71764 /* VotePollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VotePollController.swift; sourceTree = "<group>"; };
-		4BF1D0551A00F1EB00818658 /* Fashion Now.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fashion Now.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BF1D0551A00F1EB00818658 /* Fashion-Now.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fashion-Now.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BF1D0591A00F1EB00818658 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4BF1D05A1A00F1EB00818658 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4BF1D0621A00F1EB00818658 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4BF1D0641A00F1EB00818658 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		4BF1D06D1A00F1EB00818658 /* Fashion NowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Fashion NowTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BF1D06D1A00F1EB00818658 /* Fashion-NowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Fashion-NowTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BF1D0721A00F1EB00818658 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4BF1D0731A00F1EB00818658 /* Fashion_NowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fashion_NowTests.swift; sourceTree = "<group>"; };
-		4BF1D0801A010DD400818658 /* Fashion Now-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fashion Now-Bridging-Header.h"; sourceTree = "<group>"; };
+		4BF1D0801A010DD400818658 /* Fashion-Now-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fashion-Now-Bridging-Header.h"; sourceTree = "<group>"; };
 		97B7EF322D314078C3A2FB3A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		9A149039849EB88E2D00C657 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -131,8 +131,8 @@
 		4BF1D0561A00F1EB00818658 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4BF1D0551A00F1EB00818658 /* Fashion Now.app */,
-				4BF1D06D1A00F1EB00818658 /* Fashion NowTests.xctest */,
+				4BF1D0551A00F1EB00818658 /* Fashion-Now.app */,
+				4BF1D06D1A00F1EB00818658 /* Fashion-NowTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -155,7 +155,8 @@
 				4BF1D0641A00F1EB00818658 /* Images.xcassets */,
 				4BF1D0581A00F1EB00818658 /* Supporting Files */,
 			);
-			path = "Fashion Now";
+			name = "Fashion Now";
+			path = "Fashion-Now";
 			sourceTree = "<group>";
 		};
 		4BF1D0581A00F1EB00818658 /* Supporting Files */ = {
@@ -164,7 +165,7 @@
 				4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */,
 				4B7C2CAB1A13A1DA00FB25B8 /* InfoPlist.strings */,
 				4BC4CF0A1A01164F0000A231 /* .gitignore */,
-				4BF1D0801A010DD400818658 /* Fashion Now-Bridging-Header.h */,
+				4BF1D0801A010DD400818658 /* Fashion-Now-Bridging-Header.h */,
 				4BF1D0591A00F1EB00818658 /* Info.plist */,
 				4BE767DD1A239F6B00CCAA65 /* Settings.bundle */,
 			);
@@ -177,7 +178,8 @@
 				4BF1D0731A00F1EB00818658 /* Fashion_NowTests.swift */,
 				4BF1D0711A00F1EB00818658 /* Supporting Files */,
 			);
-			path = "Fashion NowTests";
+			name = "Fashion NowTests";
+			path = "Fashion-NowTests";
 			sourceTree = "<group>";
 		};
 		4BF1D0711A00F1EB00818658 /* Supporting Files */ = {
@@ -209,9 +211,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4BF1D0541A00F1EB00818658 /* Fashion Now */ = {
+		4BF1D0541A00F1EB00818658 /* Fashion-Now */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4BF1D0771A00F1EB00818658 /* Build configuration list for PBXNativeTarget "Fashion Now" */;
+			buildConfigurationList = 4BF1D0771A00F1EB00818658 /* Build configuration list for PBXNativeTarget "Fashion-Now" */;
 			buildPhases = (
 				3BDADDEDC860DE1AB8F8FECD /* Check Pods Manifest.lock */,
 				4BF1D0511A00F1EB00818658 /* Sources */,
@@ -225,14 +227,14 @@
 			);
 			dependencies = (
 			);
-			name = "Fashion Now";
+			name = "Fashion-Now";
 			productName = "Fashion Now";
-			productReference = 4BF1D0551A00F1EB00818658 /* Fashion Now.app */;
+			productReference = 4BF1D0551A00F1EB00818658 /* Fashion-Now.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4BF1D06C1A00F1EB00818658 /* Fashion NowTests */ = {
+		4BF1D06C1A00F1EB00818658 /* Fashion-NowTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4BF1D07A1A00F1EB00818658 /* Build configuration list for PBXNativeTarget "Fashion NowTests" */;
+			buildConfigurationList = 4BF1D07A1A00F1EB00818658 /* Build configuration list for PBXNativeTarget "Fashion-NowTests" */;
 			buildPhases = (
 				4BF1D0691A00F1EB00818658 /* Sources */,
 				4BF1D06A1A00F1EB00818658 /* Frameworks */,
@@ -243,9 +245,9 @@
 			dependencies = (
 				4BF1D06F1A00F1EB00818658 /* PBXTargetDependency */,
 			);
-			name = "Fashion NowTests";
+			name = "Fashion-NowTests";
 			productName = "Fashion NowTests";
-			productReference = 4BF1D06D1A00F1EB00818658 /* Fashion NowTests.xctest */;
+			productReference = 4BF1D06D1A00F1EB00818658 /* Fashion-NowTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -267,7 +269,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4BF1D0501A00F1EB00818658 /* Build configuration list for PBXProject "Fashion Now" */;
+			buildConfigurationList = 4BF1D0501A00F1EB00818658 /* Build configuration list for PBXProject "Fashion-Now" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -280,8 +282,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4BF1D0541A00F1EB00818658 /* Fashion Now */,
-				4BF1D06C1A00F1EB00818658 /* Fashion NowTests */,
+				4BF1D0541A00F1EB00818658 /* Fashion-Now */,
+				4BF1D06C1A00F1EB00818658 /* Fashion-NowTests */,
 			);
 		};
 /* End PBXProject section */
@@ -352,7 +354,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "infoPlistPath=${PROJECT_DIR}/${INFOPLIST_FILE}\n\n#increment the build number\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$infoPlistPath\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$infoPlistPath\"\n\n#compose the version number string\nversionString=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleShortVersionString\" \"$infoPlistPath\")\nversionString+=\" (\"\nversionString+=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleVersion\" \"$infoPlistPath\")\nversionString+=\")\"\n\n#write the version number string to the settings bundle\n/usr/libexec/PlistBuddy -c \"Set :PreferenceSpecifiers:0:DefaultValue $versionString\" \"${PROJECT_DIR}/${PRODUCT_NAME}/Settings.bundle/Root.plist\"";
+			shellScript = "infoPlistPath=${INFOPLIST_FILE}\n\n#increment the build number\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$infoPlistPath\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$infoPlistPath\"\n\n#compose the version number string\nversionString=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleShortVersionString\" \"$infoPlistPath\")\nversionString+=\" (\"\nversionString+=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleVersion\" \"$infoPlistPath\")\nversionString+=\")\"\n\n#write the version number string to the settings bundle\n/usr/libexec/PlistBuddy -c \"Set :PreferenceSpecifiers:0:DefaultValue $versionString\" \"${PROJECT_DIR}/${PRODUCT_NAME}/Settings.bundle/Root.plist\"";
 		};
 		75813197C4A225B2AEDD361A /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -407,7 +409,7 @@
 /* Begin PBXTargetDependency section */
 		4BF1D06F1A00F1EB00818658 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4BF1D0541A00F1EB00818658 /* Fashion Now */;
+			target = 4BF1D0541A00F1EB00818658 /* Fashion-Now */;
 			targetProxy = 4BF1D06E1A00F1EB00818658 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -545,11 +547,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = "Fashion Now/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Fashion-Now/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Fashion-Now";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Fashion Now/Fashion Now-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Fashion-Now/Fashion-Now-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -564,11 +566,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = "Fashion Now/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Fashion-Now/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Fashion-Now";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Fashion Now/Fashion Now-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Fashion-Now/Fashion-Now-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -585,10 +587,10 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Fashion NowTests/Info.plist";
+				INFOPLIST_FILE = "Fashion-NowTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fashion Now.app/Fashion Now";
+				PRODUCT_NAME = "Fashion-NowTests";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fashion-Now.app/Fashion-Now";
 			};
 			name = Debug;
 		};
@@ -600,17 +602,17 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Fashion NowTests/Info.plist";
+				INFOPLIST_FILE = "Fashion-NowTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fashion Now.app/Fashion Now";
+				PRODUCT_NAME = "Fashion-NowTests";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fashion-Now.app/Fashion-Now";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4BF1D0501A00F1EB00818658 /* Build configuration list for PBXProject "Fashion Now" */ = {
+		4BF1D0501A00F1EB00818658 /* Build configuration list for PBXProject "Fashion-Now" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4BF1D0751A00F1EB00818658 /* Debug */,
@@ -619,7 +621,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4BF1D0771A00F1EB00818658 /* Build configuration list for PBXNativeTarget "Fashion Now" */ = {
+		4BF1D0771A00F1EB00818658 /* Build configuration list for PBXNativeTarget "Fashion-Now" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4BF1D0781A00F1EB00818658 /* Debug */,
@@ -628,7 +630,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4BF1D07A1A00F1EB00818658 /* Build configuration list for PBXNativeTarget "Fashion NowTests" */ = {
+		4BF1D07A1A00F1EB00818658 /* Build configuration list for PBXNativeTarget "Fashion-NowTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4BF1D07B1A00F1EB00818658 /* Debug */,
