@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1D824CAC92C93D9205931DB7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 048B75AE9DC83A2F458FA468 /* libPods.a */; };
 		4B3864651A178B80004ECAB8 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3864641A178B80004ECAB8 /* TabBarController.swift */; };
+		4B39E0341A652CB800836639 /* FriendsListTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39E0331A652CB800836639 /* FriendsListTableController.swift */; };
 		4B488C5A1A1F668200AEE393 /* LoginSignupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B488C591A1F668200AEE393 /* LoginSignupController.swift */; };
 		4B4BFA671A14239200BFD23F /* LoginEmailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4BFA661A14239200BFD23F /* LoginEmailController.swift */; };
 		4B749E8D1A30916F00E9B128 /* ResultPollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B749E8C1A30916F00E9B128 /* ResultPollController.swift */; };
@@ -45,6 +46,7 @@
 /* Begin PBXFileReference section */
 		048B75AE9DC83A2F458FA468 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B3864641A178B80004ECAB8 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		4B39E0331A652CB800836639 /* FriendsListTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsListTableController.swift; sourceTree = "<group>"; };
 		4B488C591A1F668200AEE393 /* LoginSignupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSignupController.swift; sourceTree = "<group>"; };
 		4B4BFA661A14239200BFD23F /* LoginEmailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEmailController.swift; sourceTree = "<group>"; };
 		4B749E8C1A30916F00E9B128 /* ResultPollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultPollController.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 				4B3864641A178B80004ECAB8 /* TabBarController.swift */,
 				4BEB9E1F1A01ACA200A71764 /* VotePollController.swift */,
 				4BEB9E1D1A01AC8500A71764 /* PostPollController.swift */,
+				4B39E0331A652CB800836639 /* FriendsListTableController.swift */,
 				4BEB9E1B1A01ABF800A71764 /* PollController.swift */,
 				4BEB9E191A01ABD200A71764 /* PhotoController.swift */,
 				4B7C3DEA1A1EB610004A4D37 /* MeController.swift */,
@@ -381,6 +384,7 @@
 				4B7C3DEB1A1EB610004A4D37 /* MeController.swift in Sources */,
 				4BEB9E1C1A01ABF800A71764 /* PollController.swift in Sources */,
 				4BEB9E1E1A01AC8500A71764 /* PostPollController.swift in Sources */,
+				4B39E0341A652CB800836639 /* FriendsListTableController.swift in Sources */,
 				4B4BFA671A14239200BFD23F /* LoginEmailController.swift in Sources */,
 				4BF1D05B1A00F1EB00818658 /* AppDelegate.swift in Sources */,
 				4BEB9E181A01AA9A00A71764 /* ParseHelper.swift in Sources */,

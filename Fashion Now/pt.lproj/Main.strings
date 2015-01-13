@@ -40,6 +40,9 @@
 /* Class = "IBUITextField"; placeholder = "Optional"; ObjectID = "TTM-un-ddi"; */
 "TTM-un-ddi.placeholder" = "Opcional";
 
+/* Class = "IBUIBarButtonItem"; title = "Send"; ObjectID = "UMb-Kl-08K"; */
+"UMb-Kl-08K.title" = "Enviar";
+
 /* Class = "IBUIButton"; normalTitle = "Sign up with e-mail"; ObjectID = "UVf-dJ-3oB"; */
 "UVf-dJ-3oB.normalTitle" = "Registrar com e-mail";
 
@@ -48,9 +51,6 @@
 
 /* Class = "IBUITextField"; placeholder = "Add caption"; ObjectID = "aa7-aO-RqI"; */
 "aa7-aO-RqI.placeholder" = "Adicionar comentário";
-
-/* Class = "IBUIButton"; normalTitle = "Send"; ObjectID = "bgG-Zw-FU2"; */
-"bgG-Zw-FU2.normalTitle" = "Enviar";
 
 /* Class = "IBUITabBarItem"; title = "Voting"; ObjectID = "cp0-V5-EKB"; */
 "cp0-V5-EKB.title" = "Votação";

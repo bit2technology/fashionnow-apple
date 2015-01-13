@@ -12,16 +12,10 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
 
     private weak var pollController: PollController!
 
-    @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var textField: UITextField!
-    @IBOutlet weak var loadingView: UIView!
-
-    @IBAction func navigationBarTapped(sender: AnyObject) {
-        textField.becomeFirstResponder()
-    }
 
     @IBAction func pollControllerTapped(sender: AnyObject) {
-        view.endEditing(true)
+        textField.resignFirstResponder()
     }
 
     @IBAction func sendButtonPressed(sender: UIButton) {
@@ -32,11 +26,6 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
 
         UIView.transitionWithView(textField.superview!, duration: 0.15, options: .TransitionCrossDissolve, animations: { () -> Void in
             self.textField.enabled = false
-        }, completion: nil)
-
-        UIView.transitionWithView(sender.superview!, duration: 0.15, options: .TransitionFlipFromRight, animations: { () -> Void in
-            sender.hidden = true
-            self.loadingView.hidden = false
         }, completion: nil)
 
         // Send poll to server
@@ -51,7 +40,6 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
                     // Clean interface to new poll
 
                     sender.hidden = false
-                    self.loadingView.hidden = true
                     self.textField.enabled = true
                     self.textField.text = nil
                     self.pollController.poll = ParsePoll(user: ParseUser.currentUser())
@@ -66,7 +54,6 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
 
                 UIView.transitionWithView(sender.superview!, duration: 0.15, options: .TransitionFlipFromRight, animations: { () -> Void in
                     sender.hidden = false
-                    self.loadingView.hidden = true
                 }, completion: nil)
             }
         }
@@ -86,7 +73,10 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
                 
             case "Poll Controller":
                 pollController = segue.destinationViewController as PollController
-                
+
+            case "Friends List":
+                textField.resignFirstResponder()
+
             default:
                 return
             }
@@ -98,8 +88,7 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
 
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconPostPollSelected")
 
-        sendButton.enabled = false
-        loadingView.hidden = true
+        textField.frame.size.width = view.bounds.size.width
 
         pollController.delegate = self
 
@@ -109,7 +98,7 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
     // MARK: PollControllerDelegate
     
     func pollController(pollController: PollController, didEditPoll poll: ParsePoll) {
-        sendButton.enabled = poll.isValid
+        navigationItem.rightBarButtonItem?.enabled = poll.isValid
     }
 
     // MARK: UITextFieldDelegate

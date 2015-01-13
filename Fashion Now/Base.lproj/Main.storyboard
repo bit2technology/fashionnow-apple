@@ -446,96 +446,37 @@
                                     <segue destination="hpa-fw-Ay5" kind="embed" identifier="Poll Controller" id="IZA-Rh-gPV"/>
                                 </connections>
                             </containerView>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZR6-mL-edo">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
-                                <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="64" id="UCz-Eg-j3T"/>
-                                </constraints>
-                            </navigationBar>
-                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="6g4-vm-jl6" userLabel="Send Button Container">
-                                <rect key="frame" x="267" y="20" width="53" height="44"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R8A-x9-DgL">
-                                        <rect key="frame" x="0.0" y="0.0" width="53" height="44"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
-                                        <state key="normal" title="Send">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="sendButtonPressed:" destination="37Z-1j-EcS" eventType="touchUpInside" id="IaX-SI-ujy"/>
-                                        </connections>
-                                    </button>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="B8L-rU-9E4">
-                                        <rect key="frame" x="0.0" y="0.0" width="53" height="44"/>
-                                    </activityIndicatorView>
-                                </subviews>
-                                <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstItem="B8L-rU-9E4" firstAttribute="leading" secondItem="6g4-vm-jl6" secondAttribute="leading" id="673-w6-QvH"/>
-                                    <constraint firstAttribute="bottom" secondItem="B8L-rU-9E4" secondAttribute="bottom" id="68u-0b-55Z"/>
-                                    <constraint firstItem="R8A-x9-DgL" firstAttribute="leading" secondItem="6g4-vm-jl6" secondAttribute="leading" id="MbD-i4-MYq"/>
-                                    <constraint firstItem="B8L-rU-9E4" firstAttribute="top" secondItem="6g4-vm-jl6" secondAttribute="top" id="X8m-Rt-1hs"/>
-                                    <constraint firstAttribute="trailing" secondItem="B8L-rU-9E4" secondAttribute="trailing" id="XEB-1Z-VZ4"/>
-                                    <constraint firstAttribute="bottom" secondItem="R8A-x9-DgL" secondAttribute="bottom" id="YYb-IU-Ioy"/>
-                                    <constraint firstItem="R8A-x9-DgL" firstAttribute="top" secondItem="6g4-vm-jl6" secondAttribute="top" id="of3-Td-XzO"/>
-                                    <constraint firstAttribute="trailing" secondItem="R8A-x9-DgL" secondAttribute="trailing" id="qoI-tX-zJw"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="An8-Ox-c8A" userLabel="Text Field Container">
-                                <rect key="frame" x="0.0" y="20" width="267" height="44"/>
-                                <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add caption" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aa7-aO-RqI">
-                                        <rect key="frame" x="8" y="7" width="259" height="30"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
-                                    </textField>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="aa7-aO-RqI" secondAttribute="trailing" id="6gN-7a-D7Y"/>
-                                    <constraint firstAttribute="centerY" secondItem="aa7-aO-RqI" secondAttribute="centerY" id="ESH-KJ-bWB"/>
-                                    <constraint firstItem="aa7-aO-RqI" firstAttribute="leading" secondItem="An8-Ox-c8A" secondAttribute="leading" constant="8" id="RbA-1B-cuk"/>
-                                </constraints>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="F06-Br-Xho" appends="YES" id="one-QQ-PQO"/>
-                                </connections>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="jhk-qh-N5O" secondAttribute="trailing" id="4Fb-Mb-DRN"/>
-                            <constraint firstItem="An8-Ox-c8A" firstAttribute="leading" secondItem="dLv-IX-e0T" secondAttribute="leading" id="6fd-Jr-jrw"/>
-                            <constraint firstItem="jhk-qh-N5O" firstAttribute="top" secondItem="ZR6-mL-edo" secondAttribute="bottom" id="B22-T4-EUK"/>
-                            <constraint firstAttribute="trailing" secondItem="6g4-vm-jl6" secondAttribute="trailing" id="Bwl-oX-pIx"/>
-                            <constraint firstItem="ZR6-mL-edo" firstAttribute="top" secondItem="dLv-IX-e0T" secondAttribute="top" id="OXW-0N-T5D"/>
-                            <constraint firstItem="6g4-vm-jl6" firstAttribute="top" secondItem="Iyt-Jh-hZw" secondAttribute="bottom" id="P1W-vq-puS"/>
-                            <constraint firstItem="jhk-qh-N5O" firstAttribute="top" secondItem="An8-Ox-c8A" secondAttribute="bottom" id="R87-MY-ekp"/>
-                            <constraint firstItem="jhk-qh-N5O" firstAttribute="top" secondItem="6g4-vm-jl6" secondAttribute="bottom" id="YJY-ri-Lbt"/>
-                            <constraint firstAttribute="trailing" secondItem="ZR6-mL-edo" secondAttribute="trailing" id="bBU-m9-yRv"/>
-                            <constraint firstItem="ZR6-mL-edo" firstAttribute="leading" secondItem="dLv-IX-e0T" secondAttribute="leading" id="cJ0-Pe-kPv"/>
-                            <constraint firstItem="6g4-vm-jl6" firstAttribute="leading" secondItem="An8-Ox-c8A" secondAttribute="trailing" id="nts-oS-faA"/>
-                            <constraint firstItem="An8-Ox-c8A" firstAttribute="top" secondItem="Iyt-Jh-hZw" secondAttribute="bottom" id="s7y-d8-IhW"/>
+                            <constraint firstItem="jhk-qh-N5O" firstAttribute="top" secondItem="Iyt-Jh-hZw" secondAttribute="bottom" id="ZUK-Fn-dbf"/>
                             <constraint firstItem="jhk-qh-N5O" firstAttribute="leading" secondItem="dLv-IX-e0T" secondAttribute="leading" id="xqv-v4-l2i"/>
                             <constraint firstItem="JXH-OA-dU0" firstAttribute="top" secondItem="jhk-qh-N5O" secondAttribute="bottom" id="zRi-ga-B3Q"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="5pw-bJ-DDv"/>
+                    <navigationItem key="navigationItem" id="5pw-bJ-DDv">
+                        <nil key="title"/>
+                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add caption" minimumFontSize="17" id="KUx-Xw-6OB">
+                            <rect key="frame" x="8" y="7" width="261" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                        </textField>
+                        <barButtonItem key="rightBarButtonItem" title="Next" style="done" id="UMb-Kl-08K">
+                            <connections>
+                                <segue destination="Awm-rd-6j1" kind="show" identifier="Friends List" id="xyo-It-ypo"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
-                        <outlet property="loadingView" destination="B8L-rU-9E4" id="pF7-Qa-X3r"/>
-                        <outlet property="sendButton" destination="R8A-x9-DgL" id="95X-hg-WJD"/>
-                        <outlet property="textField" destination="aa7-aO-RqI" id="kXu-dH-CIW"/>
+                        <outlet property="textField" destination="KUx-Xw-6OB" id="ggi-bg-s27"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hmV-tg-bv8" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer cancelsTouchesInView="NO" id="mPy-Qe-4g0" userLabel="Poll Controller Tapped">
+                <tapGestureRecognizer id="mPy-Qe-4g0" userLabel="Poll Controller Tapped">
                     <connections>
                         <action selector="pollControllerTapped:" destination="37Z-1j-EcS" id="G4D-aH-PxA"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="F06-Br-Xho" userLabel="Navigation Bar Tapped">
-                    <connections>
-                        <action selector="navigationBarTapped:" destination="37Z-1j-EcS" id="naT-WX-bFI"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -715,6 +656,41 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6hw-Jw-2JJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1790" y="821"/>
+        </scene>
+        <!--Who can see?-->
+        <scene sceneID="5qp-bD-6TV">
+            <objects>
+                <tableViewController id="Awm-rd-6j1" customClass="FriendsListTableController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="2ON-kr-Jyp">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Friends List Table Cell" textLabel="F5p-2t-hYP" style="IBUITableViewCellStyleDefault" id="yAe-oU-6dk">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yAe-oU-6dk" id="doK-aW-cqO">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="F5p-2t-hYP">
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Awm-rd-6j1" id="I4E-Lx-797"/>
+                            <outlet property="delegate" destination="Awm-rd-6j1" id="zyI-mX-JmK"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Who can see?" id="BCe-DD-8Y6"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VNd-ng-GCT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1790" y="265"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="reA-p0-HcY">
@@ -1122,7 +1098,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2108" y="141.5"/>
+            <point key="canvasLocation" x="2039" y="-543.5"/>
         </scene>
         <!--Photo Controller-->
         <scene sceneID="oDJ-hZ-wtb">
@@ -1231,7 +1207,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AbR-wv-pbr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2410" y="141.5"/>
+            <point key="canvasLocation" x="2340" y="-543.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pAc-yH-lCJ">
@@ -1273,7 +1249,7 @@
         <!--New Poll-->
         <scene sceneID="7Mt-CD-10B">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="oUO-1p-KSF" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="oUO-1p-KSF" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="New Poll" image="TabBarIconPostPollUnselected" id="2O1-Ra-Pjk"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="cG8-B3-08M">
@@ -1302,7 +1278,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="IZA-Rh-gPV"/>
-        <segue reference="3E2-oz-Poo"/>
         <segue reference="uM3-tb-eTB"/>
+        <segue reference="3E2-oz-Poo"/>
     </inferredMetricsTieBreakers>
 </document>
