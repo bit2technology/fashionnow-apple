@@ -19,6 +19,8 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
         dismissViewControllerAnimated(true, completion: nil)
     }
 
+    @IBOutlet var buttons: [UIButton]!
+
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     /// Label with connection related errors
     @IBOutlet weak var connectionErrorMessage: UILabel!
@@ -30,7 +32,10 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
     func loginWithFacebookButtonPressed(sender: UIButton, countdown: Int) {
 
         // Set loading interface
-        sender.enabled = false
+        for button in buttons {
+            button.enabled = false
+        }
+        navigationItem.leftBarButtonItem?.enabled = false
         activityIndicator.startAnimating()
         // Hide error messages
         connectionErrorMessage.hidden = true
@@ -54,7 +59,10 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
                 if countdown > 0 && error.fberrorCategory != .UserCancelled {
                     self.loginWithFacebookButtonPressed(sender, countdown: countdown - 1)
                 } else {
-                    sender.enabled = true
+                    for button in self.buttons {
+                        button.enabled = true
+                    }
+                    self.navigationItem.leftBarButtonItem?.enabled = false
                     switch error.fberrorCategory {
                     case .Server, .AuthenticationReopenSession, .Permissions, .UserCancelled:
                         self.facebookErrorMessage.hidden = false

@@ -46,6 +46,9 @@
 /* Class = "IBUITextField"; placeholder = "Username"; ObjectID = "Ost-XS-Gaw"; */
 "Ost-XS-Gaw.placeholder" = "Nome de usuário";
 
+/* Class = "IBUILabel"; text = "No more polls to vote"; ObjectID = "Pca-Ch-LI9"; */
+"Pca-Ch-LI9.text" = "Sem mais enquetes para votar";
+
 /* Class = "IBUIBarButtonItem"; title = "Send"; ObjectID = "Qal-Vg-8Fh"; */
 "Qal-Vg-8Fh.title" = "Enviar";
 

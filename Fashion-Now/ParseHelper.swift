@@ -309,7 +309,7 @@ public class ParsePublicVotePollList: Printable, DebugPrintable {
                     }
                 }
                 // Order descending
-                self.polls.sort({ $0.createdAt.compare($1.createdAt) == NSComparisonResult.OrderedDescending })
+                self.polls.sort({$0.createdAt.compare($1.createdAt) == NSComparisonResult.OrderedDescending})
             } else {
                 self.polls = objects as [ParsePoll]
             }
@@ -334,7 +334,7 @@ public class ParsePublicVotePollList: Printable, DebugPrintable {
         }
     }
 
-    func nextPoll(remove: Bool = true) -> ParsePoll! {
+    func nextPoll(remove: Bool = true) -> ParsePoll? {
 
         var nextPoll = polls.first
 
@@ -343,7 +343,7 @@ public class ParsePublicVotePollList: Printable, DebugPrintable {
             nextPoll = polls.first
         }
 
-        if remove {
+        if remove && polls.count > 0 {
             polls.removeAtIndex(0)
         }
 

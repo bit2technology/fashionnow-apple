@@ -24,7 +24,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
     @IBAction func tagsLabelDidLongPress(sender: UIGestureRecognizer) {
 
         switch sender.state {
-        case .Began, .Changed:
+        case .Began, .Changed: // When touching caption view, show entire text.
             tagsLabel.numberOfLines = 0
         default:
             tagsLabel.numberOfLines = 2
@@ -63,6 +63,9 @@ class VotePollController: UIViewController, PollControllerDelegate {
         }
     }
 
+    // Empty polls interface
+    @IBOutlet weak var emptyInterface: UIView!
+
     // Loading interface
     @IBOutlet weak var loadingInterface: UIView!
     private func setLoadingInterfaceHidden(hidden: Bool, animated: Bool, completion: ((finished: Bool) -> Void)? = nil) {
@@ -85,42 +88,44 @@ class VotePollController: UIViewController, PollControllerDelegate {
 
     private func showNextPoll() {
 
-        let nextPoll = self.polls.nextPoll(remove: true)
+        if let nextPoll = self.polls.nextPoll(remove: true) {
 
-        if nextPoll == nil {
-            // TODO: No votes screen
-            NSLog("No more polls")
-            return
-        }
+            pollController.poll = nextPoll
+            // Name
+            nameLabel.text = nextPoll.createdBy?.name ?? nextPoll.createdBy?.email ?? NSLocalizedString("UNKNOW_USER", value: "Unknown", comment: "Shown when user has no name or email")
+            // Date
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateStyle = .ShortStyle
+            dateFormatter.timeStyle = .ShortStyle
+            dateFormatter.doesRelativeDateFormatting = true
+            dateLabel.text = dateFormatter.stringFromDate(nextPoll.createdAt)
+            // Caption
+            if let unwrappedCaption = nextPoll.caption {
+                tagsLabel.text = unwrappedCaption
+            } else if let unwrappedTags = nextPoll.tags {
+                tagsLabel.text = ", ".join(unwrappedTags).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            } else {
+                tagsLabel.text = ""
+            }
+            tagsLabel.superview?.hidden = countElements(tagsLabel.text!) <= 0
 
-        pollController.poll = nextPoll
-        // Name
-        nameLabel.text = nextPoll.createdBy?.name ?? nextPoll.createdBy?.email ?? "Unknown"
-        // Date
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = .ShortStyle
-        dateFormatter.timeStyle = .ShortStyle
-        dateFormatter.doesRelativeDateFormatting = true
-        dateLabel.text = dateFormatter.stringFromDate(nextPoll.createdAt)
-        // Caption
-        if let unwrappedCaption = nextPoll.caption {
-            tagsLabel.text = unwrappedCaption
-        } else if let unwrappedTags = nextPoll.tags {
-            tagsLabel.text = ", ".join(unwrappedTags).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            // Avatar
+            if let unwrappedAuthorFacebookId = nextPoll.createdBy?.facebookId {
+                avatarView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedAuthorFacebookId, size: 40), usingActivityIndicatorStyle: .White)
+            } else {
+                avatarView.image = nil
+            }
+
         } else {
-            tagsLabel.text = ""
-        }
-        tagsLabel.superview?.hidden = countElements(tagsLabel.text!) <= 0
 
-        // Avatar
-        if let unwrappedAuthorFacebookId = nextPoll.createdBy?.facebookId {
-            avatarView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedAuthorFacebookId, size: 40), usingActivityIndicatorStyle: .White)
-        } else {
-            avatarView.image = nil
+            // Adjust interface for no more polls
+            emptyInterface.hidden = false
+            setLoadingInterfaceHidden(true, animated: true, completion: nil)
         }
     }
 
-    func loginChanged(notification: NSNotification) {
+    func loadPollList(notification: NSNotification?) {
+        emptyInterface.hidden = true
         setLoadingInterfaceHidden(false, animated: false)
         polls = ParsePublicVotePollList()
         polls.update { (error) -> Void in
@@ -172,21 +177,11 @@ class VotePollController: UIViewController, PollControllerDelegate {
         for voteButton in voteButtons {
             voteButton.tintColor = UIColor.defaultTintColor(alpha: 0.5)
         }
-        
-        loadingInterface.hidden = false
 
-        polls = ParsePublicVotePollList()
-        polls.update { (error) -> Void in
+        // Initializes poll list and adjusts interface
+        loadPollList(nil)
 
-            if error != nil {
-                self.showErrorScreen()
-                return
-            }
-
-            self.showNextPoll()
-        }
-
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadPollList:", name: LoginChangedNotificationName, object: nil)
     }
 
     deinit {

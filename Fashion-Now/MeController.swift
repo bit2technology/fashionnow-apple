@@ -97,10 +97,17 @@ class MeController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as PollCell
 
         let currentPoll = myPolls![indexPath.item]
-        cell.leftImageView.setImageWithURL(NSURL(string: currentPoll.photos!.first!.image!.url), placeholderImage: nil, completed: { (image, error, cache, url) -> Void in
+        let leftImageUrl = currentPoll.photos?.first?.image?.url
+        let rightImageUrl = currentPoll.photos?.last?.image?.url
+
+        if leftImageUrl == nil || rightImageUrl == nil {
+            return cell
+        }
+
+        cell.leftImageView.setImageWithURL(NSURL(string: leftImageUrl!), placeholderImage: nil, completed: { (image, error, cache, url) -> Void in
             // Completion
         }, usingActivityIndicatorStyle: .Gray)
-        cell.rightImageView.setImageWithURL(NSURL(string: currentPoll.photos!.last!.image!.url), placeholderImage: nil, completed: { (image, error, cache, url) -> Void in
+        cell.rightImageView.setImageWithURL(NSURL(string: rightImageUrl!), placeholderImage: nil, completed: { (image, error, cache, url) -> Void in
             // Completion
         }, usingActivityIndicatorStyle: .Gray)
 

@@ -10,6 +10,10 @@ import UIKit
 
 class PostPollController: UIViewController, PollControllerDelegate, UITextFieldDelegate {
 
+    weak var delegate: PostPollControllerDelegate?
+
+    private(set) var friendsList: [ParseUser]?
+
     private weak var pollController: PollController!
     var poll: ParsePoll? {
         get {
@@ -65,6 +69,27 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
         pollController.delegate = self
 
         textField.delegate = self
+
+
+
+
+        // Friends list cache
+        FBRequestConnection.startForMyFriendsWithCompletionHandler { (requestConnection, object, error) -> Void in
+
+            var friendsFacebookIds = [String]()
+            for friendsFacebook in (object["data"] as [[String:String]]) {
+                friendsFacebookIds.append(friendsFacebook["id"]!)
+            }
+
+            let friendsQuery = PFQuery(className: ParseUser.parseClassName())
+            friendsQuery.whereKey(ParseUserFacebookIdKey, containedIn: friendsFacebookIds)
+            friendsQuery.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+
+                self.friendsList = objects as? [ParseUser]
+                self.friendsList?.sort({$0.name < $1.name})
+                self.delegate?.postPollControllerDidFinishDownloadFriendsList?(self)
+            })
+        }
     }
 
     // MARK: PollControllerDelegate
@@ -79,4 +104,9 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
         textField.resignFirstResponder()
         return false
     }
+}
+
+@objc protocol PostPollControllerDelegate {
+
+    optional func postPollControllerDidFinishDownloadFriendsList(postPollController: PostPollController)
 }

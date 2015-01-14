@@ -8,13 +8,11 @@
 
 import UIKit
 
-class FriendsListTableController: UITableViewController {
-
-    private var friendsList: [ParseUser]?
+class FriendsListTableController: UITableViewController, PostPollControllerDelegate {
 
     private var checkedIndexPaths = [NSIndexPath]()
 
-    weak var postPollController: PostPollController?
+    weak var postPollController: PostPollController!
 
     @IBAction func backButtonPressed(sender: AnyObject) {
         navigationController?.popViewControllerAnimated(true)
@@ -34,7 +32,7 @@ class FriendsListTableController: UITableViewController {
 
         // Send poll to server
 
-        let poll = postPollController?.poll?
+        let poll = postPollController.poll?
 
         let pollACL = PFACL(user: ParseUser.currentUser())
         pollACL.setPublicReadAccess(false)
@@ -42,7 +40,7 @@ class FriendsListTableController: UITableViewController {
             if indexPath.section == 0 {
                 pollACL.setPublicReadAccess(true)
             } else {
-                pollACL.setReadAccess(true, forUser: friendsList![indexPath.row])
+                pollACL.setReadAccess(true, forUser: postPollController.friendsList![indexPath.row])
             }
         }
         poll?.ACL = pollACL
@@ -50,33 +48,14 @@ class FriendsListTableController: UITableViewController {
         poll?.saveInBackgroundWithBlock { (succeeded, error) -> Void in
 
             if succeeded {
-                self.postPollController?.clean()
+                self.postPollController.clean()
                 self.navigationController?.popToRootViewControllerAnimated(true)
             } else {
+                // FIXME: alert view
                 UIAlertView(title: "error", message: "error", delegate: nil, cancelButtonTitle: "OK").show()
                 self.navigationItem.setRightBarButtonItem(sendButtonItem, animated: true)
                 self.navigationItem.leftBarButtonItem?.enabled = true
             }
-        }
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        FBRequestConnection.startForMyFriendsWithCompletionHandler { (requestConnection, object, error) -> Void in
-
-            var friendsFacebookIds = [String]()
-            for friendsFacebook in (object["data"] as [[String:String]]) {
-                friendsFacebookIds.append(friendsFacebook["id"]!)
-            }
-
-            let friendsQuery = PFQuery(className: ParseUser.parseClassName())
-            friendsQuery.whereKey(ParseUserFacebookIdKey, containedIn: friendsFacebookIds)
-            friendsQuery.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
-
-                self.friendsList = objects as? [ParseUser]
-                self.tableView.reloadData()
-            })
         }
     }
 
@@ -88,7 +67,7 @@ class FriendsListTableController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return friendsList != nil ? 2 : 0
+        return postPollController.friendsList != nil ? 2 : 0
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -97,22 +76,28 @@ class FriendsListTableController: UITableViewController {
             return 1
         }
 
-        return friendsList?.count ?? 0
+        return postPollController.friendsList?.count ?? 0
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Friends List Table Cell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Friends List Table Cell", forIndexPath: indexPath) as FriendListTableCell
 
         cell.accessoryType = find(checkedIndexPaths, indexPath) != nil ? .Checkmark : .None
 
         if indexPath.section == 0 {
 
-            cell.textLabel?.text = "Public"
+            cell.nameLabel.text = "Public"
 
             return cell
         }
 
-        cell.textLabel?.text = friendsList?[indexPath.row].name
+        let user = postPollController.friendsList?[indexPath.row]
+        if let unwrappedAuthorFacebookId = user?.facebookId {
+            cell.avatarView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedAuthorFacebookId, size: 40), usingActivityIndicatorStyle: .White)
+        } else {
+            cell.avatarView.image = nil
+        }
+        cell.nameLabel.text = user?.name
 
         return cell
     }
@@ -131,6 +116,16 @@ class FriendsListTableController: UITableViewController {
         }
 
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        postPollController.delegate = self
+    }
+
+    func postPollControllerDidFinishDownloadFriendsList(postPollController: PostPollController) {
+        self.tableView.reloadData()
     }
 
     /*
@@ -178,4 +173,17 @@ class FriendsListTableController: UITableViewController {
     }
     */
 
+}
+
+class FriendListTableCell: UITableViewCell {
+
+    @IBOutlet weak var avatarView: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        avatarView.layer.cornerRadius = 20
+        avatarView.layer.masksToBounds = true
+    }
 }
