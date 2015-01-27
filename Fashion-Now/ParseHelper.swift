@@ -33,7 +33,7 @@ public class ParseInstallation: PFInstallation, PFSubclassing {
     func updateUserInBackground() {
         let currentUser = ParseUser.currentUser()
         userId = ParseUser.currentUser().objectId
-        saveEventually()
+        saveEventually(nil)
     }
 }
 

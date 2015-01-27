@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginSignupController: StaticDataTableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class LoginSignupController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
     var parseUser: ParseUser?
     var facebookUser: FBGraphObject?
@@ -42,7 +42,7 @@ class LoginSignupController: StaticDataTableViewController, UIPickerViewDataSour
         currentUser.location = locationField.text
         currentUser.email = emailField.text
         currentUser.password = passwordField.text
-        currentUser.saveEventually()
+        currentUser.saveEventually(nil)
 
         // Dismiss controller
         (self.presentingViewController as TabBarController).willDismissLoginController()
@@ -52,16 +52,16 @@ class LoginSignupController: StaticDataTableViewController, UIPickerViewDataSour
     @IBOutlet weak var genderCell: UITableViewCell!
     @IBOutlet weak var genderPicker: UIPickerView!
     @IBAction func genderButtonPressed(sender: UIButton) {
-        cell(genderCell, setHidden: !cellIsHidden(genderCell))
-        reloadDataAnimated(true)
+//        cell(genderCell, setHidden: !cellIsHidden(genderCell))
+//        reloadDataAnimated(true)
     }
 
     @IBOutlet weak var birthdayButton: UIButton!
     @IBOutlet weak var birthdayCell: UITableViewCell!
     @IBOutlet weak var birthdayPicker: UIDatePicker!
     @IBAction func birthdayButtonPressed(sender: UIButton) {
-        cell(birthdayCell, setHidden: !cellIsHidden(birthdayCell))
-        reloadDataAnimated(true)
+//        cell(birthdayCell, setHidden: !cellIsHidden(birthdayCell))
+//        reloadDataAnimated(true)
     }
     @IBAction func birthdayPicerValueDidChange(sender: UIDatePicker) {
         let dateFormatter = NSDateFormatter()
@@ -74,12 +74,6 @@ class LoginSignupController: StaticDataTableViewController, UIPickerViewDataSour
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Setting static table view properties
-        insertTableViewRowAnimation = .Middle
-        deleteTableViewRowAnimation = .Middle
-        cells([genderCell, birthdayCell], setHidden: true)
-        reloadDataAnimated(false)
 
         genderPicker.dataSource = self
         genderPicker.delegate = self

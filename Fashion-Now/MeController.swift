@@ -12,25 +12,48 @@ class MeController: UICollectionViewController {
 
     var myPolls: [ParsePoll]?
 
+    weak var refreshControl: UIRefreshControl?
+    var isBeingUpdated = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconMeSelected")
 
+        // Basic configuration
+        navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconMeSelected")
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
+
+        // Activity indicator background view
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
         activityIndicator.color = UIColor.lightGrayColor()
         activityIndicator.startAnimating()
         collectionView?.backgroundView = activityIndicator
 
-        downloadPollList(update: false)
+        // Load cached polls
+        let myPollsQuery = PFQuery(className: ParsePoll.parseClassName())
+        myPollsQuery.includeKey(ParsePollPhotosKey)
+        myPollsQuery.whereKey(ParsePollCreatedByKey, equalTo: ParseUser.currentUser())
+        myPollsQuery.orderByDescending(ParseObjectCreatedAtKey)
+        myPollsQuery.limit = Int.max
+        myPollsQuery.fromLocalDatastore()
+        myPolls = myPollsQuery.findObjects() as? [ParsePoll]
+        if myPolls?.count > 0 {
+            activityIndicator.stopAnimating()
+        }
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
+        // Configure refresh control for manual update
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: "updatePollList", forControlEvents: .ValueChanged)
+        collectionView?.addSubview(refreshControl)
+        self.refreshControl = refreshControl
+        collectionView?.alwaysBounceVertical = true
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
         navigationItem.title = ParseUser.currentUser().name
+
+        updatePollList()
     }
 
     deinit {
@@ -38,17 +61,27 @@ class MeController: UICollectionViewController {
     }
 
     func loginChanged(notification: NSNotification) {
-        downloadPollList(update: false)
-    }
-
-    private func downloadPollList(#update: Bool) {
 
         myPolls = nil
+        PFObject.unpinAllObjects()
         (collectionView?.backgroundView as UIActivityIndicatorView).startAnimating()
         collectionView?.reloadData()
 
-        let currentUser = ParseUser.currentUser()!
+        updatePollList()
+    }
+
+    func updatePollList() {
+
+        if isBeingUpdated {
+            return
+        }
+
+        isBeingUpdated = true
+
+        let currentUser = ParseUser.currentUser()
         if PFAnonymousUtils.isLinkedWithUser(currentUser) {
+            (collectionView?.backgroundView as UIActivityIndicatorView).stopAnimating()
+            refreshControl?.endRefreshing()
             return
         }
 
@@ -56,10 +89,34 @@ class MeController: UICollectionViewController {
         myPollsQuery.includeKey(ParsePollPhotosKey)
         myPollsQuery.whereKey(ParsePollCreatedByKey, equalTo: currentUser)
         myPollsQuery.orderByDescending(ParseObjectCreatedAtKey)
+        myPollsQuery.limit = Int.max
         myPollsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            self.myPolls = objects as? [ParsePoll]
+
+            // TODO: Error
+
+            PFObject.pinAllInBackground(objects) { (success, error) -> Void in
+                if error != nil {
+                    NSLog("Pin error: \(error)")
+                }
+            }
+
+            if objects.count > 0 {
+
+                var newMyPolls = objects as? [ParsePoll]
+                newMyPolls?.extend(self.myPolls ?? [])
+
+                self.myPolls = newMyPolls
+            }
+
+            var addedIndexPaths = [NSIndexPath]()
+            for 0 ..< objects.count {
+
+            }
+            self.collectionView?.insertItemsAtIndexPaths(<#indexPaths: [AnyObject]#>)
+
             (self.collectionView?.backgroundView as UIActivityIndicatorView).stopAnimating()
-            self.collectionView?.reloadSections(NSIndexSet(index: 0))
+            self.refreshControl?.endRefreshing()
+            self.isBeingUpdated = false
         }
     }
 

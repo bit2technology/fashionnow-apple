@@ -164,7 +164,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconFriendsPollsSelected")
+        navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconPublicPollsSelected")
 
         pollController.delegate = self
         pollController.imageButtonsHidden = true
@@ -203,7 +203,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
         let vote = ParseVote(user: ParseUser.currentUser())
         vote.pollId = pollController.poll.objectId
         vote.vote = index
-        vote.saveEventually()
+        vote.saveEventually(nil)
     }
 
     func pollControllerDidHighlight(pollController: PollController) {

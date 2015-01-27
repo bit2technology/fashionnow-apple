@@ -64,21 +64,26 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
 
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconPostPollSelected")
 
-        textField.frame.size.width = view.bounds.size.width
-
         pollController.delegate = self
-
         textField.delegate = self
-
-
-
+        textField.frame.size.width = view.bounds.size.width
 
         // Friends list cache
         FBRequestConnection.startForMyFriendsWithCompletionHandler { (requestConnection, object, error) -> Void in
 
+            if error != nil {
+                return
+            }
+
             var friendsFacebookIds = [String]()
-            for friendsFacebook in (object["data"] as [[String:String]]) {
-                friendsFacebookIds.append(friendsFacebook["id"]!)
+            let friendsFacebook = object["data"] as? [[String:String]]
+
+            if friendsFacebook == nil {
+                return
+            }
+
+            for friendFacebook in friendsFacebook! {
+                friendsFacebookIds.append(friendFacebook["id"]!)
             }
 
             let friendsQuery = PFQuery(className: ParseUser.parseClassName())

@@ -45,11 +45,11 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
 
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var libraryButton: UIButton!
-    @IBOutlet weak var previousButton: UIButton!
+    //@IBOutlet weak var previousButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
     var imageButtonsHidden: Bool = false {
         didSet {
-            for button in [cameraButton, libraryButton, previousButton, deleteButton] {
+            for button in [cameraButton, libraryButton, /*previousButton,*/ deleteButton] {
                 button.hidden = imageButtonsHidden
             }
         }
@@ -126,9 +126,8 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
             imagePickerController.sourceType = .PhotoLibrary
             presentViewController(imagePickerController, animated: true, completion: nil)
         // Present previous sent photos
-        case previousButton:
-            // TODO: Previous photos
-            return
+//        case previousButton:
+//            return
         // Unknown source, do nothing
         default:
             return

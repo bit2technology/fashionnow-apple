@@ -13,13 +13,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+
+        // Parse pre configuration
+        Parse.enableLocalDatastore()
+        ParseCrashReporting.enable()
+
+        return true
+    }
+
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject:AnyObject]?) -> Bool {
 
         // App basic configuration
         window?.tintColor = UIColor.defaultTintColor()
         
         // Parse configuration
-        ParseCrashReporting.enable()
         Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
         ParseUser.enableAutomaticUser()
         PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
