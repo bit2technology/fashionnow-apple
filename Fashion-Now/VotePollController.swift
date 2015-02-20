@@ -107,7 +107,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
             } else {
                 tagsLabel.text = ""
             }
-            tagsLabel.superview?.hidden = countElements(tagsLabel.text!) <= 0
+            tagsLabel.superview?.hidden = count(tagsLabel.text!) <= 0
 
             // Avatar
             if let unwrappedAuthorFacebookId = nextPoll.createdBy?.facebookId {
@@ -147,7 +147,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
             switch identifier {
                 
             case "Poll Controller":
-                pollController = segue.destinationViewController as PollController
+                pollController = segue.destinationViewController as! PollController
                 
             default:
                 return

@@ -8,15 +8,25 @@
 
 import UIKit
 
-class LoginSignupController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class LoginSignupController: UITableViewController {
+
+    private let passwordPlaceholder = "pass"
 
     var parseUser: ParseUser?
     var facebookUser: FBGraphObject?
 
+    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var nameField: UITextField!
+    @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var locationField: UITextField!
+
     @IBOutlet weak var avatarImageView: UIImageView!
+
+    @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var emailField: UITextField!
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var usernameField: UITextField!
+    @IBOutlet weak var passwordLabel: UILabel!
     @IBOutlet weak var passwordField: UITextField!
 
     @IBAction func cancelButtonPressed(sender: UITabBarItem) {
@@ -24,13 +34,60 @@ class LoginSignupController: UITableViewController, UIPickerViewDataSource, UIPi
         view.endEditing(true)
 
         // Dismiss controller
-        (self.presentingViewController as TabBarController).willDismissLoginController()
+        (self.presentingViewController as! TabBarController).willDismissLoginController()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 
     @IBAction func doneButtonPressed(sender: UIBarButtonItem) {
+
         // Dismiss keyboard
         view.endEditing(true)
+
+        // Check fields vality
+
+        for label in [nameLabel, emailLabel, usernameLabel, passwordLabel] {
+            label.textColor = UIColor.darkTextColor()
+        }
+        var allFieldsValid = true
+        var verifyMessages = [String]()
+
+        // Name
+        if nameField.text == nil || count(nameField.text) <= 0 {
+            nameLabel.textColor = UIColor.redColor()
+            allFieldsValid = false
+            verifyMessages += ["Name missing"]
+        }
+
+        // Email
+        if emailField.text == nil || count(emailField.text) <= 0 {
+            emailLabel.textColor = UIColor.redColor()
+            allFieldsValid = false
+            verifyMessages += ["Email missing"]
+        } else if !emailField.text.isEmail() {
+            emailLabel.textColor = UIColor.redColor()
+            allFieldsValid = false
+            verifyMessages += ["Email not valid"]
+        }
+
+        // Username
+        if usernameField.text == nil || count(usernameField.text) <= 0 {
+            usernameLabel.textColor = UIColor.redColor()
+            allFieldsValid = false
+            verifyMessages += ["Username missing"]
+        }
+
+        // Password
+        if passwordField.text == nil || count(passwordField.text) < 6 {
+            passwordLabel.textColor = UIColor.redColor()
+            allFieldsValid = false
+            verifyMessages += ["Password missing or too short (6 characters minimum)"]
+        }
+
+        // Show alert if one or more fields are not valid
+        if !allFieldsValid {
+            UIAlertView(title: NSLocalizedString("REVIEW_SIGNUP_INFO_ALERT_TITLE", value: "Review information" , comment: "Title of alert of missing/wrong information"), message: "\n".join(verifyMessages), delegate: nil, cancelButtonTitle: NSLocalizedString("REVIEW_SIGNUP_INFO_ALERT_CANCEL", value: "OK" , comment: "Cancel button of alert of missing/wrong information")).show()
+            return
+        }
 
         // Update Parse user info
         let currentUser = ParseUser.currentUser()
@@ -41,33 +98,18 @@ class LoginSignupController: UITableViewController, UIPickerViewDataSource, UIPi
         currentUser.name = nameField.text
         currentUser.location = locationField.text
         currentUser.email = emailField.text
-        currentUser.password = passwordField.text
-        currentUser.saveEventually(nil)
-
+        currentUser.username = usernameField.text
+        if passwordField.text != passwordPlaceholder {
+            currentUser.password = passwordField.text
+        }
+        currentUser.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+            if !succeeded {
+                currentUser.saveEventually(nil)
+            }
+        }
         // Dismiss controller
-        (self.presentingViewController as TabBarController).willDismissLoginController()
+        (self.presentingViewController as! TabBarController).willDismissLoginController()
         self.dismissViewControllerAnimated(true, completion: nil)
-    }
-
-    @IBOutlet weak var genderCell: UITableViewCell!
-    @IBOutlet weak var genderPicker: UIPickerView!
-    @IBAction func genderButtonPressed(sender: UIButton) {
-//        cell(genderCell, setHidden: !cellIsHidden(genderCell))
-//        reloadDataAnimated(true)
-    }
-
-    @IBOutlet weak var birthdayButton: UIButton!
-    @IBOutlet weak var birthdayCell: UITableViewCell!
-    @IBOutlet weak var birthdayPicker: UIDatePicker!
-    @IBAction func birthdayButtonPressed(sender: UIButton) {
-//        cell(birthdayCell, setHidden: !cellIsHidden(birthdayCell))
-//        reloadDataAnimated(true)
-    }
-    @IBAction func birthdayPicerValueDidChange(sender: UIDatePicker) {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = .LongStyle
-        dateFormatter.timeStyle = .NoStyle
-        birthdayButton.setTitle(dateFormatter.stringFromDate(sender.date), forState: .Normal)
     }
 
     // MARK: UIViewController
@@ -75,11 +117,7 @@ class LoginSignupController: UITableViewController, UIPickerViewDataSource, UIPi
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        genderPicker.dataSource = self
-        genderPicker.delegate = self
-
-        birthdayPicker.maximumDate = NSDate()
-
+        // Adjust layout
         avatarImageView.layer.cornerRadius = 32
         avatarImageView.layer.masksToBounds = true
         
@@ -91,42 +129,37 @@ class LoginSignupController: UITableViewController, UIPickerViewDataSource, UIPi
 
         // If there is a user (Parse or Facebook), change interface to "Review" mode
         if parseUser != nil || facebookUser != nil {
+
             // Change navigation items
             navigationItem.title = NSLocalizedString("SIGNUP_REVIEW_TITLE", value: "Edit Profile", comment: "User logged in with a Facebook account and must review his/her information.")
             navigationItem.hidesBackButton = true
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "doneButtonPressed:")
-            // Add cancel button if this is not first edit of profile
+
+            // Fill fields with Parse or Facebook information
+            nameField.text = parseUser?.name ?? facebookUser?.first_name
+            locationField.text = parseUser?.location
+            emailField.text = parseUser?.email ?? facebookUser?.email
+
+            // Avatar
+            let facebookId = parseUser?.facebookId ?? facebookUser?.objectId
+            if let unwrappedFacebookId = facebookId {
+                avatarImageView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedFacebookId, size: 64), usingActivityIndicatorStyle: .WhiteLarge)
+            }
+
+            // Do specift changes if this is not first edit of profile (if there is no facebook user)
             if facebookUser == nil {
                 navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelButtonPressed:")
+
+                usernameField.text = parseUser?.username
+                passwordField.text = passwordPlaceholder
             }
-        } else {
-            // If there is no user, just show standard interface (sign up)
-            return
-        }
-
-        // Fill fields with Parse or Facebook information
-        nameField.text = parseUser?.name ?? facebookUser?.first_name
-        locationField.text = parseUser?.location
-        emailField.text = parseUser?.email ?? facebookUser?.email
-        passwordField.placeholder = "Optional" // FIXME: Better handlig password change
-
-        // Avatar
-        let facebookId = parseUser?.facebookId ?? facebookUser?.objectId
-        if let unwrappedFacebookId = facebookId {
-            avatarImageView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedFacebookId, size: 64), usingActivityIndicatorStyle: .WhiteLarge)
         }
     }
+}
 
-    // UIPickerViewDataSource/Delegate
+private extension String {
 
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 3
-    }
-
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
-        return ["female", "male", "other"][row]
+    func isEmail() -> Bool {
+        let regex = NSRegularExpression(pattern: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$", options: .CaseInsensitive, error: nil)
+        return regex?.firstMatchInString(self, options: nil, range: NSMakeRange(0, count(self))) != nil
     }
 }

@@ -8,6 +8,9 @@
 
 class PhotoController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
+    let assetsLibrary = ALAssetsLibrary()
+    var sourceIsCamera = false
+
     var photo: ParsePhoto = ParsePhoto(user: ParseUser.currentUser()) {
         didSet {
             if let imagePath = photo.image?.url {
@@ -45,11 +48,10 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
 
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var libraryButton: UIButton!
-    //@IBOutlet weak var previousButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
     var imageButtonsHidden: Bool = false {
         didSet {
-            for button in [cameraButton, libraryButton, /*previousButton,*/ deleteButton] {
+            for button in [cameraButton, libraryButton, deleteButton] {
                 button.hidden = imageButtonsHidden
             }
         }
@@ -112,25 +114,27 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
             return
         }
 
+        var imagePickerSouce: UIImagePickerControllerSourceType?
+
         switch sender {
         // Present camera
         case cameraButton:
-            let imagePickerController = UIImagePickerController()
-            imagePickerController.delegate = self
-            imagePickerController.sourceType = .Camera
-            presentViewController(imagePickerController, animated: true, completion: nil)
+            imagePickerSouce = .Camera
+            sourceIsCamera = true
         // Present albuns
         case libraryButton:
-            let imagePickerController = UIImagePickerController()
-            imagePickerController.delegate = self
-            imagePickerController.sourceType = .PhotoLibrary
-            presentViewController(imagePickerController, animated: true, completion: nil)
-        // Present previous sent photos
-//        case previousButton:
-//            return
+            imagePickerSouce = .PhotoLibrary
+            sourceIsCamera = false
         // Unknown source, do nothing
         default:
             return
+        }
+
+        if let unwrappedImagePickerSource = imagePickerSouce {
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.sourceType = unwrappedImagePickerSource
+            presentViewController(imagePickerController, animated: true, completion: nil)
         }
     }
 
@@ -153,21 +157,14 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
 
         // Get edited or original image
-        var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as UIImage
+        var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as! UIImage
         setPhotoImage(image)
         dismissViewControllerAnimated(true, completion: nil)
-    }
 
-    // MARK: TGCameraDelegate
-
-    func cameraDidTakePhoto(image: UIImage!) {
-        setPhotoImage(image)
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-
-    func cameraDidCancel() {
-        dismissViewControllerAnimated(true, completion: nil)
+        // Save to Album if source is camera
+        if sourceIsCamera {
+            assetsLibrary.saveImage(image, toAlbum: "Fashion Now", completion: nil, failure: nil)
+        }
     }
 }
 

@@ -29,7 +29,7 @@ class ResultPollController: UIViewController {
             switch identifier {
 
             case "Poll Controller":
-                pollController = segue.destinationViewController as PollController
+                pollController = segue.destinationViewController as! PollController
 
             default:
                 return
@@ -61,7 +61,7 @@ class ResultPollController: UIViewController {
         } else {
             captionLabel.text = ""
         }
-        captionLabel.superview?.hidden = countElements(captionLabel.text!) <= 0
+        captionLabel.superview?.hidden = count(captionLabel.text!) <= 0
 
         let leftVoteCountQuery = PFQuery(className: ParseVote.parseClassName())
         leftVoteCountQuery.whereKey(ParseVotePollIdKey, equalTo: poll.objectId)

@@ -12,14 +12,13 @@ class PollController: UIViewController, PhotoControllerDelegate {
         didSet {
             if let unwrappedPhotos = poll.photos {
                 loadedPhotos = 0
-                adjustLayout(0, animationTimingFunction: nil, callCompleteDelegate: false)
-                leftPhotoController.photo = unwrappedPhotos.first!
-                rightPhotoController.photo = unwrappedPhotos.last!
+                leftPhotoController.photo = unwrappedPhotos[0]
+                rightPhotoController.photo = unwrappedPhotos[1]
             } else {
-                adjustLayout(0, animationTimingFunction: nil, callCompleteDelegate: false)
                 leftPhotoController.photo = ParsePhoto(user: poll.createdBy!)
                 rightPhotoController.photo = ParsePhoto(user: poll.createdBy!)
             }
+            adjustLayout(0, animationTimingFunction: nil, callCompleteDelegate: false)
         }
     }
 
@@ -237,9 +236,9 @@ class PollController: UIViewController, PhotoControllerDelegate {
             switch identifier {
 
             case "Left Photo Controller":
-                leftPhotoController = segue.destinationViewController as PhotoController
+                leftPhotoController = segue.destinationViewController as! PhotoController
             case "Right Photo Controller":
-                rightPhotoController = segue.destinationViewController as PhotoController
+                rightPhotoController = segue.destinationViewController as! PhotoController
             default:
                 return
             }

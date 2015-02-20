@@ -8,117 +8,137 @@
 
 import UIKit
 
+public let NewPollSavedNotificationName = "NewPollSavedNotification"
+
 class MeController: UICollectionViewController {
 
-    var myPolls: [ParsePoll]?
+    private var myPolls: [ParsePoll]!
 
-    weak var refreshControl: UIRefreshControl?
-    var isBeingUpdated = false
+//    weak var backgroundActivityIndicator: UIActivityIndicatorView!
+//    weak var refreshControl: UIRefreshControl!
+//    var isBeingUpdated = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        loadCachedPolls()
 
         // Basic configuration
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconMeSelected")
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
 
-        // Activity indicator background view
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-        activityIndicator.color = UIColor.lightGrayColor()
-        activityIndicator.startAnimating()
-        collectionView?.backgroundView = activityIndicator
-
-        // Load cached polls
-        let myPollsQuery = PFQuery(className: ParsePoll.parseClassName())
-        myPollsQuery.includeKey(ParsePollPhotosKey)
-        myPollsQuery.whereKey(ParsePollCreatedByKey, equalTo: ParseUser.currentUser())
-        myPollsQuery.orderByDescending(ParseObjectCreatedAtKey)
-        myPollsQuery.limit = Int.max
-        myPollsQuery.fromLocalDatastore()
-        myPolls = myPollsQuery.findObjects() as? [ParsePoll]
-        if myPolls?.count > 0 {
-            activityIndicator.stopAnimating()
-        }
-
-        // Configure refresh control for manual update
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: "updatePollList", forControlEvents: .ValueChanged)
-        collectionView?.addSubview(refreshControl)
-        self.refreshControl = refreshControl
-        collectionView?.alwaysBounceVertical = true
+//        // Activity indicator background view
+//        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+//        activityIndicator.color = UIColor.lightGrayColor()
+//        activityIndicator.startAnimating()
+//        collectionView?.backgroundView = activityIndicator
+//        self.backgroundActivityIndicator = activityIndicator
+//
+//        // Configure refresh control for manual update
+//        let refreshControl = UIRefreshControl()
+//        refreshControl.addTarget(self, action: "updatePollList", forControlEvents: .ValueChanged)
+//        collectionView?.addSubview(refreshControl)
+//        self.refreshControl = refreshControl
+//        collectionView?.alwaysBounceVertical = true
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
         navigationItem.title = ParseUser.currentUser().name
-
-        updatePollList()
     }
 
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
-    func loginChanged(notification: NSNotification) {
-
-        myPolls = nil
-        PFObject.unpinAllObjects()
-        (collectionView?.backgroundView as UIActivityIndicatorView).startAnimating()
-        collectionView?.reloadData()
-
-        updatePollList()
-    }
-
-    func updatePollList() {
-
-        if isBeingUpdated {
-            return
-        }
-
-        isBeingUpdated = true
-
-        let currentUser = ParseUser.currentUser()
-        if PFAnonymousUtils.isLinkedWithUser(currentUser) {
-            (collectionView?.backgroundView as UIActivityIndicatorView).stopAnimating()
-            refreshControl?.endRefreshing()
-            return
-        }
-
+    private func loadCachedPolls() {
         let myPollsQuery = PFQuery(className: ParsePoll.parseClassName())
         myPollsQuery.includeKey(ParsePollPhotosKey)
-        myPollsQuery.whereKey(ParsePollCreatedByKey, equalTo: currentUser)
+        myPollsQuery.whereKey(ParsePollCreatedByKey, equalTo: ParseUser.currentUser())
         myPollsQuery.orderByDescending(ParseObjectCreatedAtKey)
         myPollsQuery.limit = Int.max
-        myPollsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-
-            // TODO: Error
-
-            PFObject.pinAllInBackground(objects) { (success, error) -> Void in
-                if error != nil {
-                    NSLog("Pin error: \(error)")
-                }
-            }
-
-            if objects.count > 0 {
-
-                var newMyPolls = objects as? [ParsePoll]
-                newMyPolls?.extend(self.myPolls ?? [])
-
-                self.myPolls = newMyPolls
-            }
-
-            var addedIndexPaths = [NSIndexPath]()
-            for 0 ..< objects.count {
-
-            }
-            self.collectionView?.insertItemsAtIndexPaths(<#indexPaths: [AnyObject]#>)
-
-            (self.collectionView?.backgroundView as UIActivityIndicatorView).stopAnimating()
-            self.refreshControl?.endRefreshing()
-            self.isBeingUpdated = false
-        }
+        myPollsQuery.fromLocalDatastore()
+        myPolls = (myPollsQuery.findObjects() ?? []) as! [ParsePoll]
     }
+
+    func loginChanged(notification: NSNotification) {
+
+        PFObject.unpinAll(myPolls)
+//        backgroundActivityIndicator.startAnimating()
+//        collectionView?.reloadData()
+
+        // Load cached polls
+        loadCachedPolls()
+        collectionView?.reloadData()
+
+//        if myPolls.count > 0 {
+//            backgroundActivityIndicator.stopAnimating()
+//        }
+    }
+
+//    func updatePollList() {
+//
+//        if isBeingUpdated {
+//            return
+//        }
+//
+//        isBeingUpdated = true
+//
+//        let currentUser = ParseUser.currentUser()
+//        if PFAnonymousUtils.isLinkedWithUser(currentUser) {
+//            (collectionView?.backgroundView as UIActivityIndicatorView).stopAnimating()
+//            refreshControl.endRefreshing()
+//            return
+//        }
+//
+//        let myPollsQuery = PFQuery(className: ParsePoll.parseClassName())
+//        myPollsQuery.includeKey(ParsePollPhotosKey)
+//        myPollsQuery.whereKey(ParsePollCreatedByKey, equalTo: currentUser)
+//        myPollsQuery.orderByDescending(ParseObjectCreatedAtKey)
+//        myPollsQuery.limit = Int.max
+//        myPollsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+//
+//            // TODO: Error
+//            if error != nil {
+//                return
+//            }
+//
+//            var newPolls = [ParsePoll]()
+//            if let firstMyPoll = self.myPolls.first {
+//                for poll in objects as [ParsePoll] {
+//                    if firstMyPoll.createdAt.compare(poll.createdAt) == NSComparisonResult.OrderedAscending {
+//                        newPolls.append(poll)
+//                    }
+//                }
+//            } else {
+//                newPolls = objects as [ParsePoll]
+//            }
+//
+//            PFObject.pinAllInBackground(newPolls) { (success, error) -> Void in
+//                if error != nil {
+//                    NSLog("Pin error: \(error)")
+//                }
+//            }
+//
+//            if newPolls.count > 0 {
+//
+//                var addedIndexPaths = [NSIndexPath]()
+//                for index in 0 ..< newPolls.count {
+//                    addedIndexPaths.append(NSIndexPath(forItem: index, inSection: 0))
+//                }
+//
+//                newPolls.extend(self.myPolls ?? [])
+//                self.myPolls = newPolls
+//
+//                self.collectionView?.insertItemsAtIndexPaths(addedIndexPaths)
+//            }
+//
+//            self.backgroundActivityIndicator.stopAnimating()
+//            self.refreshControl.endRefreshing()
+//            self.isBeingUpdated = false
+//        }
+//    }
 
     @IBAction func logOutButtonPressed(snder: AnyObject) {
         ParseUser.logOut()
@@ -136,8 +156,8 @@ class MeController: UICollectionViewController {
 
             switch unwrappedId {
             case "Result Controller":
-                let idx = collectionView!.indexPathForCell(sender as UICollectionViewCell)!.item
-                (segue.destinationViewController as ResultPollController).poll = myPolls![idx]
+                let idx = (collectionView!.indexPathsForSelectedItems().first as! NSIndexPath).item
+                (segue.destinationViewController as! ResultPollController).poll = myPolls[idx]
             default:
                 return
             }
@@ -147,26 +167,23 @@ class MeController: UICollectionViewController {
     // MARK: UICollectionoViewController
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return myPolls?.count ?? 0
+        return myPolls.count
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as PollCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as! PollCell
 
-        let currentPoll = myPolls![indexPath.item]
+        let currentPoll = myPolls[indexPath.item]
         let leftImageUrl = currentPoll.photos?.first?.image?.url
         let rightImageUrl = currentPoll.photos?.last?.image?.url
 
         if leftImageUrl == nil || rightImageUrl == nil {
+            // TODO: Empty cell
             return cell
         }
 
-        cell.leftImageView.setImageWithURL(NSURL(string: leftImageUrl!), placeholderImage: nil, completed: { (image, error, cache, url) -> Void in
-            // Completion
-        }, usingActivityIndicatorStyle: .Gray)
-        cell.rightImageView.setImageWithURL(NSURL(string: rightImageUrl!), placeholderImage: nil, completed: { (image, error, cache, url) -> Void in
-            // Completion
-        }, usingActivityIndicatorStyle: .Gray)
+        cell.leftImageView.setImageWithURL(NSURL(string: leftImageUrl!), placeholderImage: nil, completed: nil, usingActivityIndicatorStyle: .Gray)
+        cell.rightImageView.setImageWithURL(NSURL(string: rightImageUrl!), placeholderImage: nil, completed: nil, usingActivityIndicatorStyle: .Gray)
 
         return cell
     }

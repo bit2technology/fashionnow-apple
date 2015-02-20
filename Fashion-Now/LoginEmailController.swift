@@ -19,9 +19,13 @@ class LoginEmailController: UITableViewController {
         usernameField.enabled = false
         passwordField.enabled = false
         sender.enabled = false
+        navigationItem.hidesBackButton = true
         activityIndicator.startAnimating()
         ParseUser.logInWithUsernameInBackground(usernameField.text, password: passwordField.text) { (user, error) -> Void in
             if user != nil {
+                // Successful login
+                NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
+                (self.presentingViewController as! TabBarController).willDismissLoginController()
                 self.dismissViewControllerAnimated(true, completion: nil)
             } else {
                 UIAlertView(title: nil, message: error.localizedDescription, delegate: nil, cancelButtonTitle: NSLocalizedString("LOGIN_EMAIL_ERROR_OK", value: "OK", comment: "Log in with e-mail error cancel button title")).show()
@@ -29,6 +33,7 @@ class LoginEmailController: UITableViewController {
                 self.usernameField.becomeFirstResponder()
                 self.passwordField.enabled = true
                 sender.enabled = true
+                self.navigationItem.hidesBackButton = false
                 self.activityIndicator.stopAnimating()
             }
         }

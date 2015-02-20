@@ -19,6 +19,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.enableLocalDatastore()
         ParseCrashReporting.enable()
 
+        // Register subclasses. This is because override function "load()" doesn't work on Swift 1.2+
+        ParseInstallation.registerSubclass()
+        ParsePhoto.registerSubclass()
+        ParsePoll.registerSubclass()
+        ParseUser.registerSubclass()
+        ParseVote.registerSubclass()
+
         return true
     }
 

@@ -10,27 +10,55 @@ import UIKit
 
 class PostPollController: UIViewController, PollControllerDelegate, UITextFieldDelegate {
 
-    weak var delegate: PostPollControllerDelegate?
-
-    private(set) var friendsList: [ParseUser]?
-
-    private weak var pollController: PollController!
-    var poll: ParsePoll? {
-        get {
-            return pollController?.poll
-        }
-    }
-
+    // Interface elements
     @IBOutlet weak var textField: UITextField!
+    private weak var pollController: PollController!
+
+    // Friends list
+    weak var delegate: PostPollControllerDelegate?
+    private var cachedFriendsList: [ParseUser]?
 
     @IBAction func pollControllerTapped(sender: AnyObject) {
         textField.resignFirstResponder()
     }
 
     func clean() {
-        textField.text = nil
         navigationItem.rightBarButtonItem?.enabled = false
+        textField.text = nil
         pollController.poll = ParsePoll(user: ParseUser.currentUser())
+    }
+
+    func cacheFriendsList() {
+        
+        FBRequestConnection.startForMyFriendsWithCompletionHandler { (requestConnection, object, error) -> Void in
+
+            if error != nil {
+                NSLog("Friends list download error: \(error.localizedDescription)")
+                self.delegate?.postPollControllerDidFailDownloadFriendsList(error)
+                return
+            }
+
+            // Get list of IDs from friends
+            var friendsFacebookIds = [String]()
+            if let friendsFacebook = object["data"] as? [[String:String]] {
+
+                for friendFacebook in friendsFacebook {
+                    friendsFacebookIds.append(friendFacebook["id"]!)
+                }
+
+                // Get parse users from Facebook friends
+                let friendsQuery = PFQuery(className: ParseUser.parseClassName())
+                friendsQuery.whereKey(ParseUserFacebookIdKey, containedIn: friendsFacebookIds)
+                friendsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+
+                    self.cachedFriendsList = (objects as? [ParseUser]) ?? []
+                    self.cachedFriendsList!.sort({$0.name < $1.name})
+                    self.delegate?.postPollControllerDidFinishDownloadFriendsList(self.cachedFriendsList!)
+                }
+            } else {
+                self.delegate?.postPollControllerDidFailDownloadFriendsList(nil)
+            }
+        }
     }
     
     // MARK: UIViewController
@@ -46,12 +74,15 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
             switch identifier {
                 
             case "Poll Controller":
-                pollController = segue.destinationViewController as PollController
+                pollController = segue.destinationViewController as! PollController
 
             case "Friends List":
                 textField.resignFirstResponder()
                 pollController.poll.caption = textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-                (segue.destinationViewController as? FriendsListTableController)?.postPollController = self
+                let friendsListController = segue.destinationViewController as! FriendsListTableController
+                friendsListController.friendsList = cachedFriendsList
+                friendsListController.poll = pollController.poll
+                friendsListController.postPollController = self
 
             default:
                 return
@@ -64,37 +95,11 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
 
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconPostPollSelected")
 
-        pollController.delegate = self
         textField.delegate = self
         textField.frame.size.width = view.bounds.size.width
+        pollController.delegate = self
 
-        // Friends list cache
-        FBRequestConnection.startForMyFriendsWithCompletionHandler { (requestConnection, object, error) -> Void in
-
-            if error != nil {
-                return
-            }
-
-            var friendsFacebookIds = [String]()
-            let friendsFacebook = object["data"] as? [[String:String]]
-
-            if friendsFacebook == nil {
-                return
-            }
-
-            for friendFacebook in friendsFacebook! {
-                friendsFacebookIds.append(friendFacebook["id"]!)
-            }
-
-            let friendsQuery = PFQuery(className: ParseUser.parseClassName())
-            friendsQuery.whereKey(ParseUserFacebookIdKey, containedIn: friendsFacebookIds)
-            friendsQuery.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
-
-                self.friendsList = objects as? [ParseUser]
-                self.friendsList?.sort({$0.name < $1.name})
-                self.delegate?.postPollControllerDidFinishDownloadFriendsList?(self)
-            })
-        }
+        cacheFriendsList()
     }
 
     // MARK: PollControllerDelegate
@@ -111,7 +116,8 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
     }
 }
 
-@objc protocol PostPollControllerDelegate {
+protocol PostPollControllerDelegate: class {
 
-    optional func postPollControllerDidFinishDownloadFriendsList(postPollController: PostPollController)
+    func postPollControllerDidFinishDownloadFriendsList(friendsList: [ParseUser])
+    func postPollControllerDidFailDownloadFriendsList(error: NSError!)
 }

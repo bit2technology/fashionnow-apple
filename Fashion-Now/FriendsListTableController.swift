@@ -10,29 +10,20 @@ import UIKit
 
 class FriendsListTableController: UITableViewController, PostPollControllerDelegate {
 
+    // Model
+    private var error: NSError?
+    var friendsList: [ParseUser]?
+    var poll: ParsePoll!
+
+    // Marked rows
     private var checkedIndexPaths = [NSIndexPath]()
 
+    // Access to previous controller
     weak var postPollController: PostPollController!
-
-    @IBAction func backButtonPressed(sender: AnyObject) {
-        navigationController?.popViewControllerAnimated(true)
-    }
 
     @IBAction func sendButtonPressed(sender: UIBarButtonItem) {
 
-        view.endEditing(true)
-
-        // Adjust interface
-
-        let sendButtonItem = navigationItem.rightBarButtonItem
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
-        activityIndicator.startAnimating()
-        navigationItem.setRightBarButtonItem(UIBarButtonItem(customView: activityIndicator), animated: true)
-        navigationItem.leftBarButtonItem?.enabled = false
-
-        // Send poll to server
-
-        let poll = postPollController.poll?
+        // Choose poll visibility
 
         let pollACL = PFACL(user: ParseUser.currentUser())
         pollACL.setPublicReadAccess(false)
@@ -40,29 +31,40 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
             if indexPath.section == 0 {
                 pollACL.setPublicReadAccess(true)
             } else {
-                pollACL.setReadAccess(true, forUser: postPollController.friendsList![indexPath.row])
+                pollACL.setReadAccess(true, forUser: friendsList![indexPath.row])
             }
         }
-        poll?.ACL = pollACL
+        poll.ACL = pollACL
 
-        poll?.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+        // Save locally, send poll to server and notify app
 
-            if succeeded {
-                self.postPollController.clean()
-                self.navigationController?.popToRootViewControllerAnimated(true)
-            } else {
-                // FIXME: alert view
-                UIAlertView(title: "error", message: "error", delegate: nil, cancelButtonTitle: "OK").show()
-                self.navigationItem.setRightBarButtonItem(sendButtonItem, animated: true)
-                self.navigationItem.leftBarButtonItem?.enabled = true
+        poll.pin()
+        poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+
+            if !succeeded {
+                self.poll.saveEventually(nil)
             }
         }
+
+        NSNotificationCenter.defaultCenter().postNotificationName(NewPollSavedNotificationName, object: self, userInfo: ["poll": poll])
+
+        // Return to previous controller to send a new poll
+
+        showSentPollScreenAndReturn()
+    }
+
+    private func showSentPollScreenAndReturn() {
+
+        // TODO: Sent Poll screen
+
+        self.postPollController.clean()
+        self.navigationController?.popToRootViewControllerAnimated(true)
     }
 
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return postPollController.friendsList != nil ? 2 : 0
+        return friendsList != nil ? 2 : 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -71,15 +73,29 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
             return 1
         }
 
-        return postPollController.friendsList?.count ?? 0
+        return friendsList!.count > 0 ? friendsList!.count : 1
     }
 
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        // FIXME: localize
         return ["General access", "Friends"][section]
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Friends List Table Cell", forIndexPath: indexPath) as FriendListTableCell
+
+        // Verify if it is a message cell
+        if indexPath.section == 1 && friendsList!.count < 1 {
+
+            let cell = tableView.dequeueReusableCellWithIdentifier("Message Cell", forIndexPath: indexPath) as! UITableViewCell
+
+            cell.textLabel?.text = error?.localizedDescription ?? "Unknown error"
+
+            return cell
+        }
+
+        // Normal cells
+
+        let cell = tableView.dequeueReusableCellWithIdentifier("Friends List Table Cell", forIndexPath: indexPath) as! FriendListTableCell
 
         cell.accessoryType = find(checkedIndexPaths, indexPath) != nil ? .Checkmark : .None
 
@@ -93,7 +109,7 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
         }
 
         cell.avatarView.contentMode = .ScaleToFill
-        let user = postPollController.friendsList?[indexPath.row]
+        let user = friendsList?[indexPath.row]
         if let unwrappedAuthorFacebookId = user?.facebookId {
             cell.avatarView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedAuthorFacebookId, size: 40), usingActivityIndicatorStyle: .White)
         } else {
@@ -126,9 +142,24 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
         postPollController.delegate = self
     }
 
-    func postPollControllerDidFinishDownloadFriendsList(postPollController: PostPollController) {
-        let sections = NSIndexSet(indexesInRange: NSRange(0...1))
-        self.tableView.reloadSections(sections, withRowAnimation: .Automatic)
+    @IBAction func refreshControlDidChangeValue(sender: UIRefreshControl) {
+        error = nil
+        postPollController.cacheFriendsList()
+    }
+
+    func postPollControllerDidFinishDownloadFriendsList(friendsList: [ParseUser]) {
+
+        refreshControl?.endRefreshing()
+
+        if self.friendsList == nil || self.friendsList! != friendsList {
+            self.friendsList = friendsList
+            tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Automatic)
+        }
+    }
+
+    func postPollControllerDidFailDownloadFriendsList(error: NSError!) {
+        self.error = error
+        postPollControllerDidFinishDownloadFriendsList([])
     }
 }
 

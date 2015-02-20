@@ -16,11 +16,6 @@ let ParseInstallationUserIdKey = "userId"
 
 public class ParseInstallation: PFInstallation, PFSubclassing {
 
-    override public class func load() {
-        superclass()?.load()
-        registerSubclass()
-    }
-
     var userId: String? {
         get {
             return self[ParseInstallationUserIdKey] as? String
@@ -48,11 +43,6 @@ let ParseUserLocationKey = "location"
 let ParseUserNameKey = "name"
 
 public class ParseUser: PFUser, PFSubclassing {
-
-    override public class func load() {
-        superclass()?.load()
-        registerSubclass()
-    }
 
     var avatar: ParsePhoto? {
         get {
@@ -129,11 +119,6 @@ let ParsePhotoUploadedByKey = "uploadedBy"
 
 public class ParsePhoto: PFObject, PFSubclassing {
 
-    override public class func load() {
-        superclass()?.load()
-        registerSubclass()
-    }
-
     public class func parseClassName() -> String {
         return "Photo"
     }
@@ -181,11 +166,6 @@ let ParsePollPhotosKey = "photos"
 let ParsePollTagsKey = "tags"
 
 public class ParsePoll: PFObject, PFSubclassing {
-
-    override public class func load() {
-        superclass()?.load()
-        registerSubclass()
-    }
 
     public class func parseClassName() -> String {
         return "Poll"
@@ -303,7 +283,7 @@ public class ParsePublicVotePollList: Printable, DebugPrintable {
 
             // Add unique objects if poll list is not empty
             if self.polls.count > 0 {
-                for pollToAdd in (objects as [ParsePoll]) {
+                for pollToAdd in (objects as! [ParsePoll]) {
                     if find(self.polls, pollToAdd) == nil {
                         self.polls.append(pollToAdd)
                     }
@@ -311,7 +291,7 @@ public class ParsePublicVotePollList: Printable, DebugPrintable {
                 // Order descending
                 self.polls.sort({$0.createdAt.compare($1.createdAt) == NSComparisonResult.OrderedDescending})
             } else {
-                self.polls = objects as [ParsePoll]
+                self.polls = objects as! [ParsePoll]
             }
 
             // Call completion handler
@@ -358,11 +338,6 @@ let ParseVotePollIdKey = "pollId"
 let ParseVoteVoteKey = "vote"
 
 public class ParseVote: PFObject, PFSubclassing {
-
-    override public class func load() {
-        superclass()?.load()
-        registerSubclass()
-    }
 
     public class func parseClassName() -> String {
         return "Vote"

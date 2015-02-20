@@ -1,6 +1,7 @@
 PODS:
+  - ALAssetsLibrary-CustomPhotoAlbum (1.2.2)
   - Bolts (1.1.3)
-  - Facebook-iOS-SDK (3.22.0):
+  - Facebook-iOS-SDK (3.23.0):
     - Bolts (~> 1.0)
   - Parse (1.6.2):
     - Bolts (~> 1.1)
@@ -12,28 +13,27 @@ PODS:
   - SDWebImage (3.7.1):
     - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
-  - StaticDataTableViewController (2.0.3)
   - UIActivityIndicator-for-SDWebImage (1.2):
     - SDWebImage (~> 3.7)
 
 DEPENDENCIES:
+  - ALAssetsLibrary-CustomPhotoAlbum
   - Bolts
   - Facebook-iOS-SDK
   - Parse
   - ParseCrashReporting
   - ParseFacebookUtils
   - SDWebImage
-  - StaticDataTableViewController
   - UIActivityIndicator-for-SDWebImage
 
 SPEC CHECKSUMS:
+  ALAssetsLibrary-CustomPhotoAlbum: a6f8af414d0fa881db72085f5084d9fd1ba99794
   Bolts: 3db0a875235e0c9042b013af13af0f00f79b102c
-  Facebook-iOS-SDK: 0eda8ff7120aada0a9c5f98552f7625da6c3440a
+  Facebook-iOS-SDK: 3d65f685348b789e46a9aacf92bfa85b60b63755
   Parse: 60d65108fe39da77ec16c9e51d74b4d296b21424
   ParseCrashReporting: eb150f792ea987456f9ae4ccca4bbf9236c8ddd0
   ParseFacebookUtils: 0b86cd67283c60d10e3ddc8427f989f5e60ebbd7
   SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
-  StaticDataTableViewController: 171ee35f17f6176baa98ce05c1e4769a628732ad
   UIActivityIndicator-for-SDWebImage: 8bd92c15280fbe54816448c6b14674145eee05c7
 
 COCOAPODS: 0.35.0
