@@ -1,5 +1,5 @@
 PODS:
-  - ALAssetsLibrary-CustomPhotoAlbum (1.2.2)
+  - ALAssetsLibrary-CustomPhotoAlbum (1.3.0)
   - Bolts (1.1.3)
   - Facebook-iOS-SDK (3.23.0):
     - Bolts (~> 1.0)
@@ -27,7 +27,7 @@ DEPENDENCIES:
   - UIActivityIndicator-for-SDWebImage
 
 SPEC CHECKSUMS:
-  ALAssetsLibrary-CustomPhotoAlbum: a6f8af414d0fa881db72085f5084d9fd1ba99794
+  ALAssetsLibrary-CustomPhotoAlbum: 78ebdfc8577c95974c5d71109bd31606ce175cfb
   Bolts: 3db0a875235e0c9042b013af13af0f00f79b102c
   Facebook-iOS-SDK: 3d65f685348b789e46a9aacf92bfa85b60b63755
   Parse: 60d65108fe39da77ec16c9e51d74b4d296b21424

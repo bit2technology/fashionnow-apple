@@ -19,7 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.enableLocalDatastore()
         ParseCrashReporting.enable()
 
-        // Register subclasses. This is because override function "load()" doesn't work on Swift 1.2+
+        // Register subclasses
+        // This is because overriding class function "load()" doesn't work on Swift 1.2+
         ParseInstallation.registerSubclass()
         ParsePhoto.registerSubclass()
         ParsePoll.registerSubclass()
@@ -43,17 +44,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Push notifications
         if application.respondsToSelector("registerUserNotificationSettings:") {
             // Register for Push Notitications, if running iOS 8
-            let userNotificationTypes = UIUserNotificationType.Alert | .Badge | .Sound
-            let settings = UIUserNotificationSettings(forTypes: userNotificationTypes, categories: nil)
+            let settings = UIUserNotificationSettings(forTypes:.Alert | .Badge | .Sound, categories: nil)
             application.registerUserNotificationSettings(settings)
             application.registerForRemoteNotifications()
         } else {
             // Register for Push Notifications before iOS 8
-            application.registerForRemoteNotificationTypes(UIRemoteNotificationType.Alert | .Badge | .Sound)
+            application.registerForRemoteNotificationTypes(.Alert | .Badge | .Sound)
         }
 
         // Erase badge number
         ParseInstallation.currentInstallation().badge = 0
+
+        // Verify if current user is valid. If no, clean login caches.
+        let currentUser = ParseUser.currentUser()
+        if !PFAnonymousUtils.isLinkedWithUser(currentUser) && (currentUser.hasPassword != true || currentUser.facebookId == nil || count(currentUser.facebookId!) <= 0) {
+            ParseUser.logOut()
+            FBSession.activeSession().closeAndClearTokenInformation()
+        }
+        currentUser.avatar?.fetchIfNeededInBackgroundWithBlock(nil)
 
         // Observe login change and update installation
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateInstallationUser:", name: LoginChangedNotificationName, object: nil)
@@ -80,7 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Store the deviceToken in the current installation and send it to Parse
         let currentInstallation = ParseInstallation.currentInstallation()
         currentInstallation.setDeviceTokenFromData(deviceToken)
-        currentInstallation.updateUserInBackground() // This saves the installation
+        currentInstallation.saveEventually(nil)
     }
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
@@ -88,9 +96,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func updateInstallationUser(notification: NSNotification) {
-        ParseInstallation.currentInstallation().updateUserInBackground()
+        // Register user ID in installation on login
+        let currentInstallation = ParseInstallation.currentInstallation()
+        currentInstallation.userId = (notification.userInfo?["user"] as? ParseUser)?.objectId
+        currentInstallation.saveEventually(nil)
     }
 }
+
+/// Returns "OK" for English and its variants for other languages
+public let LocalizedOKButtonTitle = NSLocalizedString("OK_BUTTON_TITLE", value: "OK" , comment: "Default OK button title for entire app")
 
 extension UIColor {
     
@@ -118,6 +132,10 @@ extension UIColor {
 
     class func defaultDestructiveColor(alpha: CGFloat = 1) -> UIColor {
         return UIColor(red: 1, green: 102/255.0, blue: 102/255.0, alpha: alpha)
+    }
+
+    class func defaultErrorColor(alpha: CGFloat = 1) -> UIColor {
+        return redColor().colorWithAlphaComponent(alpha)
     }
 
     class func randomColor(alpha: CGFloat = 1) -> UIColor{

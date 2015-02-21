@@ -24,12 +24,6 @@ public class ParseInstallation: PFInstallation, PFSubclassing {
             self[ParseInstallationUserIdKey] = newValue ?? NSNull()
         }
     }
-
-    func updateUserInBackground() {
-        let currentUser = ParseUser.currentUser()
-        userId = ParseUser.currentUser().objectId
-        saveEventually(nil)
-    }
 }
 
 // MARK: - User class
@@ -39,6 +33,7 @@ let ParseUserBirthdayKey = "birthday"
 let ParseUserBirthdayDateFormat = "yyyy-MM-dd"
 let ParseUserFacebookIdKey = "facebookId"
 let ParseUserGenderKey = "gender"
+let ParseUserHasPassword = "hasPassword"
 let ParseUserLocationKey = "location"
 let ParseUserNameKey = "name"
 
@@ -53,27 +48,27 @@ public class ParseUser: PFUser, PFSubclassing {
         }
     }
 
-    var birthday: String? {
-        get {
-            return self[ParseUserBirthdayKey] as? String
-        }
-        set {
-            self[ParseUserBirthdayKey] = newValue ?? NSNull()
-        }
-    }
-    func birthdayDate(format: String = ParseUserBirthdayDateFormat) -> NSDate? {
-        if let unwrappedBirthday = birthday {
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = format
-            return dateFormatter.dateFromString(unwrappedBirthday)
-        }
-        return nil
-    }
-    func setBirthday(#date: NSDate) {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = ParseUserBirthdayDateFormat
-        birthday = dateFormatter.stringFromDate(date)
-    }
+//    var birthday: String? {
+//        get {
+//            return self[ParseUserBirthdayKey] as? String
+//        }
+//        set {
+//            self[ParseUserBirthdayKey] = newValue ?? NSNull()
+//        }
+//    }
+//    func birthdayDate(format: String = ParseUserBirthdayDateFormat) -> NSDate? {
+//        if let unwrappedBirthday = birthday {
+//            let dateFormatter = NSDateFormatter()
+//            dateFormatter.dateFormat = format
+//            return dateFormatter.dateFromString(unwrappedBirthday)
+//        }
+//        return nil
+//    }
+//    func setBirthday(#date: NSDate) {
+//        let dateFormatter = NSDateFormatter()
+//        dateFormatter.dateFormat = ParseUserBirthdayDateFormat
+//        birthday = dateFormatter.stringFromDate(date)
+//    }
 
     var facebookId: String? {
         get {
@@ -90,6 +85,15 @@ public class ParseUser: PFUser, PFSubclassing {
         }
         set {
             self[ParseUserGenderKey] = newValue ?? NSNull()
+        }
+    }
+
+    var hasPassword: Bool? {
+        get {
+            return self[ParseUserHasPassword] as? Bool
+        }
+        set {
+            self[ParseUserHasPassword] = newValue ?? NSNull()
         }
     }
 
