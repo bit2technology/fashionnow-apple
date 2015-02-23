@@ -236,9 +236,9 @@ class PollController: UIViewController, PhotoControllerDelegate {
             switch identifier {
 
             case "Left Photo Controller":
-                leftPhotoController = segue.destinationViewController as! PhotoController
+                leftPhotoController = segue.destinationViewController as PhotoController
             case "Right Photo Controller":
-                rightPhotoController = segue.destinationViewController as! PhotoController
+                rightPhotoController = segue.destinationViewController as PhotoController
             default:
                 return
             }

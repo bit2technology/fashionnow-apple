@@ -262,6 +262,11 @@
 					4BF1D0541A00F1EB00818658 = {
 						CreatedOnToolsVersion = 6.1;
 						DevelopmentTeam = 2CPJD7ENY9;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					4BF1D06C1A00F1EB00818658 = {
 						CreatedOnToolsVersion = 6.1;

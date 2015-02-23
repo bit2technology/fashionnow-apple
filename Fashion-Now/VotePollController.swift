@@ -107,7 +107,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
             } else {
                 tagsLabel.text = ""
             }
-            tagsLabel.superview?.hidden = count(tagsLabel.text!) <= 0
+            tagsLabel.superview?.hidden = countElements(tagsLabel.text!) <= 0
 
             // Avatar
             if let unwrappedAuthorFacebookId = nextPoll.createdBy?.facebookId {
@@ -147,7 +147,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
             switch identifier {
                 
             case "Poll Controller":
-                pollController = segue.destinationViewController as! PollController
+                pollController = segue.destinationViewController as PollController
                 
             default:
                 return
@@ -182,6 +182,11 @@ class VotePollController: UIViewController, PollControllerDelegate {
         loadPollList(nil)
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadPollList:", name: LoginChangedNotificationName, object: nil)
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        PFAnalytics.trackScreenShowInBackground("Vote: Main", block: nil)
     }
 
     deinit {

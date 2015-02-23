@@ -12,9 +12,19 @@ let ParseObjectIdKey = "objectId"
 
 // MARK: - Installation class
 
+let ParseInstallationLocationKey = "location"
 let ParseInstallationUserIdKey = "userId"
 
 public class ParseInstallation: PFInstallation, PFSubclassing {
+
+    var location: PFGeoPoint? {
+        get {
+            return self[ParseInstallationLocationKey] as? PFGeoPoint
+        }
+        set {
+            self[ParseInstallationLocationKey] = newValue ?? NSNull()
+        }
+    }
 
     var userId: String? {
         get {
@@ -30,7 +40,7 @@ public class ParseInstallation: PFInstallation, PFSubclassing {
 
 let ParseUserAvatarKey = "avatar"
 let ParseUserBirthdayKey = "birthday"
-let ParseUserBirthdayDateFormat = "yyyy-MM-dd"
+//let ParseUserBirthdayDateFormat = "yyyy-MM-dd"
 let ParseUserFacebookIdKey = "facebookId"
 let ParseUserGenderKey = "gender"
 let ParseUserHasPassword = "hasPassword"
@@ -38,6 +48,11 @@ let ParseUserLocationKey = "location"
 let ParseUserNameKey = "name"
 
 public class ParseUser: PFUser, PFSubclassing {
+
+    override public class func logOut() {
+        superclass()?.logOut()
+        FBSession.activeSession().closeAndClearTokenInformation()
+    }
 
     var avatar: ParsePhoto? {
         get {
@@ -48,14 +63,15 @@ public class ParseUser: PFUser, PFSubclassing {
         }
     }
 
-//    var birthday: String? {
-//        get {
-//            return self[ParseUserBirthdayKey] as? String
-//        }
-//        set {
-//            self[ParseUserBirthdayKey] = newValue ?? NSNull()
-//        }
-//    }
+    var birthday: NSDate? {
+        get {
+            return self[ParseUserBirthdayKey] as? NSDate
+        }
+        set {
+            self[ParseUserBirthdayKey] = newValue ?? NSNull()
+        }
+    }
+
 //    func birthdayDate(format: String = ParseUserBirthdayDateFormat) -> NSDate? {
 //        if let unwrappedBirthday = birthday {
 //            let dateFormatter = NSDateFormatter()
@@ -119,7 +135,7 @@ public class ParseUser: PFUser, PFSubclassing {
 // MARK: - Photo class
 
 let ParsePhotoImageKey = "image"
-let ParsePhotoUploadedByKey = "uploadedBy"
+let ParsePhotoUserIdKey = "uploadedBy"
 
 public class ParsePhoto: PFObject, PFSubclassing {
 
@@ -132,7 +148,7 @@ public class ParsePhoto: PFObject, PFSubclassing {
         let defaultACL = PFACL(user: user)
         defaultACL.setPublicReadAccess(true)
         ACL = defaultACL
-        uploadedBy = user
+        userId = user.objectId
     }
 
     var image: PFFile? {
@@ -144,12 +160,12 @@ public class ParsePhoto: PFObject, PFSubclassing {
         }
     }
 
-    var uploadedBy: ParseUser? {
+    var userId: String? {
         get {
-            return self[ParsePhotoUploadedByKey] as? ParseUser
+            return self[ParsePhotoUserIdKey] as? String
         }
         set {
-            self[ParsePhotoUploadedByKey] = newValue ?? NSNull()
+            self[ParsePhotoUserIdKey] = newValue ?? NSNull()
         }
     }
 
@@ -157,7 +173,7 @@ public class ParsePhoto: PFObject, PFSubclassing {
 
     var isValid: Bool {
         get {
-            return image != nil && uploadedBy != nil
+            return image != nil
         }
     }
 }
@@ -287,7 +303,7 @@ public class ParsePublicVotePollList: Printable, DebugPrintable {
 
             // Add unique objects if poll list is not empty
             if self.polls.count > 0 {
-                for pollToAdd in (objects as! [ParsePoll]) {
+                for pollToAdd in (objects as [ParsePoll]) {
                     if find(self.polls, pollToAdd) == nil {
                         self.polls.append(pollToAdd)
                     }
@@ -295,7 +311,7 @@ public class ParsePublicVotePollList: Printable, DebugPrintable {
                 // Order descending
                 self.polls.sort({$0.createdAt.compare($1.createdAt) == NSComparisonResult.OrderedDescending})
             } else {
-                self.polls = objects as! [ParsePoll]
+                self.polls = objects as [ParsePoll]
             }
 
             // Call completion handler
@@ -305,7 +321,7 @@ public class ParsePublicVotePollList: Printable, DebugPrintable {
 
     func update(completionHandler: ((NSError!) -> Void)? = nil) {
         let currentUser = ParseUser.currentUser()
-        if currentUser.isDirty() {
+//        if currentUser.isDirty() {
             currentUser.saveInBackgroundWithBlock { (succeeded, error) -> Void in
                 if succeeded {
                     self.forceUpdate(completionHandler)
@@ -313,9 +329,9 @@ public class ParsePublicVotePollList: Printable, DebugPrintable {
                     completionHandler?(error)
                 }
             }
-        } else {
-            forceUpdate(completionHandler)
-        }
+//        } else {
+//            forceUpdate(completionHandler)
+//        }
     }
 
     func nextPoll(remove: Bool = true) -> ParsePoll? {
@@ -391,3 +407,13 @@ public class ParseVote: PFObject, PFSubclassing {
     }
 }
 
+// MARK: - Analytics
+
+//let ParseAnalyticsLoginWithFacebookScreen
+
+extension PFAnalytics {
+
+    class func trackScreenShowInBackground(identifier: String, block: PFBooleanResultBlock!) {
+        trackEventInBackground("ScreenShow", dimensions: ["Name": identifier], block: block)
+    }
+}

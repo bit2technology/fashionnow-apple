@@ -86,7 +86,7 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
         // Verify if it is a message cell
         if indexPath.section == 1 && friendsList!.count < 1 {
 
-            let cell = tableView.dequeueReusableCellWithIdentifier("Message Cell", forIndexPath: indexPath) as! UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("Message Cell", forIndexPath: indexPath) as UITableViewCell
 
             cell.textLabel?.text = error?.localizedDescription ?? "Unknown error"
 
@@ -95,7 +95,7 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
 
         // Normal cells
 
-        let cell = tableView.dequeueReusableCellWithIdentifier("Friends List Table Cell", forIndexPath: indexPath) as! FriendListTableCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Friends List Table Cell", forIndexPath: indexPath) as FriendListTableCell
 
         cell.accessoryType = find(checkedIndexPaths, indexPath) != nil ? .Checkmark : .None
 
@@ -140,6 +140,11 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
         super.viewDidLoad()
 
         postPollController.delegate = self
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        PFAnalytics.trackScreenShowInBackground("Post: Friends Selection", block: nil)
     }
 
     @IBAction func refreshControlDidChangeValue(sender: UIRefreshControl) {

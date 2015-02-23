@@ -157,7 +157,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
 
         // Get edited or original image
-        var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as! UIImage
+        var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as UIImage
         setPhotoImage(image)
         dismissViewControllerAnimated(true, completion: nil)
 

@@ -12,7 +12,7 @@ public let NewPollSavedNotificationName = "NewPollSavedNotification"
 
 class MeController: UICollectionViewController {
 
-    private var myPolls: [ParsePoll]!
+    private var myPolls = [ParsePoll]()
 
 //    weak var backgroundActivityIndicator: UIActivityIndicatorView!
 //    weak var refreshControl: UIRefreshControl!
@@ -48,6 +48,11 @@ class MeController: UICollectionViewController {
         navigationItem.title = ParseUser.currentUser().name
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        PFAnalytics.trackScreenShowInBackground("Me: Main", block: nil)
+    }
+
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
@@ -59,7 +64,10 @@ class MeController: UICollectionViewController {
         myPollsQuery.orderByDescending(ParseObjectCreatedAtKey)
         myPollsQuery.limit = Int.max
         myPollsQuery.fromLocalDatastore()
-        myPolls = (myPollsQuery.findObjects() ?? []) as! [ParsePoll]
+        myPollsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            self.myPolls = (objects ?? []) as [ParsePoll]
+            self.collectionView?.reloadData()
+        }
     }
 
     func loginChanged(notification: NSNotification) {
@@ -69,8 +77,8 @@ class MeController: UICollectionViewController {
 //        collectionView?.reloadData()
 
         // Load cached polls
+        myPolls = []
         loadCachedPolls()
-        collectionView?.reloadData()
 
 //        if myPolls.count > 0 {
 //            backgroundActivityIndicator.stopAnimating()
@@ -156,8 +164,8 @@ class MeController: UICollectionViewController {
 
             switch unwrappedId {
             case "Result Controller":
-                let idx = (collectionView!.indexPathsForSelectedItems().first as! NSIndexPath).item
-                (segue.destinationViewController as! ResultPollController).poll = myPolls[idx]
+                let idx = (collectionView!.indexPathsForSelectedItems().first as NSIndexPath).item
+                (segue.destinationViewController as ResultPollController).poll = myPolls[idx]
             default:
                 return
             }
@@ -171,7 +179,7 @@ class MeController: UICollectionViewController {
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as! PollCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as PollCell
 
         let currentPoll = myPolls[indexPath.item]
         let leftImageUrl = currentPoll.photos?.first?.image?.url

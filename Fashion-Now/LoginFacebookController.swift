@@ -11,8 +11,7 @@ import UIKit
 class LoginFacebookController: UIViewController, UINavigationControllerDelegate {
 
     @IBAction func cancelButtonPressed(sender: UITabBarItem) {
-        (presentingViewController as! TabBarController).willDismissLoginController()
-        dismissViewControllerAnimated(true, completion: nil)
+        dismissLoginModalController()
     }
 
     @IBOutlet var buttons: [UIButton]!
@@ -36,7 +35,6 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
 
         // Clean login caches
         ParseUser.logOut()
-        FBSession.activeSession().closeAndClearTokenInformation()
 
         // Login
         PFFacebookUtils.logInWithPermissions(["public_profile", "user_friends", "email"]) { (user, error) -> Void in
@@ -44,16 +42,13 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
             if let unwrappedUser = user as? ParseUser {
 
                 // Successful login
-                NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self, userInfo: ["user": unwrappedUser])
+                NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
 
                 // If user is not new, finish login flow. Otherwise, download information from Facebook.
-                if unwrappedUser.facebookId != nil && count(unwrappedUser.facebookId!) > 0 &&
-                    unwrappedUser.email != nil && count(unwrappedUser.email!) > 0 &&
-                    unwrappedUser.hasPassword == true {
+                if unwrappedUser.facebookId != nil && countElements(unwrappedUser.facebookId!) > 0 {
 
                     // Go back to primary controller
-                    (self.presentingViewController as! TabBarController).willDismissLoginController()
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                    self.dismissLoginModalController()
 
                 } else {
 
@@ -72,9 +67,10 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
                     button.enabled = true
                 }
                 self.navigationItem.leftBarButtonItem?.enabled = true
+                self.activityIndicator.stopAnimating()
                 // Show error
-                switch error.fberrorCategory {
-                case .Server, .AuthenticationReopenSession, .Permissions, .UserCancelled:
+                switch error.userInfo?[FBErrorLoginFailedReason] as? String {
+                case .Some(FBErrorLoginFailedReasonInlineCancelledValue), .Some(FBErrorLoginFailedReasonSystemDisallowedWithoutErrorValue), .Some(FBErrorLoginFailedReasonUserCancelledSystemValue), .Some(FBErrorLoginFailedReasonUserCancelledValue):
                     self.facebookErrorMessage.hidden = false
                 default:
                     self.connectionErrorMessage.hidden = false
@@ -90,7 +86,7 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
             switch unwrappedId {
 
             case "Sign Up":
-                (segue.destinationViewController as! LoginSignupController).facebookUser = sender as? FBGraphObject
+                (segue.destinationViewController as LoginSignupController).facebookUser = sender as? FBGraphObject
             default:
                 return
             }
@@ -103,6 +99,11 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
         navigationController?.delegate = self
 
         activityIndicator.stopAnimating()
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        PFAnalytics.trackScreenShowInBackground("Login: Main", block: nil)
     }
 
     // MARK: UINavigationControllerDelegate

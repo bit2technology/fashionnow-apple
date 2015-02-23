@@ -10,6 +10,13 @@ public let LoginChangedNotificationName = "LoginChangedNotification"
 
 extension UIViewController {
 
+    func dismissLoginModalController() {
+        if let unwrappedTabBarController = (presentingViewController ?? tabBarController) as? TabBarController {
+            unwrappedTabBarController.willDismissLoginController()
+            dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+
     func needsLogin() -> Bool {
         return false
     }

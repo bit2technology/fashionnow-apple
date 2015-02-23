@@ -74,12 +74,12 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
             switch identifier {
                 
             case "Poll Controller":
-                pollController = segue.destinationViewController as! PollController
+                pollController = segue.destinationViewController as PollController
 
             case "Friends List":
                 textField.resignFirstResponder()
                 pollController.poll.caption = textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-                let friendsListController = segue.destinationViewController as! FriendsListTableController
+                let friendsListController = segue.destinationViewController as FriendsListTableController
                 friendsListController.friendsList = cachedFriendsList
                 friendsListController.poll = pollController.poll
                 friendsListController.postPollController = self
@@ -100,6 +100,11 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
         pollController.delegate = self
 
         cacheFriendsList()
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        PFAnalytics.trackScreenShowInBackground("Post: Main", block: nil)
     }
 
     // MARK: PollControllerDelegate

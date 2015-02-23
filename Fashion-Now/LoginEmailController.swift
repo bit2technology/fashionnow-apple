@@ -25,8 +25,7 @@ class LoginEmailController: UITableViewController {
             if user != nil {
                 // Successful login
                 NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
-                (self.presentingViewController as! TabBarController).willDismissLoginController()
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismissLoginModalController()
             } else {
                 UIAlertView(title: nil, message: error.localizedDescription, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
                 self.usernameField.enabled = true
@@ -50,6 +49,7 @@ class LoginEmailController: UITableViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        PFAnalytics.trackScreenShowInBackground("Login: Password", block: nil)
 
         usernameField.becomeFirstResponder()
     }

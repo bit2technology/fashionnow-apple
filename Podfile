@@ -1,6 +1,7 @@
 platform :ios, '7.0'
 
 #pod 'AFNetworking'
+pod 'ActionSheetPicker-3.0'
 pod 'ALAssetsLibrary-CustomPhotoAlbum'
 pod 'Bolts'
 #pod 'DBCamera'
