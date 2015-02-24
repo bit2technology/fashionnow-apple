@@ -44,8 +44,8 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
                 // Successful login
                 NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
 
-                // If user is not new, finish login flow. Otherwise, download information from Facebook.
-                if unwrappedUser.facebookId != nil && countElements(unwrappedUser.facebookId!) > 0 {
+                // If user is not new, finish login flow. Otherwise, download information from Facebook and go to next screen.
+                if unwrappedUser.facebookId != nil && countElements(unwrappedUser.facebookId!) > 0 && unwrappedUser.hasPassword == true {
 
                     // Go back to primary controller
                     self.dismissLoginModalController()
@@ -86,7 +86,10 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
             switch unwrappedId {
 
             case "Sign Up":
-                (segue.destinationViewController as LoginSignupController).facebookUser = sender as? FBGraphObject
+                if let facebookUser = sender as? FBGraphObject {
+                    (segue.destinationViewController as LoginSignupController).facebookUser = facebookUser
+                    segue.destinationViewController.navigationItem.hidesBackButton = true
+                }
             default:
                 return
             }

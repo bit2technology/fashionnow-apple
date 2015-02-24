@@ -1,11 +1,11 @@
+/* Class = "IBUILabel"; text = "Name"; ObjectID = "0TE-HJ-F3a"; */
+"0TE-HJ-F3a.text" = "Nome";
+
 /* Class = "IBUIButton"; normalTitle = "Follow"; ObjectID = "1iE-fK-YeD"; */
 "1iE-fK-YeD.normalTitle" = "Seguir";
 
 /* Class = "IBUITabBarItem"; title = "New Poll"; ObjectID = "2O1-Ra-Pjk"; */
 "2O1-Ra-Pjk.title" = "Nova Enquete";
-
-/* Class = "IBUILabel"; text = "Password"; ObjectID = "2xV-qy-vYq"; */
-"2xV-qy-vYq.text" = "Senha";
 
 /* Class = "IBUILabel"; text = "Impossible to proceed. Are you connected to the Internet?"; ObjectID = "4UF-ot-JIx"; */
 "4UF-ot-JIx.text" = "Impossível prosseguir. Você está conectado à Internet?";
@@ -13,8 +13,8 @@
 /* Class = "IBUIButton"; normalTitle = "Vote"; ObjectID = "4XI-L8-6Pr"; */
 "4XI-L8-6Pr.normalTitle" = "Votar";
 
-/* Class = "IBUIButton"; normalTitle = "Log in with e-mail"; ObjectID = "5eZ-fB-11K"; */
-"5eZ-fB-11K.normalTitle" = "Login com e-mail";
+/* Class = "IBUIButton"; normalTitle = "Log in with password"; ObjectID = "5eZ-fB-11K"; */
+"5eZ-fB-11K.normalTitle" = "Login com senha";
 
 /* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "9H3-pz-qNB"; */
 "9H3-pz-qNB.title" = "Voltar";
@@ -22,8 +22,17 @@
 /* Class = "IBUINavigationItem"; title = "Sign Up"; ObjectID = "9LK-rm-73H"; */
 "9LK-rm-73H.title" = "Registrar";
 
+/* Class = "IBUILabel"; text = "Birthday"; ObjectID = "9u8-J9-agp"; */
+"9u8-J9-agp.text" = "Data de nascimento";
+
 /* Class = "IBUINavigationItem"; title = "Who can see?"; ObjectID = "BCe-DD-8Y6"; */
 "BCe-DD-8Y6.title" = "Quem pode ver?";
+
+/* Class = "IBUILabel"; text = "Confirm"; ObjectID = "EtA-KM-vgD"; */
+"EtA-KM-vgD.text" = "Confirmar";
+
+/* Class = "IBUILabel"; text = "Birthday"; ObjectID = "F80-og-72K"; */
+"F80-og-72K.text" = "Data de nascimento";
 
 /* Class = "IBUILabel"; text = "Location"; ObjectID = "GBx-ee-1Hn"; */
 "GBx-ee-1Hn.text" = "Localização";
@@ -37,11 +46,11 @@
 /* Class = "IBUIBarButtonItem"; title = "Log Out"; ObjectID = "M8u-sa-PEm"; */
 "M8u-sa-PEm.title" = "Logout";
 
+/* Class = "IBUITableViewSection"; headerTitle = "Overview"; ObjectID = "MRE-Ba-kQK"; */
+"MRE-Ba-kQK.headerTitle" = "Pessoal";
+
 /* Class = "IBUIButton"; normalTitle = "Log in with Facebook"; ObjectID = "MXb-Ij-kte"; */
 "MXb-Ij-kte.normalTitle" = "Login com Facebook";
-
-/* Class = "IBUIButton"; normalTitle = "Change photo..."; ObjectID = "Olj-bA-SsG"; */
-"Olj-bA-SsG.normalTitle" = "Mudar foto...";
 
 /* Class = "IBUITextField"; placeholder = "Username"; ObjectID = "Ost-XS-Gaw"; */
 "Ost-XS-Gaw.placeholder" = "Nome de usuário";
@@ -52,38 +61,35 @@
 /* Class = "IBUIBarButtonItem"; title = "Send"; ObjectID = "Qal-Vg-8Fh"; */
 "Qal-Vg-8Fh.title" = "Enviar";
 
-/* Class = "IBUILabel"; text = "Birthday"; ObjectID = "RY7-qE-jjt"; */
-"RY7-qE-jjt.text" = "Nascimento";
+/* Class = "IBUINavigationItem"; title = "Name"; ObjectID = "SHi-hj-ibv"; */
+"SHi-hj-ibv.title" = "Nome";
 
 /* Class = "IBUITextField"; placeholder = "Optional"; ObjectID = "TTM-un-ddi"; */
 "TTM-un-ddi.placeholder" = "Opcional";
 
-/* Class = "IBUIBarButtonItem"; title = "Next"; ObjectID = "UMb-Kl-08K"; */
-"UMb-Kl-08K.title" = "Próximo";
+/* Class = "IBUILabel"; text = "Gender"; ObjectID = "UI9-MR-EjJ"; */
+"UI9-MR-EjJ.text" = "Sexo";
 
 /* Class = "IBUIButton"; normalTitle = "Sign up with e-mail"; ObjectID = "UVf-dJ-3oB"; */
 "UVf-dJ-3oB.normalTitle" = "Registrar com e-mail";
 
-/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "YI8-G3-xJd"; */
-"YI8-G3-xJd.title" = "Voltar";
+/* Class = "IBUIBarButtonItem"; title = "Forgot"; ObjectID = "VHA-FD-oDJ"; */
+"VHA-FD-oDJ.title" = "Esqueci";
 
-/* Class = "IBUIButton"; normalTitle = "Change"; ObjectID = "YYI-4A-sio"; */
-"YYI-4A-sio.normalTitle" = "Mudar";
+/* Class = "IBUITableViewSection"; headerTitle = "Credentials"; ObjectID = "cAD-Za-ZPA"; */
+"cAD-Za-ZPA.headerTitle" = "Credenciais";
 
-/* Class = "IBUITabBarItem"; title = "Voting"; ObjectID = "cp0-V5-EKB"; */
-"cp0-V5-EKB.title" = "Votação";
+/* Class = "IBUITabBarItem"; title = "Public Polls"; ObjectID = "cp0-V5-EKB"; */
+"cp0-V5-EKB.title" = "Enquetes Públicas";
+
+/* Class = "IBUILabel"; text = "Gender"; ObjectID = "dXF-75-eHu"; */
+"dXF-75-eHu.text" = "Sexo";
 
 /* Class = "IBUINavigationItem"; title = "Log In"; ObjectID = "dwE-iZ-ESc"; */
 "dwE-iZ-ESc.title" = "Login";
 
-/* Class = "IBUIButton"; normalTitle = "Select"; ObjectID = "eJ9-be-dv2"; */
-"eJ9-be-dv2.normalTitle" = "Selecione";
-
 /* Class = "IBUIButton"; normalTitle = "Log in"; ObjectID = "exf-D7-gGy"; */
 "exf-D7-gGy.normalTitle" = "Login";
-
-/* Class = "IBUILabel"; text = "Gender"; ObjectID = "fN3-2a-8A5"; */
-"fN3-2a-8A5.text" = "Sexo";
 
 /* Class = "IBUILabel"; text = "Name"; ObjectID = "lnp-IN-Yzw"; */
 "lnp-IN-Yzw.text" = "Nome";
@@ -97,8 +103,20 @@
 /* Class = "IBUILabel"; text = "Date"; ObjectID = "oWN-q7-Q6r"; */
 "oWN-q7-Q6r.text" = "Data";
 
+/* Class = "IBUIBarButtonItem"; title = "Photos"; ObjectID = "p8Z-hd-6ug"; */
+"p8Z-hd-6ug.title" = "Fotos";
+
 /* Class = "IBUILabel"; text = "Sorry, Fashion Now might be disallowed to connect to your account. Go to Settings > Facebook to verify and try again."; ObjectID = "pcR-hn-i1Q"; */
 "pcR-hn-i1Q.text" = "Desculpe, o Fashion Now pode estar desabilitado para conectar à sua conta. Vá para Configurações > Facebook para verificar e tente novamente";
+
+/* Class = "IBUILabel"; text = "Username"; ObjectID = "qr1-zd-zXB"; */
+"qr1-zd-zXB.text" = "Nome de usuário";
+
+/* Class = "IBUITableViewSection"; headerTitle = "Password"; ObjectID = "r1I-qW-3wm"; */
+"r1I-qW-3wm.headerTitle" = "Senha";
+
+/* Class = "IBUINavigationItem"; title = "Forgot"; ObjectID = "rJd-SI-Ii9"; */
+"rJd-SI-Ii9.title" = "Esqueci";
 
 /* Class = "IBUILabel"; text = "Fashion Now works better with Facebook. Don't worry, we'll respect your privacy."; ObjectID = "sIE-qd-ls5"; */
 "sIE-qd-ls5.text" = "Fashion Now funciona melhor com Facebook. Não se preocupe, respeitaremos sua privacidade.";
@@ -106,9 +124,12 @@
 /* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "tXu-ZQ-igo"; */
 "tXu-ZQ-igo.placeholder" = "Senha";
 
+/* Class = "IBUILabel"; text = "Under construction"; ObjectID = "u6Z-5e-BNo"; */
+"u6Z-5e-BNo.text" = "Em construção";
+
+/* Class = "IBUILabel"; text = "Type"; ObjectID = "ub0-D8-tJg"; */
+"ub0-D8-tJg.text" = "Digitar";
+
 /* Class = "IBUITabBarItem"; title = "Me"; ObjectID = "yIu-tG-KRu"; */
 "yIu-tG-KRu.title" = "Eu";
-
-/* Class = "IBUIButton"; normalTitle = "Select"; ObjectID = "ykW-e1-Bdw"; */
-"ykW-e1-Bdw.normalTitle" = "Selecione";
 

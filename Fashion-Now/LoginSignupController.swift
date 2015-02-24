@@ -11,14 +11,13 @@ import UIKit
 class LoginSignupController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     private let passwordPlaceholder = String.random(4)
-    private let avatarPlaceholder = UIColor.lightGrayColor().image()
+    private let genderValues = ["male", "female", "other"]
+    private let genderLabels = [NSLocalizedString("GENDER_MALE", value: "Male", comment: "Gender labels"), NSLocalizedString("GENDER_FEMALE", value: "Female", comment: "Gender labels"), NSLocalizedString("GENDER_OTHER", value: "Other", comment: "Gender labels")]
 
     var facebookUser: FBGraphObject?
 
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var nameField: UITextField!
-    private let genderValues = ["male", "female", "other"]
-    private let genderLabels = [NSLocalizedString("GENDER_MALE", value: "Male", comment: "Gender labels"), NSLocalizedString("GENDER_FEMALE", value: "Female", comment: "Gender labels"), NSLocalizedString("GENDER_OTHER", value: "Other", comment: "Gender labels")]
     @IBOutlet weak var genderLabel: UILabel!
     @IBOutlet weak var genderField: UILabel!
     private var gender: String!
@@ -31,6 +30,7 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var libraryButton: UIButton!
+    private var avatarChanged = false
 
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var emailField: UITextField!
@@ -49,7 +49,11 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+
+        // Deselect row
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        // Dismiss keyboard
+        view.endEditing(true)
 
         switch indexPath {
 
@@ -80,14 +84,14 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
         var imagePickerSouce: UIImagePickerControllerSourceType?
 
         switch sender {
-            // Present camera
-        case cameraButton:
+
+        case cameraButton: // Present camera
             imagePickerSouce = .Camera
-            // Present albuns
-        case libraryButton:
+
+        case libraryButton: // Present albuns
             imagePickerSouce = .PhotoLibrary
-            // Unknown source, do nothing
-        default:
+
+        default: // Unknown source, do nothing
             return
         }
 
@@ -99,31 +103,40 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
         }
     }
 
+    /// Revert interface changes for save and present error. Needs original values for rightBarButtonItem and hidesBackButton
     private func presentError(error: NSError, rightBarButtonItem: UIBarButtonItem?, hidesBackButton: Bool) {
         // Revert interface
-        self.navigationItem.setRightBarButtonItem(rightBarButtonItem, animated: true)
-        self.navigationItem.setHidesBackButton(hidesBackButton, animated: true)
-        self.navigationItem.leftBarButtonItem?.enabled = true
-        for button in [self.cameraButton, self.libraryButton] {
+        // Buttons
+        navigationItem.setRightBarButtonItem(rightBarButtonItem, animated: true)
+        navigationItem.setHidesBackButton(hidesBackButton, animated: true)
+        navigationItem.leftBarButtonItem?.enabled = true
+        for button in [cameraButton, libraryButton] {
             button.enabled = true
         }
+        // Fields
+        for field in [nameField, locationField, emailField, usernameField, passwordField, passwordVerifyField] {
+            field.enabled = true
+        }
+        // Table
+        tableView.allowsSelection = true
         // Error handling
         if error.code == kPFErrorConnectionFailed {
-            UIAlertView(title: NSLocalizedString("SIGNUP_CONNECTION_FAILED", value: "Connection failed. Are you connected to internet?", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+            UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_CONNECTION_TITLE", value: "Connection failed", comment: "Error message for Sign Up or Edit Profile"), message: NSLocalizedString("SIGNUP_ERROR_CONNECTION_MESSAGE", value: "Are you connected to the Internet?", comment: "Error message for Sign Up or Edit Profile"), delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
 
         } else if error.code == kPFErrorUsernameTaken {
-            self.usernameLabel.textColor = UIColor.defaultErrorColor()
-            UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_USERNAME_TAKEN", value: "Username already exists", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+            usernameLabel.textColor = UIColor.defaultErrorColor()
+            UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_USERNAME_TAKEN_TITLE", value: "Username already exists", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
 
         } else if error.code == kPFErrorUserEmailTaken {
-            self.emailLabel.textColor = UIColor.defaultErrorColor()
-            UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_EMAIL_TAKEN", value: "Another user is using this e-mail", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+            emailLabel.textColor = UIColor.defaultErrorColor()
+            UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_EMAIL_TAKEN_TITLE", value: "Another user is using this e-mail", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
 
         } else {
-            UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_UNKNOWN", value: "Sorry, there was an error", comment: "Error message for Sign Up or Edit Profile"), message: error.localizedDescription, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+            UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_UNKNOWN_TITLE", value: "Sorry, there was an error", comment: "Error message for Sign Up or Edit Profile"), message: error.localizedDescription, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
         }
     }
 
+    /// Method called when user attempts to save changes to user object. First, this checks if all fields are valid, then updates the UI to prevent any change (or inconsistency of information) and then tries to save.
     @IBAction func doneButtonPressed(sender: UIBarButtonItem) {
 
         // Dismiss keyboard
@@ -166,7 +179,7 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
         if passwordField.text != passwordPlaceholder && (passwordField.text == nil || countElements(passwordField.text) < 6) {
             passwordLabel.textColor = UIColor.defaultErrorColor()
             allFieldsValid = false
-            verifyMessages.append(NSLocalizedString("SIGNUP_ERROR_PASSWORD_TOO_SHORT", value: "Password too short (6 characters minimum)", comment: "Error message for Sign Up or Edit Profile"))
+            verifyMessages.append(NSLocalizedString("SIGNUP_ERROR_PASSWORD_TOO_SHORT", value: "Password too short (6 characters min.)", comment: "Error message for Sign Up or Edit Profile"))
         }
         // Password verify
         else if passwordField.text != passwordVerifyField.text {
@@ -177,7 +190,7 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
 
         // Show alert if one or more fields are not valid
         if !allFieldsValid {
-            UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_ALERT_TITLE", value: "Review information" , comment: "Title of alert of missing/wrong information"), message: "\n".join(verifyMessages), delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+            UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_REVIEW_TITLE", value: "Review information" , comment: "Title of alert of missing/wrong information"), message: "\n".join(verifyMessages), delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
             return
         }
 
@@ -196,11 +209,27 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
         for button in [cameraButton, libraryButton] {
             button.enabled = false
         }
+        // Fields
+        for field in [nameField, locationField, emailField, usernameField, passwordField, passwordVerifyField] {
+            field.enabled = false
+        }
+        // Table
+        tableView.allowsSelection = false
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
             var error: NSError?
-            var currentUser: ParseUser!
+            var currentUser = ParseUser.currentUser()
 
+            // If user is not saved yet, save it
+            if currentUser.isDirty() {
+                currentUser.save(&error)
+                if let unwrappedError = error {
+                    self.presentError(unwrappedError, rightBarButtonItem: doneButtonItem, hidesBackButton: hidesBackButton)
+                    return
+                }
+            }
+
+            // Get new instance of current user
             let currentUserQuery = PFQuery(className: ParseUser.parseClassName())
             if let unwrappedNewCurrentUser = currentUserQuery.getObjectWithId(ParseUser.currentUser().objectId, error: &error) as? ParseUser {
                 currentUser = unwrappedNewCurrentUser
@@ -224,13 +253,11 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
                 currentUser.facebookId = unwrappedFacebookId
             }
             // Set photo properties
-            if let unwrappedAvatarImage = self.avatarImageView.image /*where unwrappedAvatarImage != self.avatarPlaceholder*/ {
-                if unwrappedAvatarImage != self.avatarPlaceholder {
-                    let imageData = unwrappedAvatarImage.compressedJPEGData()
-                    let avatar = ParsePhoto(user: currentUser)
-                    avatar.image = PFFile(data: imageData, contentType: "image/jpeg")
-                    currentUser.avatar = avatar
-                }
+            if self.avatarChanged {
+                let imageData = self.avatarImageView.image!.compressedJPEGData()
+                let avatar = ParsePhoto(user: currentUser)
+                avatar.image = PFFile(data: imageData, contentType: "image/jpeg")
+                currentUser.avatar = avatar
             }
 
             // Save attempt
@@ -244,8 +271,10 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
         }
     }
 
+    /// GMT time zone helper
     private let GMTTimeZone = NSTimeZone(name: "GMT")
 
+    /// This method takes an NSDate in local time and converts it to GMT (without time).
     private func timezoneIndependent(date: NSDate) -> NSDate {
         let timeZoneIndependentFormatter = NSDateFormatter()
         timeZoneIndependentFormatter.dateFormat = "yyyy-MM-dd"
@@ -254,6 +283,7 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
         return timeZoneIndependentFormatter.dateFromString(adjustedNewBirthdayString)!
     }
 
+    /// Show description for date in GMT
     private func dateDescription(date: NSDate) -> String {
         let dateFormatter = NSDateFormatter()
         dateFormatter.timeZone = GMTTimeZone
@@ -266,22 +296,23 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let currentUser = ParseUser.currentUser()
+
         // Adjust layout
         genderField.textColor = UIColor.defaultTintColor()
         birthdayField.textColor = UIColor.defaultTintColor()
-        avatarImageView.image = avatarPlaceholder
+        avatarImageView.image = UIColor.lightGrayColor().image()
         avatarImageView.layer.cornerRadius = 42
         avatarImageView.layer.masksToBounds = true
 
         // The values for gender and birthday are filled with default values (even for anonymous users)
-        gender = ParseUser.currentUser().gender ?? facebookUser?.gender ?? genderValues.last
+        gender = currentUser.gender ?? facebookUser?.gender ?? genderValues.last
         genderField.text = genderLabels[find(genderValues, gender) ?? genderLabels.count - 1]
         // Birthday adjusted to GMT
         birthday = timezoneIndependent(NSDate())
         birthdayField.text = dateDescription(birthday)
 
         // If user is anonymous, show standard (empty) controller
-        let currentUser = ParseUser.currentUser()
         if PFAnonymousUtils.isLinkedWithUser(currentUser) {
             return
         }
@@ -312,11 +343,6 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
             avatarImageView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedFacebookId, size: 84), usingActivityIndicatorStyle: .WhiteLarge)
         }
 
-        // Make some changes if this is first edit after login with Facebook
-        if let unwrappedFacebookUser = facebookUser {
-            navigationItem.hidesBackButton = true
-        }
-
         // Make some changes if user has already configured account
         if currentUser.hasPassword == true {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelButtonPressed:")
@@ -344,6 +370,7 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
         // Get edited or original image
         var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as UIImage
         avatarImageView.image = image
+        avatarChanged = true
         dismissViewControllerAnimated(true, completion: nil)
 
         // Save to Album if source is camera

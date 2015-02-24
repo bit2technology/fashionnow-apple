@@ -1,6 +1,66 @@
-/* Message in alert warning users about beta limitations */
-"BETA_WARNING_ALERT_MESSAGE" = "Desculpe, mas nesta versão do Fashion Now você só pode logar com sua conta do Facebook.";
+/* Gender labels */
+"GENDER_FEMALE" = "Mulher";
+
+/* Gender labels */
+"GENDER_MALE" = "Homem";
+
+/* Gender labels */
+"GENDER_OTHER" = "Outro";
+
+/* Alert title for when user does not fill the fields */
+"LOGIN_ERROR_INCOMPLEtE_TITLE" = "Você precisa informar ambos nome de usuário e senha";
+
+/* Alert message for general error */
+"LOGIN_ERROR_UNKNOWN_MESSAGE" = "Voce está conectado à Internet?";
+
+/* Alert title for general error */
+"LOGIN_ERROR_UNKNOWN_TITLE" = "Login impossível";
+
+/* Alert title for when user does not exist or wrong password */
+"LOGIN_ERROR_USER_NOT_FOUNT_TITLE" = "Nome de usuário ou senha incorretos";
+
+/* String shown when user is setting the visibility of the poll */
+"PUBLIC_SELECTION" = "Público";
+
+/* Error message for Sign Up or Edit Profile */
+"SIGNUP_ERROR_CONNECTION_MESSAGE" = "Você está conectado à Internet?";
+
+/* Error message for Sign Up or Edit Profile */
+"SIGNUP_ERROR_CONNECTION_TITLE" = "Conexão falhou";
+
+/* Error message for Sign Up or Edit Profile */
+"SIGNUP_ERROR_EMAIL_MISSING" = "E-mail faltando";
+
+/* Error message for Sign Up or Edit Profile */
+"SIGNUP_ERROR_EMAIL_NOT_VALID" = "E-mail inválido";
+
+/* Error message for Sign Up or Edit Profile */
+"SIGNUP_ERROR_EMAIL_TAKEN_TITLE" = "Outro usuário está usando este e-mail";
+
+/* Error message for Sign Up or Edit Profile */
+"SIGNUP_ERROR_NAME_MISSING" = "Nome faltando";
+
+/* Error message for Sign Up or Edit Profile */
+"SIGNUP_ERROR_PASSWORD_DIFFERENT" = "Verificação de senha falhou";
+
+/* Error message for Sign Up or Edit Profile */
+"SIGNUP_ERROR_PASSWORD_TOO_SHORT" = "Senha muito curta (6 caracteres min.)";
+
+/* Title of alert of missing/wrong information */
+"SIGNUP_ERROR_REVIEW_TITLE" = "Revisar informações";
+
+/* Error message for Sign Up or Edit Profile */
+"SIGNUP_ERROR_UNKNOWN_TITLE" = "Desculpe, houve um erro";
+
+/* Error message for Sign Up or Edit Profile */
+"SIGNUP_ERROR_USERNAME_MISSING" = "Nome de usuário faltando";
+
+/* Error message for Sign Up or Edit Profile */
+"SIGNUP_ERROR_USERNAME_TAKEN_TITLE" = "Nome de usuário já existe";
 
 /* User logged in with a Facebook account and must review his/her information. */
 "SIGNUP_REVIEW_TITLE" = "Editar Perfil";
+
+/* Shown when user has no name or email */
+"UNKNOW_USER" = "Desconhecido";
 
