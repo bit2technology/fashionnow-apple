@@ -132,6 +132,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 /// Returns "OK" for English and its variants for other languages
 public let LocalizedOKButtonTitle = NSLocalizedString("OK_BUTTON_TITLE", value: "OK" , comment: "Default OK button title for entire app")
 
+/// Returns "OK" for English and its variants for other languages
+public let LocalizedCancelButtonTitle = NSLocalizedString("CANCEL_BUTTON_TITLE", value: "Cancel" , comment: "Default Cancel button title for entire app")
+
 extension UIColor {
     
     // MARK: Colors

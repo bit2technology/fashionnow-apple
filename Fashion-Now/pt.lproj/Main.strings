@@ -115,17 +115,11 @@
 /* Class = "IBUITableViewSection"; headerTitle = "Password"; ObjectID = "r1I-qW-3wm"; */
 "r1I-qW-3wm.headerTitle" = "Senha";
 
-/* Class = "IBUINavigationItem"; title = "Forgot"; ObjectID = "rJd-SI-Ii9"; */
-"rJd-SI-Ii9.title" = "Esqueci";
-
 /* Class = "IBUILabel"; text = "Fashion Now works better with Facebook. Don't worry, we'll respect your privacy."; ObjectID = "sIE-qd-ls5"; */
 "sIE-qd-ls5.text" = "Fashion Now funciona melhor com Facebook. Não se preocupe, respeitaremos sua privacidade.";
 
 /* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "tXu-ZQ-igo"; */
 "tXu-ZQ-igo.placeholder" = "Senha";
-
-/* Class = "IBUILabel"; text = "Under construction"; ObjectID = "u6Z-5e-BNo"; */
-"u6Z-5e-BNo.text" = "Em construção";
 
 /* Class = "IBUILabel"; text = "Type"; ObjectID = "ub0-D8-tJg"; */
 "ub0-D8-tJg.text" = "Digitar";

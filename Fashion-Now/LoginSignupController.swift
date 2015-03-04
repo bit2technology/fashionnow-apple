@@ -69,7 +69,7 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
             timeZoneIndependentFormatter.timeZone = GMTTimeZone
             let adjustedBirthdayString = timeZoneIndependentFormatter.stringFromDate(birthday)
             timeZoneIndependentFormatter.timeZone = nil
-            ActionSheetDatePicker.showPickerWithTitle(nil, datePickerMode: .Date, selectedDate: timeZoneIndependentFormatter.dateFromString(adjustedBirthdayString), minimumDate: nil, maximumDate: NSDate(), doneBlock: { (picker, selectedDate, origin) -> Void in
+            ActionSheetDatePicker.showPickerWithTitle(nil, datePickerMode: .Date, selectedDate: timeZoneIndependentFormatter.dateFromString(adjustedBirthdayString), minimumDate: nil, maximumDate: nil, doneBlock: { (picker, selectedDate, origin) -> Void in
                 self.birthday = self.timezoneIndependent(selectedDate as NSDate)
                 self.birthdayField.text = self.dateDescription(self.birthday)
             }, cancelBlock: nil, origin: view)

@@ -253,7 +253,7 @@
                     <navigationItem key="navigationItem" title="Log In" id="dwE-iZ-ESc">
                         <barButtonItem key="rightBarButtonItem" title="Forgot" id="VHA-FD-oDJ">
                             <connections>
-                                <segue destination="y5Z-qD-gbg" kind="show" id="3UG-10-HKv"/>
+                                <action selector="forgotButtonPressed:" destination="34U-YS-Pbl" id="epl-4a-3oL"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -267,37 +267,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gA1-ed-9m9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="824" y="2900"/>
-        </scene>
-        <!--Forgot-->
-        <scene sceneID="IlD-OE-9YM">
-            <objects>
-                <viewController id="y5Z-qD-gbg" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Mje-T9-pDx"/>
-                        <viewControllerLayoutGuide type="bottom" id="KXM-4W-1CI"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="lPt-Kv-MlC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Under construction" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u6Z-5e-BNo">
-                                <rect key="frame" x="86" y="229" width="148" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <constraints>
-                            <constraint firstAttribute="centerX" secondItem="u6Z-5e-BNo" secondAttribute="centerX" id="2bq-cI-dMd"/>
-                            <constraint firstAttribute="centerY" secondItem="u6Z-5e-BNo" secondAttribute="centerY" id="D1D-o6-Fes"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Forgot" id="rJd-SI-Ii9"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="iCB-8l-Lto" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="824" y="3481"/>
         </scene>
         <!--Vote Poll Controller-->
         <scene sceneID="VVH-fN-2gA">

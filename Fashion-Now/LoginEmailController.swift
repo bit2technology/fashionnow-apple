@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginEmailController: UITableViewController {
+class LoginEmailController: UITableViewController, UIAlertViewDelegate {
 
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
@@ -16,10 +16,28 @@ class LoginEmailController: UITableViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
+    @IBAction func forgotButtonPressed(sender: UIBarButtonItem) {
+        view.endEditing(true)
+        let alertView = UIAlertView(title: NSLocalizedString("LOGIN_RESET_PASSWORD_TITLE", value: "Type your e-mail", comment: "Alert title for when user requests a password reset"), message: NSLocalizedString("LOGIN_RESET_PASSWORD_MESSAGE", value: "We will send you a link to reset your password", comment: "Alert message for when user requests a password reset"), delegate: self, cancelButtonTitle: LocalizedCancelButtonTitle, otherButtonTitles: NSLocalizedString("LOGIN_RESET_PASSWORD_BUTTON", value: "Reset", comment: "Alert button for reset password"))
+        alertView.alertViewStyle = .PlainTextInput
+        alertView.textFieldAtIndex(0)?.keyboardType = .EmailAddress
+        alertView.show()
+    }
+
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex != alertView.cancelButtonIndex {
+            ParseUser.requestPasswordResetForEmailInBackground(alertView.textFieldAtIndex(0)?.text, block: { (succeeded, error) -> Void in
+                if !succeeded {
+                    UIAlertView(title: error.localizedDescription, message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle)
+                }
+            })
+        }
+    }
+
     @IBAction func loginButtonPressed(sender: UIButton) {
 
         if usernameField.text == nil || countElements(usernameField.text) <= 0 || passwordField.text == nil || countElements(passwordField.text) <= 0 {
-            UIAlertView(title: NSLocalizedString("LOGIN_ERROR_INCOMPLEtE_TITLE", value: "You must provide both username and password", comment: "Alert title for when user does not fill the fields"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+            UIAlertView(title: NSLocalizedString("LOGIN_ERROR_INCOMPLETE_TITLE", value: "You must provide both username and password", comment: "Alert title for when user does not fill the fields"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
             return
         }
 
@@ -79,13 +97,5 @@ class LoginEmailController: UITableViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         PFAnalytics.trackScreenShowInBackground("Login: Password", block: nil)
-
-        usernameField.becomeFirstResponder()
-    }
-
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        view.endEditing(true)
     }
 }

@@ -1,3 +1,6 @@
+/* Default Cancel button title for entire app */
+"CANCEL_BUTTON_TITLE" = "Cancelar";
+
 /* Gender labels */
 "GENDER_FEMALE" = "Mulher";
 
@@ -8,7 +11,7 @@
 "GENDER_OTHER" = "Outro";
 
 /* Alert title for when user does not fill the fields */
-"LOGIN_ERROR_INCOMPLEtE_TITLE" = "Você precisa informar ambos nome de usuário e senha";
+"LOGIN_ERROR_INCOMPLETE_TITLE" = "Você deve informar ambos nome de usuário e senha";
 
 /* Alert message for general error */
 "LOGIN_ERROR_UNKNOWN_MESSAGE" = "Voce está conectado à Internet?";
@@ -18,6 +21,12 @@
 
 /* Alert title for when user does not exist or wrong password */
 "LOGIN_ERROR_USER_NOT_FOUNT_TITLE" = "Nome de usuário ou senha incorretos";
+
+/* Alert button for reset password */
+"LOGIN_RESET_PASSWORD_BUTTON" = "Resetar";
+
+/* Alert title for when user requests a password reset */
+"LOGIN_RESET_PASSWORD_TITLE" = "Digite seu e-mail";
 
 /* String shown when user is setting the visibility of the poll */
 "PUBLIC_SELECTION" = "Público";

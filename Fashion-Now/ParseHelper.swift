@@ -135,7 +135,7 @@ public class ParseUser: PFUser, PFSubclassing {
 // MARK: - Photo class
 
 let ParsePhotoImageKey = "image"
-let ParsePhotoUserIdKey = "uploadedBy"
+let ParsePhotoUserIdKey = "userId"
 
 public class ParsePhoto: PFObject, PFSubclassing {
 
