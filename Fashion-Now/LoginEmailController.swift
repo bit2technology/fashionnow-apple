@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginEmailController: UITableViewController, UIAlertViewDelegate {
+class LoginEmailController: UITableViewController, UIAlertViewDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
@@ -26,11 +26,15 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate {
 
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex != alertView.cancelButtonIndex {
-            ParseUser.requestPasswordResetForEmailInBackground(alertView.textFieldAtIndex(0)?.text, block: { (succeeded, error) -> Void in
-                if !succeeded {
-                    UIAlertView(title: error.localizedDescription, message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle)
+            ParseUser.requestPasswordResetForEmailInBackground(alertView.textFieldAtIndex(0)?.text) { (succeeded, error) -> Void in
+                if let unwrappedError = error {
+                    if unwrappedError.domain == PFParseErrorDomain && (unwrappedError.code == kPFErrorUserWithEmailNotFound || unwrappedError.code == kPFErrorUserEmailMissing) {
+                        UIAlertView(title: NSLocalizedString("LOGIN_RESET_EMAIL_NOT_FOUND_TITLE", value: "There is no user registered with this e-mail", comment: "Alert title for when there is no user with the e-mail providen error"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+                    } else {
+                        UIAlertView(title: NSLocalizedString("LOGIN_RESET_UNKNOWN_TITLE", value: "Log in impossible", comment: "Alert title for general error"), message: NSLocalizedString("LOGIN_RESET_UNKNOWN_MESSAGE", value: "Are you connected to the Internet?", comment: "Alert message for general error"), delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+                    }
                 }
-            })
+            }
         }
     }
 
@@ -71,20 +75,6 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate {
         }
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let unwrappedId = segue.identifier {
-            switch unwrappedId {
-
-            case "Sign Up":
-                if let facebookUser = sender as? FBGraphObject {
-                    segue.destinationViewController.navigationItem.hidesBackButton = true
-                }
-            default:
-                return
-            }
-        }
-    }
-
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -97,5 +87,18 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         PFAnalytics.trackScreenShowInBackground("Login: Password", block: nil)
+    }
+
+    // MARK: UITextFieldDelegate
+
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+
+        if textField == usernameField {
+            passwordField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+
+        return false
     }
 }

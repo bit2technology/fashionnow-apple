@@ -8,9 +8,8 @@
 
 import UIKit
 
-class LoginSignupController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
-    private let passwordPlaceholder = String.random(4)
     private let genderValues = ["male", "female", "other"]
     private let genderLabels = [NSLocalizedString("GENDER_MALE", value: "Male", comment: "Gender labels"), NSLocalizedString("GENDER_FEMALE", value: "Female", comment: "Gender labels"), NSLocalizedString("GENDER_OTHER", value: "Other", comment: "Gender labels")]
 
@@ -38,8 +37,7 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordLabel: UILabel!
     @IBOutlet weak var passwordField: UITextField!
-    @IBOutlet weak var passwordVerifyLabel: UILabel!
-    @IBOutlet weak var passwordVerifyField: UITextField!
+    private var passwordChanged = false
 
     @IBAction func cancelButtonPressed(sender: UITabBarItem) {
         // Dismiss keyboard
@@ -103,39 +101,6 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
         }
     }
 
-    /// Revert interface changes for save and present error. Needs original values for rightBarButtonItem and hidesBackButton
-    private func presentError(error: NSError, rightBarButtonItem: UIBarButtonItem?, hidesBackButton: Bool) {
-        // Revert interface
-        // Buttons
-        navigationItem.setRightBarButtonItem(rightBarButtonItem, animated: true)
-        navigationItem.setHidesBackButton(hidesBackButton, animated: true)
-        navigationItem.leftBarButtonItem?.enabled = true
-        for button in [cameraButton, libraryButton] {
-            button.enabled = true
-        }
-        // Fields
-        for field in [nameField, locationField, emailField, usernameField, passwordField, passwordVerifyField] {
-            field.enabled = true
-        }
-        // Table
-        tableView.allowsSelection = true
-        // Error handling
-        if error.code == kPFErrorConnectionFailed {
-            UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_CONNECTION_TITLE", value: "Connection failed", comment: "Error message for Sign Up or Edit Profile"), message: NSLocalizedString("SIGNUP_ERROR_CONNECTION_MESSAGE", value: "Are you connected to the Internet?", comment: "Error message for Sign Up or Edit Profile"), delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
-
-        } else if error.code == kPFErrorUsernameTaken {
-            usernameLabel.textColor = UIColor.defaultErrorColor()
-            UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_USERNAME_TAKEN_TITLE", value: "Username already exists", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
-
-        } else if error.code == kPFErrorUserEmailTaken {
-            emailLabel.textColor = UIColor.defaultErrorColor()
-            UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_EMAIL_TAKEN_TITLE", value: "Another user is using this e-mail", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
-
-        } else {
-            UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_UNKNOWN_TITLE", value: "Sorry, there was an error", comment: "Error message for Sign Up or Edit Profile"), message: error.localizedDescription, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
-        }
-    }
-
     /// Method called when user attempts to save changes to user object. First, this checks if all fields are valid, then updates the UI to prevent any change (or inconsistency of information) and then tries to save.
     @IBAction func doneButtonPressed(sender: UIBarButtonItem) {
 
@@ -176,16 +141,10 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
         }
 
         // Password
-        if passwordField.text != passwordPlaceholder && (passwordField.text == nil || countElements(passwordField.text) < 6) {
+        if passwordField.text == nil || countElements(passwordField.text) < 6 {
             passwordLabel.textColor = UIColor.defaultErrorColor()
             allFieldsValid = false
             verifyMessages.append(NSLocalizedString("SIGNUP_ERROR_PASSWORD_TOO_SHORT", value: "Password too short (6 characters min.)", comment: "Error message for Sign Up or Edit Profile"))
-        }
-        // Password verify
-        else if passwordField.text != passwordVerifyField.text {
-            passwordVerifyLabel.textColor = UIColor.defaultErrorColor()
-            allFieldsValid = false
-            verifyMessages.append(NSLocalizedString("SIGNUP_ERROR_PASSWORD_DIFFERENT", value: "Password verification failed", comment: "Error message for Sign Up or Edit Profile"))
         }
 
         // Show alert if one or more fields are not valid
@@ -210,7 +169,7 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
             button.enabled = false
         }
         // Fields
-        for field in [nameField, locationField, emailField, usernameField, passwordField, passwordVerifyField] {
+        for field in [nameField, locationField, emailField, usernameField, passwordField] {
             field.enabled = false
         }
         // Table
@@ -220,11 +179,49 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
             var error: NSError?
             var currentUser = ParseUser.currentUser()
 
+            /// Revert interface to original (enable interactive elements).
+            func revertInterface() {
+                // Revert interface
+                // Buttons
+                navigationItem.setRightBarButtonItem(doneButtonItem, animated: true)
+                navigationItem.setHidesBackButton(hidesBackButton, animated: true)
+                navigationItem.leftBarButtonItem?.enabled = true
+                for button in [cameraButton, libraryButton] {
+                    button.enabled = true
+                }
+                // Fields
+                for field in [nameField, locationField, emailField, usernameField, passwordField] {
+                    field.enabled = true
+                }
+                // Table
+                tableView.allowsSelection = true
+            }
+
+            /// Present error alert.
+            func presentError(error: NSError) {
+                // Error handling
+                if error.code == kPFErrorConnectionFailed {
+                    UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_CONNECTION_TITLE", value: "Connection failed", comment: "Error message for Sign Up or Edit Profile"), message: NSLocalizedString("SIGNUP_ERROR_CONNECTION_MESSAGE", value: "Are you connected to the Internet?", comment: "Error message for Sign Up or Edit Profile"), delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+
+                } else if error.code == kPFErrorUsernameTaken {
+                    usernameLabel.textColor = UIColor.defaultErrorColor()
+                    UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_USERNAME_TAKEN_TITLE", value: "Username already exists", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+
+                } else if error.code == kPFErrorUserEmailTaken {
+                    emailLabel.textColor = UIColor.defaultErrorColor()
+                    UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_EMAIL_TAKEN_TITLE", value: "Another user is using this e-mail", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+
+                } else {
+                    UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_UNKNOWN_TITLE", value: "Sorry, there was an error", comment: "Error message for Sign Up or Edit Profile"), message: error.localizedDescription, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+                }
+            }
+
             // If user is not saved yet, save it
             if currentUser.isDirty() {
                 currentUser.save(&error)
                 if let unwrappedError = error {
-                    self.presentError(unwrappedError, rightBarButtonItem: doneButtonItem, hidesBackButton: hidesBackButton)
+                    revertInterface()
+                    presentError(unwrappedError)
                     return
                 }
             }
@@ -234,7 +231,8 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
             if let unwrappedNewCurrentUser = currentUserQuery.getObjectWithId(ParseUser.currentUser().objectId, error: &error) as? ParseUser {
                 currentUser = unwrappedNewCurrentUser
             } else {
-                self.presentError(error!, rightBarButtonItem: doneButtonItem, hidesBackButton: hidesBackButton)
+                revertInterface()
+                presentError(error!)
                 return
             }
 
@@ -245,7 +243,7 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
             currentUser.location = self.locationField.text
             currentUser.email = self.emailField.text
             currentUser.username = self.usernameField.text
-            if self.passwordField.text != self.passwordPlaceholder {
+            if self.passwordChanged {
                 currentUser.password = self.passwordField.text
                 currentUser.hasPassword = true
             }
@@ -263,11 +261,14 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
             // Save attempt
             currentUser.save(&error)
             if let unwrappedError = error {
-                self.presentError(unwrappedError, rightBarButtonItem: doneButtonItem, hidesBackButton: hidesBackButton)
+                revertInterface()
+                presentError(unwrappedError)
                 return
             }
 
-            self.dismissLoginModalController()
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.dismissLoginModalController()
+            })
         }
     }
 
@@ -347,14 +348,39 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
         if currentUser.hasPassword == true {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelButtonPressed:")
             usernameField.text = currentUser.username
-            passwordField.text = passwordPlaceholder
-            passwordVerifyField.text = passwordPlaceholder
+            passwordField.text = "passwo" // Placeholder
         }
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         PFAnalytics.trackScreenShowInBackground("Login: Signup", block: nil)
+    }
+
+    // MARK: UITextFieldDelegate
+
+    func textFieldDidBeginEditing(textField: UITextField) {
+        if textField == passwordField {
+            passwordChanged = true
+        }
+    }
+
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        switch textField {
+
+        case nameField:
+            locationField.becomeFirstResponder()
+        case locationField:
+            emailField.becomeFirstResponder()
+        case emailField:
+            usernameField.becomeFirstResponder()
+        case usernameField:
+            passwordField.becomeFirstResponder()
+        default:
+            textField.resignFirstResponder()
+        }
+
+        return false
     }
 
     // MARK: UINavigationControllerDelegate
@@ -377,22 +403,5 @@ class LoginSignupController: UITableViewController, UINavigationControllerDelega
         if picker.sourceType == .Camera {
             ALAssetsLibrary().saveImage(image, toAlbum: "Fashion Now", completion: nil, failure: nil)
         }
-    }
-}
-
-private extension String {
-
-    func isEmail() -> Bool {
-        let regex = NSRegularExpression(pattern: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$", options: .CaseInsensitive, error: nil)
-        return regex?.firstMatchInString(self, options: nil, range: NSMakeRange(0, countElements(self))) != nil
-    }
-
-    static func random(length: Int) -> String {
-        let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        var randomString = String()
-        for i in 0..<length {
-            randomString.append(chars[Int(arc4random_uniform(UInt32(countElements(chars))))])
-        }
-        return randomString
     }
 }

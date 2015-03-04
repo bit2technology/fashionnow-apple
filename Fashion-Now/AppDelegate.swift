@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         }
 
-        // Verify if current user is valid. If no, logout and clean login caches.
+        // Logout if current user is invalid (is not anonymous and hasn't password)
         let currentUser = ParseUser.currentUser()
         if !PFAnonymousUtils.isLinkedWithUser(currentUser) && currentUser.hasPassword != true {
             ParseUser.logOut()
@@ -100,7 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     /// Called every login or logout
     func updateInstallationUser(notification: NSNotification) {
-        // Register user ID in installation on login
+        // Register user ID in installation on login change
         let currentInstallation = ParseInstallation.currentInstallation()
         currentInstallation.userId = ParseUser.currentUser().objectId
         currentInstallation.saveEventually(nil)
@@ -187,22 +187,6 @@ extension UIColor {
         let image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         return image
-    }
-}
-
-// Get character and substrings from strings with sintax string[x], string[x...y]
-extension String {
-
-    subscript (i: Int) -> Character {
-        return self[advance(self.startIndex, i)]
-    }
-
-    subscript (i: Int) -> String {
-        return String(self[i] as Character)
-    }
-
-    subscript (r: Range<Int>) -> String {
-        return substringWithRange(Range(start: advance(startIndex, r.startIndex), end: advance(startIndex, r.endIndex)))
     }
 }
 

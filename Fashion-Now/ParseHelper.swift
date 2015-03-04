@@ -40,7 +40,6 @@ public class ParseInstallation: PFInstallation, PFSubclassing {
 
 let ParseUserAvatarKey = "avatar"
 let ParseUserBirthdayKey = "birthday"
-//let ParseUserBirthdayDateFormat = "yyyy-MM-dd"
 let ParseUserFacebookIdKey = "facebookId"
 let ParseUserGenderKey = "gender"
 let ParseUserHasPassword = "hasPassword"
@@ -276,7 +275,7 @@ public class ParsePublicVotePollList: Printable, DebugPrintable {
 
     init() {
         let currentUser = ParseUser.currentUser()
-        let pollsToVoteQueryLimit = 100
+        let pollsToVoteQueryLimit = 1000
         // Creating query
         pollsToVoteQuery = PFQuery(className: ParsePoll.parseClassName())
         pollsToVoteQuery.includeKey(ParsePollCreatedByKey)
@@ -285,7 +284,7 @@ public class ParsePublicVotePollList: Printable, DebugPrintable {
         pollsToVoteQuery.orderByDescending(ParseObjectCreatedAtKey)
         // Selecting only relevant polls
         let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
-        votesByMeQuery.limit = Int.max
+        votesByMeQuery.limit = pollsToVoteQueryLimit
         votesByMeQuery.orderByDescending(ParseObjectCreatedAtKey)
         votesByMeQuery.whereKey(ParseVoteByKey, equalTo: currentUser)
         pollsToVoteQuery.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)

@@ -168,7 +168,7 @@
                         <sections>
                             <tableViewSection id="c91-lW-ZlK">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="raA-fV-a7R">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="raA-fV-a7R">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="raA-fV-a7R" id="nev-gv-c2y">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -176,11 +176,11 @@
                                                 <textField clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ost-XS-Gaw">
                                                     <rect key="frame" x="15" y="0.0" width="305" height="43"/>
                                                     <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" priority="750" constant="43" id="A6z-yO-9B2"/>
-                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="34U-YS-Pbl" id="HmH-G7-him"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -191,7 +191,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="80a-JU-FeB">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="80a-JU-FeB">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="80a-JU-FeB" id="v3C-vc-fXz">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -199,11 +199,11 @@
                                                 <textField clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tXu-ZQ-igo">
                                                     <rect key="frame" x="15" y="0.0" width="305" height="43"/>
                                                     <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" priority="750" constant="43" id="32l-sI-B9H"/>
-                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="34U-YS-Pbl" id="Axa-jN-7PZ"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -218,16 +218,13 @@
                             </tableViewSection>
                             <tableViewSection id="RGd-u8-3yp">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="6QR-F5-xcz">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="6QR-F5-xcz">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6QR-F5-xcz" id="wrm-dZ-Uus">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="exf-D7-gGy">
                                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" priority="750" constant="43" id="qS7-sD-18x"/>
-                                                    </constraints>
                                                     <state key="normal" title="Log in" backgroundImage="ButtonRoundBordersBackground"/>
                                                     <connections>
                                                         <action selector="loginButtonPressed:" destination="34U-YS-Pbl" eventType="touchUpInside" id="izw-Z8-q1C"/>
@@ -803,7 +800,10 @@
                                                     <rect key="frame" x="76" y="0.0" width="236" height="43"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="n9L-hk-vfW" id="wRB-bT-j7m"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -890,7 +890,10 @@
                                                     <rect key="frame" x="97" y="0.0" width="215" height="43"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="next"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="n9L-hk-vfW" id="DV7-rs-KuS"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -972,7 +975,10 @@
                                                     <rect key="frame" x="80" y="0.0" width="232" height="43"/>
                                                     <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="n9L-hk-vfW" id="APe-6C-M6Y"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1001,7 +1007,10 @@
                                                     <rect key="frame" x="103" y="0.0" width="209" height="43"/>
                                                     <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="n9L-hk-vfW" id="7EA-BP-Yt4"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1014,27 +1023,26 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                            <tableViewSection headerTitle="Password" id="r1I-qW-3wm">
-                                <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="44" id="2Cn-DW-q9V">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2Cn-DW-q9V" id="4Zc-BJ-OT9">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ub0-D8-tJg">
-                                                    <rect key="frame" x="15" y="13" width="31" height="17"/>
+                                                <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ub0-D8-tJg">
+                                                    <rect key="frame" x="15" y="13" width="65" height="17"/>
                                                     <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" clearsOnBeginEditing="YES" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="B7e-Ql-bAH">
-                                                    <rect key="frame" x="66" y="0.0" width="246" height="43"/>
+                                                    <rect key="frame" x="100" y="0.0" width="212" height="43"/>
                                                     <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="n9L-hk-vfW" id="yIV-g5-LQ0"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1044,35 +1052,6 @@
                                                 <constraint firstAttribute="bottom" secondItem="B7e-Ql-bAH" secondAttribute="bottom" id="axQ-Sj-sd2"/>
                                                 <constraint firstAttribute="trailing" secondItem="B7e-Ql-bAH" secondAttribute="trailing" constant="8" id="bM7-vG-UsT"/>
                                                 <constraint firstAttribute="centerY" secondItem="ub0-D8-tJg" secondAttribute="centerY" id="vFR-QK-J6p"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="44" id="mRt-8v-g3O">
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mRt-8v-g3O" id="Yqj-h4-wK9">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Confirm" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EtA-KM-vgD">
-                                                    <rect key="frame" x="15" y="13" width="53" height="17"/>
-                                                    <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <textField clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" clearsOnBeginEditing="YES" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="xZv-eZ-ffV">
-                                                    <rect key="frame" x="88" y="0.0" width="224" height="43"/>
-                                                    <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
-                                                </textField>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="xZv-eZ-ffV" firstAttribute="top" secondItem="Yqj-h4-wK9" secondAttribute="top" id="clr-nx-8VV"/>
-                                                <constraint firstAttribute="centerY" secondItem="EtA-KM-vgD" secondAttribute="centerY" id="gwA-OO-nB8"/>
-                                                <constraint firstItem="xZv-eZ-ffV" firstAttribute="leading" secondItem="EtA-KM-vgD" secondAttribute="trailing" constant="20" id="kdh-Ex-Esg"/>
-                                                <constraint firstAttribute="trailing" secondItem="xZv-eZ-ffV" secondAttribute="trailing" constant="8" id="vdi-rq-MS7"/>
-                                                <constraint firstAttribute="bottom" secondItem="xZv-eZ-ffV" secondAttribute="bottom" id="x2B-6O-bxB"/>
-                                                <constraint firstItem="EtA-KM-vgD" firstAttribute="leading" secondItem="Yqj-h4-wK9" secondAttribute="leading" constant="15" id="zv7-3D-fld"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1109,8 +1088,6 @@
                         <outlet property="nameLabel" destination="lnp-IN-Yzw" id="b0Q-Hx-hIZ"/>
                         <outlet property="passwordField" destination="B7e-Ql-bAH" id="7ly-Qo-Izf"/>
                         <outlet property="passwordLabel" destination="ub0-D8-tJg" id="R9t-dV-aTG"/>
-                        <outlet property="passwordVerifyField" destination="xZv-eZ-ffV" id="vPJ-qs-QZD"/>
-                        <outlet property="passwordVerifyLabel" destination="EtA-KM-vgD" id="SeJ-oK-YWA"/>
                         <outlet property="usernameField" destination="XwP-yV-bZz" id="z8J-cD-BlH"/>
                         <outlet property="usernameLabel" destination="qr1-zd-zXB" id="vMw-F4-1Y1"/>
                     </connections>
