@@ -40,7 +40,8 @@ public class ParseInstallation: PFInstallation, PFSubclassing {
 
 // MARK: - User class
 
-let ParseUserAvatarKey = "avatar"
+//let ParseUserAvatarKey = "avatar"
+let ParseUserAvatarImageKey = "avatarImage"
 let ParseUserBirthdayKey = "birthday"
 let ParseUserFacebookIdKey = "facebookId"
 let ParseUserGenderKey = "gender"
@@ -55,13 +56,31 @@ public class ParseUser: PFUser, PFSubclassing {
         FBSession.activeSession().closeAndClearTokenInformation()
     }
 
-    var avatar: ParsePhoto? {
+//    var avatar: ParsePhoto? {
+//        get {
+//            return self[ParseUserAvatarKey] as? ParsePhoto
+//        }
+//        set {
+//            self[ParseUserAvatarKey] = newValue ?? NSNull()
+//        }
+//    }
+
+    var avatarImage: PFFile? {
         get {
-            return self[ParseUserAvatarKey] as? ParsePhoto
+            return self[ParseUserAvatarImageKey] as? PFFile
         }
         set {
-            self[ParseUserAvatarKey] = newValue ?? NSNull()
+            self[ParseUserAvatarImageKey] = newValue ?? NSNull()
         }
+    }
+
+    func avatarURL(size: Int? = nil) -> NSURL? {
+        if let unwrappedAvatarPath = avatarImage?.url {
+            return NSURL(string: unwrappedAvatarPath)
+        } else if let unwrappedFacebookId = facebookId {
+            return FacebookHelper.urlForPictureOfUser(id: unwrappedFacebookId, size: size)
+        }
+        return nil
     }
 
     var birthday: NSDate? {

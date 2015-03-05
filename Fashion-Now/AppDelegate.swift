@@ -50,8 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if !PFAnonymousUtils.isLinkedWithUser(currentUser) && (currentUser.hasPassword != true || currentUser.email?.isEmail() != true) {
             ParseUser.logOut()
         }
-        // Fetch avatar if needed, for url.
-        currentUser.avatar?.fetchIfNeededInBackgroundWithBlock(nil)
 
         // Erase badge number, set userID and update location
         let currentInstallation = ParseInstallation.currentInstallation()
@@ -165,6 +163,10 @@ extension UIColor {
 
     class func defaultErrorColor(alpha: CGFloat = 1) -> UIColor {
         return redColor().colorWithAlphaComponent(alpha)
+    }
+
+    class func defaultPlaceholderColor(alpha: CGFloat = 1) -> UIColor {
+        return lightGrayColor().colorWithAlphaComponent(alpha)
     }
 
     class func randomColor(alpha: CGFloat = 1) -> UIColor{

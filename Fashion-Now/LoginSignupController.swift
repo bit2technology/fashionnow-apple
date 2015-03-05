@@ -253,9 +253,7 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
             // Set photo properties
             if self.avatarChanged {
                 let imageData = self.avatarImageView.image!.compressedJPEGData()
-                let avatar = ParsePhoto(user: currentUser)
-                avatar.image = PFFile(data: imageData, contentType: "image/jpeg")
-                currentUser.avatar = avatar
+                currentUser.avatarImage = PFFile(data: imageData, contentType: "image/jpeg")
             }
 
             // Save attempt
@@ -267,9 +265,7 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
             }
 
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                CRToastManager.showNotificationWithMessage("Teste Toast", completionBlock: { () -> Void in
-                    self.dismissLoginModalController()
-                })
+                self.dismissLoginModalController()
             })
         }
     }
@@ -304,7 +300,7 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
         // Adjust layout
         genderField.textColor = UIColor.defaultTintColor()
         birthdayField.textColor = UIColor.defaultTintColor()
-        avatarImageView.image = UIColor.lightGrayColor().image()
+        avatarImageView.image = UIColor.defaultPlaceholderColor().image()
         avatarImageView.layer.cornerRadius = 42
         avatarImageView.layer.masksToBounds = true
 
@@ -336,14 +332,8 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
         // Email
         emailField.text = currentUser.email ?? facebookUser?.email
         // Avatar
-        if let unwrappedAvatarPhoto = currentUser.avatar {
-            unwrappedAvatarPhoto.fetchIfNeededInBackgroundWithBlock { (fetchedAvatarPhoto, error) -> Void in
-                if let unwrappedFetchedAvatarPhoto = fetchedAvatarPhoto as? ParsePhoto {
-                    self.avatarImageView.setImageWithURL(NSURL(string: unwrappedFetchedAvatarPhoto.image!.url!), usingActivityIndicatorStyle: .WhiteLarge)
-                }
-            }
-        } else if let unwrappedFacebookId = facebookUser?.objectId {
-            avatarImageView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedFacebookId, size: 84), usingActivityIndicatorStyle: .WhiteLarge)
+        if let unwrappedAvatarUrl = currentUser.avatarURL(size: 84) {
+            avatarImageView.setImageWithURL(unwrappedAvatarUrl, placeholderImage: UIColor.defaultPlaceholderColor().image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         }
 
         // Make some changes if user has already configured account

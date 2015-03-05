@@ -18,6 +18,8 @@ class MeController: UICollectionViewController {
     weak var refreshControl: UIRefreshControl!
     var isBeingUpdated = false
 
+    var header: MeHeaderView?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -40,6 +42,17 @@ class MeController: UICollectionViewController {
         collectionView?.alwaysBounceVertical = true
 
         loadPolls()
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // Layout configuration
+        let itemWidth = floor(((collectionView?.bounds.width ?? 320) - 8) / 3)
+        (collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: itemWidth, height: floor(itemWidth * 3 / 2))
+
+        // Update header information
+        header?.prepare()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -71,22 +84,36 @@ class MeController: UICollectionViewController {
         myPollsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
 
             if error == nil {
-                self.processQueryResponse(objects, error: error)
+                self.processQueryResponse(objects)
             }
             // If myPolls is empty, get from pinned polls
             else if self.myPolls.count <= 0 {
                 myPollsQuery.fromLocalDatastore()
                 .findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-                    self.processQueryResponse(objects, error: error)
+
+                    if error == nil {
+                        self.processQueryResponse(objects)
+                    } else {
+                        self.processQueryResponse(nil, error: error)
+                    }
                 }
+            }
+            // Otherwise, show error message
+            else {
+                self.processQueryResponse(nil, error: error)
             }
         }
     }
 
-    private func processQueryResponse(objects: [AnyObject]!, error: NSError!) {
+    private func processQueryResponse(objects: [AnyObject]?, error: NSError? = nil) {
         activityIndicator.stopAnimating()
         refreshControl.endRefreshing()
         isBeingUpdated = false
+
+        if error != nil {
+            Toast.show(text: NSLocalizedString("ME_LOAD_POLLS_FAIL_MESSAGE", value: "Error downloading polls", comment: "Message for when user lost connection and fail to download new polls"), type: .Error)
+            return
+        }
 
         myPolls = (objects ?? []) as [ParsePoll]
         PFObject.pinAllInBackground(myPolls, block: nil)
@@ -136,8 +163,8 @@ class MeController: UICollectionViewController {
     }
 
     override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-
-        return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Me Overview", forIndexPath: indexPath) as UICollectionReusableView
+        header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Me Overview", forIndexPath: indexPath) as MeHeaderView
+        return header!.prepare()
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -161,7 +188,31 @@ class MeController: UICollectionViewController {
 
 class MeHeaderView: UICollectionReusableView {
 
-    @IBOutlet weak var leftImageView: UIImageView!
+    @IBOutlet weak var avatarImageView: UIImageView!
+    var avatarUrl: NSURL?
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var editProfileButton: UIButton!
+
+    func prepare() -> Self {
+        let currentUser = ParseUser.currentUser()
+
+        let currentUserUrl = currentUser.avatarURL(size: 84)
+        if avatarUrl != currentUserUrl {
+            avatarUrl = currentUserUrl
+            avatarImageView.setImageWithURL(currentUserUrl, placeholderImage: UIColor.defaultPlaceholderColor().image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
+        }
+        nameLabel.text = currentUser.name
+
+        return self
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        avatarImageView.image = UIColor.defaultPlaceholderColor().image()
+        avatarImageView.layer.cornerRadius = 42
+        avatarImageView.layer.masksToBounds = true
+    }
 
 }
 

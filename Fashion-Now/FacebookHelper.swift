@@ -17,9 +17,12 @@ class FacebookHelper {
 
     :returns: The URL of the picture
     */
-    class func urlForPictureOfUser(id facebookId: String, size avatarSize: Int) -> NSURL? {
-        let avatarRealSize = avatarSize * Int(UIScreen.mainScreen().scale)
-        let avatarPath = "http://graph.facebook.com/\(facebookId)/picture?height=\(avatarRealSize)&width=\(avatarRealSize)"
+    class func urlForPictureOfUser(id facebookId: String, size avatarSize: Int?) -> NSURL? {
+        var avatarPath = "http://graph.facebook.com/\(facebookId)/picture"
+        if let unwrappedAvatarSize = avatarSize {
+            let avatarRealSize = Int(ceil(CGFloat(unwrappedAvatarSize) * UIScreen.mainScreen().scale))
+            avatarPath += "?height=\(avatarRealSize)&width=\(avatarRealSize)"
+        }
         return NSURL(string: avatarPath)
     }
 }

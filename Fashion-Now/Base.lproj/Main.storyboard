@@ -582,11 +582,11 @@
                                 </connections>
                             </collectionViewCell>
                         </cells>
-                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Me Overview" id="CRs-XG-0ED">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Me Overview" id="CRs-XG-0ED" customClass="MeHeaderView" customModule="Fashion_Now" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="64" width="320" height="114"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DnG-VQ-q5y">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DnG-VQ-q5y">
                                     <rect key="frame" x="15" y="15" width="84" height="84"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="84" id="gVw-M9-O3l"/>
@@ -604,6 +604,9 @@
                                     <state key="normal" title="Edit Profile">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <connections>
+                                        <segue destination="OJC-JN-eaN" kind="presentation" modalPresentationStyle="formSheet" id="NQb-ET-fId"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <constraints>
@@ -618,6 +621,11 @@
                                 <constraint firstItem="Cjt-nK-Mnt" firstAttribute="top" secondItem="Hr5-yk-mrX" secondAttribute="bottom" id="v0P-rp-cZf"/>
                                 <constraint firstAttribute="trailing" secondItem="Cjt-nK-Mnt" secondAttribute="trailing" constant="8" id="xZN-Jp-rJh"/>
                             </constraints>
+                            <connections>
+                                <outlet property="avatarImageView" destination="DnG-VQ-q5y" id="K1x-EA-r8w"/>
+                                <outlet property="editProfileButton" destination="Cjt-nK-Mnt" id="B3A-4w-gSj"/>
+                                <outlet property="nameLabel" destination="Hr5-yk-mrX" id="ve0-KM-l2R"/>
+                            </connections>
                         </collectionReusableView>
                         <connections>
                             <outlet property="dataSource" destination="cEa-Or-vWC" id="OpW-sb-Oyq"/>
@@ -625,11 +633,6 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" title="Me" id="SHi-hj-ibv">
-                        <barButtonItem key="leftBarButtonItem" title="Teste" id="XLY-Mc-eJF">
-                            <connections>
-                                <segue destination="OJC-JN-eaN" kind="presentation" modalPresentationStyle="formSheet" id="U2R-Fk-LmR"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Log Out" id="M8u-sa-PEm">
                             <connections>
                                 <action selector="logOutButtonPressed:" destination="cEa-Or-vWC" id="1Kt-t4-qgj"/>
