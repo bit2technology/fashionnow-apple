@@ -22,7 +22,7 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate, UITextFi
 
     private func showResetAlertView(message: String? = nil) {
         view.endEditing(true)
-        let alertView = UIAlertView(title: NSLocalizedString("LOGIN_RESET_PASSWORD_TITLE", value: "Type your e-mail", comment: "Alert title for when user requests a password reset"), message: message ?? NSLocalizedString("LOGIN_RESET_PASSWORD_MESSAGE", value: "We will send you a link to reset your password", comment: "Alert message for when user requests a password reset"), delegate: self, cancelButtonTitle: LocalizedCancelButtonTitle, otherButtonTitles: NSLocalizedString("LOGIN_RESET_PASSWORD_BUTTON", value: "Reset", comment: "Alert button for reset password"))
+        let alertView = UIAlertView(title: NSLocalizedString("LOGIN_RESET_PASSWORD_TITLE", value: "Type your email", comment: "Alert title for when user requests a password reset"), message: message ?? NSLocalizedString("LOGIN_RESET_PASSWORD_MESSAGE", value: "We will send you a link to reset your password", comment: "Alert message for when user requests a password reset"), delegate: self, cancelButtonTitle: LocalizedCancelButtonTitle, otherButtonTitles: NSLocalizedString("LOGIN_RESET_PASSWORD_BUTTON", value: "Reset", comment: "Alert button for reset password"))
         alertView.alertViewStyle = .PlainTextInput
         alertView.textFieldAtIndex(0)?.keyboardType = .EmailAddress
         alertView.show()
@@ -32,34 +32,39 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate, UITextFi
         if buttonIndex != alertView.cancelButtonIndex {
             let email = alertView.textFieldAtIndex(0)?.text
 
-            if email != nil || countElements(email!) <= 0 || !email!.isEmail() {
-                showResetAlertView(message: NSLocalizedString("LOGIN_RESET_ERROR_EMAIL_NOT_VALID_MESSAGE", value: "Please, insert a valid e-mail address", comment: "Alert title for when user types an invalid email address"))
+            if email == nil || countElements(email!) <= 0 || !email!.isEmail() {
+                showResetAlertView(message: NSLocalizedString("LOGIN_RESET_ERROR_EMAIL_NOT_VALID_MESSAGE", value: "Please, insert a valid email address", comment: "Alert title for when user types an invalid email address"))
                 return
             }
 
             ParseUser.requestPasswordResetForEmailInBackground(email!) { (succeeded, error) -> Void in
-                if let unwrappedError = error {
-                    if unwrappedError.domain == PFParseErrorDomain && (unwrappedError.code == kPFErrorUserWithEmailNotFound || unwrappedError.code == kPFErrorUserEmailMissing) {
-                        UIAlertView(title: NSLocalizedString("LOGIN_RESET_ERROR_EMAIL_NOT_FOUND_TITLE", value: "There is no user registered with this e-mail", comment: "Alert title for when there is no user with the e-mail providen error"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
-                    } else {
-                        UIAlertView(title: NSLocalizedString("LOGIN_RESET_ERROR_UNKNOWN_TITLE", value: "Log in impossible", comment: "Alert title for general error"), message: NSLocalizedString("LOGIN_RESET_UNKNOWN_MESSAGE", value: "Are you connected to the Internet?", comment: "Alert message for general error"), delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
-                    }
+                if error == nil {
+                    Toast.show(text: NSLocalizedString("LOGIN_RESET_SUCCESS_MESSAGE", value: "Password reset instructions sent to your email", comment: "Message for when the email reset was successful"), type: .Error)
+                } else if error.domain == PFParseErrorDomain && error.code == kPFErrorUserWithEmailNotFound {
+                    Toast.show(text: NSLocalizedString("LOGIN_RESET_ERROR_EMAIL_NOT_FOUND_MESSAGE", value: "There is no user registered with this email", comment: "Message for when there is no user with the email providen error"), type: .Error)
+                } else {
+                    Toast.show(text: NSLocalizedString("LOGIN_RESET_GENERAL_MESSAGE", value: "Please, check your internet connection", comment: "Message for general error, possibly connection related"), type: .Error)
                 }
             }
         }
     }
 
-    @IBAction func loginButtonPressed(sender: UIButton) {
+    func alertViewShouldEnableFirstOtherButton(alertView: UIAlertView) -> Bool {
+        return alertView.textFieldAtIndex(0)?.text.isEmail() ?? false
+    }
+
+    @IBAction func loginButtonPressed(sender: UIButton!) {
 
         if usernameField.text == nil || countElements(usernameField.text) <= 0 || passwordField.text == nil || countElements(passwordField.text) <= 0 {
-            UIAlertView(title: NSLocalizedString("LOGIN_ERROR_INCOMPLETE_TITLE", value: "You must provide both username and password", comment: "Alert title for when user does not fill the fields"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+            Toast.show(text: NSLocalizedString("LOGIN_ERROR_INCOMPLETE_MESSAGE", value: "You must provide both username and password", comment: "Message for when user does not fill the fields"), type: .Error)
             return
         }
 
         usernameField.enabled = false
         passwordField.enabled = false
-        sender.enabled = false
-        navigationItem.hidesBackButton = true
+        loginButton.enabled = false
+        navigationItem.setHidesBackButton(true, animated: true)
+        navigationItem.rightBarButtonItem?.enabled = false
         activityIndicator.startAnimating()
         
         ParseUser.logInWithUsernameInBackground(usernameField.text, password: passwordField.text) { (user, error) -> Void in
@@ -73,14 +78,15 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate, UITextFi
                 self.usernameField.enabled = true
                 self.usernameField.becomeFirstResponder()
                 self.passwordField.enabled = true
-                sender.enabled = true
-                self.navigationItem.hidesBackButton = false
+                self.loginButton.enabled = true
+                self.navigationItem.setHidesBackButton(false, animated: true)
+                self.navigationItem.rightBarButtonItem?.enabled = true
                 self.activityIndicator.stopAnimating()
 
                 if error.code == kPFErrorObjectNotFound {
-                    UIAlertView(title: NSLocalizedString("LOGIN_ERROR_USER_NOT_FOUNT_TITLE", value: "Username or password incorrect", comment: "Alert title for when user does not exist or wrong password"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+                    Toast.show(text: NSLocalizedString("LOGIN_ERROR_USER_NOT_FOUNT_MESSAGE", value: "Username or password incorrect", comment: "Message for when user does not exist or wrong password"), type: .Error)
                 } else {
-                    UIAlertView(title: NSLocalizedString("LOGIN_ERROR_UNKNOWN_TITLE", value: "Log in impossible", comment: "Alert title for general error"), message: NSLocalizedString("LOGIN_ERROR_UNKNOWN_MESSAGE", value: "Are you connected to the Internet?", comment: "Alert message for general error"), delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+                    Toast.show(text: NSLocalizedString("LOGIN_ERROR_GENERAL_MESSAGE", value: "Please, check your internet connection", comment: "Message for general error, possibly connection related"), type: .Error)
                 }
             }
         }
@@ -103,10 +109,13 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate, UITextFi
     // MARK: UITextFieldDelegate
 
     func textFieldShouldReturn(textField: UITextField) -> Bool {
+        switch textField {
 
-        if textField == usernameField {
+        case usernameField:
             passwordField.becomeFirstResponder()
-        } else {
+        case passwordField:
+            loginButtonPressed(nil)
+        default:
             textField.resignFirstResponder()
         }
 

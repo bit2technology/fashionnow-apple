@@ -10,23 +10,38 @@
 /* Gender labels */
 "GENDER_OTHER" = "Outro";
 
-/* Alert title for when user does not fill the fields */
-"LOGIN_ERROR_INCOMPLETE_TITLE" = "Você deve informar ambos nome de usuário e senha";
+/* Message for general error, possibly connection related */
+"LOGIN_ERROR_GENERAL_MESSAGE" = "Por favor, verifique sua conexão";
 
-/* Alert message for general error */
-"LOGIN_ERROR_UNKNOWN_MESSAGE" = "Voce está conectado à Internet?";
+/* Message for when user does not fill the fields */
+"LOGIN_ERROR_INCOMPLETE_MESSAGE" = "Você deve informar usuário e senha";
 
-/* Alert title for general error */
-"LOGIN_ERROR_UNKNOWN_TITLE" = "Login impossível";
+/* Message for when user does not exist or wrong password */
+"LOGIN_ERROR_USER_NOT_FOUNT_MESSAGE" = "Usuário ou senha incorretos";
 
-/* Alert title for when user does not exist or wrong password */
-"LOGIN_ERROR_USER_NOT_FOUNT_TITLE" = "Nome de usuário ou senha incorretos";
+/* Message for when there is no user with the e-mail providen error */
+"LOGIN_RESET_ERROR_EMAIL_NOT_FOUND_MESSAGE" = "Não há nenhum usuário com este email";
+
+/* Alert title for when user types an invalid email address */
+"LOGIN_RESET_ERROR_EMAIL_NOT_VALID_MESSAGE" = "Por favor, digite um endereço de email válido";
+
+/* Message for general error, possibly connection related */
+"LOGIN_RESET_GENERAL_MESSAGE" = "Por favor, verifique sua conexão";
 
 /* Alert button for reset password */
 "LOGIN_RESET_PASSWORD_BUTTON" = "Resetar";
 
+/* Alert message for when user requests a password reset */
+"LOGIN_RESET_PASSWORD_MESSAGE" = "Enviaremos um link para resetar sua senha";
+
 /* Alert title for when user requests a password reset */
-"LOGIN_RESET_PASSWORD_TITLE" = "Digite seu e-mail";
+"LOGIN_RESET_PASSWORD_TITLE" = "Digite seu email";
+
+/* Message for when the email reset was successful */
+"LOGIN_RESET_SUCCESS_MESSAGE" = "Link para recuperação de senha enviado";
+
+/* Default OK button title for entire app */
+"OK_BUTTON_TITLE" = "";
 
 /* String shown when user is setting the visibility of the poll */
 "PUBLIC_SELECTION" = "Público";
@@ -48,9 +63,6 @@
 
 /* Error message for Sign Up or Edit Profile */
 "SIGNUP_ERROR_NAME_MISSING" = "Nome faltando";
-
-/* Error message for Sign Up or Edit Profile */
-"SIGNUP_ERROR_PASSWORD_DIFFERENT" = "Verificação de senha falhou";
 
 /* Error message for Sign Up or Edit Profile */
 "SIGNUP_ERROR_PASSWORD_TOO_SHORT" = "Senha muito curta (6 caracteres min.)";

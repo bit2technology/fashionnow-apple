@@ -45,9 +45,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         }
 
-        // Logout if current user is invalid (is not anonymous and hasn't password)
+        // Logout if current user is invalid (is not anonymous and hasn't password or valid email)
         let currentUser = ParseUser.currentUser()
-        if !PFAnonymousUtils.isLinkedWithUser(currentUser) && currentUser.hasPassword != true {
+        if !PFAnonymousUtils.isLinkedWithUser(currentUser) && (currentUser.hasPassword != true || currentUser.email?.isEmail() != true) {
             ParseUser.logOut()
         }
         // Fetch avatar if needed, for url.
@@ -201,5 +201,30 @@ class TemplateBackgroundButton: UIButton {
 
     override func setBackgroundImage(image: UIImage?, forState state: UIControlState) {
         super.setBackgroundImage(image?.imageWithRenderingMode(.AlwaysTemplate), forState: state)
+    }
+}
+
+class Toast {
+
+    enum Type {
+        case Default, Error
+    }
+
+    class func show(#text: String, type: Type = .Default) {
+
+        var options = [String: AnyObject]()
+
+        // Text
+        options[kCRToastTextKey] = text
+
+        // Background Color
+        switch type {
+        case .Error:
+            options[kCRToastBackgroundColorKey] = UIColor.defaultErrorColor()
+        default:
+            break
+        }
+
+        CRToastManager.showNotificationWithOptions(options, completionBlock: nil)
     }
 }
