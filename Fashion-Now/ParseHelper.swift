@@ -10,6 +10,8 @@ let ParseObjectCreatedAtKey = "createdAt"
 let ParseObjectUpdatedAtKey = "updatedAt"
 let ParseObjectIdKey = "objectId"
 
+let ParseQueryLimit = 1000
+
 // MARK: - Installation class
 
 let ParseInstallationLocationKey = "location"

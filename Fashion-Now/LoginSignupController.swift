@@ -267,7 +267,9 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
             }
 
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.dismissLoginModalController()
+                CRToastManager.showNotificationWithMessage("Teste Toast", completionBlock: { () -> Void in
+                    self.dismissLoginModalController()
+                })
             })
         }
     }

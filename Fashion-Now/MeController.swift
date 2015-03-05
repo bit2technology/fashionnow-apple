@@ -14,38 +14,32 @@ class MeController: UICollectionViewController {
 
     private var myPolls = [ParsePoll]()
 
-//    weak var backgroundActivityIndicator: UIActivityIndicatorView!
-//    weak var refreshControl: UIRefreshControl!
-//    var isBeingUpdated = false
+    weak var activityIndicator: UIActivityIndicatorView!
+    weak var refreshControl: UIRefreshControl!
+    var isBeingUpdated = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        loadCachedPolls()
 
         // Basic configuration
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconMeSelected")
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
 
-//        // Activity indicator background view
-//        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-//        activityIndicator.color = UIColor.lightGrayColor()
-//        activityIndicator.startAnimating()
-//        collectionView?.backgroundView = activityIndicator
-//        self.backgroundActivityIndicator = activityIndicator
-//
-//        // Configure refresh control for manual update
-//        let refreshControl = UIRefreshControl()
-//        refreshControl.addTarget(self, action: "updatePollList", forControlEvents: .ValueChanged)
-//        collectionView?.addSubview(refreshControl)
-//        self.refreshControl = refreshControl
-//        collectionView?.alwaysBounceVertical = true
-    }
+        // Activity indicator background view
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+        activityIndicator.color = UIColor.lightGrayColor()
+        activityIndicator.startAnimating()
+        collectionView?.backgroundView = activityIndicator
+        self.activityIndicator = activityIndicator
 
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+        // Configure refresh control for manual update
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: "refreshControlDidChangeValue:", forControlEvents: .ValueChanged)
+        collectionView?.addSubview(refreshControl)
+        self.refreshControl = refreshControl
+        collectionView?.alwaysBounceVertical = true
 
-        navigationItem.title = ParseUser.currentUser().name
+        loadPolls()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -57,96 +51,59 @@ class MeController: UICollectionViewController {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
-    private func loadCachedPolls() {
-        let myPollsQuery = PFQuery(className: ParsePoll.parseClassName())
-        myPollsQuery.includeKey(ParsePollPhotosKey)
-        myPollsQuery.whereKey(ParsePollCreatedByKey, equalTo: ParseUser.currentUser())
-        myPollsQuery.orderByDescending(ParseObjectCreatedAtKey)
-        myPollsQuery.limit = Int.max
-        myPollsQuery.fromLocalDatastore()
-        myPollsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            self.myPolls = (objects ?? []) as [ParsePoll]
-            self.collectionView?.reloadData()
+    func refreshControlDidChangeValue(sender: UIRefreshControl) {
+
+        if sender.refreshing && !isBeingUpdated {
+            loadPolls()
+        } else {
+            sender.endRefreshing()
         }
+    }
+
+    private func loadPolls() {
+        isBeingUpdated = true
+
+        let myPollsQuery = PFQuery(className: ParsePoll.parseClassName())
+        .includeKey(ParsePollPhotosKey)
+        .whereKey(ParsePollCreatedByKey, equalTo: ParseUser.currentUser())
+        .orderByDescending(ParseObjectCreatedAtKey)
+        myPollsQuery.limit = ParseQueryLimit
+        myPollsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+
+            if error == nil {
+                self.processQueryResponse(objects, error: error)
+            }
+            // If myPolls is empty, get from pinned polls
+            else if self.myPolls.count <= 0 {
+                myPollsQuery.fromLocalDatastore()
+                .findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+                    self.processQueryResponse(objects, error: error)
+                }
+            }
+        }
+    }
+
+    private func processQueryResponse(objects: [AnyObject]!, error: NSError!) {
+        activityIndicator.stopAnimating()
+        refreshControl.endRefreshing()
+        isBeingUpdated = false
+
+        myPolls = (objects ?? []) as [ParsePoll]
+        PFObject.pinAllInBackground(myPolls, block: nil)
+        collectionView?.reloadData()
     }
 
     func loginChanged(notification: NSNotification) {
 
-        PFObject.unpinAll(myPolls)
-//        backgroundActivityIndicator.startAnimating()
-//        collectionView?.reloadData()
-
-        // Load cached polls
+        // Clean caches. Also load polls if new user is not anonymous
+        PFObject.unpinAllObjectsInBackgroundWithBlock(nil)
         myPolls = []
-        loadCachedPolls()
-
-//        if myPolls.count > 0 {
-//            backgroundActivityIndicator.stopAnimating()
-//        }
+        collectionView?.reloadData()
+        if !PFAnonymousUtils.isLinkedWithUser(ParseUser.currentUser()) {
+            activityIndicator.startAnimating()
+            loadPolls()
+        }
     }
-
-//    func updatePollList() {
-//
-//        if isBeingUpdated {
-//            return
-//        }
-//
-//        isBeingUpdated = true
-//
-//        let currentUser = ParseUser.currentUser()
-//        if PFAnonymousUtils.isLinkedWithUser(currentUser) {
-//            (collectionView?.backgroundView as UIActivityIndicatorView).stopAnimating()
-//            refreshControl.endRefreshing()
-//            return
-//        }
-//
-//        let myPollsQuery = PFQuery(className: ParsePoll.parseClassName())
-//        myPollsQuery.includeKey(ParsePollPhotosKey)
-//        myPollsQuery.whereKey(ParsePollCreatedByKey, equalTo: currentUser)
-//        myPollsQuery.orderByDescending(ParseObjectCreatedAtKey)
-//        myPollsQuery.limit = Int.max
-//        myPollsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-//
-//            // TODO: Error
-//            if error != nil {
-//                return
-//            }
-//
-//            var newPolls = [ParsePoll]()
-//            if let firstMyPoll = self.myPolls.first {
-//                for poll in objects as [ParsePoll] {
-//                    if firstMyPoll.createdAt.compare(poll.createdAt) == NSComparisonResult.OrderedAscending {
-//                        newPolls.append(poll)
-//                    }
-//                }
-//            } else {
-//                newPolls = objects as [ParsePoll]
-//            }
-//
-//            PFObject.pinAllInBackground(newPolls) { (success, error) -> Void in
-//                if error != nil {
-//                    NSLog("Pin error: \(error)")
-//                }
-//            }
-//
-//            if newPolls.count > 0 {
-//
-//                var addedIndexPaths = [NSIndexPath]()
-//                for index in 0 ..< newPolls.count {
-//                    addedIndexPaths.append(NSIndexPath(forItem: index, inSection: 0))
-//                }
-//
-//                newPolls.extend(self.myPolls ?? [])
-//                self.myPolls = newPolls
-//
-//                self.collectionView?.insertItemsAtIndexPaths(addedIndexPaths)
-//            }
-//
-//            self.backgroundActivityIndicator.stopAnimating()
-//            self.refreshControl.endRefreshing()
-//            self.isBeingUpdated = false
-//        }
-//    }
 
     @IBAction func logOutButtonPressed(snder: AnyObject) {
         ParseUser.logOut()
@@ -178,6 +135,11 @@ class MeController: UICollectionViewController {
         return myPolls.count
     }
 
+    override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+
+        return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Me Overview", forIndexPath: indexPath) as UICollectionReusableView
+    }
+
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as PollCell
 
@@ -195,6 +157,12 @@ class MeController: UICollectionViewController {
 
         return cell
     }
+}
+
+class MeHeaderView: UICollectionReusableView {
+
+    @IBOutlet weak var leftImageView: UIImageView!
+
 }
 
 class PollCell: UICollectionViewCell {

@@ -17,8 +17,12 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate, UITextFi
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     @IBAction func forgotButtonPressed(sender: UIBarButtonItem) {
+        showResetAlertView()
+    }
+
+    private func showResetAlertView(message: String? = nil) {
         view.endEditing(true)
-        let alertView = UIAlertView(title: NSLocalizedString("LOGIN_RESET_PASSWORD_TITLE", value: "Type your e-mail", comment: "Alert title for when user requests a password reset"), message: NSLocalizedString("LOGIN_RESET_PASSWORD_MESSAGE", value: "We will send you a link to reset your password", comment: "Alert message for when user requests a password reset"), delegate: self, cancelButtonTitle: LocalizedCancelButtonTitle, otherButtonTitles: NSLocalizedString("LOGIN_RESET_PASSWORD_BUTTON", value: "Reset", comment: "Alert button for reset password"))
+        let alertView = UIAlertView(title: NSLocalizedString("LOGIN_RESET_PASSWORD_TITLE", value: "Type your e-mail", comment: "Alert title for when user requests a password reset"), message: message ?? NSLocalizedString("LOGIN_RESET_PASSWORD_MESSAGE", value: "We will send you a link to reset your password", comment: "Alert message for when user requests a password reset"), delegate: self, cancelButtonTitle: LocalizedCancelButtonTitle, otherButtonTitles: NSLocalizedString("LOGIN_RESET_PASSWORD_BUTTON", value: "Reset", comment: "Alert button for reset password"))
         alertView.alertViewStyle = .PlainTextInput
         alertView.textFieldAtIndex(0)?.keyboardType = .EmailAddress
         alertView.show()
@@ -26,12 +30,19 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate, UITextFi
 
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex != alertView.cancelButtonIndex {
-            ParseUser.requestPasswordResetForEmailInBackground(alertView.textFieldAtIndex(0)?.text) { (succeeded, error) -> Void in
+            let email = alertView.textFieldAtIndex(0)?.text
+
+            if email != nil || countElements(email!) <= 0 || !email!.isEmail() {
+                showResetAlertView(message: NSLocalizedString("LOGIN_RESET_ERROR_EMAIL_NOT_VALID_MESSAGE", value: "Please, insert a valid e-mail address", comment: "Alert title for when user types an invalid email address"))
+                return
+            }
+
+            ParseUser.requestPasswordResetForEmailInBackground(email!) { (succeeded, error) -> Void in
                 if let unwrappedError = error {
                     if unwrappedError.domain == PFParseErrorDomain && (unwrappedError.code == kPFErrorUserWithEmailNotFound || unwrappedError.code == kPFErrorUserEmailMissing) {
-                        UIAlertView(title: NSLocalizedString("LOGIN_RESET_EMAIL_NOT_FOUND_TITLE", value: "There is no user registered with this e-mail", comment: "Alert title for when there is no user with the e-mail providen error"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+                        UIAlertView(title: NSLocalizedString("LOGIN_RESET_ERROR_EMAIL_NOT_FOUND_TITLE", value: "There is no user registered with this e-mail", comment: "Alert title for when there is no user with the e-mail providen error"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
                     } else {
-                        UIAlertView(title: NSLocalizedString("LOGIN_RESET_UNKNOWN_TITLE", value: "Log in impossible", comment: "Alert title for general error"), message: NSLocalizedString("LOGIN_RESET_UNKNOWN_MESSAGE", value: "Are you connected to the Internet?", comment: "Alert message for general error"), delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+                        UIAlertView(title: NSLocalizedString("LOGIN_RESET_ERROR_UNKNOWN_TITLE", value: "Log in impossible", comment: "Alert title for general error"), message: NSLocalizedString("LOGIN_RESET_UNKNOWN_MESSAGE", value: "Are you connected to the Internet?", comment: "Alert message for general error"), delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
                     }
                 }
             }
