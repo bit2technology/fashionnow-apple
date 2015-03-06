@@ -127,6 +127,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+/// Returns internet status
+func InternetIsOnline() -> Bool {
+    return Reachability.reachabilityForInternetConnection().isReachable()
+}
+
 /// Returns "OK" for English and its variants for other languages
 public let LocalizedOKButtonTitle = NSLocalizedString("OK_BUTTON_TITLE", value: "OK" , comment: "Default OK button title for entire app")
 

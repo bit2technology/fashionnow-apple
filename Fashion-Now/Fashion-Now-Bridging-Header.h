@@ -10,4 +10,5 @@
 #import <Parse/PFObject+Subclass.h>
 #import <ParseCrashReporting/ParseCrashReporting.h>
 #import <ParseFacebookUtils/PFFacebookUtils.h>
+#import <Reachability/Reachability.h>
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>

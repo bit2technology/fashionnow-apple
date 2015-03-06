@@ -69,7 +69,7 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
                 self.navigationItem.leftBarButtonItem?.enabled = true
                 self.activityIndicator.stopAnimating()
                 // Show error
-                if let unwrappedFacebookErrorLoginFailedReason = error.userInfo?[FBErrorLoginFailedReason] as? String {
+                if let unwrappedFacebookErrorLoginFailedReason = error.userInfo?[FBErrorLoginFailedReason] as? String { // FIXME: Error might be nil
                     self.facebookErrorMessage.hidden = false
                 } else {
                     self.connectionErrorMessage.hidden = false

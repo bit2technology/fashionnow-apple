@@ -13,6 +13,16 @@ public let NewPollSavedNotificationName = "NewPollSavedNotification"
 class MeController: UICollectionViewController {
 
     private var myPolls = [ParsePoll]()
+    private var myPollsQuery: PFQuery! {
+        get {
+            let myPollsQuery = PFQuery(className: ParsePoll.parseClassName())
+            .includeKey(ParsePollPhotosKey)
+            .whereKey(ParsePollCreatedByKey, equalTo: ParseUser.currentUser())
+            .orderByDescending(ParseObjectCreatedAtKey)
+            myPollsQuery.limit = ParseQueryLimit
+            return myPollsQuery
+        }
+    }
 
     weak var activityIndicator: UIActivityIndicatorView!
     weak var refreshControl: UIRefreshControl!
@@ -67,58 +77,74 @@ class MeController: UICollectionViewController {
     func refreshControlDidChangeValue(sender: UIRefreshControl) {
 
         if sender.refreshing && !isBeingUpdated {
-            loadPolls()
+            loadRemotePolls()
         } else {
             sender.endRefreshing()
         }
     }
 
     private func loadPolls() {
-        isBeingUpdated = true
 
-        let myPollsQuery = PFQuery(className: ParsePoll.parseClassName())
-        .includeKey(ParsePollPhotosKey)
-        .whereKey(ParsePollCreatedByKey, equalTo: ParseUser.currentUser())
-        .orderByDescending(ParseObjectCreatedAtKey)
-        myPollsQuery.limit = ParseQueryLimit
-        myPollsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+        // If it is disconnected, show cached polls
+        if InternetIsOnline() {
+            loadRemotePolls()
+        }
+        else {
+            isBeingUpdated = true
+            myPollsQuery.fromLocalDatastore()
+            .findObjectsInBackgroundWithBlock { (objects, error) -> Void in
 
-            if error == nil {
-                self.processQueryResponse(objects)
-            }
-            // If myPolls is empty, get from pinned polls
-            else if self.myPolls.count <= 0 {
-                myPollsQuery.fromLocalDatastore()
-                .findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+                NSLog("objects \(objects) error \(error)")
 
-                    if error == nil {
-                        self.processQueryResponse(objects)
-                    } else {
-                        self.processQueryResponse(nil, error: error)
-                    }
-                }
-            }
-            // Otherwise, show error message
-            else {
-                self.processQueryResponse(nil, error: error)
+                self.isBeingUpdated = false
+                self.activityIndicator.stopAnimating()
+
+                self.myPolls = (objects ?? []) as [ParsePoll]
+                self.collectionView?.reloadData()
             }
         }
     }
 
-    private func processQueryResponse(objects: [AnyObject]?, error: NSError? = nil) {
-        activityIndicator.stopAnimating()
-        refreshControl.endRefreshing()
-        isBeingUpdated = false
+    private func loadRemotePolls() {
 
-        if error != nil {
-            Toast.show(text: NSLocalizedString("ME_LOAD_POLLS_FAIL_MESSAGE", value: "Error downloading polls", comment: "Message for when user lost connection and fail to download new polls"), type: .Error)
+        if !InternetIsOnline() {
+            activityIndicator.stopAnimating()
+            refreshControl.endRefreshing()
+            isBeingUpdated = false
+
+            Toast.show(text: NSLocalizedString("ME_LOAD_POLLS_OFFLINE_MESSAGE", value: "No internet connection", comment: "Message for when user has no connection to download new polls"), type: .Error)
             return
         }
 
-        myPolls = (objects ?? []) as [ParsePoll]
-        PFObject.pinAllInBackground(myPolls, block: nil)
-        collectionView?.reloadData()
+        isBeingUpdated = true
+
+        myPollsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+
+            self.activityIndicator.stopAnimating()
+            self.refreshControl.endRefreshing()
+            self.isBeingUpdated = false
+
+            if error != nil {
+                Toast.show(text: NSLocalizedString("ME_LOAD_POLLS_FAIL_MESSAGE", value: "Error downloading polls", comment: "Message for when user fail to download new polls"), type: .Error)
+                return
+            }
+
+            if let unwrappedObjects = objects as? [ParsePoll] {
+                PFObject.pinAllInBackground(unwrappedObjects, block: nil)
+                self.myPolls = unwrappedObjects
+                self.collectionView?.reloadData()
+            }
+        }
     }
+
+
+
+
+
+
+
+
+    
 
     func loginChanged(notification: NSNotification) {
 
