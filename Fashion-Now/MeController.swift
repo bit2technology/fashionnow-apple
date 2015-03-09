@@ -13,7 +13,7 @@ public let NewPollSavedNotificationName = "NewPollSavedNotification"
 class MeController: UICollectionViewController {
 
     private var myPolls = [ParsePoll]()
-    private var myPollsQuery: PFQuery! {
+    private var myPollsQuery: PFQuery {
         get {
             let myPollsQuery = PFQuery(className: ParsePoll.parseClassName())
             .includeKey(ParsePollPhotosKey)
@@ -86,15 +86,13 @@ class MeController: UICollectionViewController {
     private func loadPolls() {
 
         // If it is disconnected, show cached polls
-        if InternetIsOnline() {
+        if Reachability.reachabilityForInternetConnection().isReachable() {
             loadRemotePolls()
         }
         else {
             isBeingUpdated = true
             myPollsQuery.fromLocalDatastore()
             .findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-
-                NSLog("objects \(objects) error \(error)")
 
                 self.isBeingUpdated = false
                 self.activityIndicator.stopAnimating()
@@ -107,7 +105,7 @@ class MeController: UICollectionViewController {
 
     private func loadRemotePolls() {
 
-        if !InternetIsOnline() {
+        if !Reachability.reachabilityForInternetConnection().isReachable() {
             activityIndicator.stopAnimating()
             refreshControl.endRefreshing()
             isBeingUpdated = false
