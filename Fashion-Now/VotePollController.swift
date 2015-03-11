@@ -164,7 +164,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconPublicPollsSelected")
+        navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconVoteSelected")
 
         pollController.delegate = self
         pollController.imageButtonsHidden = true

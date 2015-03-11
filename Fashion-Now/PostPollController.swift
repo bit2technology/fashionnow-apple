@@ -93,7 +93,7 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconPostPollSelected")
+        navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconPostSelected")
 
         textField.delegate = self
         textField.frame.size.width = view.bounds.size.width

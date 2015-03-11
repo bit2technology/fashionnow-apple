@@ -12,23 +12,12 @@ public let NewPollSavedNotificationName = "NewPollSavedNotification"
 
 class MeController: UICollectionViewController {
 
-    private var myPolls = [ParsePoll]()
-    private var myPollsQuery: PFQuery {
-        get {
-            let myPollsQuery = PFQuery(className: ParsePoll.parseClassName())
-            .includeKey(ParsePollPhotosKey)
-            .whereKey(ParsePollCreatedByKey, equalTo: ParseUser.currentUser())
-            .orderByDescending(ParseObjectCreatedAtKey)
-            myPollsQuery.limit = ParseQueryLimit
-            return myPollsQuery
-        }
-    }
+    private var myPolls = ParsePollList(type: .Mine)
 
-    weak var activityIndicator: UIActivityIndicatorView!
     weak var refreshControl: UIRefreshControl!
-    var isBeingUpdated = false
 
-    var header: MeHeaderView?
+    weak var header: MeReusableView?
+    weak var footer: MeReusableView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,13 +25,6 @@ class MeController: UICollectionViewController {
         // Basic configuration
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconMeSelected")
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
-
-        // Activity indicator background view
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-        activityIndicator.color = UIColor.lightGrayColor()
-        activityIndicator.startAnimating()
-        collectionView?.backgroundView = activityIndicator
-        self.activityIndicator = activityIndicator
 
         // Configure refresh control for manual update
         let refreshControl = UIRefreshControl()
@@ -62,7 +44,7 @@ class MeController: UICollectionViewController {
         (collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: itemWidth, height: floor(itemWidth * 3 / 2))
 
         // Update header information
-        header?.prepare()
+        header?.prepareHeader()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -75,84 +57,23 @@ class MeController: UICollectionViewController {
     }
 
     func refreshControlDidChangeValue(sender: UIRefreshControl) {
-
-        if sender.refreshing && !isBeingUpdated {
-            loadRemotePolls()
-        } else {
-            sender.endRefreshing()
-        }
+        loadPolls()
     }
 
     private func loadPolls() {
 
-        // If it is disconnected, show cached polls
-        if Reachability.reachabilityForInternetConnection().isReachable() {
-            loadRemotePolls()
-        }
-        else {
-            isBeingUpdated = true
-            myPollsQuery.fromLocalDatastore()
-            .findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+        myPolls.update(type: .Newer) { (succeeded, error) -> Void in
 
-                self.isBeingUpdated = false
-                self.activityIndicator.stopAnimating()
-
-                self.myPolls = (objects ?? []) as [ParsePoll]
+            if succeeded {
                 self.collectionView?.reloadData()
             }
-        }
-    }
-
-    private func loadRemotePolls() {
-
-        if !Reachability.reachabilityForInternetConnection().isReachable() {
-            activityIndicator.stopAnimating()
-            refreshControl.endRefreshing()
-            isBeingUpdated = false
-
-            Toast.show(text: NSLocalizedString("ME_LOAD_POLLS_OFFLINE_MESSAGE", value: "No internet connection", comment: "Message for when user has no connection to download new polls"), type: .Error)
-            return
-        }
-
-        isBeingUpdated = true
-
-        myPollsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-
-            self.activityIndicator.stopAnimating()
-            self.refreshControl.endRefreshing()
-            self.isBeingUpdated = false
 
             if error != nil {
-                Toast.show(text: NSLocalizedString("ME_LOAD_POLLS_FAIL_MESSAGE", value: "Error downloading polls", comment: "Message for when user fail to download new polls"), type: .Error)
-                return
+                NSLog("Error: \(error)")
             }
 
-            if let unwrappedObjects = objects as? [ParsePoll] {
-                PFObject.pinAllInBackground(unwrappedObjects, block: nil)
-                self.myPolls = unwrappedObjects
-                self.collectionView?.reloadData()
-            }
-        }
-    }
-
-
-
-
-
-
-
-
-    
-
-    func loginChanged(notification: NSNotification) {
-
-        // Clean caches. Also load polls if new user is not anonymous
-        PFObject.unpinAllObjectsInBackgroundWithBlock(nil)
-        myPolls = []
-        collectionView?.reloadData()
-        if !PFAnonymousUtils.isLinkedWithUser(ParseUser.currentUser()) {
-            activityIndicator.startAnimating()
-            loadPolls()
+            self.refreshControl.endRefreshing()
+            self.footer?.activityIndicator?.startAnimating()
         }
     }
 
@@ -186,17 +107,70 @@ class MeController: UICollectionViewController {
         return myPolls.count
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    func loginChanged(notification: NSNotification) {
+
+        // Clean caches. Also load polls if new user is not anonymous
+        PFObject.unpinAllObjectsInBackgroundWithBlock(nil)
+        myPolls.clear()
+        collectionView?.reloadData()
+        if !PFAnonymousUtils.isLinkedWithUser(ParseUser.currentUser()) {
+            footer?.activityIndicator?.startAnimating()
+            loadPolls()
+        }
+    }
+
+    // MARK: UICollectionoViewController
+
     override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Me Overview", forIndexPath: indexPath) as MeHeaderView
-        return header!.prepare()
+
+        if kind == UICollectionElementKindSectionHeader {
+            header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Me Overview", forIndexPath: indexPath) as MeReusableView
+            return header!.prepareHeader()
+        }
+
+        footer = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Loading Footer", forIndexPath: indexPath) as MeReusableView
+
+       myPolls.update(type: .Older) { (succeeded, error) -> Void in
+
+            if succeeded {
+                self.collectionView?.reloadData()
+            }
+
+            if error != nil {
+                NSLog("Error: \(error)")
+            }
+
+            self.refreshControl.endRefreshing()
+            self.footer?.activityIndicator?.startAnimating()
+        }
+        return footer!
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as PollCell
 
         let currentPoll = myPolls[indexPath.item]
-        let leftImageUrl = currentPoll.photos?.first?.image?.url
-        let rightImageUrl = currentPoll.photos?.last?.image?.url
+        let leftImageUrl = currentPoll?.photos?.first?.image?.url
+        let rightImageUrl = currentPoll?.photos?.last?.image?.url
 
         if leftImageUrl == nil || rightImageUrl == nil {
             // TODO: Empty cell
@@ -210,22 +184,24 @@ class MeController: UICollectionViewController {
     }
 }
 
-class MeHeaderView: UICollectionReusableView {
+class MeReusableView: UICollectionReusableView {
 
-    @IBOutlet weak var avatarImageView: UIImageView!
+    @IBOutlet weak var avatarImageView: UIImageView?
     var avatarUrl: NSURL?
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var editProfileButton: UIButton!
+    @IBOutlet weak var nameLabel: UILabel?
+    @IBOutlet weak var editProfileButton: UIButton?
 
-    func prepare() -> Self {
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView?
+
+    func prepareHeader() -> Self {
         let currentUser = ParseUser.currentUser()
 
         let currentUserUrl = currentUser.avatarURL(size: 84)
         if avatarUrl != currentUserUrl {
             avatarUrl = currentUserUrl
-            avatarImageView.setImageWithURL(currentUserUrl, placeholderImage: UIColor.defaultPlaceholderColor().image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
+            avatarImageView?.setImageWithURL(currentUserUrl, placeholderImage: UIColor.defaultPlaceholderColor().image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         }
-        nameLabel.text = currentUser.name
+        nameLabel?.text = currentUser.name
 
         return self
     }
@@ -233,9 +209,9 @@ class MeHeaderView: UICollectionReusableView {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        avatarImageView.image = UIColor.defaultPlaceholderColor().image()
-        avatarImageView.layer.cornerRadius = 42
-        avatarImageView.layer.masksToBounds = true
+        avatarImageView?.image = UIColor.defaultPlaceholderColor().image()
+        avatarImageView?.layer.cornerRadius = 42
+        avatarImageView?.layer.masksToBounds = true
     }
 
 }

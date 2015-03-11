@@ -19,7 +19,7 @@
 /* Message for when user does not exist or wrong password */
 "LOGIN_ERROR_USER_NOT_FOUNT_MESSAGE" = "Usuário ou senha incorretos";
 
-/* Message for when there is no user with the e-mail providen error */
+/* Message for when there is no user with the email providen error */
 "LOGIN_RESET_ERROR_EMAIL_NOT_FOUND_MESSAGE" = "Não há nenhum usuário com este email";
 
 /* Alert title for when user types an invalid email address */

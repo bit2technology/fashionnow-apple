@@ -272,6 +272,184 @@ public class ParsePoll: PFObject, PFSubclassing {
     }
 }
 
+class ParsePollList: Printable, DebugPrintable {
+
+    enum Type {
+        case Mine
+//        case VotePublic
+//        case VoteForMe
+    }
+
+    private var downloading = false
+    private var polls = [ParsePoll]()
+    private var pollsAreRemote = false
+    let type: Type
+
+    private var pollRequest: ParsePollRequest {
+        let query = ParsePollQuery(className: ParsePoll.parseClassName())
+        switch type {
+        case .Mine:
+            query.includeKey(ParsePollPhotosKey)
+                .whereKey(ParsePollCreatedByKey, equalTo: ParseUser.currentUser())
+                .orderByDescending(ParseObjectCreatedAtKey)
+            query.limit = ParseQueryLimit
+            return query
+        }
+    }
+
+    init(type: Type) {
+        self.type = type
+    }
+
+    enum UpdateType {
+        case Newer
+        case Older
+    }
+
+    /// Updates (or downloads for the first time) the poll list. It returns true in the completion handler if there is new polls added to the list.
+    func update(type: UpdateType = .Newer, completionHandler: PFBooleanResultBlock) {
+
+        if downloading {
+
+            // Already downloading. Just return error.
+            completionHandler(false, NSError(domain: "FashionNow", code: 0, userInfo: nil)) // FIXME: Proper NSError
+            
+        } else if Reachability.reachabilityForInternetConnection().isReachable() {
+
+            // Online. Update polls list (or download is for the first time).
+            let query = pollRequest
+            switch type {
+            case .Newer:
+                if let unwrappedFirstPoll = polls.first {
+                    query.whereKey(ParseObjectCreatedAtKey, greaterThan: unwrappedFirstPoll.createdAt)
+                }
+            case .Older:
+                if let unwrappedLastPoll = polls.last {
+                    query.whereKey(ParseObjectCreatedAtKey, lessThan: unwrappedLastPoll.createdAt)
+                }
+            }
+            downloading = true
+            query.downloadInBackground { (objects, error) -> Void in
+                var succeeded = false
+                var editedError = error
+                if let unwrappedNewPolls = objects as? [ParsePoll] {
+                    if unwrappedNewPolls.count > 0 {
+                        self.pinAllInBackground(unwrappedNewPolls)
+                        switch type {
+                        case .Newer:
+                            self.polls = unwrappedNewPolls + self.polls
+                        case .Older:
+                            self.polls += unwrappedNewPolls
+                        }
+                        succeeded = true
+                    } else {
+                        editedError = NSError(domain: "FashionNow", code: 1, userInfo: nil) // FIXME: Proper NSError
+                    }
+                }
+                self.downloading = false
+                completionHandler(succeeded, editedError)
+            }
+
+        } else if polls.count > 0 {
+
+            // Offline but polls list is not empty. Just return error.
+            completionHandler(false, NSError(domain: "FashionNow", code: 2, userInfo: nil)) // FIXME: Proper NSError
+
+        } else {
+
+            // Offline. Fill with cached polls.
+            downloading = true
+            let query = pollRequest
+            query.fromLocalDatastore()
+            query.downloadInBackground { (objects, error) -> Void in
+                var succeeded = false
+                var editedError = error
+                if let unwrappedCachedPolls = objects as? [ParsePoll] {
+                    if unwrappedCachedPolls.count > 0 {
+                        self.polls = unwrappedCachedPolls
+                        succeeded = true
+                    } else {
+                        editedError = NSError(domain: "FashionNow", code: 3, userInfo: nil) // FIXME: Proper NSError
+                    }
+                }
+                self.downloading = false
+                completionHandler(succeeded, editedError)
+            }
+        }
+    }
+
+    private func pinAllInBackground(objects: [ParsePoll]) {
+        PFObject.pinAllInBackground(objects, block: nil) // FIXME: Name
+    }
+
+    func clear() {
+        polls = [] // FIXME: pending downloads, other variables
+    }
+
+    // MARK: Helper methods
+
+    var count: Int {
+        return polls.count
+    }
+
+    var description: String {
+        return polls.description
+    }
+
+    var debugDescription: String {
+        return polls.debugDescription
+    }
+
+    subscript(index: Int) -> ParsePoll? {
+        return index < polls.count ? polls[index] : nil
+    }
+}
+
+// MARK: Helper classes
+
+private protocol ParsePollRequest {
+    func downloadInBackground(completionHandler: PFArrayResultBlock)
+    func fromLocalDatastore()
+    func whereKey(key: String!, greaterThan object: AnyObject!)
+    func whereKey(key: String!, equalTo object: AnyObject!)
+    func whereKey(key: String!, lessThan object: AnyObject!)
+}
+
+private class ParsePollQuery: PFQuery, ParsePollRequest {
+    func downloadInBackground(completionHandler: PFArrayResultBlock) {
+        findObjectsInBackgroundWithBlock(completionHandler)
+    }
+    private func fromLocalDatastore() {
+        super.fromLocalDatastore()
+    }
+    private func whereKey(key: String!, equalTo object: AnyObject!) {
+        super.whereKey(key, equalTo: object)
+    }
+    private func whereKey(key: String!, greaterThan object: AnyObject!) {
+        super.whereKey(key, greaterThan: object)
+    }
+    private func whereKey(key: String!, lessThan object: AnyObject!) {
+        super.whereKey(key, lessThan: object)
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// MARK: DEEEELLLEEEETTTEEEEEEEEEEE
+
 public class ParsePublicVotePollList: Printable, DebugPrintable {
 
     private var polls = [ParsePoll]()
