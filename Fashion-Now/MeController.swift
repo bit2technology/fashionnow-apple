@@ -16,8 +16,8 @@ class MeController: UICollectionViewController {
 
     weak var refreshControl: UIRefreshControl!
 
-    weak var header: MeReusableView?
-    weak var footer: MeReusableView?
+    weak var header: MePollHeader?
+    weak var footer: MePollFooter?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +44,7 @@ class MeController: UICollectionViewController {
         (collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: itemWidth, height: floor(itemWidth * 3 / 2))
 
         // Update header information
-        header?.prepareHeader()
+        header?.updateContent()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -60,9 +60,9 @@ class MeController: UICollectionViewController {
         loadPolls()
     }
 
-    private func loadPolls() {
+    private func loadPolls(type: ParsePollList.UpdateType = .Newer, completionHandler: PFBooleanResultBlock? = nil) {
 
-        myPolls.update(type: .Newer) { (succeeded, error) -> Void in
+        var handler: PFBooleanResultBlock = { (succeeded, error) -> Void in
 
             if succeeded {
                 self.collectionView?.reloadData()
@@ -73,8 +73,13 @@ class MeController: UICollectionViewController {
             }
 
             self.refreshControl.endRefreshing()
-            self.footer?.activityIndicator?.startAnimating()
+            self.footer?.prepare(updating: false)
         }
+        if let unwrappedHandler = completionHandler {
+            handler = unwrappedHandler
+        }
+
+        myPolls.update(type: type, completionHandler: handler)
     }
 
     @IBAction func logOutButtonPressed(snder: AnyObject) {
@@ -143,30 +148,19 @@ class MeController: UICollectionViewController {
     override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
 
         if kind == UICollectionElementKindSectionHeader {
-            header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Me Overview", forIndexPath: indexPath) as MeReusableView
-            return header!.prepareHeader()
+            let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Me Overview", forIndexPath: indexPath) as MePollHeader
+            self.header = header
+            return header.updateContent()
         }
 
-        footer = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Loading Footer", forIndexPath: indexPath) as MeReusableView
-
-       myPolls.update(type: .Older) { (succeeded, error) -> Void in
-
-            if succeeded {
-                self.collectionView?.reloadData()
-            }
-
-            if error != nil {
-                NSLog("Error: \(error)")
-            }
-
-            self.refreshControl.endRefreshing()
-            self.footer?.activityIndicator?.startAnimating()
-        }
-        return footer!
+        let footer = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Loading Footer", forIndexPath: indexPath) as MePollFooter
+        footer.controller = self
+        self.footer = footer
+        return footer.prepare(updating: myPolls.downloading)
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as PollCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as MePollCell
 
         let currentPoll = myPolls[indexPath.item]
         let leftImageUrl = currentPoll?.photos?.first?.image?.url
@@ -184,24 +178,26 @@ class MeController: UICollectionViewController {
     }
 }
 
-class MeReusableView: UICollectionReusableView {
+class MePollCell: UICollectionViewCell {
+    @IBOutlet weak var leftImageView: UIImageView!
+    @IBOutlet weak var rightImageView: UIImageView!
+}
 
-    @IBOutlet weak var avatarImageView: UIImageView?
+class MePollHeader: UICollectionReusableView {
+
+    @IBOutlet weak var avatarImageView: UIImageView!
     var avatarUrl: NSURL?
-    @IBOutlet weak var nameLabel: UILabel?
-    @IBOutlet weak var editProfileButton: UIButton?
+    @IBOutlet weak var nameLabel: UILabel!
 
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView?
-
-    func prepareHeader() -> Self {
+    func updateContent() -> Self {
         let currentUser = ParseUser.currentUser()
 
         let currentUserUrl = currentUser.avatarURL(size: 84)
         if avatarUrl != currentUserUrl {
             avatarUrl = currentUserUrl
-            avatarImageView?.setImageWithURL(currentUserUrl, placeholderImage: UIColor.defaultPlaceholderColor().image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
+            avatarImageView.setImageWithURL(currentUserUrl, placeholderImage: UIColor.defaultPlaceholderColor().image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         }
-        nameLabel?.text = currentUser.name
+        nameLabel.text = currentUser.name
 
         return self
     }
@@ -209,14 +205,35 @@ class MeReusableView: UICollectionReusableView {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        avatarImageView?.image = UIColor.defaultPlaceholderColor().image()
-        avatarImageView?.layer.cornerRadius = 42
-        avatarImageView?.layer.masksToBounds = true
+        avatarImageView.image = UIColor.defaultPlaceholderColor().image()
+        avatarImageView.layer.cornerRadius = 42
+        avatarImageView.layer.masksToBounds = true
+    }
+}
+
+class MePollFooter: UICollectionReusableView {
+
+    // Delegate
+    weak var controller: MeController?
+
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var loadButton: UIButton!
+
+    func prepare(#updating: Bool) -> Self {
+        if updating {
+            activityIndicator.startAnimating()
+            loadButton.hidden = true
+        } else {
+            activityIndicator.stopAnimating()
+            loadButton.hidden = false
+        }
+        return self
     }
 
+    @IBAction func loadButtonPressed(sender: UIButton) {
+
+        prepare(updating: true)
+        controller?.loadPolls(type: .Older)
+    }
 }
 
-class PollCell: UICollectionViewCell {
-    @IBOutlet weak var leftImageView: UIImageView!
-    @IBOutlet weak var rightImageView: UIImageView!
-}

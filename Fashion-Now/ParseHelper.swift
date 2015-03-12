@@ -274,26 +274,23 @@ public class ParsePoll: PFObject, PFSubclassing {
 
 class ParsePollList: Printable, DebugPrintable {
 
-    enum Type {
-        case Mine
-//        case VotePublic
-//        case VoteForMe
+    enum Type: String {
+        case Mine = "ParsePollListTypeMine"
     }
 
-    private var downloading = false
+    private(set) var downloading = false
     private var polls = [ParsePoll]()
     private var pollsAreRemote = false
     let type: Type
 
+    /// Return request handler by type of list
     private var pollRequest: ParsePollRequest {
-        let query = ParsePollQuery(className: ParsePoll.parseClassName())
         switch type {
         case .Mine:
-            query.includeKey(ParsePollPhotosKey)
+            return ParsePollQuery(className: ParsePoll.parseClassName())
+                .includeKey(ParsePollPhotosKey)
                 .whereKey(ParsePollCreatedByKey, equalTo: ParseUser.currentUser())
                 .orderByDescending(ParseObjectCreatedAtKey)
-            query.limit = ParseQueryLimit
-            return query
         }
     }
 
@@ -312,74 +309,90 @@ class ParsePollList: Printable, DebugPrintable {
         if downloading {
 
             // Already downloading. Just return error.
-            completionHandler(false, NSError(domain: "FashionNow", code: 0, userInfo: nil)) // FIXME: Proper NSError
+            completionHandler(false, NSError(domain: AppErrorDomain, code: AppErrorCode.Busy.rawValue, userInfo: nil))
             
         } else if Reachability.reachabilityForInternetConnection().isReachable() {
 
             // Online. Update polls list (or download is for the first time).
+
+            // Configure request
             let query = pollRequest
-            switch type {
-            case .Newer:
-                if let unwrappedFirstPoll = polls.first {
-                    query.whereKey(ParseObjectCreatedAtKey, greaterThan: unwrappedFirstPoll.createdAt)
-                }
-            case .Older:
-                if let unwrappedLastPoll = polls.last {
-                    query.whereKey(ParseObjectCreatedAtKey, lessThan: unwrappedLastPoll.createdAt)
+            if pollsAreRemote {
+                switch type {
+                case .Newer:
+                    if let unwrappedFirstPoll = polls.first {
+                        query.whereKey(ParseObjectCreatedAtKey, greaterThan: unwrappedFirstPoll.createdAt)
+                    }
+                case .Older:
+                    if let unwrappedLastPoll = polls.last {
+                        query.whereKey(ParseObjectCreatedAtKey, lessThan: unwrappedLastPoll.createdAt)
+                    }
                 }
             }
+
+            // Start download
             downloading = true
             query.downloadInBackground { (objects, error) -> Void in
-                var succeeded = false
-                var editedError = error
-                if let unwrappedNewPolls = objects as? [ParsePoll] {
-                    if unwrappedNewPolls.count > 0 {
-                        self.pinAllInBackground(unwrappedNewPolls)
+                self.downloading = false
+
+                let unwrappedNewPolls: [ParsePoll]! = objects as? [ParsePoll] // FIXME: Swift 1.2
+                if unwrappedNewPolls != nil && unwrappedNewPolls.count > 0 {
+
+                    if self.pollsAreRemote {
+                        // Insert before or after depending on type of update
                         switch type {
                         case .Newer:
                             self.polls = unwrappedNewPolls + self.polls
                         case .Older:
                             self.polls += unwrappedNewPolls
                         }
-                        succeeded = true
+
                     } else {
-                        editedError = NSError(domain: "FashionNow", code: 1, userInfo: nil) // FIXME: Proper NSError
+                        // If this is first remote update, replace entire list
+                        self.polls = unwrappedNewPolls
+                        self.pollsAreRemote = true
                     }
+
+                    self.pinAllInBackground(unwrappedNewPolls)
+                    completionHandler(true, error)
+
+                } else {
+                    completionHandler(false, error ?? NSError(domain: AppErrorDomain, code: AppErrorCode.NothingNew.rawValue, userInfo: nil))
                 }
-                self.downloading = false
-                completionHandler(succeeded, editedError)
             }
 
         } else if polls.count > 0 {
 
             // Offline but polls list is not empty. Just return error.
-            completionHandler(false, NSError(domain: "FashionNow", code: 2, userInfo: nil)) // FIXME: Proper NSError
+            completionHandler(false, NSError(domain: AppErrorDomain, code: AppErrorCode.ConnectionLost.rawValue, userInfo: nil))
 
         } else {
 
-            // Offline. Fill with cached polls.
-            downloading = true
+            // Offline. Fill with cached polls if available.
+
+            // Configure request
             let query = pollRequest
+            query.setLimit(ParseQueryLimit)
             query.fromLocalDatastore()
+
+            // Start download
+            downloading = true
             query.downloadInBackground { (objects, error) -> Void in
-                var succeeded = false
-                var editedError = error
-                if let unwrappedCachedPolls = objects as? [ParsePoll] {
-                    if unwrappedCachedPolls.count > 0 {
-                        self.polls = unwrappedCachedPolls
-                        succeeded = true
-                    } else {
-                        editedError = NSError(domain: "FashionNow", code: 3, userInfo: nil) // FIXME: Proper NSError
-                    }
-                }
                 self.downloading = false
-                completionHandler(succeeded, editedError)
+
+                let unwrappedCachedPolls: [ParsePoll]! = objects as? [ParsePoll]
+                if unwrappedCachedPolls != nil && unwrappedCachedPolls.count > 0 {
+                    self.polls = unwrappedCachedPolls
+                    completionHandler(true, error)
+                } else {
+                    completionHandler(false, error ?? NSError(domain: AppErrorDomain, code: AppErrorCode.NoCache.rawValue, userInfo: nil))
+                }
             }
         }
     }
 
     private func pinAllInBackground(objects: [ParsePoll]) {
-        PFObject.pinAllInBackground(objects, block: nil) // FIXME: Name
+        PFObject.pinAllInBackground(objects, withName: type.rawValue, block: nil)
     }
 
     func clear() {
@@ -410,6 +423,7 @@ class ParsePollList: Printable, DebugPrintable {
 private protocol ParsePollRequest {
     func downloadInBackground(completionHandler: PFArrayResultBlock)
     func fromLocalDatastore()
+    func setLimit(value: Int)
     func whereKey(key: String!, greaterThan object: AnyObject!)
     func whereKey(key: String!, equalTo object: AnyObject!)
     func whereKey(key: String!, lessThan object: AnyObject!)
@@ -419,16 +433,19 @@ private class ParsePollQuery: PFQuery, ParsePollRequest {
     func downloadInBackground(completionHandler: PFArrayResultBlock) {
         findObjectsInBackgroundWithBlock(completionHandler)
     }
-    private func fromLocalDatastore() {
+    func fromLocalDatastore() {
         super.fromLocalDatastore()
     }
-    private func whereKey(key: String!, equalTo object: AnyObject!) {
+    private func setLimit(value: Int) {
+        limit = value
+    }
+    func whereKey(key: String!, equalTo object: AnyObject!) {
         super.whereKey(key, equalTo: object)
     }
-    private func whereKey(key: String!, greaterThan object: AnyObject!) {
+    func whereKey(key: String!, greaterThan object: AnyObject!) {
         super.whereKey(key, greaterThan: object)
     }
-    private func whereKey(key: String!, lessThan object: AnyObject!) {
+    func whereKey(key: String!, lessThan object: AnyObject!) {
         super.whereKey(key, lessThan: object)
     }
 }

@@ -252,7 +252,7 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
             }
             // Set photo properties
             if self.avatarChanged {
-                let imageData = self.avatarImageView.image!.compressedJPEGData()
+                let imageData = self.avatarImageView.image!.compressedJPEGData(maxSize: 512)
                 currentUser.avatarImage = PFFile(data: imageData, contentType: "image/jpeg")
             }
 

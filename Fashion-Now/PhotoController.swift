@@ -184,22 +184,3 @@ class PhotoBackgroundView: UIImageView {
         backgroundColor = tintColor
     }
 }
-
-extension UIImage {
-
-    func compressedJPEGData(maxSize: CGFloat = 1024, compressionQuality: CGFloat = 0.5) -> NSData {
-
-        let resizeScale = maxSize / max(size.width, size.height)
-
-        var img: UIImage?
-        if resizeScale < 1 {
-            let resizeRect = CGRect(x: 0, y: 0, width: size.width * resizeScale, height: size.height * resizeScale)
-            UIGraphicsBeginImageContext(resizeRect.size)
-            drawInRect(resizeRect)
-            img = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-        }
-
-        return UIImageJPEGRepresentation(img ?? self, compressionQuality)
-    }
-}

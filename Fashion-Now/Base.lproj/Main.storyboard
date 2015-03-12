@@ -545,11 +545,11 @@
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="4" minimumInteritemSpacing="4" id="PkG-Gn-UFM">
                             <size key="itemSize" width="104" height="156"/>
                             <size key="headerReferenceSize" width="50" height="114"/>
-                            <size key="footerReferenceSize" width="50" height="68"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="4"/>
+                            <size key="footerReferenceSize" width="50" height="64"/>
+                            <inset key="sectionInset" minX="0.0" minY="4" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Poll" id="3dF-4c-efE" customClass="PollCell" customModule="Fashion_Now" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Poll" id="3dF-4c-efE" customClass="MePollCell" customModule="Fashion_Now" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -582,67 +582,92 @@
                                 </connections>
                             </collectionViewCell>
                         </cells>
-                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Me Overview" id="CRs-XG-0ED" customClass="MeReusableView" customModule="Fashion_Now" customModuleProvider="target">
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Me Overview" id="CRs-XG-0ED" customClass="MePollHeader" customModule="Fashion_Now" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="64" width="320" height="114"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DnG-VQ-q5y">
-                                    <rect key="frame" x="15" y="15" width="84" height="84"/>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y76-R9-fRd" userLabel="Container">
+                                    <rect key="frame" x="0.0" y="15" width="320" height="84"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DnG-VQ-q5y">
+                                            <rect key="frame" x="15" y="0.0" width="84" height="84"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="84" id="gVw-M9-O3l"/>
+                                                <constraint firstAttribute="width" constant="84" id="lgO-NZ-oxi"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hr5-yk-mrX">
+                                            <rect key="frame" x="107" y="0.0" width="205" height="42"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cjt-nK-Mnt">
+                                            <rect key="frame" x="99" y="42" width="221" height="42"/>
+                                            <state key="normal" title="Edit Profile">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <segue destination="OJC-JN-eaN" kind="presentation" modalPresentationStyle="formSheet" id="NQb-ET-fId"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="84" id="gVw-M9-O3l"/>
-                                        <constraint firstAttribute="width" constant="84" id="lgO-NZ-oxi"/>
+                                        <constraint firstAttribute="trailing" secondItem="Hr5-yk-mrX" secondAttribute="trailing" constant="8" id="3jU-OQ-CcC"/>
+                                        <constraint firstItem="Cjt-nK-Mnt" firstAttribute="leading" secondItem="DnG-VQ-q5y" secondAttribute="trailing" id="7jY-4W-NTe"/>
+                                        <constraint firstAttribute="width" constant="320" id="7oc-85-e0c"/>
+                                        <constraint firstAttribute="bottom" secondItem="DnG-VQ-q5y" secondAttribute="bottom" id="E7o-T1-wTt"/>
+                                        <constraint firstAttribute="trailing" secondItem="Cjt-nK-Mnt" secondAttribute="trailing" id="HWJ-0w-Bxa"/>
+                                        <constraint firstItem="Hr5-yk-mrX" firstAttribute="leading" secondItem="DnG-VQ-q5y" secondAttribute="trailing" constant="8" id="YQp-WT-niR"/>
+                                        <constraint firstItem="Cjt-nK-Mnt" firstAttribute="top" secondItem="Hr5-yk-mrX" secondAttribute="bottom" id="Z2u-dk-UHH"/>
+                                        <constraint firstItem="Cjt-nK-Mnt" firstAttribute="height" secondItem="Hr5-yk-mrX" secondAttribute="height" id="bKP-qV-rQY"/>
+                                        <constraint firstItem="Hr5-yk-mrX" firstAttribute="top" secondItem="Y76-R9-fRd" secondAttribute="top" id="kOU-Je-8LT"/>
+                                        <constraint firstAttribute="bottom" secondItem="Cjt-nK-Mnt" secondAttribute="bottom" id="oWU-LI-YxV"/>
+                                        <constraint firstItem="DnG-VQ-q5y" firstAttribute="top" secondItem="Y76-R9-fRd" secondAttribute="top" id="odl-nO-gOk"/>
+                                        <constraint firstItem="DnG-VQ-q5y" firstAttribute="leading" secondItem="Y76-R9-fRd" secondAttribute="leading" constant="15" id="wm6-tQ-CPS"/>
                                     </constraints>
-                                </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hr5-yk-mrX">
-                                    <rect key="frame" x="107" y="15" width="205" height="42"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cjt-nK-Mnt">
-                                    <rect key="frame" x="107" y="57" width="205" height="42"/>
-                                    <state key="normal" title="Edit Profile">
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="centerX" secondItem="Y76-R9-fRd" secondAttribute="centerX" id="OCE-1s-np6"/>
+                                <constraint firstAttribute="centerY" secondItem="Y76-R9-fRd" secondAttribute="centerY" id="awA-57-mfs"/>
+                            </constraints>
+                            <connections>
+                                <outlet property="avatarImageView" destination="DnG-VQ-q5y" id="K1x-EA-r8w"/>
+                                <outlet property="nameLabel" destination="Hr5-yk-mrX" id="ve0-KM-l2R"/>
+                            </connections>
+                        </collectionReusableView>
+                        <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Loading Footer" id="Rbz-At-Uf5" customClass="MePollFooter" customModule="Fashion_Now" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="338" width="320" height="64"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <activityIndicatorView contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="PIn-Cv-XHb">
+                                    <rect key="frame" x="142" y="14" width="37" height="37"/>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </activityIndicatorView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="thF-Md-Kue">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                                    <state key="normal" title="Load More">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <segue destination="OJC-JN-eaN" kind="presentation" modalPresentationStyle="formSheet" id="NQb-ET-fId"/>
+                                        <action selector="loadButtonPressed:" destination="Rbz-At-Uf5" eventType="touchUpInside" id="O0N-JK-aOn"/>
                                     </connections>
                                 </button>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="DnG-VQ-q5y" firstAttribute="leading" secondItem="CRs-XG-0ED" secondAttribute="leading" constant="15" id="KbF-OP-8oz"/>
-                                <constraint firstItem="Hr5-yk-mrX" firstAttribute="height" secondItem="Cjt-nK-Mnt" secondAttribute="height" id="Tcf-hz-KcA"/>
-                                <constraint firstItem="DnG-VQ-q5y" firstAttribute="top" secondItem="Hr5-yk-mrX" secondAttribute="top" id="V4i-il-LHk"/>
-                                <constraint firstItem="Cjt-nK-Mnt" firstAttribute="leading" secondItem="DnG-VQ-q5y" secondAttribute="trailing" constant="8" id="i1y-gU-OuM"/>
-                                <constraint firstAttribute="trailing" secondItem="Hr5-yk-mrX" secondAttribute="trailing" constant="8" id="mLW-re-lsQ"/>
-                                <constraint firstItem="Hr5-yk-mrX" firstAttribute="leading" secondItem="DnG-VQ-q5y" secondAttribute="trailing" constant="8" id="pvG-tD-D8e"/>
-                                <constraint firstItem="DnG-VQ-q5y" firstAttribute="bottom" secondItem="Cjt-nK-Mnt" secondAttribute="bottom" id="snZ-x2-aWi"/>
-                                <constraint firstAttribute="centerY" secondItem="DnG-VQ-q5y" secondAttribute="centerY" id="ua7-3R-3pQ"/>
-                                <constraint firstItem="Cjt-nK-Mnt" firstAttribute="top" secondItem="Hr5-yk-mrX" secondAttribute="bottom" id="v0P-rp-cZf"/>
-                                <constraint firstAttribute="trailing" secondItem="Cjt-nK-Mnt" secondAttribute="trailing" constant="8" id="xZN-Jp-rJh"/>
-                            </constraints>
-                            <connections>
-                                <outlet property="avatarImageView" destination="DnG-VQ-q5y" id="K1x-EA-r8w"/>
-                                <outlet property="editProfileButton" destination="Cjt-nK-Mnt" id="B3A-4w-gSj"/>
-                                <outlet property="nameLabel" destination="Hr5-yk-mrX" id="ve0-KM-l2R"/>
-                            </connections>
-                        </collectionReusableView>
-                        <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Loading Footer" id="Rbz-At-Uf5" customClass="MeReusableView" customModule="Fashion_Now" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <activityIndicatorView contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="PIn-Cv-XHb">
-                                    <rect key="frame" x="142" y="15" width="37" height="37"/>
-                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                </activityIndicatorView>
-                            </subviews>
-                            <constraints>
+                                <constraint firstItem="thF-Md-Kue" firstAttribute="top" secondItem="Rbz-At-Uf5" secondAttribute="top" id="axz-6E-XT3"/>
                                 <constraint firstAttribute="centerY" secondItem="PIn-Cv-XHb" secondAttribute="centerY" id="dwk-J5-JHf"/>
+                                <constraint firstAttribute="trailing" secondItem="thF-Md-Kue" secondAttribute="trailing" id="eYL-hf-QI2"/>
                                 <constraint firstAttribute="centerX" secondItem="PIn-Cv-XHb" secondAttribute="centerX" id="gyz-Ua-G34"/>
+                                <constraint firstItem="thF-Md-Kue" firstAttribute="leading" secondItem="Rbz-At-Uf5" secondAttribute="leading" id="rpW-Vp-ulI"/>
+                                <constraint firstAttribute="bottom" secondItem="thF-Md-Kue" secondAttribute="bottom" id="sqp-q6-W1n"/>
                             </constraints>
                             <connections>
                                 <outlet property="activityIndicator" destination="PIn-Cv-XHb" id="JMG-Mu-2Po"/>
+                                <outlet property="loadButton" destination="thF-Md-Kue" id="xZj-rx-KlB"/>
                             </connections>
                         </collectionReusableView>
                         <connections>
