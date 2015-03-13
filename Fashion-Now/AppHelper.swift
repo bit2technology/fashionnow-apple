@@ -120,6 +120,34 @@ class Toast {
     }
 }
 
+// MARK: - Mask
+
+func applyPollMask(#left: UIView, right: UIView) {
+
+    let maskReferenceSize: CGFloat = 1
+    let spaceBetween: CGFloat = maskReferenceSize / 100
+
+    let leftMaskPath = UIBezierPath()
+    leftMaskPath.moveToPoint(CGPoint(x: -6 * maskReferenceSize, y: 0))
+    leftMaskPath.addLineToPoint(CGPoint(x: maskReferenceSize + (maskReferenceSize / 10) - spaceBetween, y: 0))
+    leftMaskPath.addLineToPoint(CGPoint(x: maskReferenceSize - (maskReferenceSize / 10) - spaceBetween, y: maskReferenceSize))
+    leftMaskPath.addLineToPoint(CGPoint(x: -6 * maskReferenceSize, y: maskReferenceSize))
+    leftMaskPath.closePath()
+    let leftMask = CAShapeLayer()
+    leftMask.path = leftMaskPath.CGPath
+    left.layer.mask = leftMask
+
+    let rightMaskPath = UIBezierPath()
+    rightMaskPath.moveToPoint(CGPoint(x: 7 * maskReferenceSize, y: 0))
+    rightMaskPath.addLineToPoint(CGPoint(x: (maskReferenceSize / 10) + spaceBetween, y: 0))
+    rightMaskPath.addLineToPoint(CGPoint(x: (maskReferenceSize / -10) + spaceBetween, y: maskReferenceSize))
+    rightMaskPath.addLineToPoint(CGPoint(x: 7 * maskReferenceSize, y: maskReferenceSize))
+    rightMaskPath.closePath()
+    let rightMask = CAShapeLayer()
+    rightMask.path = rightMaskPath.CGPath
+    right.layer.mask = rightMask
+}
+
 // MARK: - Constants
 
 /// Default error domain

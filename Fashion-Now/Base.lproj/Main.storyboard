@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -556,28 +557,67 @@
                                     <rect key="frame" x="0.0" y="0.0" width="104" height="156"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Gmf-9t-Ph8">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3wT-y1-U86" userLabel="Left Container">
                                             <rect key="frame" x="0.0" y="0.0" width="52" height="156"/>
-                                        </imageView>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pwv-ff-YNq">
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="e78-U5-UNn">
+                                                    <rect key="frame" x="-754" y="0.0" width="1560" height="156"/>
+                                                    <color key="backgroundColor" red="0.027450980390000001" green="0.51372549020000002" blue="0.4823529412" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="e78-U5-UNn" secondAttribute="height" multiplier="10:1" id="cEi-2p-dPt"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="e78-U5-UNn" secondAttribute="bottom" id="PAa-3F-Rs6"/>
+                                                <constraint firstItem="e78-U5-UNn" firstAttribute="top" secondItem="3wT-y1-U86" secondAttribute="top" id="Z0f-cN-7ro"/>
+                                                <constraint firstAttribute="centerX" secondItem="e78-U5-UNn" secondAttribute="centerX" id="dU6-ct-rJ7"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="quD-Qa-DP9" userLabel="RightContainer">
                                             <rect key="frame" x="52" y="0.0" width="52" height="156"/>
-                                        </imageView>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EZj-fe-Cgg">
+                                                    <rect key="frame" x="-754" y="0.0" width="1560" height="156"/>
+                                                    <color key="backgroundColor" red="0.027450980390000001" green="0.51372549020000002" blue="0.4823529412" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="EZj-fe-Cgg" secondAttribute="height" multiplier="10:1" id="TI9-2b-CFX"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="EZj-fe-Cgg" firstAttribute="top" secondItem="quD-Qa-DP9" secondAttribute="top" id="CK1-SY-aP0"/>
+                                                <constraint firstAttribute="centerX" secondItem="EZj-fe-Cgg" secondAttribute="centerX" id="Me4-S6-LjI"/>
+                                                <constraint firstAttribute="bottom" secondItem="EZj-fe-Cgg" secondAttribute="bottom" id="Ny2-u3-AHE"/>
+                                                <constraint firstItem="EZj-fe-Cgg" firstAttribute="width" secondItem="EZj-fe-Cgg" secondAttribute="height" multiplier="10:1" id="TE0-1J-fmG"/>
+                                            </constraints>
+                                        </view>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="91r-ru-MjU">
+                                            <rect key="frame" x="0.0" y="0.0" width="104" height="156"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        </activityIndicatorView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="Gmf-9t-Ph8" secondAttribute="bottom" id="3xq-m9-Io3"/>
-                                    <constraint firstItem="Gmf-9t-Ph8" firstAttribute="top" secondItem="3dF-4c-efE" secondAttribute="top" id="HGY-aN-IbO"/>
-                                    <constraint firstItem="Gmf-9t-Ph8" firstAttribute="leading" secondItem="3dF-4c-efE" secondAttribute="leading" id="Hzr-qr-dE7"/>
-                                    <constraint firstAttribute="trailing" secondItem="pwv-ff-YNq" secondAttribute="trailing" id="OZx-hf-a3B"/>
-                                    <constraint firstItem="pwv-ff-YNq" firstAttribute="width" secondItem="Gmf-9t-Ph8" secondAttribute="width" id="W7m-NH-LVR"/>
-                                    <constraint firstItem="pwv-ff-YNq" firstAttribute="leading" secondItem="Gmf-9t-Ph8" secondAttribute="trailing" id="ayw-bt-e6E"/>
-                                    <constraint firstItem="pwv-ff-YNq" firstAttribute="top" secondItem="3dF-4c-efE" secondAttribute="top" id="fXx-qa-8do"/>
-                                    <constraint firstAttribute="bottom" secondItem="pwv-ff-YNq" secondAttribute="bottom" id="ugY-HL-w5q"/>
+                                    <constraint firstAttribute="bottom" secondItem="3wT-y1-U86" secondAttribute="bottom" id="4N5-JY-PDg"/>
+                                    <constraint firstAttribute="bottom" secondItem="quD-Qa-DP9" secondAttribute="bottom" id="8vI-He-fat"/>
+                                    <constraint firstAttribute="trailing" secondItem="quD-Qa-DP9" secondAttribute="trailing" id="8xJ-Dn-G1a"/>
+                                    <constraint firstItem="91r-ru-MjU" firstAttribute="leading" secondItem="3dF-4c-efE" secondAttribute="leading" id="BV0-gt-viG"/>
+                                    <constraint firstItem="quD-Qa-DP9" firstAttribute="width" secondItem="3wT-y1-U86" secondAttribute="width" id="DNs-9h-bxQ"/>
+                                    <constraint firstItem="3wT-y1-U86" firstAttribute="top" secondItem="3dF-4c-efE" secondAttribute="top" id="EPN-Hj-nZ4"/>
+                                    <constraint firstItem="91r-ru-MjU" firstAttribute="top" secondItem="3dF-4c-efE" secondAttribute="top" id="Ink-tU-91Y"/>
+                                    <constraint firstItem="quD-Qa-DP9" firstAttribute="top" secondItem="3dF-4c-efE" secondAttribute="top" id="JF6-Vx-Ni0"/>
+                                    <constraint firstAttribute="trailing" secondItem="91r-ru-MjU" secondAttribute="trailing" id="UdJ-rX-Grd"/>
+                                    <constraint firstItem="quD-Qa-DP9" firstAttribute="leading" secondItem="3wT-y1-U86" secondAttribute="trailing" id="ZDH-WL-qjN"/>
+                                    <constraint firstItem="3wT-y1-U86" firstAttribute="leading" secondItem="3dF-4c-efE" secondAttribute="leading" id="ifW-ya-e54"/>
+                                    <constraint firstAttribute="bottom" secondItem="91r-ru-MjU" secondAttribute="bottom" id="zRH-Tj-FA6"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="leftImageView" destination="Gmf-9t-Ph8" id="Scf-WU-EfK"/>
-                                    <outlet property="rightImageView" destination="pwv-ff-YNq" id="VGh-n1-KJJ"/>
+                                    <outlet property="activityIndicator" destination="91r-ru-MjU" id="duL-up-qUE"/>
+                                    <outlet property="leftImageView" destination="e78-U5-UNn" id="xdl-74-k9g"/>
+                                    <outlet property="rightImageView" destination="EZj-fe-Cgg" id="H2h-Hv-t6s"/>
                                     <segue destination="D1M-pS-RBa" kind="show" identifier="Result Controller" id="9wz-o8-WiA"/>
                                 </connections>
                             </collectionViewCell>

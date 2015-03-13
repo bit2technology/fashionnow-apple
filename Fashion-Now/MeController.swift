@@ -23,7 +23,6 @@ class MeController: UICollectionViewController {
         super.viewDidLoad()
 
         // Basic configuration
-        navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconMeSelected")
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
 
         // Configure refresh control for manual update
@@ -106,36 +105,11 @@ class MeController: UICollectionViewController {
         }
     }
 
-    // MARK: UICollectionoViewController
-
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return myPolls.count
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
     func loginChanged(notification: NSNotification) {
 
         // Clean caches. Also load polls if new user is not anonymous
         PFObject.unpinAllObjectsInBackgroundWithBlock(nil)
-        myPolls.clear()
+        myPolls.clear()  // FIXME: may be downloading
         collectionView?.reloadData()
         if !PFAnonymousUtils.isLinkedWithUser(ParseUser.currentUser()) {
             footer?.activityIndicator?.startAnimating()
@@ -144,6 +118,10 @@ class MeController: UICollectionViewController {
     }
 
     // MARK: UICollectionoViewController
+
+    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return myPolls.count
+    }
 
     override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
 
@@ -160,27 +138,65 @@ class MeController: UICollectionViewController {
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as MePollCell
-
-        let currentPoll = myPolls[indexPath.item]
-        let leftImageUrl = currentPoll?.photos?.first?.image?.url
-        let rightImageUrl = currentPoll?.photos?.last?.image?.url
-
-        if leftImageUrl == nil || rightImageUrl == nil {
-            // TODO: Empty cell
-            return cell
-        }
-
-        cell.leftImageView.setImageWithURL(NSURL(string: leftImageUrl!), placeholderImage: nil, completed: nil, usingActivityIndicatorStyle: .Gray)
-        cell.rightImageView.setImageWithURL(NSURL(string: rightImageUrl!), placeholderImage: nil, completed: nil, usingActivityIndicatorStyle: .Gray)
-
-        return cell
+        return (collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as MePollCell).withPoll(myPolls[indexPath.item])
     }
 }
 
 class MePollCell: UICollectionViewCell {
+
     @IBOutlet weak var leftImageView: UIImageView!
     @IBOutlet weak var rightImageView: UIImageView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+
+    override func awakeFromNib() {
+
+        layer.rasterizationScale = UIScreen.mainScreen().scale
+        layer.shouldRasterize = true
+
+        let containers = [leftImageView.superview!, rightImageView.superview!]
+        applyPollMask(left: containers.first!, containers.last!)
+        for container in containers {
+            container.layer.mask.transform = CATransform3DMakeScale(container.bounds.width, container.bounds.height, 1)
+        }
+    }
+
+    func withPoll(poll: ParsePoll?) -> Self {
+
+        activityIndicator.startAnimating()
+        leftImageView.image = nil
+        rightImageView.image = nil
+
+        let leftImageUrl = poll?.photos?.first?.image?.url
+        let rightImageUrl = poll?.photos?.last?.image?.url
+
+        // TODO: Better error handling
+        if leftImageUrl != nil && rightImageUrl != nil {
+
+            let completion: SDWebImageCompletionBlock = { (image, error, cacheType, url) -> Void in
+
+                let urlString = url.absoluteString
+                if leftImageUrl != urlString && rightImageUrl != urlString {
+                    // Late call. Just do nothing.
+                    return
+                }
+
+                if image == nil {
+                    // TODO: Better error handling
+                    NSLog("MePollCell image download error: \(error)")
+                    return
+                }
+
+                if self.leftImageView.image != nil && self.rightImageView.image != nil {
+                    self.activityIndicator.stopAnimating()
+                }
+            }
+
+            leftImageView.sd_setImageWithURL(NSURL(string: leftImageUrl!), completed: completion)
+            rightImageView.sd_setImageWithURL(NSURL(string: rightImageUrl!), completed: completion)
+        }
+
+        return self
+    }
 }
 
 class MePollHeader: UICollectionReusableView {
