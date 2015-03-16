@@ -8,11 +8,14 @@
 
 import UIKit
 
-public let NewPollSavedNotificationName = "NewPollSavedNotification"
+let NewPollSavedNotificationName = "NewPollSavedNotification"
 
 class MeController: UICollectionViewController {
 
     private var myPolls = ParsePollList(type: .Mine)
+
+    /// Track if it's the first time the view is shown on screen
+    private var firstTimeShow = true
 
     weak var refreshControl: UIRefreshControl!
 
@@ -38,9 +41,12 @@ class MeController: UICollectionViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        // Layout configuration
-        let itemWidth = floor(((collectionView?.bounds.width ?? 320) - 8) / 3)
-        (collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: itemWidth, height: floor(itemWidth * 3 / 2))
+        if firstTimeShow {
+            // Collection view item size
+            let itemWidth = floor(((collectionView?.bounds.width ?? 320) - 8) / 3)
+            (collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: itemWidth, height: floor(itemWidth * 3 / 2))
+            firstTimeShow = false
+        }
 
         // Update header information
         header?.updateContent()
@@ -61,24 +67,24 @@ class MeController: UICollectionViewController {
 
     private func loadPolls(type: ParsePollList.UpdateType = .Newer, completionHandler: PFBooleanResultBlock? = nil) {
 
-        var handler: PFBooleanResultBlock = { (succeeded, error) -> Void in
+        var handler = completionHandler
+        if handler == nil {
+            handler = { (succeeded, error) -> Void in
 
-            if succeeded {
-                self.collectionView?.reloadData()
+                if succeeded {
+                    self.collectionView?.reloadData()
+                }
+
+                if error != nil {
+                    NSLog("My polls list update error: \(error)")
+                }
+
+                self.refreshControl.endRefreshing()
+                self.footer?.prepare(updating: false)
             }
-
-            if error != nil {
-                NSLog("Error: \(error)")
-            }
-
-            self.refreshControl.endRefreshing()
-            self.footer?.prepare(updating: false)
-        }
-        if let unwrappedHandler = completionHandler {
-            handler = unwrappedHandler
         }
 
-        myPolls.update(type: type, completionHandler: handler)
+        myPolls.update(type: type, completionHandler: handler!)
     }
 
     @IBAction func logOutButtonPressed(snder: AnyObject) {
@@ -108,8 +114,7 @@ class MeController: UICollectionViewController {
     func loginChanged(notification: NSNotification) {
 
         // Clean caches. Also load polls if new user is not anonymous
-        PFObject.unpinAllObjectsInBackgroundWithBlock(nil)
-        myPolls.clear()  // FIXME: may be downloading
+        myPolls = ParsePollList(type: .Mine)
         collectionView?.reloadData()
         if !PFAnonymousUtils.isLinkedWithUser(ParseUser.currentUser()) {
             footer?.activityIndicator?.startAnimating()
@@ -125,12 +130,14 @@ class MeController: UICollectionViewController {
 
     override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
 
+        // Header
         if kind == UICollectionElementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Me Overview", forIndexPath: indexPath) as MePollHeader
             self.header = header
             return header.updateContent()
         }
 
+        // Footer
         let footer = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Loading Footer", forIndexPath: indexPath) as MePollFooter
         footer.controller = self
         self.footer = footer
@@ -154,7 +161,7 @@ class MePollCell: UICollectionViewCell {
         layer.shouldRasterize = true
 
         let containers = [leftImageView.superview!, rightImageView.superview!]
-        applyPollMask(left: containers.first!, containers.last!)
+        applyPollMask(containers.first!, containers.last!)
         for container in containers {
             container.layer.mask.transform = CATransform3DMakeScale(container.bounds.width, container.bounds.height, 1)
         }
@@ -169,14 +176,13 @@ class MePollCell: UICollectionViewCell {
         let leftImageUrl = poll?.photos?.first?.image?.url
         let rightImageUrl = poll?.photos?.last?.image?.url
 
-        // TODO: Better error handling
         if leftImageUrl != nil && rightImageUrl != nil {
 
             let completion: SDWebImageCompletionBlock = { (image, error, cacheType, url) -> Void in
 
                 let urlString = url.absoluteString
                 if leftImageUrl != urlString && rightImageUrl != urlString {
-                    // Late call. Just do nothing.
+                    // Too late. Cell is already being used by another item. Just do nothing.
                     return
                 }
 
@@ -193,6 +199,10 @@ class MePollCell: UICollectionViewCell {
 
             leftImageView.sd_setImageWithURL(NSURL(string: leftImageUrl!), completed: completion)
             rightImageView.sd_setImageWithURL(NSURL(string: rightImageUrl!), completed: completion)
+        }
+        else {
+            // TODO: Better error handling
+            NSLog("MePollCell image download error: not enough URLs")
         }
 
         return self
@@ -222,8 +232,6 @@ class MePollHeader: UICollectionReusableView {
         super.awakeFromNib()
 
         avatarImageView.image = UIColor.defaultPlaceholderColor().image()
-        avatarImageView.layer.cornerRadius = 42
-        avatarImageView.layer.masksToBounds = true
     }
 }
 

@@ -592,7 +592,7 @@
                                                 <constraint firstItem="EZj-fe-Cgg" firstAttribute="width" secondItem="EZj-fe-Cgg" secondAttribute="height" multiplier="10:1" id="TE0-1J-fmG"/>
                                             </constraints>
                                         </view>
-                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="91r-ru-MjU">
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="91r-ru-MjU">
                                             <rect key="frame" x="0.0" y="0.0" width="104" height="156"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -635,6 +635,11 @@
                                                 <constraint firstAttribute="height" constant="84" id="gVw-M9-O3l"/>
                                                 <constraint firstAttribute="width" constant="84" id="lgO-NZ-oxi"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                    <real key="value" value="42"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hr5-yk-mrX">
                                             <rect key="frame" x="107" y="0.0" width="205" height="42"/>

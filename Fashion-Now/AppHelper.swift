@@ -122,7 +122,7 @@ class Toast {
 
 // MARK: - Mask
 
-func applyPollMask(#left: UIView, right: UIView) {
+func applyPollMask(left: UIView, right: UIView) {
 
     let maskReferenceSize: CGFloat = 1
     let spaceBetween: CGFloat = maskReferenceSize / 100
@@ -146,6 +146,18 @@ func applyPollMask(#left: UIView, right: UIView) {
     let rightMask = CAShapeLayer()
     rightMask.path = rightMaskPath.CGPath
     right.layer.mask = rightMask
+}
+
+extension UIView {
+    @IBInspectable var cornerRadius: CGFloat {
+        get {
+            return layer.cornerRadius
+        }
+        set {
+            layer.cornerRadius = newValue
+            layer.masksToBounds = newValue > 0
+        }
+    }
 }
 
 // MARK: - Constants

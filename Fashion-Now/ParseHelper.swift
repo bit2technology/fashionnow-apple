@@ -274,8 +274,9 @@ public class ParsePoll: PFObject, PFSubclassing {
 
 class ParsePollList: Printable, DebugPrintable {
 
-    enum Type: String {
-        case Mine = "ParsePollListTypeMine"
+    enum Type {
+        case Mine
+        case VotePublic
     }
 
     private(set) var downloading = false
@@ -284,13 +285,23 @@ class ParsePollList: Printable, DebugPrintable {
     let type: Type
 
     /// Return request handler by type of list
-    private var pollRequest: ParsePollRequest {
+    private var pollQuery: PFQuery {
+        let currentUser = ParseUser.currentUser()
+        let query = PFQuery(className: ParsePoll.parseClassName())
+            .includeKey(ParsePollCreatedByKey)
+            .includeKey(ParsePollPhotosKey)
+            .orderByDescending(ParseObjectCreatedAtKey)
+        query.limit = 1 // FIXME: !!!!
         switch type {
         case .Mine:
-            return ParsePollQuery(className: ParsePoll.parseClassName())
-                .includeKey(ParsePollPhotosKey)
-                .whereKey(ParsePollCreatedByKey, equalTo: ParseUser.currentUser())
+            return query.whereKey(ParsePollCreatedByKey, equalTo: currentUser)
+        case .VotePublic:
+            let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
                 .orderByDescending(ParseObjectCreatedAtKey)
+                .whereKey(ParseVoteUserIdKey, equalTo: currentUser.objectId)
+            votesByMeQuery.limit = ParseQueryLimit
+            return query.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)
+                .whereKey(ParsePollCreatedByKey, notEqualTo: currentUser)
         }
     }
 
@@ -316,7 +327,7 @@ class ParsePollList: Printable, DebugPrintable {
             // Online. Update polls list (or download is for the first time).
 
             // Configure request
-            let query = pollRequest
+            let query = pollQuery
             if pollsAreRemote {
                 switch type {
                 case .Newer:
@@ -332,10 +343,11 @@ class ParsePollList: Printable, DebugPrintable {
 
             // Start download
             downloading = true
-            query.downloadInBackground { (objects, error) -> Void in
-                self.downloading = false
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
+                self.downloading = false // MARK: !!!!
+                var error: NSError?
 
-                let unwrappedNewPolls: [ParsePoll]! = objects as? [ParsePoll] // FIXME: Swift 1.2
+                let unwrappedNewPolls: [ParsePoll]! = query.findObjects(&error) as? [ParsePoll] // FIXME: Swift 1.2
                 if unwrappedNewPolls != nil && unwrappedNewPolls.count > 0 {
 
                     if self.pollsAreRemote {
@@ -353,53 +365,54 @@ class ParsePollList: Printable, DebugPrintable {
                         self.pollsAreRemote = true
                     }
 
-                    self.pinAllInBackground(unwrappedNewPolls)
-                    completionHandler(true, error)
+                    PFObject.pinAllInBackground(unwrappedNewPolls, block: nil)
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        completionHandler(true, error)
+                    })
 
                 } else {
-                    completionHandler(false, error ?? NSError(domain: AppErrorDomain, code: AppErrorCode.NothingNew.rawValue, userInfo: nil))
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        completionHandler(false, error ?? NSError(domain: AppErrorDomain, code: AppErrorCode.NothingNew.rawValue, userInfo: nil))
+                    })
                 }
             }
 
         } else if polls.count > 0 {
 
             // Offline but polls list is not empty. Just return error.
-            completionHandler(false, NSError(domain: AppErrorDomain, code: AppErrorCode.ConnectionLost.rawValue, userInfo: nil))
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                completionHandler(false, NSError(domain: AppErrorDomain, code: AppErrorCode.ConnectionLost.rawValue, userInfo: nil))
+            })
 
         } else {
 
             // Offline. Fill with cached polls if available.
 
             // Configure request
-            let query = pollRequest
-            query.setLimit(ParseQueryLimit)
-            query.fromLocalDatastore()
+            let query = pollQuery.fromLocalDatastore()
+            query.limit = ParseQueryLimit
 
             // Start download
             downloading = true
-            query.downloadInBackground { (objects, error) -> Void in
+            query.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
                 self.downloading = false
 
                 let unwrappedCachedPolls: [ParsePoll]! = objects as? [ParsePoll]
-                if unwrappedCachedPolls != nil && unwrappedCachedPolls.count > 0 {
+                if unwrappedCachedPolls != nil && unwrappedCachedPolls.count > 0 { // FIXME: Swift 1.2
                     self.polls = unwrappedCachedPolls
-                    completionHandler(true, error)
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        completionHandler(true, error)
+                    })
                 } else {
-                    completionHandler(false, error ?? NSError(domain: AppErrorDomain, code: AppErrorCode.NoCache.rawValue, userInfo: nil))
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        completionHandler(false, error ?? NSError(domain: AppErrorDomain, code: AppErrorCode.NoCache.rawValue, userInfo: nil))
+                    })
                 }
-            }
+            })
         }
     }
 
-    private func pinAllInBackground(objects: [ParsePoll]) {
-        PFObject.pinAllInBackground(objects, withName: type.rawValue, block: nil)
-    }
-
-    func clear() {
-        polls = [] // FIXME: pending downloads, other variables
-    }
-
-    // MARK: Helper methods
+    // MARK: Array simulation
 
     var count: Int {
         return polls.count
@@ -415,38 +428,6 @@ class ParsePollList: Printable, DebugPrintable {
 
     subscript(index: Int) -> ParsePoll? {
         return index < polls.count ? polls[index] : nil
-    }
-}
-
-// MARK: Helper classes
-
-private protocol ParsePollRequest {
-    func downloadInBackground(completionHandler: PFArrayResultBlock)
-    func fromLocalDatastore()
-    func setLimit(value: Int)
-    func whereKey(key: String!, greaterThan object: AnyObject!)
-    func whereKey(key: String!, equalTo object: AnyObject!)
-    func whereKey(key: String!, lessThan object: AnyObject!)
-}
-
-private class ParsePollQuery: PFQuery, ParsePollRequest {
-    func downloadInBackground(completionHandler: PFArrayResultBlock) {
-        findObjectsInBackgroundWithBlock(completionHandler)
-    }
-    func fromLocalDatastore() {
-        super.fromLocalDatastore()
-    }
-    private func setLimit(value: Int) {
-        limit = value
-    }
-    func whereKey(key: String!, equalTo object: AnyObject!) {
-        super.whereKey(key, equalTo: object)
-    }
-    func whereKey(key: String!, greaterThan object: AnyObject!) {
-        super.whereKey(key, greaterThan: object)
-    }
-    func whereKey(key: String!, lessThan object: AnyObject!) {
-        super.whereKey(key, lessThan: object)
     }
 }
 
@@ -570,6 +551,7 @@ public class ParsePublicVotePollList: Printable, DebugPrintable {
 
 let ParseVoteByKey = "voteBy"
 let ParseVotePollIdKey = "pollId"
+let ParseVoteUserIdKey = "userId"
 let ParseVoteVoteKey = "vote"
 
 public class ParseVote: PFObject, PFSubclassing {

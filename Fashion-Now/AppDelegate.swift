@@ -78,8 +78,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // Observe login change and update installation
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateInstallationUser:", name: LoginChangedNotificationName, object: nil)
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
+
+        // Clean cache
+        SDImageCache.sharedImageCache().cleanDiskWithCompletionBlock(nil)
+
         return true
     }
     
@@ -92,13 +95,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FBAppEvents.activateApp()
     }
 
+    func applicationDidReceiveMemoryWarning(application: UIApplication) {
+        SDImageCache.sharedImageCache().clearMemory()
+    }
+
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     /// Called every login or logout
-    func updateInstallationUser(notification: NSNotification) {
-        // Register user ID in installation on login change
+    func loginChanged(notification: NSNotification) {
+        PFObject.unpinAllObjectsInBackgroundWithBlock(nil)
+        
+        // Register new user ID in installation on login change
         let currentInstallation = ParseInstallation.currentInstallation()
         currentInstallation.userId = ParseUser.currentUser().objectId
         currentInstallation.saveEventually(nil)
