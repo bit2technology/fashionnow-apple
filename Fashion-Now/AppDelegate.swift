@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Logout if current user is invalid (is not anonymous and hasn't password or valid email)
         let currentUser = ParseUser.currentUser()
-        if !PFAnonymousUtils.isLinkedWithUser(currentUser) && (currentUser.hasPassword != true || currentUser.email?.isEmail() != true) {
+        if !currentUser.isValid {
             ParseUser.logOut()
         }
 
@@ -93,10 +93,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(application: UIApplication) {
         FBAppCall.handleDidBecomeActiveWithSession(PFFacebookUtils.session())
         FBAppEvents.activateApp()
-    }
-
-    func applicationDidReceiveMemoryWarning(application: UIApplication) {
-        SDImageCache.sharedImageCache().clearMemory()
     }
 
     deinit {

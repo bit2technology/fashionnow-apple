@@ -8,8 +8,6 @@
 
 import UIKit
 
-let NewPollSavedNotificationName = "NewPollSavedNotification"
-
 class MeController: UICollectionViewController {
 
     private var myPolls = ParsePollList(type: .Mine)

@@ -62,14 +62,9 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
             }, cancelBlock: nil, origin: view)
 
         case NSIndexPath(forRow: 2, inSection: 0): // Birthday
-            let timeZoneIndependentFormatter = NSDateFormatter()
-            timeZoneIndependentFormatter.dateFormat = "yyyy-MM-dd"
-            timeZoneIndependentFormatter.timeZone = GMTTimeZone
-            let adjustedBirthdayString = timeZoneIndependentFormatter.stringFromDate(birthday)
-            timeZoneIndependentFormatter.timeZone = nil
-            ActionSheetDatePicker.showPickerWithTitle(nil, datePickerMode: .Date, selectedDate: timeZoneIndependentFormatter.dateFromString(adjustedBirthdayString), minimumDate: nil, maximumDate: nil, doneBlock: { (picker, selectedDate, origin) -> Void in
-                self.birthday = self.timezoneIndependent(selectedDate as NSDate)
-                self.birthdayField.text = self.dateDescription(self.birthday)
+            ActionSheetDatePicker.showPickerWithTitle(nil, datePickerMode: .Date, selectedDate: birthday, minimumDate: nil, maximumDate: nil, doneBlock: { (picker, selectedDate, origin) -> Void in
+                self.birthday = selectedDate as NSDate
+                self.birthdayField.text = self.birthday.fn_birthdayDescription
             }, cancelBlock: nil, origin: view)
 
         default:
@@ -252,8 +247,8 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
             }
             // Set photo properties
             if self.avatarChanged {
-                let imageData = self.avatarImageView.image!.compressedJPEGData(maxSize: 512)
-                currentUser.avatarImage = PFFile(data: imageData, contentType: "image/jpeg")
+                let imageData = self.avatarImageView.image!.compressedJPEGData(maxSize: 256)
+                currentUser.avatarImage = PFFile(name: "avatar.jpg", data: imageData, contentType: "image/jpeg")
             }
 
             // Save attempt
@@ -270,25 +265,7 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
         }
     }
 
-    /// GMT time zone helper
-    private let GMTTimeZone = NSTimeZone(name: "GMT")
-
-    /// This method takes an NSDate in local time and converts it to GMT (without time).
-    private func timezoneIndependent(date: NSDate) -> NSDate {
-        let timeZoneIndependentFormatter = NSDateFormatter()
-        timeZoneIndependentFormatter.dateFormat = "yyyy-MM-dd"
-        let adjustedNewBirthdayString = timeZoneIndependentFormatter.stringFromDate(date)
-        timeZoneIndependentFormatter.timeZone = GMTTimeZone
-        return timeZoneIndependentFormatter.dateFromString(adjustedNewBirthdayString)!
-    }
-
-    /// Show description for date in GMT
-    private func dateDescription(date: NSDate) -> String {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.timeZone = GMTTimeZone
-        dateFormatter.dateStyle = .MediumStyle
-        return dateFormatter.stringFromDate(birthday)
-    }
+    
 
     // MARK: UIViewController
 
@@ -308,8 +285,8 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
         gender = currentUser.gender ?? facebookUser?.gender ?? genderValues.last
         genderField.text = genderLabels[find(genderValues, gender) ?? genderLabels.count - 1]
         // Birthday adjusted to GMT
-        birthday = timezoneIndependent(NSDate())
-        birthdayField.text = dateDescription(birthday)
+        birthday = currentUser.birthday
+        birthdayField.text = birthday.fn_birthdayDescription
 
         // If user is anonymous, show standard (empty) controller
         if PFAnonymousUtils.isLinkedWithUser(currentUser) {
@@ -322,11 +299,6 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
         // Fill fields with Parse or Facebook information
         // Name
         nameField.text = currentUser.name ?? facebookUser?.first_name
-        // Birthday
-        if let unwrappedUserBirthday = currentUser.birthday {
-            birthday = unwrappedUserBirthday
-            birthdayField.text = dateDescription(birthday)
-        }
         // Location
         locationField.text = currentUser.location
         // Email

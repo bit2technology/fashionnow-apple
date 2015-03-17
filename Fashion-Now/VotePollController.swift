@@ -10,7 +10,7 @@ import UIKit
 
 class VotePollController: UIViewController, PollControllerDelegate {
 
-    private var polls: ParsePublicVotePollList!
+    private var polls = ParsePollList(type: .VotePublic)
 
     private weak var pollController: PollController!
 
@@ -100,14 +100,8 @@ class VotePollController: UIViewController, PollControllerDelegate {
             dateFormatter.doesRelativeDateFormatting = true
             dateLabel.text = dateFormatter.stringFromDate(nextPoll.createdAt)
             // Caption
-            if let unwrappedCaption = nextPoll.caption {
-                tagsLabel.text = unwrappedCaption
-            } else if let unwrappedTags = nextPoll.tags {
-                tagsLabel.text = ", ".join(unwrappedTags).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-            } else {
-                tagsLabel.text = ""
-            }
-            tagsLabel.superview?.hidden = countElements(tagsLabel.text!) <= 0
+            tagsLabel.text = nextPoll.caption
+            tagsLabel.superview?.hidden = tagsLabel.text?.fn_count <= 0
 
             // Avatar
             if let unwrappedAuthorFacebookId = nextPoll.createdBy?.facebookId {
@@ -127,8 +121,8 @@ class VotePollController: UIViewController, PollControllerDelegate {
     func loadPollList(notification: NSNotification?) {
         emptyInterface.hidden = true
         setLoadingInterfaceHidden(false, animated: false)
-        polls = ParsePublicVotePollList()
-        polls.update { (error) -> Void in
+        polls = ParsePollList(type: .VotePublic)
+        polls.update(completionHandler: { (success, error) -> Void in
 
             if error != nil {
                 self.showErrorScreen()
@@ -136,7 +130,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
             }
 
             self.showNextPoll()
-        }
+        })
     }
 
     // MARK: UIViewController

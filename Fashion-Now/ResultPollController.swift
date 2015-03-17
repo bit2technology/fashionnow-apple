@@ -54,14 +54,8 @@ class ResultPollController: UIViewController {
         dateFormatter.doesRelativeDateFormatting = true
         navigationItem.title = dateFormatter.stringFromDate(poll.createdAt)
         // Caption
-        if let unwrappedCaption = poll.caption {
-            captionLabel.text = unwrappedCaption
-        } else if let unwrappedTags = poll.tags {
-            captionLabel.text = ", ".join(unwrappedTags).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-        } else {
-            captionLabel.text = ""
-        }
-        captionLabel.superview?.hidden = countElements(captionLabel.text!) <= 0
+        captionLabel.text = poll.caption
+        captionLabel.superview?.hidden = captionLabel.text?.fn_count <= 0
 
         let leftVoteCountQuery = PFQuery(className: ParseVote.parseClassName())
         leftVoteCountQuery.whereKey(ParseVotePollIdKey, equalTo: poll.objectId)

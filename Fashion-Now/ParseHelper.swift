@@ -17,7 +17,7 @@ let ParseQueryLimit = 1000
 let ParseInstallationLocationKey = "location"
 let ParseInstallationUserIdKey = "userId"
 
-public class ParseInstallation: PFInstallation, PFSubclassing {
+class ParseInstallation: PFInstallation, PFSubclassing {
 
     var location: PFGeoPoint? {
         get {
@@ -40,7 +40,6 @@ public class ParseInstallation: PFInstallation, PFSubclassing {
 
 // MARK: - User class
 
-//let ParseUserAvatarKey = "avatar"
 let ParseUserAvatarImageKey = "avatarImage"
 let ParseUserBirthdayKey = "birthday"
 let ParseUserFacebookIdKey = "facebookId"
@@ -49,21 +48,12 @@ let ParseUserHasPassword = "hasPassword"
 let ParseUserLocationKey = "location"
 let ParseUserNameKey = "name"
 
-public class ParseUser: PFUser, PFSubclassing {
+class ParseUser: PFUser, PFSubclassing {
 
-    override public class func logOut() {
+    override class func logOut() {
         superclass()?.logOut()
         FBSession.activeSession().closeAndClearTokenInformation()
     }
-
-//    var avatar: ParsePhoto? {
-//        get {
-//            return self[ParseUserAvatarKey] as? ParsePhoto
-//        }
-//        set {
-//            self[ParseUserAvatarKey] = newValue ?? NSNull()
-//        }
-//    }
 
     var avatarImage: PFFile? {
         get {
@@ -83,7 +73,29 @@ public class ParseUser: PFUser, PFSubclassing {
         return nil
     }
 
-    var birthday: NSDate? {
+    var birthday: NSDate! {
+        get {
+            let timeZoneIndependentFormatter = NSDateFormatter()
+            timeZoneIndependentFormatter.timeZone = NSTimeZone(name: "GMT")
+            timeZoneIndependentFormatter.dateFormat = "yyyy-MM-dd"
+            let adjustedNewBirthdayString = timeZoneIndependentFormatter.stringFromDate(birthdayNative ?? NSDate())
+            timeZoneIndependentFormatter.timeZone = nil
+            return timeZoneIndependentFormatter.dateFromString(adjustedNewBirthdayString)
+        }
+        set {
+            if newValue != nil {
+                let timeZoneIndependentFormatter = NSDateFormatter()
+                timeZoneIndependentFormatter.dateFormat = "yyyy-MM-dd"
+                let adjustedNewBirthdayString = timeZoneIndependentFormatter.stringFromDate(birthdayNative!)
+                timeZoneIndependentFormatter.timeZone = NSTimeZone(name: "GMT")
+                birthdayNative = timeZoneIndependentFormatter.dateFromString(adjustedNewBirthdayString)
+            } else {
+                birthdayNative = nil
+            }
+        }
+    }
+
+    private var birthdayNative: NSDate? {
         get {
             return self[ParseUserBirthdayKey] as? NSDate
         }
@@ -91,20 +103,6 @@ public class ParseUser: PFUser, PFSubclassing {
             self[ParseUserBirthdayKey] = newValue ?? NSNull()
         }
     }
-
-//    func birthdayDate(format: String = ParseUserBirthdayDateFormat) -> NSDate? {
-//        if let unwrappedBirthday = birthday {
-//            let dateFormatter = NSDateFormatter()
-//            dateFormatter.dateFormat = format
-//            return dateFormatter.dateFromString(unwrappedBirthday)
-//        }
-//        return nil
-//    }
-//    func setBirthday(#date: NSDate) {
-//        let dateFormatter = NSDateFormatter()
-//        dateFormatter.dateFormat = ParseUserBirthdayDateFormat
-//        birthday = dateFormatter.stringFromDate(date)
-//    }
 
     var facebookId: String? {
         get {
@@ -150,6 +148,12 @@ public class ParseUser: PFUser, PFSubclassing {
             self[ParseUserNameKey] = newValue ?? NSNull()
         }
     }
+
+    // MARK: Helper methods
+
+    var isValid: Bool {
+        return PFAnonymousUtils.isLinkedWithUser(self) || (self.hasPassword == true && self.email?.isEmail() == true)
+    }
 }
 
 // MARK: - Photo class
@@ -157,9 +161,9 @@ public class ParseUser: PFUser, PFSubclassing {
 let ParsePhotoImageKey = "image"
 let ParsePhotoUserIdKey = "userId"
 
-public class ParsePhoto: PFObject, PFSubclassing {
+class ParsePhoto: PFObject, PFSubclassing {
 
-    public class func parseClassName() -> String {
+    class func parseClassName() -> String {
         return "Photo"
     }
 
@@ -192,9 +196,7 @@ public class ParsePhoto: PFObject, PFSubclassing {
     // MARK: Helper methods
 
     var isValid: Bool {
-        get {
-            return image != nil
-        }
+        return image != nil // Don't verify userId for compatibility reason and irrelevance
     }
 }
 
@@ -203,7 +205,6 @@ public class ParsePhoto: PFObject, PFSubclassing {
 let ParsePollCaptionKey = "caption"
 let ParsePollCreatedByKey = "createdBy"
 let ParsePollPhotosKey = "photos"
-let ParsePollTagsKey = "tags"
 
 public class ParsePoll: PFObject, PFSubclassing {
 
@@ -213,9 +214,7 @@ public class ParsePoll: PFObject, PFSubclassing {
     
     convenience init(user: ParseUser) {
         self.init()
-        let defaultACL = PFACL(user: user)
-        defaultACL.setPublicReadAccess(true)
-        ACL = defaultACL
+        ACL = PFACL(user: user)
         createdBy = user
     }
 
@@ -246,59 +245,54 @@ public class ParsePoll: PFObject, PFSubclassing {
         }
     }
 
-    var tags: [String]? {
-        get {
-            return self[ParsePollTagsKey] as? [String]
-        }
-        set {
-            self[ParsePollTagsKey] = newValue ?? NSNull()
-        }
-    }
-
     // MARK: Helper methods
 
     var isValid: Bool {
-        get {
-            if photos == nil {
+        if photos == nil {
+            return false
+        }
+        for photo in photos! {
+            if photo.isValid != true {
                 return false
             }
-            for photo in photos! {
-                if photo.isValid != true {
-                    return false
-                }
-            }
-            return createdBy != nil
         }
+        return createdBy != nil
     }
 }
 
 class ParsePollList: Printable, DebugPrintable {
 
+    // It there is more than one type of not vote, algorithm must change
+    /// Type of poll list
     enum Type {
+        /// Polls uploaded by the current user
         case Mine
+        /// Public polls from everyone, except the ones voted by the current user
         case VotePublic
     }
 
     private(set) var downloading = false
+    private var lastUpdate: NSDate?
     private var polls = [ParsePoll]()
     private var pollsAreRemote = false
     let type: Type
 
-    /// Return request handler by type of list
+    /// Return new query by type of list
     private var pollQuery: PFQuery {
         let currentUser = ParseUser.currentUser()
         let query = PFQuery(className: ParsePoll.parseClassName())
             .includeKey(ParsePollCreatedByKey)
             .includeKey(ParsePollPhotosKey)
             .orderByDescending(ParseObjectCreatedAtKey)
-        query.limit = 1 // FIXME: !!!!
         switch type {
         case .Mine:
             return query.whereKey(ParsePollCreatedByKey, equalTo: currentUser)
-        case .VotePublic:
+        default:
             let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
                 .orderByDescending(ParseObjectCreatedAtKey)
-                .whereKey(ParseVoteUserIdKey, equalTo: currentUser.objectId)
+            if let unwrappedUserId = currentUser.objectId {
+                votesByMeQuery.whereKey(ParseVoteUserIdKey, equalTo: unwrappedUserId)
+            }
             votesByMeQuery.limit = ParseQueryLimit
             return query.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)
                 .whereKey(ParsePollCreatedByKey, notEqualTo: currentUser)
@@ -309,10 +303,29 @@ class ParsePollList: Printable, DebugPrintable {
         self.type = type
     }
 
+    /// Type of update request
     enum UpdateType {
+        /// Download newer polls
         case Newer
+        /// Download oler polls
         case Older
     }
+
+    /// Return next poll (generally to vote) and optionally, remove it from the list
+    func nextPoll(#remove: Bool) -> ParsePoll? {
+
+        if polls.count > 0 {
+            let nextPoll = polls[0]
+            if remove {
+                polls.removeAtIndex(0)
+            }
+            return nextPoll
+        }
+        return nil
+    }
+
+    /// Cache the completion handler from update method and use in the finish method
+    private var completionHandler: PFBooleanResultBlock?
 
     /// Updates (or downloads for the first time) the poll list. It returns true in the completion handler if there is new polls added to the list.
     func update(type: UpdateType = .Newer, completionHandler: PFBooleanResultBlock) {
@@ -322,9 +335,14 @@ class ParsePollList: Printable, DebugPrintable {
             // Already downloading. Just return error.
             completionHandler(false, NSError(domain: AppErrorDomain, code: AppErrorCode.Busy.rawValue, userInfo: nil))
             
+        } else if lastUpdate?.timeIntervalSinceNow > -5 {
+
+            // Tried to update too early. Just return error.
+            completionHandler(false, NSError(domain: AppErrorDomain, code: AppErrorCode.RequestTooOften.rawValue, userInfo: nil))
+
         } else if Reachability.reachabilityForInternetConnection().isReachable() {
 
-            // Online. Update polls list (or download is for the first time).
+            // Online. Update polls list (or download it for the first time).
 
             // Configure request
             let query = pollQuery
@@ -343,12 +361,63 @@ class ParsePollList: Printable, DebugPrintable {
 
             // Start download
             downloading = true
+            self.completionHandler = completionHandler
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
-                self.downloading = false // MARK: !!!!
                 var error: NSError?
 
-                let unwrappedNewPolls: [ParsePoll]! = query.findObjects(&error) as? [ParsePoll] // FIXME: Swift 1.2
-                if unwrappedNewPolls != nil && unwrappedNewPolls.count > 0 {
+                // Save user if needed
+                let currentUser = ParseUser.currentUser()
+                if currentUser.isDirty() {
+                    currentUser.save(&error)
+                    if error != nil {
+                        self.finish(false, error: error)
+                        return
+                    }
+                }
+
+                var unwrappedNewPolls: [ParsePoll]! = query.findObjects(&error) as? [ParsePoll] // FIXME: Swift 1.2
+                if error == nil && unwrappedNewPolls != nil && unwrappedNewPolls.count > 0 {
+
+                    // Remove already voted polls only if type is one of the vote types
+                    if self.type != .Mine {
+
+                        // Collect new polls IDs
+                        var newPollsIds = [String]()
+                        for poll in unwrappedNewPolls {
+                            newPollsIds.append(poll.objectId)
+                        }
+
+                        // Find votes on these new polls
+                        let myVotesQuery = PFQuery(className: ParseVote.parseClassName())
+                            .whereKey(ParseVotePollIdKey, containedIn: newPollsIds)
+                            .whereKey(ParseVoteUserIdKey, equalTo: currentUser.objectId)
+                        myVotesQuery.limit = ParseQueryLimit
+                        let myVotes = myVotesQuery.findObjects(&error) as? [ParseVote]
+                        if error != nil {
+                            self.finish(false, error: error)
+                            return
+                        }
+                        if myVotes?.count >= unwrappedNewPolls.count {
+                            // All new polls are voted. Just return error.
+                            self.finish(false, error: NSError(domain: AppErrorDomain, code: AppErrorCode.NothingNew.rawValue, userInfo: nil))
+                            return
+                        }
+                        if myVotes?.count > 0 {
+                            // Collect already voted polls IDs
+                            var myVotesPollIds = [String]()
+                            for vote in myVotes! {
+                                myVotesPollIds.append(vote.pollId!)
+                            }
+                            // Remove the ones already voted
+                            var notVotedNewPolls = [ParsePoll]()
+                            for newPoll in unwrappedNewPolls {
+                                if find(myVotesPollIds, newPoll.objectId) == nil {
+                                    notVotedNewPolls.append(newPoll)
+                                }
+                            }
+                            unwrappedNewPolls = notVotedNewPolls
+                        }
+                    }
 
                     if self.pollsAreRemote {
                         // Insert before or after depending on type of update
@@ -365,24 +434,21 @@ class ParsePollList: Printable, DebugPrintable {
                         self.pollsAreRemote = true
                     }
 
+                    // Cache polls and return
                     PFObject.pinAllInBackground(unwrappedNewPolls, block: nil)
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        completionHandler(true, error)
-                    })
+                    self.finish(true, error: error)
 
                 } else {
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        completionHandler(false, error ?? NSError(domain: AppErrorDomain, code: AppErrorCode.NothingNew.rawValue, userInfo: nil))
-                    })
+
+                    // Download error or no more polls
+                    self.finish(false, error: error ?? NSError(domain: AppErrorDomain, code: AppErrorCode.NothingNew.rawValue, userInfo: nil))
                 }
             }
 
         } else if polls.count > 0 {
 
             // Offline but polls list is not empty. Just return error.
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                completionHandler(false, NSError(domain: AppErrorDomain, code: AppErrorCode.ConnectionLost.rawValue, userInfo: nil))
-            })
+            completionHandler(false, NSError(domain: AppErrorDomain, code: AppErrorCode.ConnectionLost.rawValue, userInfo: nil))
 
         } else {
 
@@ -400,16 +466,22 @@ class ParsePollList: Printable, DebugPrintable {
                 let unwrappedCachedPolls: [ParsePoll]! = objects as? [ParsePoll]
                 if unwrappedCachedPolls != nil && unwrappedCachedPolls.count > 0 { // FIXME: Swift 1.2
                     self.polls = unwrappedCachedPolls
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        completionHandler(true, error)
-                    })
+                    completionHandler(true, error)
                 } else {
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        completionHandler(false, error ?? NSError(domain: AppErrorDomain, code: AppErrorCode.NoCache.rawValue, userInfo: nil))
-                    })
+                    completionHandler(false, error ?? NSError(domain: AppErrorDomain, code: AppErrorCode.NoCache.rawValue, userInfo: nil))
                 }
             })
         }
+    }
+
+    /// Helper method to update
+    func finish(success: Bool, error: NSError!) {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.downloading = false
+            self.lastUpdate = NSDate()
+            self.completionHandler?(success, error)
+            self.completionHandler = nil
+        })
     }
 
     // MARK: Array simulation
@@ -431,132 +503,15 @@ class ParsePollList: Printable, DebugPrintable {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// MARK: DEEEELLLEEEETTTEEEEEEEEEEE
-
-public class ParsePublicVotePollList: Printable, DebugPrintable {
-
-    private var polls = [ParsePoll]()
-    private let pollsToVoteQuery: PFQuery
-
-    var count: Int {
-        get {
-            return polls.count
-        }
-    }
-
-    public var description: String {
-        get {
-            return polls.description
-        }
-    }
-    public var debugDescription: String {
-        get {
-            return polls.debugDescription
-        }
-    }
-
-    init() {
-        let currentUser = ParseUser.currentUser()
-        let pollsToVoteQueryLimit = 1000
-        // Creating query
-        pollsToVoteQuery = PFQuery(className: ParsePoll.parseClassName())
-        pollsToVoteQuery.includeKey(ParsePollCreatedByKey)
-        pollsToVoteQuery.includeKey(ParsePollPhotosKey)
-        pollsToVoteQuery.limit = pollsToVoteQueryLimit
-        pollsToVoteQuery.orderByDescending(ParseObjectCreatedAtKey)
-        // Selecting only relevant polls
-        let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
-        votesByMeQuery.limit = pollsToVoteQueryLimit
-        votesByMeQuery.orderByDescending(ParseObjectCreatedAtKey)
-        votesByMeQuery.whereKey(ParseVoteByKey, equalTo: currentUser)
-        pollsToVoteQuery.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)
-        pollsToVoteQuery.whereKey(ParsePollCreatedByKey, notEqualTo: currentUser)
-    }
-
-    private func forceUpdate(completionHandler: ((NSError!) -> Void)?) {
-        pollsToVoteQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-
-            // Error handling
-            if error != nil {
-                completionHandler?(error)
-                return
-            }
-
-            // Add unique objects if poll list is not empty
-            if self.polls.count > 0 {
-                for pollToAdd in (objects as [ParsePoll]) {
-                    if find(self.polls, pollToAdd) == nil {
-                        self.polls.append(pollToAdd)
-                    }
-                }
-                // Order descending
-                self.polls.sort({$0.createdAt.compare($1.createdAt) == NSComparisonResult.OrderedDescending})
-            } else {
-                self.polls = objects as [ParsePoll]
-            }
-
-            // Call completion handler
-            completionHandler?(error)
-        }
-    }
-
-    func update(completionHandler: ((NSError!) -> Void)? = nil) {
-        let currentUser = ParseUser.currentUser()
-//        if currentUser.isDirty() {
-            currentUser.saveInBackgroundWithBlock { (succeeded, error) -> Void in
-                if succeeded {
-                    self.forceUpdate(completionHandler)
-                } else {
-                    completionHandler?(error)
-                }
-            }
-//        } else {
-//            forceUpdate(completionHandler)
-//        }
-    }
-
-    func nextPoll(remove: Bool = true) -> ParsePoll? {
-
-        var nextPoll = polls.first
-
-        while nextPoll?.isValid == false {
-            polls.removeAtIndex(0)
-            nextPoll = polls.first
-        }
-
-        if remove && polls.count > 0 {
-            polls.removeAtIndex(0)
-        }
-
-        return nextPoll
-    }
-}
-
 // MARK: - Vote class
 
-let ParseVoteByKey = "voteBy"
 let ParseVotePollIdKey = "pollId"
 let ParseVoteUserIdKey = "userId"
 let ParseVoteVoteKey = "vote"
 
-public class ParseVote: PFObject, PFSubclassing {
+class ParseVote: PFObject, PFSubclassing {
 
-    public class func parseClassName() -> String {
+    class func parseClassName() -> String {
         return "Vote"
     }
 
@@ -565,7 +520,7 @@ public class ParseVote: PFObject, PFSubclassing {
         let defaultACL = PFACL()
         defaultACL.setPublicReadAccess(true)
         ACL = defaultACL
-        voteBy = user
+        userId = user.objectId
     }
 
     var pollId: String? {
@@ -586,27 +541,23 @@ public class ParseVote: PFObject, PFSubclassing {
         }
     }
 
-    var voteBy: ParseUser? {
+    var userId: String? {
         get {
-            return self[ParseVoteByKey] as? ParseUser
+            return self[ParseVoteUserIdKey] as? String
         }
         set {
-            self[ParseVoteByKey] = newValue ?? NSNull()
+            self[ParseVoteUserIdKey] = newValue ?? NSNull()
         }
     }
 
     // MARK: Helper methods
 
     var isValid: Bool {
-        get {
-            return pollId != nil && vote != nil && voteBy != nil
-        }
+        return pollId?.fn_count > 0 && vote != nil && userId?.fn_count > 0
     }
 }
 
 // MARK: - Analytics
-
-//let ParseAnalyticsLoginWithFacebookScreen
 
 extension PFAnalytics {
 

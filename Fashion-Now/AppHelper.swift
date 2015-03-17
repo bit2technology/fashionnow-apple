@@ -148,6 +148,22 @@ func applyPollMask(left: UIView, right: UIView) {
     right.layer.mask = rightMask
 }
 
+extension String {
+    var fn_count: Int {
+        return countElements(self)
+    }
+}
+
+extension NSDate {
+    /// Show description for date
+    var fn_birthdayDescription: String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.timeZone = NSTimeZone(name: "GMT")
+        dateFormatter.dateStyle = .MediumStyle
+        return dateFormatter.stringFromDate(self)
+    }
+}
+
 extension UIView {
     @IBInspectable var cornerRadius: CGFloat {
         get {
@@ -162,6 +178,9 @@ extension UIView {
 
 // MARK: - Constants
 
+/// Notification name for new poll saved
+let NewPollSavedNotificationName = "NewPollSavedNotification"
+
 /// Default error domain
 let AppErrorDomain = "com.bit2software.Fashion-Now"
 
@@ -175,6 +194,8 @@ enum AppErrorCode: Int {
     case ConnectionLost = 802
     /// App is offline and has no cache content
     case NoCache = 803
+    /// Requests are limited. We need to save them.
+    case RequestTooOften = 804
 }
 
 /// Returns "OK" for English and its variants for other languages

@@ -52,15 +52,4 @@ extension FBGraphObject {
             return self["id"] as? String
         }
     }
-
-    /**
-    Only use this if picture was requested along with user info
-    */
-    var picturePath: String? {
-        get {
-            let pictureDict = self["picture"] as? [NSObject:AnyObject]
-            let dataDict = pictureDict?["data"] as? [NSObject:AnyObject]
-            return dataDict?["url"] as? String
-        }
-    }
 }

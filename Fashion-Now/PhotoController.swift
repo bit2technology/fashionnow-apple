@@ -99,7 +99,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
     private func setPhotoImage(image: UIImage) {
         // Set photo properties
         let imageData = image.compressedJPEGData()
-        photo.image = PFFile(data: imageData, contentType: "image/jpeg")
+        photo.image = PFFile(name: "image.jpg", data: imageData, contentType: "image/jpeg")
         imageView.image = image
         imageContainerHidden = false
 
