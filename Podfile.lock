@@ -13,9 +13,9 @@ PODS:
     - Facebook-iOS-SDK (~> 3.20)
     - Parse (~> 1.6.4)
   - Reachability (3.2)
-  - SDWebImage (3.7.1):
-    - SDWebImage/Core (= 3.7.1)
-  - SDWebImage/Core (3.7.1)
+  - SDWebImage (3.7.2):
+    - SDWebImage/Core (= 3.7.2)
+  - SDWebImage/Core (3.7.2)
   - UIActivityIndicator-for-SDWebImage (1.2):
     - SDWebImage (~> 3.7)
 
@@ -42,7 +42,7 @@ SPEC CHECKSUMS:
   ParseCrashReporting: 8be6e6000eb8dbcde9e077674f561ecda78df6a8
   ParseFacebookUtils: 00833ccf6fec7d6429e2403fe457496a5089358b
   Reachability: 1ef8adf5c4e3d362f96515d4278f68dad3c26930
-  SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
+  SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   UIActivityIndicator-for-SDWebImage: 8bd92c15280fbe54816448c6b14674145eee05c7
 
 COCOAPODS: 0.36.0

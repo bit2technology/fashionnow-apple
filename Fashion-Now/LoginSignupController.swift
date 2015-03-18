@@ -278,8 +278,6 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
         genderField.textColor = UIColor.defaultTintColor()
         birthdayField.textColor = UIColor.defaultTintColor()
         avatarImageView.image = UIColor.defaultPlaceholderColor().image()
-        avatarImageView.layer.cornerRadius = 42
-        avatarImageView.layer.masksToBounds = true
 
         // The values for gender and birthday are filled with default values (even for anonymous users)
         gender = currentUser.gender ?? facebookUser?.gender ?? genderValues.last

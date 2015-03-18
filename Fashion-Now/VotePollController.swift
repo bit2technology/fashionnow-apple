@@ -163,9 +163,6 @@ class VotePollController: UIViewController, PollControllerDelegate {
         pollController.delegate = self
         pollController.imageButtonsHidden = true
         pollController.voteGesturesEnabled = true
-        
-        avatarView.layer.cornerRadius = 20
-        avatarView.layer.masksToBounds = true
 
         voteButtons = [leftVoteButton, rightVoteButton]
         for voteButton in voteButtons {

@@ -10,7 +10,10 @@ import UIKit
 
 class MeController: UICollectionViewController {
 
+    /// Main list of polls to show
     private var myPolls = ParsePollList(type: .Mine)
+    /// List of posted polls before update
+    private var postedPolls = [ParsePoll]()
 
     /// Track if it's the first time the view is shown on screen
     private var firstTimeShow = true
@@ -24,10 +27,12 @@ class MeController: UICollectionViewController {
         super.viewDidLoad()
 
         // Basic configuration
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Bordered, target: nil, action: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
 
         // Configure refresh control for manual update
         let refreshControl = UIRefreshControl()
+        refreshControl.layer.zPosition = -9999
         refreshControl.addTarget(self, action: "refreshControlDidChangeValue:", forControlEvents: .ValueChanged)
         collectionView?.addSubview(refreshControl)
         self.refreshControl = refreshControl
@@ -70,6 +75,7 @@ class MeController: UICollectionViewController {
             handler = { (succeeded, error) -> Void in
 
                 if succeeded {
+                    self.postedPolls = []
                     self.collectionView?.reloadData()
                 }
 
@@ -123,7 +129,7 @@ class MeController: UICollectionViewController {
     // MARK: UICollectionoViewController
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return myPolls.count
+        return postedPolls.count + myPolls.count
     }
 
     override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
@@ -143,7 +149,13 @@ class MeController: UICollectionViewController {
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        return (collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as MePollCell).withPoll(myPolls[indexPath.item])
+        var poll: ParsePoll!
+        if indexPath.item < postedPolls.count {
+            poll = postedPolls[indexPath.item]
+        } else {
+            poll = myPolls[indexPath.item - postedPolls.count]
+        }
+        return (collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as MePollCell).withPoll(poll)
     }
 }
 
@@ -152,9 +164,13 @@ class MePollCell: UICollectionViewCell {
     @IBOutlet weak var leftImageView: UIImageView!
     @IBOutlet weak var rightImageView: UIImageView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    var pollContainer: UIView {
+        return leftImageView.superview!.superview!
+    }
 
     override func awakeFromNib() {
 
+        let layer = leftImageView.superview!.superview!.layer
         layer.rasterizationScale = UIScreen.mainScreen().scale
         layer.shouldRasterize = true
 
@@ -166,6 +182,9 @@ class MePollCell: UICollectionViewCell {
     }
 
     func withPoll(poll: ParsePoll?) -> Self {
+
+        let container = pollContainer
+        container.hidden = true
 
         activityIndicator.startAnimating()
         leftImageView.image = nil
@@ -191,6 +210,7 @@ class MePollCell: UICollectionViewCell {
                 }
 
                 if self.leftImageView.image != nil && self.rightImageView.image != nil {
+                    container.hidden = false
                     self.activityIndicator.stopAnimating()
                 }
             }

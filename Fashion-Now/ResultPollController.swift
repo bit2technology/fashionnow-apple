@@ -18,8 +18,6 @@ class ResultPollController: UIViewController {
 
     private var pollController: PollController!
 
-    @IBOutlet weak var captionLabel: UILabel!
-
     @IBOutlet weak var leftPercentLabel: UILabel!
     @IBOutlet weak var rightPercentLabel: UILabel!
 
@@ -40,22 +38,17 @@ class ResultPollController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.titleView?.frame.size.width = 9999
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        activityIndicator.startAnimating()
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(image: UIImage(named: "ButtonTrash"), style: .Bordered, target: nil, action: nil), UIBarButtonItem(customView: activityIndicator)]
+
         for label in [leftPercentLabel, rightPercentLabel] {
             label.layer.shadowOffset = CGSizeZero
             label.layer.shadowOpacity = 1
             label.layer.shadowRadius = 2
             label.text = nil
         }
-
-        // Date
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = .ShortStyle
-        dateFormatter.timeStyle = .ShortStyle
-        dateFormatter.doesRelativeDateFormatting = true
-        navigationItem.title = dateFormatter.stringFromDate(poll.createdAt)
-        // Caption
-        captionLabel.text = poll.caption
-        captionLabel.superview?.hidden = captionLabel.text?.fn_count <= 0
 
         let leftVoteCountQuery = PFQuery(className: ParseVote.parseClassName())
         leftVoteCountQuery.whereKey(ParseVotePollIdKey, equalTo: poll.objectId)

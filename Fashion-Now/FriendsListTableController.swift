@@ -169,14 +169,6 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
 }
 
 class FriendListTableCell: UITableViewCell {
-
     @IBOutlet weak var avatarView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        avatarView.layer.cornerRadius = 20
-        avatarView.layer.masksToBounds = true
-    }
 }
