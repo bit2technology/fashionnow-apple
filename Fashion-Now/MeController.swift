@@ -15,9 +15,6 @@ class MeController: UICollectionViewController {
     /// List of posted polls before update
     private var postedPolls = [ParsePoll]()
 
-    /// Track if it's the first time the view is shown on screen
-    private var firstTimeShow = true
-
     weak var refreshControl: UIRefreshControl!
 
     weak var header: MePollHeader?
@@ -38,18 +35,15 @@ class MeController: UICollectionViewController {
         self.refreshControl = refreshControl
         collectionView?.alwaysBounceVertical = true
 
+        // Collection view item size
+        let itemWidth = floor(((collectionView?.bounds.width ?? 320) - 8) / 3)
+        (collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: itemWidth, height: floor(itemWidth * 3 / 2))
+
         loadPolls()
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-
-        if firstTimeShow {
-            // Collection view item size
-            let itemWidth = floor(((collectionView?.bounds.width ?? 320) - 8) / 3)
-            (collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: itemWidth, height: floor(itemWidth * 3 / 2))
-            firstTimeShow = false
-        }
 
         // Update header information
         header?.updateContent()
@@ -168,16 +162,23 @@ class MePollCell: UICollectionViewCell {
         return leftImageView.superview!.superview!
     }
 
-    override func awakeFromNib() {
+    private var firstLayout = true
+    override func layoutSubviews() {
+        super.layoutSubviews()
 
-        let layer = leftImageView.superview!.superview!.layer
-        layer.rasterizationScale = UIScreen.mainScreen().scale
-        layer.shouldRasterize = true
+        if firstLayout {
 
-        let containers = [leftImageView.superview!, rightImageView.superview!]
-        applyPollMask(containers.first!, containers.last!)
-        for container in containers {
-            container.layer.mask.transform = CATransform3DMakeScale(container.bounds.width, container.bounds.height, 1)
+            let layer = leftImageView.superview!.superview!.layer
+            layer.rasterizationScale = UIScreen.mainScreen().scale
+            layer.shouldRasterize = true
+
+            let containers = [leftImageView.superview!, rightImageView.superview!]
+            applyPollMask(containers.first!, containers.last!)
+            for container in containers {
+                container.layer.mask.transform = CATransform3DMakeScale(container.bounds.width, container.bounds.height, 1)
+            }
+
+            firstLayout = false
         }
     }
 
