@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject:AnyObject]?) -> Bool {
 
         // App basic configuration
-        window?.tintColor = UIColor.defaultTintColor()
+        window?.tintColor = UIColor.fn_tintColor()
 
         // Parse pre configuration
         Parse.enableLocalDatastore()

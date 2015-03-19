@@ -166,7 +166,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
 
         voteButtons = [leftVoteButton, rightVoteButton]
         for voteButton in voteButtons {
-            voteButton.tintColor = UIColor.defaultTintColor(alpha: 0.5)
+            voteButton.tintColor = UIColor.fn_tintColor(alpha: 0.5)
         }
 
         // Initializes poll list and adjusts interface

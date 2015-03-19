@@ -95,7 +95,7 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate, UITextFi
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        loginButton.setBackgroundImage(UIColor.defaultTintColor().image(), forState: .Normal)
+        loginButton.setBackgroundImage(UIColor.fn_tintColor().fn_image(), forState: .Normal)
 
         let tableViewHeaderHeight = view.bounds.height - 450
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: tableViewHeaderHeight))

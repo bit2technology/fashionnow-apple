@@ -805,6 +805,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="UJ1-gZ-DfN" secondAttribute="bottom" id="0Lo-fv-a5y"/>
                                     <constraint firstItem="UJ1-gZ-DfN" firstAttribute="leading" secondItem="yAn-Tz-asK" secondAttribute="trailing" id="9FJ-f9-CUp"/>
@@ -816,6 +817,9 @@
                                     <constraint firstItem="yAn-Tz-asK" firstAttribute="leading" secondItem="qSO-7o-6j5" secondAttribute="leading" id="kaZ-Sq-fP2"/>
                                     <constraint firstAttribute="trailing" secondItem="UJ1-gZ-DfN" secondAttribute="trailing" id="sfw-yq-Grl"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Ubc-Uf-s4s" appends="YES" id="3iH-5T-klN"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -831,18 +835,46 @@
                     </view>
                     <navigationItem key="navigationItem" id="m9p-AD-oA9">
                         <nil key="title"/>
-                        <view key="titleView" contentMode="scaleToFill" id="ZHY-NS-aR0">
+                        <view key="titleView" opaque="NO" contentMode="scaleToFill" id="ZHY-NS-aR0">
                             <rect key="frame" x="8" y="6" width="304" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Results" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mT1-7P-I06">
+                                    <rect key="frame" x="0.0" y="0.0" width="304" height="18"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a0e-4P-C3U">
+                                    <rect key="frame" x="0.0" y="18" width="304" height="15"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="mT1-7P-I06" firstAttribute="leading" secondItem="ZHY-NS-aR0" secondAttribute="leading" id="9VF-JW-q5g"/>
+                                <constraint firstItem="a0e-4P-C3U" firstAttribute="top" relation="greaterThanOrEqual" secondItem="mT1-7P-I06" secondAttribute="bottom" id="K44-F8-gO3"/>
+                                <constraint firstAttribute="trailing" secondItem="a0e-4P-C3U" secondAttribute="trailing" id="PKs-8q-yF9"/>
+                                <constraint firstAttribute="trailing" secondItem="mT1-7P-I06" secondAttribute="trailing" id="XSg-TF-lfc"/>
+                                <constraint firstItem="mT1-7P-I06" firstAttribute="top" secondItem="ZHY-NS-aR0" secondAttribute="top" id="Z9b-ql-uUQ"/>
+                                <constraint firstAttribute="bottom" secondItem="a0e-4P-C3U" secondAttribute="bottom" id="sBL-N8-2Gg"/>
+                                <constraint firstItem="a0e-4P-C3U" firstAttribute="leading" secondItem="ZHY-NS-aR0" secondAttribute="leading" id="zOZ-t8-UVT"/>
+                            </constraints>
                         </view>
                     </navigationItem>
                     <connections>
+                        <outlet property="dateLabel" destination="a0e-4P-C3U" id="Q3G-qM-SbA"/>
                         <outlet property="leftPercentLabel" destination="jPu-g6-gyu" id="qsD-Kn-Xj1"/>
                         <outlet property="rightPercentLabel" destination="sO1-m1-YcS" id="lu4-yn-m4A"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6hw-Jw-2JJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Ubc-Uf-s4s">
+                    <connections>
+                        <action selector="toggleShowAsAbsolute:" destination="D1M-pS-RBa" id="jv1-9R-q1W"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1790" y="821"/>
         </scene>
@@ -1528,8 +1560,8 @@
         <image name="TabBarIconVoteUnselected" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="oem-Cm-nHK"/>
         <segue reference="udm-ma-IdO"/>
         <segue reference="uM3-tb-eTB"/>
+        <segue reference="oem-Cm-nHK"/>
     </inferredMetricsTieBreakers>
 </document>

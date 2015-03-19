@@ -475,13 +475,21 @@ class ParsePollList: Printable, DebugPrintable {
     }
 
     /// Helper method to update
-    func finish(success: Bool, error: NSError!) {
+    private func finish(success: Bool, error: NSError!) {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.downloading = false
             self.lastUpdate = NSDate()
             self.completionHandler?(success, error)
             self.completionHandler = nil
         })
+    }
+
+    func removePoll(poll: ParsePoll) -> Bool {
+        if let index = find(polls, poll) {
+            polls.removeAtIndex(index)
+            return true
+        }
+        return false
     }
 
     // MARK: Array simulation

@@ -98,7 +98,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
 
     private func setPhotoImage(image: UIImage) {
         // Set photo properties
-        let imageData = image.compressedJPEGData()
+        let imageData = image.fn_compressedJPEGData()
         photo.image = PFFile(name: "image.jpg", data: imageData, contentType: "image/jpeg")
         imageView.image = image
         imageContainerHidden = false
@@ -143,7 +143,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        deleteButton.tintColor = UIColor.defaultTintColor(alpha: 0.6)
+        deleteButton.tintColor = UIColor.fn_tintColor(alpha: 0.6)
     }
 
     // MARK: UINavigationControllerDelegate

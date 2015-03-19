@@ -10,44 +10,44 @@ extension UIColor {
 
     // MARK: Colors
 
-    class func defaultBlackColor(alpha: CGFloat = 1) -> UIColor {
+    class func fn_blackColor(alpha: CGFloat = 1) -> UIColor {
         return UIColor(red: 27/255.0, green: 27/255.0, blue: 27/255.0, alpha: alpha)
     }
 
-    class func defaultDetailColor(alpha: CGFloat = 1) -> UIColor {
+    class func fn_detailColor(alpha: CGFloat = 1) -> UIColor {
         return UIColor(red: 7/255.0, green: 131/255.0, blue: 123/255.0, alpha: alpha)
     }
 
-    class func defaultLightColor(alpha: CGFloat = 1) -> UIColor {
+    class func fn_lightColor(alpha: CGFloat = 1) -> UIColor {
         return UIColor(red: 10/255.0, green: 206/255.0, blue: 188/255.0, alpha: alpha)
     }
 
-    class func defaultDarkColor(alpha: CGFloat = 1) -> UIColor {
+    class func fn_darkColor(alpha: CGFloat = 1) -> UIColor {
         return UIColor(red: 6/255.0, green: 137/255.0, blue: 132/255.0, alpha: alpha)
     }
 
-    class func defaultTintColor(alpha: CGFloat = 1) -> UIColor {
-        return defaultDetailColor(alpha: alpha)
+    class func fn_tintColor(alpha: CGFloat = 1) -> UIColor {
+        return fn_detailColor(alpha: alpha)
     }
 
-    class func defaultDestructiveColor(alpha: CGFloat = 1) -> UIColor {
+    class func fn_destructiveColor(alpha: CGFloat = 1) -> UIColor {
         return UIColor(red: 1, green: 102/255.0, blue: 102/255.0, alpha: alpha)
     }
 
-    class func defaultErrorColor(alpha: CGFloat = 1) -> UIColor {
+    class func fn_errorColor(alpha: CGFloat = 1) -> UIColor {
         return redColor().colorWithAlphaComponent(alpha)
     }
 
-    class func defaultPlaceholderColor(alpha: CGFloat = 1) -> UIColor {
+    class func fn_placeholderColor(alpha: CGFloat = 1) -> UIColor {
         return lightGrayColor().colorWithAlphaComponent(alpha)
     }
 
-    class func randomColor(alpha: CGFloat = 1) -> UIColor{
+    class func fn_randomColor(alpha: CGFloat = 1) -> UIColor{
         return UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: alpha)
     }
 
     /// :returns: An image with this color and the specified size
-    func image(size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
+    func fn_image(size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
 
         UIGraphicsBeginImageContext(size);
         let context = UIGraphicsGetCurrentContext();
@@ -63,7 +63,7 @@ extension UIColor {
 
 extension UIImage {
 
-    func compressedJPEGData(maxSize: CGFloat = 1024, compressionQuality: CGFloat = 0.5) -> NSData {
+    func fn_compressedJPEGData(maxSize: CGFloat = 1024, compressionQuality: CGFloat = 0.5) -> NSData {
 
         let resizeScale = maxSize / max(size.width, size.height)
 
@@ -111,7 +111,7 @@ class Toast {
         // Background Color
         switch type {
         case .Error:
-            options[kCRToastBackgroundColorKey] = UIColor.defaultErrorColor()
+            options[kCRToastBackgroundColorKey] = UIColor.fn_errorColor()
         default:
             break
         }
@@ -122,7 +122,7 @@ class Toast {
 
 // MARK: - Mask
 
-func applyPollMask(left: UIView, right: UIView) {
+func fn_applyPollMask(left: UIView, right: UIView) {
 
     let maskReferenceSize: CGFloat = 1
     let spaceBetween: CGFloat = maskReferenceSize / 100
@@ -180,6 +180,8 @@ extension UIView {
 
 /// Notification name for new poll saved
 let NewPollSavedNotificationName = "NewPollSavedNotification"
+/// Notification name for poll deleted
+let PollDeletedNotificationName = "PollDeletedNotification"
 
 /// Default error domain
 let AppErrorDomain = "com.bit2software.Fashion-Now"
@@ -198,8 +200,10 @@ enum AppErrorCode: Int {
     case RequestTooOften = 804
 }
 
+let fn_localizedOfflineErrorDescription = NSLocalizedString("OFFLINE_ERROR_DESCRIPTION", value: "You are offline. Try again later." , comment: "Default for entire app")
+
 /// Returns "OK" for English and its variants for other languages
 let LocalizedOKButtonTitle = NSLocalizedString("OK_BUTTON_TITLE", value: "OK" , comment: "Default OK button title for entire app")
 
-/// Returns "OK" for English and its variants for other languages
+/// Returns "Cancel" for English and its variants for other languages
 let LocalizedCancelButtonTitle = NSLocalizedString("CANCEL_BUTTON_TITLE", value: "Cancel" , comment: "Default Cancel button title for entire app")
