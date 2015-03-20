@@ -9,6 +9,7 @@
 import UIKit
 
 private let showAsAbsoluteCountKey = "ResuldtsShowAsAbsoluteCount"
+private let cacheResultsKey = "CacheResults"
 
 class ResultPollController: UIViewController, UIActionSheetDelegate {
 
@@ -24,7 +25,13 @@ class ResultPollController: UIViewController, UIActionSheetDelegate {
     @IBOutlet weak var dateLabel: UILabel!
 
     @IBOutlet weak var leftPercentLabel, rightPercentLabel: UILabel!
-    private var leftCount = 0, rightCount = 0
+    private var results = [Int]()
+    private var leftCount: Int {
+        return results.first ?? 0
+    }
+    private var rightCount: Int {
+        return results.last ?? 0
+    }
     /// Track how user wants the results to be shown
     private var showAsAbsoluteCount = NSUserDefaults.standardUserDefaults().boolForKey(showAsAbsoluteCountKey)
     private func setLabelsText() {
@@ -63,15 +70,16 @@ class ResultPollController: UIViewController, UIActionSheetDelegate {
             let leftCount = self.queryForVote(1).countObjects(&error)
             let rightCount = self.queryForVote(2).countObjects(&error)
 
-            // TODO: Handle error
-            if error != nil {
-                return
-            }
-
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
 
-                self.leftCount = leftCount
-                self.rightCount = rightCount
+                // TODO: Handle error
+                if error != nil {
+                    Toast.show(text: "ccc", type: .Error)
+                    return
+                }
+
+                self.results = [leftCount, rightCount]
+                NSUserDefaults.standardUserDefaults().setObject(self.results, forKey: "\(cacheResultsKey)\(self.poll.objectId)")
                 self.setLabelsText()
 
                 self.navigationItem.rightBarButtonItems = [self.buttonTrash, self.buttonRefresh]
@@ -80,7 +88,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate {
     }
 
     @IBAction func deletePoll(sender: UIBarButtonItem) {
-        UIActionSheet(title: "Do you really want to delete this poll?", delegate: self, cancelButtonTitle: LocalizedCancelButtonTitle, destructiveButtonTitle: "Delete").showFromBarButtonItem(sender, animated: true)
+        UIActionSheet(title: "Do you really want to delete this poll? This action can't be undone.", delegate: self, cancelButtonTitle: LocalizedCancelButtonTitle, destructiveButtonTitle: "Delete").showFromBarButtonItem(sender, animated: true)
     }
 
     private func queryForVote(vote: Int) -> PFQuery {
@@ -112,6 +120,12 @@ class ResultPollController: UIViewController, UIActionSheetDelegate {
             label.layer.shadowOpacity = 1
             label.layer.shadowRadius = 2
             label.text = nil
+        }
+
+        // Results cache
+        if let cachedResults = NSUserDefaults.standardUserDefaults().arrayForKey("\(cacheResultsKey)\(poll.objectId)") as? [Int] {
+            results = cachedResults
+            setLabelsText()
         }
 
         // Bar button items
@@ -151,15 +165,26 @@ class ResultPollController: UIViewController, UIActionSheetDelegate {
 
             if Reachability.reachabilityForInternetConnection().isReachable() {
 
-            } else {
-                Toast.show(text: "aaa", type: .Error)
-            }
+                let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+                activityIndicator.backgroundColor = UIColor.fn_blackColor(alpha: 0.5)
+                activityIndicator.startAnimating()
+                activityIndicator.frame = navigationController!.view.bounds
+                activityIndicator.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+                navigationController!.view.addSubview(activityIndicator)
 
-            poll.deleteInBackgroundWithBlock({ (success, error) -> Void in
-                
-            })
-            NSNotificationCenter.defaultCenter().postNotificationName(PollDeletedNotificationName, object: self, userInfo: ["poll": poll])
-            navigationController?.popViewControllerAnimated(true)
+                poll.deleteInBackgroundWithBlock({ (success, error) -> Void in
+                    activityIndicator.removeFromSuperview()
+
+                    if success {
+                        NSNotificationCenter.defaultCenter().postNotificationName(PollDeletedNotificationName, object: self, userInfo: ["poll": self.poll])
+                        self.navigationController?.popViewControllerAnimated(true)
+                    } else {
+                        Toast.show(text: fn_localizedOfflineErrorDescription, type: .Error)
+                    }
+                })
+            } else {
+                Toast.show(text: fn_localizedOfflineErrorDescription, type: .Error)
+            }
         }
     }
 }

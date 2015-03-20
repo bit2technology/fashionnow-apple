@@ -19,18 +19,6 @@ class VotePollController: UIViewController, PollControllerDelegate {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
 
-    // Tags and related actions
-    @IBOutlet weak var tagsLabel: UILabel!
-    @IBAction func tagsLabelDidLongPress(sender: UIGestureRecognizer) {
-
-        switch sender.state {
-        case .Began, .Changed: // When touching caption view, show entire text.
-            tagsLabel.numberOfLines = 0
-        default:
-            tagsLabel.numberOfLines = 2
-        }
-    }
-
     // Vote buttons
     private var voteButtons: [UIButton]!
     @IBOutlet weak var leftVoteButton: UIButton!
@@ -99,9 +87,6 @@ class VotePollController: UIViewController, PollControllerDelegate {
             dateFormatter.timeStyle = .ShortStyle
             dateFormatter.doesRelativeDateFormatting = true
             dateLabel.text = dateFormatter.stringFromDate(nextPoll.createdAt)
-            // Caption
-            tagsLabel.text = nextPoll.caption
-            tagsLabel.superview?.hidden = tagsLabel.text?.fn_count <= 0
 
             // Avatar
             if let unwrappedAuthorFacebookId = nextPoll.createdBy?.facebookId {

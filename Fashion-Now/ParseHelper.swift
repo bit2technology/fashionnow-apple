@@ -287,15 +287,15 @@ class ParsePollList: Printable, DebugPrintable {
         switch type {
         case .Mine:
             return query.whereKey(ParsePollCreatedByKey, equalTo: currentUser)
-        default:
-            let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
-                .orderByDescending(ParseObjectCreatedAtKey)
-            if let unwrappedUserId = currentUser.objectId {
-                votesByMeQuery.whereKey(ParseVoteUserIdKey, equalTo: unwrappedUserId)
+        case .VotePublic:
+            if !PFAnonymousUtils.isLinkedWithUser(currentUser) {
+                let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
+                    .orderByDescending(ParseObjectCreatedAtKey)
+                    .whereKey(ParseVoteByKey, equalTo: currentUser)
+                votesByMeQuery.limit = ParseQueryLimit
+                query.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)
             }
-            votesByMeQuery.limit = ParseQueryLimit
-            return query.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)
-                .whereKey(ParsePollCreatedByKey, notEqualTo: currentUser)
+            return query.whereKey(ParsePollCreatedByKey, notEqualTo: currentUser)
         }
     }
 
@@ -390,7 +390,7 @@ class ParsePollList: Printable, DebugPrintable {
                         // Find votes on these new polls
                         let myVotesQuery = PFQuery(className: ParseVote.parseClassName())
                             .whereKey(ParseVotePollIdKey, containedIn: newPollsIds)
-                            .whereKey(ParseVoteUserIdKey, equalTo: currentUser.objectId)
+                            .whereKey(ParseVoteByKey, equalTo: currentUser)
                         myVotesQuery.limit = ParseQueryLimit
                         let myVotes = myVotesQuery.findObjects(&error) as? [ParseVote]
                         if error != nil {
@@ -513,8 +513,8 @@ class ParsePollList: Printable, DebugPrintable {
 
 // MARK: - Vote class
 
+let ParseVoteByKey = "voteBy"
 let ParseVotePollIdKey = "pollId"
-let ParseVoteUserIdKey = "userId"
 let ParseVoteVoteKey = "vote"
 
 class ParseVote: PFObject, PFSubclassing {
@@ -528,7 +528,7 @@ class ParseVote: PFObject, PFSubclassing {
         let defaultACL = PFACL()
         defaultACL.setPublicReadAccess(true)
         ACL = defaultACL
-        userId = user.objectId
+        voteBy = user
     }
 
     var pollId: String? {
@@ -549,19 +549,19 @@ class ParseVote: PFObject, PFSubclassing {
         }
     }
 
-    var userId: String? {
+    var voteBy: ParseUser? {
         get {
-            return self[ParseVoteUserIdKey] as? String
+            return self[ParseVoteByKey] as? ParseUser
         }
         set {
-            self[ParseVoteUserIdKey] = newValue ?? NSNull()
+            self[ParseVoteByKey] = newValue ?? NSNull()
         }
     }
 
     // MARK: Helper methods
 
     var isValid: Bool {
-        return pollId?.fn_count > 0 && vote != nil && userId?.fn_count > 0
+        return pollId?.fn_count > 0 && vote != nil && voteBy != nil
     }
 }
 

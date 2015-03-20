@@ -5,13 +5,14 @@ PODS:
   - CRToast (0.0.7)
   - Facebook-iOS-SDK (3.23.1):
     - Bolts (~> 1.0)
-  - Parse (1.6.4):
+  - GVPhotoBrowser (0.9.0)
+  - Parse (1.6.5):
     - Bolts (~> 1.1)
-  - ParseCrashReporting (1.6.4):
-    - Parse (~> 1.6.4)
-  - ParseFacebookUtils (1.6.4):
+  - ParseCrashReporting (1.6.5):
+    - Parse (~> 1.6.5)
+  - ParseFacebookUtils (1.6.5):
     - Facebook-iOS-SDK (~> 3.20)
-    - Parse (~> 1.6.4)
+    - Parse (~> 1.6.5)
   - Reachability (3.2)
   - SDWebImage (3.7.2):
     - SDWebImage/Core (= 3.7.2)
@@ -25,6 +26,7 @@ DEPENDENCIES:
   - Bolts
   - CRToast
   - Facebook-iOS-SDK
+  - GVPhotoBrowser
   - Parse
   - ParseCrashReporting
   - ParseFacebookUtils
@@ -38,9 +40,10 @@ SPEC CHECKSUMS:
   Bolts: dd9fb8433d67f5acc3b6b4d1379bbc5513d716c1
   CRToast: f9f2c4b29776d68ba24c4d621cba59a83fea921b
   Facebook-iOS-SDK: 89dae50e975ebab95a01b0962d27277fc9cf08fd
-  Parse: c2610f7a12ad0defc974803b819c4efe7746e6db
-  ParseCrashReporting: 8be6e6000eb8dbcde9e077674f561ecda78df6a8
-  ParseFacebookUtils: 00833ccf6fec7d6429e2403fe457496a5089358b
+  GVPhotoBrowser: d412a569953a09baeabe6091b07bbf6f23360981
+  Parse: a21db4037d70a68a4ec64ecc0f327ed475cc14f8
+  ParseCrashReporting: bc2418de3e198d032e8263c68fa2b98d6bcd964e
+  ParseFacebookUtils: 4d58d0f133fa1af52f3a8d5caaa55cd435118ac4
   Reachability: 1ef8adf5c4e3d362f96515d4278f68dad3c26930
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   UIActivityIndicator-for-SDWebImage: 8bd92c15280fbe54816448c6b14674145eee05c7

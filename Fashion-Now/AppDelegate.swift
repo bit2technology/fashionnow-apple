@@ -95,6 +95,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FBAppEvents.activateApp()
     }
 
+    func applicationDidReceiveMemoryWarning(application: UIApplication) {
+        SDImageCache.sharedImageCache().clearMemory()
+    }
+
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }

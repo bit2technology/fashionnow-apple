@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-class PollController: UIViewController, PhotoControllerDelegate {
+class PollController: UIViewController, PhotoControllerDelegate, GVPhotoBrowserDataSource, GVPhotoBrowserDelegate {
     
     var poll: ParsePoll = ParsePoll(user: ParseUser.currentUser()) {
         didSet {
@@ -19,8 +19,58 @@ class PollController: UIViewController, PhotoControllerDelegate {
                 rightPhotoController.photo = ParsePhoto(user: poll.createdBy!)
             }
             adjustLayout(0, animationTimingFunction: nil, callCompleteDelegate: false)
+            // Caption
+            captionLabel.text = poll.caption
+            captionLabel.superview?.hidden = captionLabel.text?.fn_count <= 0
+            lockView.hidden = poll.ACL.getPublicReadAccess()
         }
     }
+
+
+
+
+
+
+    // Tags and related actions
+    @IBOutlet weak var captionLabel: UILabel!
+    @IBAction func captionLabelDidLongPress(sender: UIGestureRecognizer) {
+
+        switch sender.state {
+        case .Began, .Changed: // When touching caption view, show entire text.
+            captionLabel.numberOfLines = 0
+        default:
+            captionLabel.numberOfLines = 2
+        }
+    }
+
+
+
+
+
+
+    @IBOutlet weak var lockView: UIImageView!
+
+
+
+
+
+
+    @IBAction func presentGallery(sender: UIGestureRecognizer) {
+        let gallery = GVPhotoBrowserViewController()
+        gallery.photoBrowser.dataSource = self
+        gallery.photoBrowser.delegate = self
+        gallery.view.backgroundColor = UIColor.blueColor()
+        presentViewController(gallery, animated: true, completion: nil)
+    }
+
+
+
+
+
+
+
+
+
 
     weak var delegate: PollControllerDelegate?
 
@@ -204,30 +254,9 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
         rightPhotoController.layout = .Right
 
-        // Masks
+        captionLabel.numberOfLines = 2
 
-        let maskReferenceSize: CGFloat = 1
-        let spaceBetween: CGFloat = maskReferenceSize / 100
-
-        let leftMaskPath = UIBezierPath()
-        leftMaskPath.moveToPoint(CGPoint(x: -6 * maskReferenceSize, y: 0))
-        leftMaskPath.addLineToPoint(CGPoint(x: maskReferenceSize + (maskReferenceSize / 10) - spaceBetween, y: 0))
-        leftMaskPath.addLineToPoint(CGPoint(x: maskReferenceSize - (maskReferenceSize / 10) - spaceBetween, y: maskReferenceSize))
-        leftMaskPath.addLineToPoint(CGPoint(x: -6 * maskReferenceSize, y: maskReferenceSize))
-        leftMaskPath.closePath()
-        let leftMask = CAShapeLayer()
-        leftMask.path = leftMaskPath.CGPath
-        leftPhotoView.layer.mask = leftMask
-
-        let rightMaskPath = UIBezierPath()
-        rightMaskPath.moveToPoint(CGPoint(x: 7 * maskReferenceSize, y: 0))
-        rightMaskPath.addLineToPoint(CGPoint(x: (maskReferenceSize / 10) + spaceBetween, y: 0))
-        rightMaskPath.addLineToPoint(CGPoint(x: (maskReferenceSize / -10) + spaceBetween, y: maskReferenceSize))
-        rightMaskPath.addLineToPoint(CGPoint(x: 7 * maskReferenceSize, y: maskReferenceSize))
-        rightMaskPath.closePath()
-        let rightMask = CAShapeLayer()
-        rightMask.path = rightMaskPath.CGPath
-        rightPhotoView.layer.mask = rightMask
+        fn_applyPollMask(leftPhotoView, rightPhotoView)
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -263,6 +292,59 @@ class PollController: UIViewController, PhotoControllerDelegate {
         }
         delegate?.pollController?(self, didEditPoll: poll)
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // MARK: Gallery
+    func numberOfPhotosInPhotoBrowser(photoBrowser: GVPhotoBrowser!) -> UInt {
+        return 2
+    }
+
+    func photoBrowser(photoBrowser: GVPhotoBrowser!, customizeImageView imageView: UIImageView!, forIndex index: UInt) -> UIImageView! {
+        let urlString = poll.photos![Int(index)].image!.url
+        imageView.setImageWithURL(NSURL(string: urlString), usingActivityIndicatorStyle: .Gray)
+        return imageView
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+class AAAAAAA: GVPhotoBrowserViewController {
+
 }
 
 @objc protocol PollControllerDelegate {

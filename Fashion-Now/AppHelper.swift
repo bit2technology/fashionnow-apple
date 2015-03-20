@@ -70,13 +70,28 @@ extension UIImage {
         var img: UIImage?
         if resizeScale < 1 {
             let resizeRect = CGRect(x: 0, y: 0, width: size.width * resizeScale, height: size.height * resizeScale)
-            UIGraphicsBeginImageContext(resizeRect.size)
+            UIGraphicsBeginImageContextWithOptions(resizeRect.size, true, 1)
             drawInRect(resizeRect)
             img = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
         }
 
         return UIImageJPEGRepresentation(img ?? self, compressionQuality)
+    }
+
+    func fn_resized(maxHeight: CGFloat, opaque: Bool = true, scale imageScale: CGFloat = UIScreen.mainScreen().scale) -> UIImage {
+
+        let resizeScale = maxHeight / self.size.height
+
+        var img = self
+        if resizeScale < 1 {
+            let resizeRect = CGRect(x: 0, y: 0, width: size.width * resizeScale, height: size.height * resizeScale)
+            UIGraphicsBeginImageContextWithOptions(resizeRect.size, opaque, imageScale)
+            drawInRect(resizeRect)
+            img = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+        }
+        return img
     }
 }
 

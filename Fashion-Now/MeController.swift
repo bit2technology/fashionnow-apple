@@ -15,6 +15,8 @@ class MeController: UICollectionViewController {
     /// List of posted polls before update
     private var postedPolls = [ParsePoll]()
 
+    private var scaledImages = [String: UIImage]()
+
     weak var refreshControl: UIRefreshControl!
 
     weak var header: MePollHeader?
@@ -150,13 +152,87 @@ class MeController: UICollectionViewController {
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+
+        // Get appropriate cell
         var poll: ParsePoll!
         if indexPath.item < postedPolls.count {
             poll = postedPolls[indexPath.item]
         } else {
             poll = myPolls[indexPath.item - postedPolls.count]
         }
-        return (collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as MePollCell).withPoll(poll)
+
+        // Get cell
+        let cell = (collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as MePollCell)
+
+        // Hide poll images
+        let container = cell.pollContainer
+        container.hidden = true
+
+        // Set urls to check later if it is still the same cell
+        cell.leftImageUrl = poll?.photos?.first?.image?.url
+        cell.rightImageUrl = poll?.photos?.last?.image?.url
+
+        if cell.leftImageUrl != nil && cell.rightImageUrl != nil {
+
+            // If both images are already cached, just set them and return the cell
+            cell.leftImageView.image = scaledImages[cell.leftImageUrl!]
+            cell.rightImageView.image = scaledImages[cell.rightImageUrl!]
+            if cell.leftImageView.image != nil && cell.rightImageView.image != nil {
+                container.hidden = false
+                return cell
+            }
+
+            // Show loading interface
+            cell.activityIndicator.startAnimating()
+
+            let completion: SDWebImageCompletionWithFinishedBlock = { (image, error, cacheType, completed, url) -> Void in
+                let urlString = url.absoluteString!
+
+                // Downsacle image in background if necessary
+                var scaledImage = image
+                if scaledImage != nil {
+
+                    var itemSize = (self.collectionViewLayout as UICollectionViewFlowLayout).itemSize
+
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+
+                        scaledImage = image.fn_resized(itemSize.height)
+
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            self.scaledImages[urlString] = scaledImage
+
+                            if urlString == cell.leftImageUrl {
+                                cell.leftImageView.image = scaledImage
+                            } else if urlString == cell.rightImageUrl {
+                                cell.rightImageView.image = scaledImage
+                            } else {
+                                // Too late. Cell is already being used by another item. Just do nothing.
+                                return
+                            }
+
+                            if cell.leftImageView.image != nil && cell.rightImageView.image != nil {
+                                container.hidden = false
+                                cell.activityIndicator.stopAnimating()
+                            }
+                        })
+                    })
+                } else {
+                    // TODO: Better error handling
+                    NSLog("MePollCell image download error: \(error)")
+                    return
+                }
+            }
+
+            let manager = SDWebImageManager.sharedManager()
+            manager.downloadImageWithURL(NSURL(string: cell.leftImageUrl!), options: nil, progress: nil, completed: completion)
+            manager.downloadImageWithURL(NSURL(string: cell.rightImageUrl!), options: nil, progress: nil, completed: completion)
+        }
+        else {
+            // TODO: Better error handling
+            NSLog("MePollCell image download error: not enough URLs")
+        }
+
+        return cell
     }
 }
 
@@ -189,63 +265,8 @@ class MePollCell: UICollectionViewCell {
         }
     }
 
-    private var leftImageUrl: String?
-    private var rightImageUrl: String?
-
-    /// Prepares cell for poll and returns itself
-    func withPoll(poll: ParsePoll?) -> Self {
-
-        let container = pollContainer
-        container.hidden = true
-
-        activityIndicator.startAnimating()
-        leftImageView.image = nil
-        rightImageView.image = nil
-
-        leftImageUrl = poll?.photos?.first?.image?.url
-        rightImageUrl = poll?.photos?.last?.image?.url
-
-        if leftImageUrl != nil && rightImageUrl != nil {
-
-            let completion: SDWebImageCompletionWithFinishedBlock = { (image, error, cacheType, completed, url) -> Void in
-
-                var imageView: UIImageView!
-                let urlString = url.absoluteString
-                if urlString == self.leftImageUrl {
-                    imageView = self.leftImageView
-                } else if urlString == self.rightImageUrl {
-                    imageView = self.rightImageView
-                } else {
-                    // Too late. Cell is already being used by another item. Just do nothing.
-                    return
-                }
-
-                if image == nil {
-                    // TODO: Better error handling
-                    NSLog("MePollCell image download error: \(error)")
-                    return
-                }
-
-                // TODO: downscale
-                imageView.image = image
-
-                if self.leftImageView.image != nil && self.rightImageView.image != nil {
-                    container.hidden = false
-                    self.activityIndicator.stopAnimating()
-                }
-            }
-
-            let manager = SDWebImageManager.sharedManager()
-            manager.downloadImageWithURL(NSURL(string: leftImageUrl!), options: nil, progress: nil, completed: completion)
-            manager.downloadImageWithURL(NSURL(string: rightImageUrl!), options: nil, progress: nil, completed: completion)
-        }
-        else {
-            // TODO: Better error handling
-            NSLog("MePollCell image download error: not enough URLs")
-        }
-
-        return self
-    }
+    var leftImageUrl: String?
+    var rightImageUrl: String?
 }
 
 class MePollHeader: UICollectionReusableView {
