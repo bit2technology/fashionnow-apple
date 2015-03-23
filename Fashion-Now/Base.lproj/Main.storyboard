@@ -304,24 +304,17 @@
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mhc-nx-wcX">
-                                <rect key="frame" x="52" y="22" width="211" height="21"/>
+                                <rect key="frame" x="52" y="22" width="260" height="21"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oWN-q7-Q6r">
-                                <rect key="frame" x="52" y="43" width="211" height="17"/>
+                                <rect key="frame" x="52" y="43" width="260" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1iE-fK-YeD">
-                                <rect key="frame" x="263" y="20" width="57" height="44"/>
-                                <inset key="contentEdgeInsets" minX="4" minY="0.0" maxX="8" maxY="0.0"/>
-                                <state key="normal" title="Follow">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4XI-L8-6Pr" userLabel="Left Vote" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                 <rect key="frame" x="-5" y="383" width="71" height="44"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -384,21 +377,17 @@
                         <constraints>
                             <constraint firstItem="3bW-d0-UfL" firstAttribute="top" secondItem="EtK-fa-XtU" secondAttribute="bottom" id="34M-DU-YTM"/>
                             <constraint firstAttribute="trailing" secondItem="EtK-fa-XtU" secondAttribute="trailing" id="47u-FS-YP1"/>
-                            <constraint firstItem="1iE-fK-YeD" firstAttribute="top" secondItem="ORJ-Y7-Dhf" secondAttribute="top" constant="20" id="5BK-KM-E9M"/>
                             <constraint firstItem="mhc-nx-wcX" firstAttribute="leading" secondItem="BpX-JS-d9h" secondAttribute="trailing" constant="4" id="5oi-fL-hAG"/>
-                            <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="bottom" secondItem="1iE-fK-YeD" secondAttribute="bottom" id="6uI-ea-ARS"/>
                             <constraint firstAttribute="bottom" secondItem="BmU-jg-A8g" secondAttribute="bottom" id="9IL-eH-icQ"/>
-                            <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="trailing" secondItem="1iE-fK-YeD" secondAttribute="trailing" id="GcB-hT-TOC"/>
                             <constraint firstItem="3bW-d0-UfL" firstAttribute="top" secondItem="GPX-GA-SAX" secondAttribute="bottom" constant="4" id="J7L-V4-r0m"/>
                             <constraint firstItem="rdg-hq-Mrj" firstAttribute="top" secondItem="0mu-nJ-pcc" secondAttribute="top" id="KbK-fb-BHW"/>
                             <constraint firstAttribute="trailing" secondItem="rdg-hq-Mrj" secondAttribute="trailing" id="KiJ-5l-e2T"/>
                             <constraint firstItem="rdg-hq-Mrj" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" id="NmT-33-mqh"/>
                             <constraint firstItem="EtK-fa-XtU" firstAttribute="top" secondItem="ORJ-Y7-Dhf" secondAttribute="bottom" id="Qke-Bu-XOR"/>
                             <constraint firstAttribute="bottom" secondItem="rdg-hq-Mrj" secondAttribute="bottom" id="So9-te-d3c"/>
-                            <constraint firstItem="1iE-fK-YeD" firstAttribute="leading" secondItem="oWN-q7-Q6r" secondAttribute="trailing" id="WbQ-GN-9l4"/>
                             <constraint firstItem="oWN-q7-Q6r" firstAttribute="leading" secondItem="BpX-JS-d9h" secondAttribute="trailing" constant="4" id="Xjk-oM-KYs"/>
                             <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" id="aIv-c4-DMz"/>
-                            <constraint firstItem="1iE-fK-YeD" firstAttribute="leading" secondItem="mhc-nx-wcX" secondAttribute="trailing" id="aPF-ms-JYA"/>
+                            <constraint firstAttribute="trailing" secondItem="oWN-q7-Q6r" secondAttribute="trailing" constant="8" id="bpy-OG-jPp"/>
                             <constraint firstItem="BmU-jg-A8g" firstAttribute="top" secondItem="0mu-nJ-pcc" secondAttribute="top" id="ceY-nX-7Ep"/>
                             <constraint firstItem="ORJ-Y7-Dhf" firstAttribute="bottom" secondItem="BpX-JS-d9h" secondAttribute="bottom" constant="2" id="gCy-Da-kdI"/>
                             <constraint firstItem="4XI-L8-6Pr" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" constant="-5" id="gqj-lz-256"/>
@@ -411,6 +400,7 @@
                             <constraint firstAttribute="trailing" secondItem="BmU-jg-A8g" secondAttribute="trailing" id="u9e-ng-tb2"/>
                             <constraint firstItem="3bW-d0-UfL" firstAttribute="top" secondItem="4XI-L8-6Pr" secondAttribute="bottom" constant="4" id="vSD-M7-Q12"/>
                             <constraint firstItem="BpX-JS-d9h" firstAttribute="leading" secondItem="ORJ-Y7-Dhf" secondAttribute="leading" constant="8" id="vwk-fJ-qkX"/>
+                            <constraint firstAttribute="trailing" secondItem="mhc-nx-wcX" secondAttribute="trailing" constant="8" id="xe2-q5-isE"/>
                             <constraint firstItem="BmU-jg-A8g" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" id="xs7-Be-6Tc"/>
                         </constraints>
                     </view>
@@ -1414,9 +1404,11 @@
                         <outlet property="captionLabel" destination="zny-H2-Bdr" id="tZL-gl-zDT"/>
                         <outlet property="drager" destination="kgl-Bo-434" id="gK9-Zx-6gF"/>
                         <outlet property="leftPhotoView" destination="22F-CN-JDl" id="Xgc-LM-En5"/>
+                        <outlet property="leftTap" destination="qhL-uy-211" id="9FQ-Q8-B7X"/>
                         <outlet property="leftdoubleTap" destination="aQj-E4-gl5" id="THR-f1-7T0"/>
                         <outlet property="lockView" destination="PZq-MC-hyg" id="czM-fX-aLp"/>
                         <outlet property="rightPhotoView" destination="TYB-j4-um4" id="jhq-Wr-tpH"/>
+                        <outlet property="rightTap" destination="SwL-gZ-hWT" id="R61-4a-u4r"/>
                         <outlet property="rightdoubleTap" destination="t7x-cR-kO3" id="7uh-SJ-8Zb"/>
                     </connections>
                 </viewController>
@@ -1436,12 +1428,12 @@
                         <action selector="didDoubleTap:" destination="hpa-fw-Ay5" id="qT7-Kw-opT"/>
                     </connections>
                 </tapGestureRecognizer>
-                <tapGestureRecognizer id="qhL-uy-211" userLabel="Left Tap">
+                <tapGestureRecognizer enabled="NO" id="qhL-uy-211" userLabel="Left Tap">
                     <connections>
                         <segue destination="2Zj-tv-2wS" kind="presentation" identifier="Present Gallery Left" id="kgb-sn-oKA"/>
                     </connections>
                 </tapGestureRecognizer>
-                <tapGestureRecognizer id="SwL-gZ-hWT" userLabel="Right Tap">
+                <tapGestureRecognizer enabled="NO" id="SwL-gZ-hWT" userLabel="Right Tap">
                     <connections>
                         <segue destination="2Zj-tv-2wS" kind="presentation" identifier="Present Gallery Right" id="rQZ-rf-eNe"/>
                     </connections>
@@ -1701,8 +1693,8 @@
         <image name="TabBarIconVoteUnselected" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="IZA-Rh-gPV"/>
         <segue reference="uM3-tb-eTB"/>
+        <segue reference="apZ-Yv-541"/>
         <segue reference="oem-Cm-nHK"/>
         <segue reference="rQZ-rf-eNe"/>
     </inferredMetricsTieBreakers>

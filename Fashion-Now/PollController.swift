@@ -60,7 +60,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
     var voteGesturesEnabled: Bool = false {
         didSet {
-            for gesture in [drager, leftdoubleTap, rightdoubleTap] {
+            for gesture in (leftPhotoView.gestureRecognizers! + rightPhotoView.gestureRecognizers! as [UIGestureRecognizer]) + [drager] {
                 gesture.enabled = voteGesturesEnabled
             }
         }
@@ -82,6 +82,9 @@ class PollController: UIViewController, PhotoControllerDelegate {
         delegate?.pollControllerWillHighlight?(self, index: index)
         adjustLayout(rate, animationTimingFunction: CAMediaTimingFunction(name: (easeIn ? kCAMediaTimingFunctionEaseInEaseOut : kCAMediaTimingFunctionEaseOut)), callCompleteDelegate: true)
     }
+
+    @IBOutlet weak var leftTap: UITapGestureRecognizer!
+    @IBOutlet weak var rightTap: UITapGestureRecognizer!
 
     @IBOutlet weak var leftdoubleTap: UITapGestureRecognizer!
     @IBOutlet weak var rightdoubleTap: UITapGestureRecognizer!
@@ -225,6 +228,9 @@ class PollController: UIViewController, PhotoControllerDelegate {
         captionLabel.numberOfLines = 2
 
         lockView.hidden = true
+
+        leftTap.requireGestureRecognizerToFail(leftdoubleTap)
+        rightTap.requireGestureRecognizerToFail(rightdoubleTap)
 
         fn_applyPollMask(leftPhotoView, rightPhotoView)
     }

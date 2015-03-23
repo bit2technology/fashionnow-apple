@@ -103,7 +103,14 @@ class MeController: UICollectionViewController {
             switch unwrappedId {
             case "Result Controller":
                 let idx = (collectionView!.indexPathsForSelectedItems().first as NSIndexPath).item
-                (segue.destinationViewController as ResultPollController).poll = myPolls[idx]
+                // Get appropriate cell
+                var poll: ParsePoll!
+                if idx < postedPolls.count {
+                    poll = postedPolls[idx]
+                } else {
+                    poll = myPolls[idx - postedPolls.count]
+                }
+                (segue.destinationViewController as ResultPollController).poll = poll
             default:
                 return
             }
@@ -161,7 +168,7 @@ class MeController: UICollectionViewController {
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
 
-        // Get appropriate cell
+        // Get appropriate poll
         var poll: ParsePoll!
         if indexPath.item < postedPolls.count {
             poll = postedPolls[indexPath.item]
