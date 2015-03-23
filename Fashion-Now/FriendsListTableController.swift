@@ -183,7 +183,7 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
 
         if indexPath.section == 0 {
-            let activityController = UIActivityViewController(activityItems: ["Help me to choose my outfit!", NSURL(string: "http://facebook.com/fashionnowapp")!], applicationActivities: nil)
+            let activityController = UIActivityViewController(activityItems: ["Help me to choose my outfit!", NSURL(string: "http://fashionnow.parseapp.com")!], applicationActivities: nil)
             presentViewController(activityController, animated: true, completion: nil)
             return
         }

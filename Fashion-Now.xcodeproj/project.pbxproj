@@ -13,6 +13,7 @@
 		4B45FA111ABD980000E2F7CC /* GalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B45FA101ABD980000E2F7CC /* GalleryController.swift */; };
 		4B488C5A1A1F668200AEE393 /* LoginSignupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B488C591A1F668200AEE393 /* LoginSignupController.swift */; };
 		4B4BFA671A14239200BFD23F /* LoginEmailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4BFA661A14239200BFD23F /* LoginEmailController.swift */; };
+		4B6B75F41AC0700800060E6F /* appstore-badge-pt.svg in Resources */ = {isa = PBXBuildFile; fileRef = 4B6B75F31AC0700800060E6F /* appstore-badge-pt.svg */; };
 		4B749E8D1A30916F00E9B128 /* ResultPollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B749E8C1A30916F00E9B128 /* ResultPollController.swift */; };
 		4B79AABB1A0E4D740097B069 /* LoginFacebookController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B79AABA1A0E4D740097B069 /* LoginFacebookController.swift */; };
 		4B7B3FFF1A35C0F30063CB90 /* LoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7B3FFE1A35C0F30063CB90 /* LoginHelper.swift */; };
@@ -55,6 +56,7 @@
 		4B45FA101ABD980000E2F7CC /* GalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryController.swift; sourceTree = "<group>"; };
 		4B488C591A1F668200AEE393 /* LoginSignupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSignupController.swift; sourceTree = "<group>"; };
 		4B4BFA661A14239200BFD23F /* LoginEmailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEmailController.swift; sourceTree = "<group>"; };
+		4B6B75F31AC0700800060E6F /* appstore-badge-pt.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "appstore-badge-pt.svg"; sourceTree = "<group>"; };
 		4B749E8C1A30916F00E9B128 /* ResultPollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultPollController.swift; sourceTree = "<group>"; };
 		4B79AABA1A0E4D740097B069 /* LoginFacebookController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFacebookController.swift; sourceTree = "<group>"; };
 		4B7B3FFE1A35C0F30063CB90 /* LoginHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHelper.swift; sourceTree = "<group>"; };
@@ -117,6 +119,14 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		4B6B75F21AC0700800060E6F /* images */ = {
+			isa = PBXGroup;
+			children = (
+				4B6B75F31AC0700800060E6F /* appstore-badge-pt.svg */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
 		4B7F000B1A293D060032A9BD /* Login and Signup */ = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +167,7 @@
 		4B8E44871AB46AD800C4EBD7 /* public */ = {
 			isa = PBXGroup;
 			children = (
+				4B6B75F21AC0700800060E6F /* images */,
 				4B8E44881AB46AD800C4EBD7 /* index.html */,
 			);
 			path = public;
@@ -353,6 +364,7 @@
 				4B8E448A1AB46AD800C4EBD7 /* global.json in Resources */,
 				4B8E44891AB46AD800C4EBD7 /* main.js in Resources */,
 				4B7C2CA91A13A1DA00FB25B8 /* InfoPlist.strings in Resources */,
+				4B6B75F41AC0700800060E6F /* appstore-badge-pt.svg in Resources */,
 				4BE767DE1A239F6B00CCAA65 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
