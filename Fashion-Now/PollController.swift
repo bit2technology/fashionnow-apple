@@ -6,12 +6,11 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-class PollController: UIViewController, PhotoControllerDelegate, GVPhotoBrowserDataSource, GVPhotoBrowserDelegate {
+class PollController: UIViewController, PhotoControllerDelegate {
     
     var poll: ParsePoll = ParsePoll(user: ParseUser.currentUser()) {
         didSet {
             if let unwrappedPhotos = poll.photos {
-                loadedPhotos = 0
                 leftPhotoController.photo = unwrappedPhotos[0]
                 rightPhotoController.photo = unwrappedPhotos[1]
             } else {
@@ -21,17 +20,12 @@ class PollController: UIViewController, PhotoControllerDelegate, GVPhotoBrowserD
             adjustLayout(0, animationTimingFunction: nil, callCompleteDelegate: false)
             // Caption
             captionLabel.text = poll.caption
-            captionLabel.superview?.hidden = captionLabel.text?.fn_count <= 0
-            lockView.hidden = poll.ACL.getPublicReadAccess()
+            captionLabel.superview!.hidden = captionLabel.text?.fn_count <= 0
+            lockView.hidden = poll.objectId?.fn_count > 0 ? poll.ACL.getPublicReadAccess() : true
         }
     }
 
-
-
-
-
-
-    // Tags and related actions
+    // Caption and related actions
     @IBOutlet weak var captionLabel: UILabel!
     @IBAction func captionLabelDidLongPress(sender: UIGestureRecognizer) {
 
@@ -43,43 +37,18 @@ class PollController: UIViewController, PhotoControllerDelegate, GVPhotoBrowserD
         }
     }
 
-
-
-
-
-
     @IBOutlet weak var lockView: UIImageView!
-
-
-
-
-
-
-    @IBAction func presentGallery(sender: UIGestureRecognizer) {
-        let gallery = GVPhotoBrowserViewController()
-        gallery.photoBrowser.dataSource = self
-        gallery.photoBrowser.delegate = self
-        gallery.view.backgroundColor = UIColor.blueColor()
-        presentViewController(gallery, animated: true, completion: nil)
-    }
-
-
-
-
-
-
-
-
-
 
     weak var delegate: PollControllerDelegate?
 
     private weak var leftPhotoController: PhotoController!
     private weak var rightPhotoController: PhotoController!
 
-    private var photoViews: [UIView]!
     @IBOutlet weak var leftPhotoView: UIView!
     @IBOutlet weak var rightPhotoView: UIView!
+    private var photoViews: [UIView] {
+        return [leftPhotoView, rightPhotoView]
+    }
 
     var imageButtonsHidden: Bool = false {
         didSet {
@@ -247,14 +216,15 @@ class PollController: UIViewController, PhotoControllerDelegate, GVPhotoBrowserD
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        photoViews = [leftPhotoView, rightPhotoView]
-
         leftPhotoController.delegate = self
         rightPhotoController.delegate = self
 
         rightPhotoController.layout = .Right
 
+        captionLabel.superview!.hidden = true
         captionLabel.numberOfLines = 2
+
+        lockView.hidden = true
 
         fn_applyPollMask(leftPhotoView, rightPhotoView)
     }
@@ -268,6 +238,13 @@ class PollController: UIViewController, PhotoControllerDelegate, GVPhotoBrowserD
                 leftPhotoController = segue.destinationViewController as PhotoController
             case "Right Photo Controller":
                 rightPhotoController = segue.destinationViewController as PhotoController
+            case "Present Gallery Left", "Present Gallery Right":
+                let navController = segue.destinationViewController as UINavigationController
+                let galleryController = navController.topViewController as GalleryController
+                galleryController.images = [leftPhotoController.imageView.image!, rightPhotoController.imageView.image!]
+                if identifier == "Present Gallery Right" {
+                    galleryController.initialImageIndex = 1
+                }
             default:
                 return
             }
@@ -276,15 +253,7 @@ class PollController: UIViewController, PhotoControllerDelegate, GVPhotoBrowserD
 
     // MARK: PhotoControllerDelegate
 
-    var loadedPhotos = 0
-    func photoController(photoController: PhotoController, didLoadPhoto photo: ParsePhoto) {
-        loadedPhotos++
-        if loadedPhotos >= 2 {
-            delegate?.pollControllerDidDidFinishLoad?(self)
-        }
-    }
-
-    func photoController(photoController: PhotoController, didEditPhoto photo: ParsePhoto) {
+    func photoControllerDidEditPhoto(photoController: PhotoController) {
         if leftPhotoController.photo.isValid && rightPhotoController.photo.isValid {
             poll.photos = [leftPhotoController.photo, rightPhotoController.photo]
         } else {
@@ -293,58 +262,15 @@ class PollController: UIViewController, PhotoControllerDelegate, GVPhotoBrowserD
         delegate?.pollController?(self, didEditPoll: poll)
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // MARK: Gallery
-    func numberOfPhotosInPhotoBrowser(photoBrowser: GVPhotoBrowser!) -> UInt {
-        return 2
+    func photoControllerDidFailToLoadImage(photoController: PhotoController, error: NSError) {
+        delegate?.pollControllerDidFailToLoad?(self, error: error)
     }
 
-    func photoBrowser(photoBrowser: GVPhotoBrowser!, customizeImageView imageView: UIImageView!, forIndex index: UInt) -> UIImageView! {
-        let urlString = poll.photos![Int(index)].image!.url
-        imageView.setImageWithURL(NSURL(string: urlString), usingActivityIndicatorStyle: .Gray)
-        return imageView
+    func photoControllerDidLoadImage(photoController: PhotoController) {
+        if leftPhotoController.imageLoaded && rightPhotoController.imageLoaded {
+            delegate?.pollControllerDidFinishLoad?(self)
+        }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
-
-class AAAAAAA: GVPhotoBrowserViewController {
-
 }
 
 @objc protocol PollControllerDelegate {
@@ -354,5 +280,6 @@ class AAAAAAA: GVPhotoBrowserViewController {
     optional func pollControllerDidInteractWithInterface(pollController: PollController)
     optional func pollControllerWillHighlight(pollController: PollController, index: Int)
     optional func pollControllerDidHighlight(pollController: PollController)
-    optional func pollControllerDidDidFinishLoad(pollController: PollController)
+    optional func pollControllerDidFinishLoad(pollController: PollController)
+    optional func pollControllerDidFailToLoad(PollController: PollController, error: NSError)
 }

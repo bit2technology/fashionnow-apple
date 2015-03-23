@@ -5,7 +5,6 @@ PODS:
   - CRToast (0.0.7)
   - Facebook-iOS-SDK (3.23.1):
     - Bolts (~> 1.0)
-  - GVPhotoBrowser (0.9.0)
   - Parse (1.6.5):
     - Bolts (~> 1.1)
   - ParseCrashReporting (1.6.5):
@@ -26,7 +25,6 @@ DEPENDENCIES:
   - Bolts
   - CRToast
   - Facebook-iOS-SDK
-  - GVPhotoBrowser
   - Parse
   - ParseCrashReporting
   - ParseFacebookUtils
@@ -40,7 +38,6 @@ SPEC CHECKSUMS:
   Bolts: dd9fb8433d67f5acc3b6b4d1379bbc5513d716c1
   CRToast: f9f2c4b29776d68ba24c4d621cba59a83fea921b
   Facebook-iOS-SDK: 89dae50e975ebab95a01b0962d27277fc9cf08fd
-  GVPhotoBrowser: d412a569953a09baeabe6091b07bbf6f23360981
   Parse: a21db4037d70a68a4ec64ecc0f327ed475cc14f8
   ParseCrashReporting: bc2418de3e198d032e8263c68fa2b98d6bcd964e
   ParseFacebookUtils: 4d58d0f133fa1af52f3a8d5caaa55cd435118ac4

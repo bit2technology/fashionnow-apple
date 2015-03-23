@@ -6,43 +6,52 @@
 //  Copyright (c) 2015 Bit2 Software. All rights reserved.
 //
 
+// MARK: - Extensions
+
 extension UIColor {
 
-    // MARK: Colors
-
-    class func fn_blackColor(alpha: CGFloat = 1) -> UIColor {
-        return UIColor(red: 27/255.0, green: 27/255.0, blue: 27/255.0, alpha: alpha)
+    /// rgb(27, 27, 27)
+    class func fn_black(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(red: 0.10588235294117647058823529411764705882352941176471, green: 0.10588235294117647058823529411764705882352941176471, blue: 0.10588235294117647058823529411764705882352941176471, alpha: alpha)
     }
 
-    class func fn_detailColor(alpha: CGFloat = 1) -> UIColor {
-        return UIColor(red: 7/255.0, green: 131/255.0, blue: 123/255.0, alpha: alpha)
+    /// rgb(255, 255, 255)
+    class func fn_white(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(red: 1, green: 1, blue: 1, alpha: alpha)
     }
 
-    class func fn_lightColor(alpha: CGFloat = 1) -> UIColor {
-        return UIColor(red: 10/255.0, green: 206/255.0, blue: 188/255.0, alpha: alpha)
+    /// rgb(7, 131, 123)
+    class func fn_detail(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(red: 0.027450980392156862745098039215686274509803921568627, green: 0.51372549019607843137254901960784313725490196078431, blue: 0.48235294117647058823529411764705882352941176470588, alpha: alpha)
     }
 
-    class func fn_darkColor(alpha: CGFloat = 1) -> UIColor {
-        return UIColor(red: 6/255.0, green: 137/255.0, blue: 132/255.0, alpha: alpha)
+    /// rgb(10, 206, 188)
+    class func fn_light(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(red: 0.039215686274509803921568627450980392156862745098039, green: 0.80784313725490196078431372549019607843137254901961, blue: 0.73725490196078431372549019607843137254901960784314, alpha: alpha)
     }
 
-    class func fn_tintColor(alpha: CGFloat = 1) -> UIColor {
-        return fn_detailColor(alpha: alpha)
+    /// rgb(6, 137, 132)
+    class func fn_dark(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(red: 0.023529411764705882352941176470588235294117647058824, green: 0.53725490196078431372549019607843137254901960784314, blue: 0.51764705882352941176470588235294117647058823529412, alpha: alpha)
     }
 
-    class func fn_destructiveColor(alpha: CGFloat = 1) -> UIColor {
-        return UIColor(red: 1, green: 102/255.0, blue: 102/255.0, alpha: alpha)
+    /// rgb(7, 131, 123)
+    class func fn_tint(alpha: CGFloat = 1) -> UIColor {
+        return fn_detail(alpha: alpha)
     }
 
-    class func fn_errorColor(alpha: CGFloat = 1) -> UIColor {
-        return redColor().colorWithAlphaComponent(alpha)
+    /// rgb(255, 0, 0)
+    class func fn_error(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(red: 1, green: 0, blue: 0, alpha: alpha)
     }
 
-    class func fn_placeholderColor(alpha: CGFloat = 1) -> UIColor {
-        return lightGrayColor().colorWithAlphaComponent(alpha)
+    /// rgb(211, 211, 211)
+    class func fn_placeholder(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(red: 0.82745098039215686274509803921568627450980392156863, green: 0.82745098039215686274509803921568627450980392156863, blue: 0.82745098039215686274509803921568627450980392156863, alpha: alpha)
     }
 
-    class func fn_randomColor(alpha: CGFloat = 1) -> UIColor{
+    /// :returns: Random color
+    class func fn_random(alpha: CGFloat = 1) -> UIColor{
         return UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: alpha)
     }
 
@@ -63,7 +72,8 @@ extension UIColor {
 
 extension UIImage {
 
-    func fn_compressedJPEGData(maxSize: CGFloat = 1024, compressionQuality: CGFloat = 0.5) -> NSData {
+    /// :returns: Compressed JPEG Data, opaque and with scale 1
+    func fn_compressed(maxSize: CGFloat = 1024, compressionQuality: CGFloat = 0.5) -> NSData {
 
         let resizeScale = maxSize / max(size.width, size.height)
 
@@ -75,28 +85,61 @@ extension UIImage {
             img = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
         }
-
         return UIImageJPEGRepresentation(img ?? self, compressionQuality)
     }
 
-    func fn_resized(maxHeight: CGFloat, opaque: Bool = true, scale imageScale: CGFloat = UIScreen.mainScreen().scale) -> UIImage {
+    /// :returns: Resized image if necessary, opaque and with screen scale
+    func fn_resized(maxHeight: CGFloat) -> UIImage {
 
         let resizeScale = maxHeight / self.size.height
 
-        var img = self
         if resizeScale < 1 {
             let resizeRect = CGRect(x: 0, y: 0, width: size.width * resizeScale, height: size.height * resizeScale)
-            UIGraphicsBeginImageContextWithOptions(resizeRect.size, opaque, imageScale)
+            UIGraphicsBeginImageContextWithOptions(resizeRect.size, true, UIScreen.mainScreen().scale)
             drawInRect(resizeRect)
-            img = UIGraphicsGetImageFromCurrentImageContext()
+            let img = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
+            return img
         }
-        return img
+        return self
     }
 }
 
+extension String {
+    /// Same as count(self)
+    var fn_count: Int {
+        return countElements(self)
+    }
+}
+
+extension NSDate {
+    /// Show description for date
+    var fn_birthdayDescription: String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.timeZone = NSTimeZone(name: "GMT")
+        dateFormatter.dateStyle = .MediumStyle
+        return dateFormatter.stringFromDate(self)
+    }
+}
+
+// MARK: Interface Builder Inspectables
+
+extension UIView {
+    @IBInspectable var cornerRadius: CGFloat {
+        get {
+            return layer.cornerRadius
+        }
+        set {
+            layer.cornerRadius = newValue
+            layer.masksToBounds = newValue > 0
+        }
+    }
+}
+
+// MARK: - Classes
+
 /// UIButton that gets the background image and apply template rendering mode
-class TemplateBackgroundButton: UIButton {
+class FNTemplateBackgroundButton: UIButton {
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -110,7 +153,7 @@ class TemplateBackgroundButton: UIButton {
 }
 
 /// Helper for CRToastManager
-class Toast {
+class FNToast {
 
     enum Type {
         case Default, Error
@@ -126,7 +169,7 @@ class Toast {
         // Background Color
         switch type {
         case .Error:
-            options[kCRToastBackgroundColorKey] = UIColor.fn_errorColor()
+            options[kCRToastBackgroundColorKey] = UIColor.fn_error()
         default:
             break
         }
@@ -137,6 +180,7 @@ class Toast {
 
 // MARK: - Mask
 
+/// Apply tilted separator
 func fn_applyPollMask(left: UIView, right: UIView) {
 
     let maskReferenceSize: CGFloat = 1
@@ -163,46 +207,18 @@ func fn_applyPollMask(left: UIView, right: UIView) {
     right.layer.mask = rightMask
 }
 
-extension String {
-    var fn_count: Int {
-        return countElements(self)
-    }
-}
-
-extension NSDate {
-    /// Show description for date
-    var fn_birthdayDescription: String {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.timeZone = NSTimeZone(name: "GMT")
-        dateFormatter.dateStyle = .MediumStyle
-        return dateFormatter.stringFromDate(self)
-    }
-}
-
-extension UIView {
-    @IBInspectable var cornerRadius: CGFloat {
-        get {
-            return layer.cornerRadius
-        }
-        set {
-            layer.cornerRadius = newValue
-            layer.masksToBounds = newValue > 0
-        }
-    }
-}
-
 // MARK: - Constants
 
 /// Notification name for new poll saved
-let NewPollSavedNotificationName = "NewPollSavedNotification"
+let FNPollPostedNotificationName = "PollPostedNotification"
 /// Notification name for poll deleted
-let PollDeletedNotificationName = "PollDeletedNotification"
+let FNPollDeletedNotificationName = "PollDeletedNotification"
 
 /// Default error domain
-let AppErrorDomain = "com.bit2software.Fashion-Now"
+let FNErrorDomain = "com.bit2software.Fashion-Now"
 
 /// Error codes
-enum AppErrorCode: Int {
+enum FNErrorCode: Int {
     /// The operator is busy, probably from network activity
     case Busy = 800
     /// App tried update, but there's nothing new
@@ -213,12 +229,15 @@ enum AppErrorCode: Int {
     case NoCache = 803
     /// Requests are limited. We need to save them.
     case RequestTooOften = 804
+    /// Tried to load a Photo with no image URL.
+    case NoPhotoURL = 805
 }
 
-let fn_localizedOfflineErrorDescription = NSLocalizedString("OFFLINE_ERROR_DESCRIPTION", value: "You are offline. Try again later." , comment: "Default for entire app")
+/// Returns "You are offline. Try again later." for English and its variants for other languages
+let FNLocalizedOfflineErrorDescription = NSLocalizedString("DEFAULT_ERROR_DESCRIPTION_OFFLINE", value: "You are offline. Try again later." , comment: "Default for entire app")
 
 /// Returns "OK" for English and its variants for other languages
-let LocalizedOKButtonTitle = NSLocalizedString("OK_BUTTON_TITLE", value: "OK" , comment: "Default OK button title for entire app")
+let FNLocalizedOKButtonTitle = NSLocalizedString("DEFAULT_BUTTON_TITLE_OK", value: "OK" , comment: "Default OK button title for entire app")
 
 /// Returns "Cancel" for English and its variants for other languages
-let LocalizedCancelButtonTitle = NSLocalizedString("CANCEL_BUTTON_TITLE", value: "Cancel" , comment: "Default Cancel button title for entire app")
+let FNLocalizedCancelButtonTitle = NSLocalizedString("DEFAULT_BUTTON_TITLE_CANCEL", value: "Cancel" , comment: "Default Cancel button title for entire app")

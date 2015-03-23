@@ -112,39 +112,39 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
 
         // Name
         if nameField.text == nil || countElements(nameField.text) <= 0 {
-            nameLabel.textColor = UIColor.fn_errorColor()
+            nameLabel.textColor = UIColor.fn_error()
             allFieldsValid = false
             verifyMessages.append(NSLocalizedString("SIGNUP_ERROR_NAME_MISSING", value: "Name missing", comment: "Error message for Sign Up or Edit Profile"))
         }
 
         // Email
         if emailField.text == nil || countElements(emailField.text) <= 0 {
-            emailLabel.textColor = UIColor.fn_errorColor()
+            emailLabel.textColor = UIColor.fn_error()
             allFieldsValid = false
             verifyMessages.append(NSLocalizedString("SIGNUP_ERROR_EMAIL_MISSING", value: "E-mail missing", comment: "Error message for Sign Up or Edit Profile"))
         } else if !emailField.text.isEmail() {
-            emailLabel.textColor = UIColor.fn_errorColor()
+            emailLabel.textColor = UIColor.fn_error()
             allFieldsValid = false
             verifyMessages.append(NSLocalizedString("SIGNUP_ERROR_EMAIL_NOT_VALID", value: "E-mail not valid", comment: "Error message for Sign Up or Edit Profile"))
         }
 
         // Username
         if usernameField.text == nil || countElements(usernameField.text) <= 0 {
-            usernameLabel.textColor = UIColor.fn_errorColor()
+            usernameLabel.textColor = UIColor.fn_error()
             allFieldsValid = false
             verifyMessages.append(NSLocalizedString("SIGNUP_ERROR_USERNAME_MISSING", value: "Username missing", comment: "Error message for Sign Up or Edit Profile"))
         }
 
         // Password
         if passwordField.text == nil || countElements(passwordField.text) < 6 {
-            passwordLabel.textColor = UIColor.fn_errorColor()
+            passwordLabel.textColor = UIColor.fn_error()
             allFieldsValid = false
             verifyMessages.append(NSLocalizedString("SIGNUP_ERROR_PASSWORD_TOO_SHORT", value: "Password too short (6 characters min.)", comment: "Error message for Sign Up or Edit Profile"))
         }
 
         // Show alert if one or more fields are not valid
         if !allFieldsValid {
-            UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_REVIEW_TITLE", value: "Review information" , comment: "Title of alert of missing/wrong information"), message: "\n".join(verifyMessages), delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+            UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_REVIEW_TITLE", value: "Review information" , comment: "Title of alert of missing/wrong information"), message: "\n".join(verifyMessages), delegate: nil, cancelButtonTitle: FNLocalizedOKButtonTitle).show()
             return
         }
 
@@ -196,18 +196,18 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
             func presentError(error: NSError) {
                 // Error handling
                 if error.code == kPFErrorConnectionFailed {
-                    UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_CONNECTION_TITLE", value: "Connection failed", comment: "Error message for Sign Up or Edit Profile"), message: NSLocalizedString("SIGNUP_ERROR_CONNECTION_MESSAGE", value: "Are you connected to the Internet?", comment: "Error message for Sign Up or Edit Profile"), delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+                    UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_CONNECTION_TITLE", value: "Connection failed", comment: "Error message for Sign Up or Edit Profile"), message: NSLocalizedString("SIGNUP_ERROR_CONNECTION_MESSAGE", value: "Are you connected to the Internet?", comment: "Error message for Sign Up or Edit Profile"), delegate: nil, cancelButtonTitle: FNLocalizedOKButtonTitle).show()
 
                 } else if error.code == kPFErrorUsernameTaken {
-                    usernameLabel.textColor = UIColor.fn_errorColor()
-                    UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_USERNAME_TAKEN_TITLE", value: "Username already exists", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+                    usernameLabel.textColor = UIColor.fn_error()
+                    UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_USERNAME_TAKEN_TITLE", value: "Username already exists", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: FNLocalizedOKButtonTitle).show()
 
                 } else if error.code == kPFErrorUserEmailTaken {
-                    emailLabel.textColor = UIColor.fn_errorColor()
-                    UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_EMAIL_TAKEN_TITLE", value: "Another user is using this e-mail", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+                    emailLabel.textColor = UIColor.fn_error()
+                    UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_EMAIL_TAKEN_TITLE", value: "Another user is using this e-mail", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: FNLocalizedOKButtonTitle).show()
 
                 } else {
-                    UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_UNKNOWN_TITLE", value: "Sorry, there was an error", comment: "Error message for Sign Up or Edit Profile"), message: error.localizedDescription, delegate: nil, cancelButtonTitle: LocalizedOKButtonTitle).show()
+                    UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_UNKNOWN_TITLE", value: "Sorry, there was an error", comment: "Error message for Sign Up or Edit Profile"), message: error.localizedDescription, delegate: nil, cancelButtonTitle: FNLocalizedOKButtonTitle).show()
                 }
             }
 
@@ -247,7 +247,7 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
             }
             // Set photo properties
             if self.avatarChanged {
-                let imageData = self.avatarImageView.image!.fn_compressedJPEGData(maxSize: 256)
+                let imageData = self.avatarImageView.image!.fn_compressed(maxSize: 256)
                 currentUser.avatarImage = PFFile(name: "avatar.jpg", data: imageData, contentType: "image/jpeg")
             }
 
@@ -275,9 +275,9 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
         let currentUser = ParseUser.currentUser()
 
         // Adjust layout
-        genderField.textColor = UIColor.fn_tintColor()
-        birthdayField.textColor = UIColor.fn_tintColor()
-        avatarImageView.image = UIColor.fn_placeholderColor().fn_image()
+        genderField.textColor = UIColor.fn_tint()
+        birthdayField.textColor = UIColor.fn_tint()
+        avatarImageView.image = UIColor.fn_placeholder().fn_image()
 
         // The values for gender and birthday are filled with default values (even for anonymous users)
         gender = currentUser.gender ?? facebookUser?.gender ?? genderValues.last
@@ -303,7 +303,7 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
         emailField.text = currentUser.email ?? facebookUser?.email
         // Avatar
         if let unwrappedAvatarUrl = currentUser.avatarURL(size: 84) {
-            avatarImageView.setImageWithURL(unwrappedAvatarUrl, placeholderImage: UIColor.fn_placeholderColor().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
+            avatarImageView.setImageWithURL(unwrappedAvatarUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         }
 
         // Make some changes if user has already configured account
@@ -316,7 +316,7 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        PFAnalytics.trackScreenShowInBackground("Login: Signup", block: nil)
+        PFAnalytics.fn_trackScreenShowInBackground("Login: Signup", block: nil)
     }
 
     // MARK: UITextFieldDelegate

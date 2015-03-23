@@ -151,7 +151,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
 
         voteButtons = [leftVoteButton, rightVoteButton]
         for voteButton in voteButtons {
-            voteButton.tintColor = UIColor.fn_tintColor(alpha: 0.5)
+            voteButton.tintColor = UIColor.fn_tint(alpha: 0.5)
         }
 
         // Initializes poll list and adjusts interface
@@ -162,7 +162,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        PFAnalytics.trackScreenShowInBackground("Vote: Main", block: nil)
+        PFAnalytics.fn_trackScreenShowInBackground("Vote: Main", block: nil)
     }
 
     deinit {
@@ -171,7 +171,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
 
     // MARK: PollControllerDelegate
 
-    func pollControllerDidDidFinishLoad(pollController: PollController) {
+    func pollControllerDidFinishLoad(pollController: PollController) {
         setLoadingInterfaceHidden(true, animated: false)
     }
 

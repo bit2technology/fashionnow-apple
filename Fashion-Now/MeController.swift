@@ -29,7 +29,8 @@ class MeController: UICollectionViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Bordered, target: nil, action: nil)
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
-        notificationCenter.addObserver(self, selector: "pollDeleted:", name: PollDeletedNotificationName, object: nil)
+        notificationCenter.addObserver(self, selector: "pollDeleted:", name: FNPollDeletedNotificationName, object: nil)
+        notificationCenter.addObserver(self, selector: "pollPosted:", name:         FNPollPostedNotificationName, object: nil)
 
         // Configure refresh control for manual update
         let refreshControl = UIRefreshControl()
@@ -55,7 +56,7 @@ class MeController: UICollectionViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        PFAnalytics.trackScreenShowInBackground("Me: Main", block: nil)
+        PFAnalytics.fn_trackScreenShowInBackground("Me: Main", block: nil)
     }
 
     deinit {
@@ -76,8 +77,8 @@ class MeController: UICollectionViewController {
                 self.collectionView?.reloadData()
             }
             // Show error if necessary
-            else if showError && error != nil && (error.domain != AppErrorDomain || error.code == AppErrorCode.ConnectionLost.rawValue) {
-                Toast.show(text: fn_localizedOfflineErrorDescription, type: .Error)
+            else if showError && error != nil && (error.domain != FNErrorDomain || error.code == FNErrorCode.ConnectionLost.rawValue) {
+                FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
             }
 
             self.refreshControl.endRefreshing()
@@ -126,6 +127,13 @@ class MeController: UICollectionViewController {
                 removedPoll.unpinInBackgroundWithBlock(nil)
                 collectionView?.reloadData()
             }
+        }
+    }
+
+    func pollPosted(notification: NSNotification) {
+        if let postedPoll = notification.userInfo?["poll"] as? ParsePoll {
+            postedPolls.insert(postedPoll, atIndex: 0)
+            collectionView?.reloadData()
         }
     }
 
@@ -281,7 +289,7 @@ class MePollHeader: UICollectionReusableView {
         let currentUserUrl = currentUser.avatarURL(size: 84)
         if avatarUrl != currentUserUrl {
             avatarUrl = currentUserUrl
-            avatarImageView.setImageWithURL(currentUserUrl, placeholderImage: UIColor.fn_placeholderColor().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
+            avatarImageView.setImageWithURL(currentUserUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         }
         nameLabel.text = currentUser.name
 
@@ -291,7 +299,7 @@ class MePollHeader: UICollectionReusableView {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        avatarImageView.image = UIColor.fn_placeholderColor().fn_image()
+        avatarImageView.image = UIColor.fn_placeholder().fn_image()
     }
 }
 

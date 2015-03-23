@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6QH-p8-eFG">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6QH-p8-eFG">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
@@ -43,7 +43,7 @@
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MXb-Ij-kte" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MXb-Ij-kte" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                                 <rect key="frame" x="53" y="70" width="214" height="42"/>
                                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                                 <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
@@ -322,7 +322,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4XI-L8-6Pr" userLabel="Left Vote" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4XI-L8-6Pr" userLabel="Left Vote" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                 <rect key="frame" x="-5" y="383" width="71" height="44"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <inset key="contentEdgeInsets" minX="20" minY="11" maxX="15" maxY="11"/>
@@ -334,7 +334,7 @@
                                     <action selector="voteButtonWillBePressed:" destination="6wq-1Y-TiB" eventType="touchDown" id="7ST-U4-lHB"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GPX-GA-SAX" userLabel="Right Vote" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GPX-GA-SAX" userLabel="Right Vote" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                 <rect key="frame" x="254" y="383" width="71" height="44"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <inset key="contentEdgeInsets" minX="15" minY="11" maxX="20" maxY="11"/>
@@ -903,19 +903,39 @@
                                     <outlet property="nameLabel" destination="0TE-HJ-F3a" id="5lj-YB-Lcs"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Message Cell" textLabel="voN-36-ZXr" style="IBUITableViewCellStyleDefault" id="QtU-8y-oVs" customClass="FriendListTableCell" customModule="Fashion_Now" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Loading Cell" rowHeight="44" id="QtU-8y-oVs" customClass="FriendsLoadingCell" customModule="Fashion_Now" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QtU-8y-oVs" id="uwA-oS-pcb">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="voN-36-ZXr">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vz6-oX-I3M">
+                                            <rect key="frame" x="8" y="0.0" width="304" height="43"/>
+                                            <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <activityIndicatorView contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="hAZ-x0-7EU">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                            <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        </activityIndicatorView>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="hAZ-x0-7EU" secondAttribute="bottom" id="ATH-kv-xg9"/>
+                                        <constraint firstItem="Vz6-oX-I3M" firstAttribute="top" secondItem="uwA-oS-pcb" secondAttribute="top" id="QZ6-lg-rTz"/>
+                                        <constraint firstItem="Vz6-oX-I3M" firstAttribute="leading" secondItem="uwA-oS-pcb" secondAttribute="leading" constant="8" id="Voe-28-3CY"/>
+                                        <constraint firstItem="hAZ-x0-7EU" firstAttribute="top" secondItem="uwA-oS-pcb" secondAttribute="top" id="d6E-FZ-fEW"/>
+                                        <constraint firstAttribute="bottom" secondItem="Vz6-oX-I3M" secondAttribute="bottom" id="qQi-s8-5Ha"/>
+                                        <constraint firstAttribute="trailing" secondItem="Vz6-oX-I3M" secondAttribute="trailing" constant="8" id="rpV-67-R6w"/>
+                                        <constraint firstItem="hAZ-x0-7EU" firstAttribute="leading" secondItem="uwA-oS-pcb" secondAttribute="leading" id="tBl-2R-BPS"/>
+                                        <constraint firstAttribute="trailing" secondItem="hAZ-x0-7EU" secondAttribute="trailing" id="y8t-ED-8cA"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="activityIndicator" destination="hAZ-x0-7EU" id="prf-vp-s6j"/>
+                                    <outlet property="messageLabel" destination="Vz6-oX-I3M" id="IuZ-2P-3KU"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -1095,7 +1115,7 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5HP-8f-Tva" userLabel="Camera Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                                <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5HP-8f-Tva" userLabel="Camera Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                                     <rect key="frame" x="180" y="25" width="64" height="64"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <state key="normal" image="ButtonCamera" backgroundImage="ButtonCircleBackground">
@@ -1106,7 +1126,7 @@
                                                         <action selector="imageButtonPressed:" destination="n9L-hk-vfW" eventType="touchUpInside" id="q7I-b6-W4r"/>
                                                     </connections>
                                                 </button>
-                                                <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X7s-WG-grP" userLabel="Library Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                                <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X7s-WG-grP" userLabel="Library Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                                     <rect key="frame" x="248" y="25" width="64" height="64"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <state key="normal" image="ButtonLibrary" backgroundImage="ButtonCircleBackground">
@@ -1326,7 +1346,7 @@
                                 </variation>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="aQj-E4-gl5" appends="YES" id="erB-aE-mck"/>
-                                    <outletCollection property="gestureRecognizers" destination="qhL-uy-211" appends="YES" id="yCT-e3-3e4"/>
+                                    <outletCollection property="gestureRecognizers" destination="qhL-uy-211" appends="YES" id="V2C-7p-bhU"/>
                                     <segue destination="rPD-KC-83S" kind="embed" identifier="Left Photo Controller" id="4GQ-Aa-EaP"/>
                                 </connections>
                             </containerView>
@@ -1337,7 +1357,7 @@
                                 </variation>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="t7x-cR-kO3" appends="YES" id="Jf1-Ji-obS"/>
-                                    <outletCollection property="gestureRecognizers" destination="qhL-uy-211" appends="YES" id="I9p-bT-EQj"/>
+                                    <outletCollection property="gestureRecognizers" destination="SwL-gZ-hWT" appends="YES" id="ldZ-i2-Ydi"/>
                                     <segue destination="rPD-KC-83S" kind="embed" identifier="Right Photo Controller" id="uM3-tb-eTB"/>
                                 </connections>
                             </containerView>
@@ -1416,9 +1436,14 @@
                         <action selector="didDoubleTap:" destination="hpa-fw-Ay5" id="qT7-Kw-opT"/>
                     </connections>
                 </tapGestureRecognizer>
-                <tapGestureRecognizer id="qhL-uy-211" userLabel="Photo Tap">
+                <tapGestureRecognizer id="qhL-uy-211" userLabel="Left Tap">
                     <connections>
-                        <action selector="presentGallery:" destination="hpa-fw-Ay5" id="L44-OR-Zvh"/>
+                        <segue destination="2Zj-tv-2wS" kind="presentation" identifier="Present Gallery Left" id="kgb-sn-oKA"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="SwL-gZ-hWT" userLabel="Right Tap">
+                    <connections>
+                        <segue destination="2Zj-tv-2wS" kind="presentation" identifier="Present Gallery Right" id="rQZ-rf-eNe"/>
                     </connections>
                 </tapGestureRecognizer>
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.0" id="V8o-Ky-8nG" userLabel="Caption Long Press">
@@ -1449,7 +1474,7 @@
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b6v-RN-CyL" userLabel="Buttons Container">
                                 <rect key="frame" x="48" y="116" width="64" height="136"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FBu-Eh-kK4" userLabel="Camera Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FBu-Eh-kK4" userLabel="Camera Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
                                         <state key="normal" image="ButtonCamera" backgroundImage="ButtonCircleBackground">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1458,7 +1483,7 @@
                                             <action selector="imageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="HH1-oc-pKd"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uMi-wS-xwZ" userLabel="Library Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uMi-wS-xwZ" userLabel="Library Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="64" height="64"/>
                                         <state key="normal" image="ButtonLibrary" backgroundImage="ButtonCircleBackground">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1485,7 +1510,7 @@
                                         <rect key="frame" x="-480" y="0.0" width="1120" height="367"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YYI-4A-sio" userLabel="Delete Button" customClass="TemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YYI-4A-sio" userLabel="Delete Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="323" width="44" height="44"/>
                                         <state key="normal" image="ButtonTrash" backgroundImage="ButtonCircleBackgroundSmall">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1528,6 +1553,83 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AbR-wv-pbr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2340" y="-543.5"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="cdr-w8-bRH">
+            <objects>
+                <navigationController id="2Zj-tv-2wS" sceneMemberID="viewController">
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zJq-G1-qZ4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="CQ2-Ww-RCS" kind="relationship" relationship="rootViewController" id="IfH-hj-nTS"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Df-8L-FFt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2218" y="85"/>
+        </scene>
+        <!--Gallery-->
+        <scene sceneID="TKG-G3-PVx">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="CQ2-Ww-RCS" customClass="GalleryController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hOO-HU-TW1"/>
+                        <viewControllerLayoutGuide type="bottom" id="D42-19-UYr"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="yX6-pQ-Mcl">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0OX-TS-fzF" userLabel="Main Scroll">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <subviews>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c9u-kS-PsS" userLabel="Left Scroll">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                    </scrollView>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q43-yc-A5G" userLabel="Right Scroll">
+                                        <rect key="frame" x="320" y="0.0" width="320" height="480"/>
+                                    </scrollView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="c9u-kS-PsS" secondAttribute="bottom" id="414-MU-fRF"/>
+                                    <constraint firstAttribute="trailing" secondItem="q43-yc-A5G" secondAttribute="trailing" id="4AU-sr-rsi"/>
+                                    <constraint firstItem="q43-yc-A5G" firstAttribute="top" secondItem="0OX-TS-fzF" secondAttribute="top" id="5kf-VK-oaC"/>
+                                    <constraint firstItem="c9u-kS-PsS" firstAttribute="leading" secondItem="0OX-TS-fzF" secondAttribute="leading" id="ItT-CZ-EN2"/>
+                                    <constraint firstItem="q43-yc-A5G" firstAttribute="leading" secondItem="c9u-kS-PsS" secondAttribute="trailing" id="T9o-Ur-zgW"/>
+                                    <constraint firstAttribute="bottom" secondItem="q43-yc-A5G" secondAttribute="bottom" id="TWc-dg-8QC"/>
+                                    <constraint firstItem="c9u-kS-PsS" firstAttribute="top" secondItem="0OX-TS-fzF" secondAttribute="top" id="XZu-rB-kjx"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="q43-yc-A5G" secondAttribute="width" id="FJn-5Y-nA6"/>
+                            <constraint firstAttribute="height" secondItem="q43-yc-A5G" secondAttribute="height" id="Jof-78-DqW"/>
+                            <constraint firstAttribute="width" secondItem="c9u-kS-PsS" secondAttribute="width" id="Lkk-p0-4U8"/>
+                            <constraint firstAttribute="trailing" secondItem="0OX-TS-fzF" secondAttribute="trailing" id="NQO-sx-YB7"/>
+                            <constraint firstItem="0OX-TS-fzF" firstAttribute="leading" secondItem="yX6-pQ-Mcl" secondAttribute="leading" id="Olz-Q8-eaE"/>
+                            <constraint firstItem="0OX-TS-fzF" firstAttribute="top" secondItem="yX6-pQ-Mcl" secondAttribute="top" id="gzy-VK-qKA"/>
+                            <constraint firstAttribute="bottom" secondItem="0OX-TS-fzF" secondAttribute="bottom" id="iK6-qf-A7l"/>
+                            <constraint firstAttribute="height" secondItem="c9u-kS-PsS" secondAttribute="height" id="o46-L3-Yu1"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Gallery" id="8K3-ng-n0y">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="8L2-VN-EUT">
+                            <connections>
+                                <action selector="doneButtonPressed:" destination="CQ2-Ww-RCS" id="hMa-3P-qw3"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="mainScroll" destination="0OX-TS-fzF" id="yba-3P-ybS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DaN-zL-qWs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2596" y="85"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pAc-yH-lCJ">
@@ -1599,8 +1701,9 @@
         <image name="TabBarIconVoteUnselected" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="oem-Cm-nHK"/>
-        <segue reference="apZ-Yv-541"/>
+        <segue reference="IZA-Rh-gPV"/>
         <segue reference="uM3-tb-eTB"/>
+        <segue reference="oem-Cm-nHK"/>
+        <segue reference="rQZ-rf-eNe"/>
     </inferredMetricsTieBreakers>
 </document>

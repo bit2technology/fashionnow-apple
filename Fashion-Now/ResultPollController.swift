@@ -74,7 +74,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate {
 
                 // TODO: Handle error
                 if error != nil {
-                    Toast.show(text: "ccc", type: .Error)
+                    FNToast.show(text: "ccc", type: .Error)
                     return
                 }
 
@@ -88,7 +88,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate {
     }
 
     @IBAction func deletePoll(sender: UIBarButtonItem) {
-        UIActionSheet(title: "Do you really want to delete this poll? This action can't be undone.", delegate: self, cancelButtonTitle: LocalizedCancelButtonTitle, destructiveButtonTitle: "Delete").showFromBarButtonItem(sender, animated: true)
+        UIActionSheet(title: "Do you really want to delete this poll? This action can't be undone.", delegate: self, cancelButtonTitle: FNLocalizedCancelButtonTitle, destructiveButtonTitle: "Delete").showFromBarButtonItem(sender, animated: true)
     }
 
     private func queryForVote(vote: Int) -> PFQuery {
@@ -155,7 +155,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        PFAnalytics.trackScreenShowInBackground("Me: Result", block: nil)
+        PFAnalytics.fn_trackScreenShowInBackground("Me: Result", block: nil)
     }
 
     // MARK: UIActionSheetDelegate
@@ -166,7 +166,8 @@ class ResultPollController: UIViewController, UIActionSheetDelegate {
             if Reachability.reachabilityForInternetConnection().isReachable() {
 
                 let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-                activityIndicator.backgroundColor = UIColor.fn_blackColor(alpha: 0.5)
+                activityIndicator.color = UIColor.grayColor()
+                activityIndicator.backgroundColor = UIColor.fn_white(alpha: 0.5)
                 activityIndicator.startAnimating()
                 activityIndicator.frame = navigationController!.view.bounds
                 activityIndicator.autoresizingMask = .FlexibleWidth | .FlexibleHeight
@@ -176,14 +177,14 @@ class ResultPollController: UIViewController, UIActionSheetDelegate {
                     activityIndicator.removeFromSuperview()
 
                     if success {
-                        NSNotificationCenter.defaultCenter().postNotificationName(PollDeletedNotificationName, object: self, userInfo: ["poll": self.poll])
+                        NSNotificationCenter.defaultCenter().postNotificationName(FNPollDeletedNotificationName, object: self, userInfo: ["poll": self.poll])
                         self.navigationController?.popViewControllerAnimated(true)
                     } else {
-                        Toast.show(text: fn_localizedOfflineErrorDescription, type: .Error)
+                        FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
                     }
                 })
             } else {
-                Toast.show(text: fn_localizedOfflineErrorDescription, type: .Error)
+                FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
             }
         }
     }

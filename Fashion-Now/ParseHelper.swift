@@ -205,6 +205,8 @@ class ParsePhoto: PFObject, PFSubclassing {
 let ParsePollCaptionKey = "caption"
 let ParsePollCreatedByKey = "createdBy"
 let ParsePollPhotosKey = "photos"
+let ParsePollUserIdsKey = "userIds"
+let ParsePollVersionKey = "version"
 
 public class ParsePoll: PFObject, PFSubclassing {
 
@@ -216,6 +218,7 @@ public class ParsePoll: PFObject, PFSubclassing {
         self.init()
         ACL = PFACL(user: user)
         createdBy = user
+        version = 1
     }
 
     var caption: String? {
@@ -245,6 +248,24 @@ public class ParsePoll: PFObject, PFSubclassing {
         }
     }
 
+    var userIds: [String]? {
+        get {
+            return self[ParsePollUserIdsKey] as? [String]
+        }
+        set {
+            self[ParsePollUserIdsKey] = newValue ?? NSNull()
+        }
+    }
+
+    var version: NSNumber? {
+        get {
+            return self[ParsePollVersionKey] as? NSNumber
+        }
+        set {
+            self[ParsePollVersionKey] = newValue ?? NSNull()
+        }
+    }
+
     // MARK: Helper methods
 
     var isValid: Bool {
@@ -271,10 +292,14 @@ class ParsePollList: Printable, DebugPrintable {
         case VotePublic
     }
 
+    // If list is currently downloading content
     private(set) var downloading = false
     private var lastUpdate: NSDate?
+    /// Minimum time to update again, in seconds
+    private let updateLimitTime: NSTimeInterval = -5 // Needs to be negative
     private var polls = [ParsePoll]()
     private var pollsAreRemote = false
+    // Type of list
     let type: Type
 
     /// Return new query by type of list
@@ -307,7 +332,7 @@ class ParsePollList: Printable, DebugPrintable {
     enum UpdateType {
         /// Download newer polls
         case Newer
-        /// Download oler polls
+        /// Download older polls
         case Older
     }
 
@@ -333,12 +358,12 @@ class ParsePollList: Printable, DebugPrintable {
         if downloading {
 
             // Already downloading. Just return error.
-            completionHandler(false, NSError(domain: AppErrorDomain, code: AppErrorCode.Busy.rawValue, userInfo: nil))
+            completionHandler(false, NSError(domain: FNErrorDomain, code: FNErrorCode.Busy.rawValue, userInfo: nil))
             
-        } else if lastUpdate?.timeIntervalSinceNow > -5 {
+        } else if lastUpdate?.timeIntervalSinceNow > updateLimitTime {
 
             // Tried to update too early. Just return error.
-            completionHandler(false, NSError(domain: AppErrorDomain, code: AppErrorCode.RequestTooOften.rawValue, userInfo: nil))
+            completionHandler(false, NSError(domain: FNErrorDomain, code: FNErrorCode.RequestTooOften.rawValue, userInfo: nil))
 
         } else if Reachability.reachabilityForInternetConnection().isReachable() {
 
@@ -399,7 +424,7 @@ class ParsePollList: Printable, DebugPrintable {
                         }
                         if myVotes?.count >= unwrappedNewPolls.count {
                             // All new polls are voted. Just return error.
-                            self.finish(false, error: NSError(domain: AppErrorDomain, code: AppErrorCode.NothingNew.rawValue, userInfo: nil))
+                            self.finish(false, error: NSError(domain: FNErrorDomain, code: FNErrorCode.NothingNew.rawValue, userInfo: nil))
                             return
                         }
                         if myVotes?.count > 0 {
@@ -441,14 +466,14 @@ class ParsePollList: Printable, DebugPrintable {
                 } else {
 
                     // Download error or no more polls
-                    self.finish(false, error: error ?? NSError(domain: AppErrorDomain, code: AppErrorCode.NothingNew.rawValue, userInfo: nil))
+                    self.finish(false, error: error ?? NSError(domain: FNErrorDomain, code: FNErrorCode.NothingNew.rawValue, userInfo: nil))
                 }
             }
 
         } else if polls.count > 0 {
 
             // Offline but polls list is not empty. Just return error.
-            completionHandler(false, NSError(domain: AppErrorDomain, code: AppErrorCode.ConnectionLost.rawValue, userInfo: nil))
+            completionHandler(false, NSError(domain: FNErrorDomain, code: FNErrorCode.ConnectionLost.rawValue, userInfo: nil))
 
         } else {
 
@@ -468,7 +493,7 @@ class ParsePollList: Printable, DebugPrintable {
                     self.polls = unwrappedCachedPolls
                     completionHandler(true, error)
                 } else {
-                    completionHandler(false, error ?? NSError(domain: AppErrorDomain, code: AppErrorCode.NoCache.rawValue, userInfo: nil))
+                    completionHandler(false, error ?? NSError(domain: FNErrorDomain, code: FNErrorCode.NoCache.rawValue, userInfo: nil))
                 }
             })
         }
@@ -484,6 +509,7 @@ class ParsePollList: Printable, DebugPrintable {
         })
     }
 
+    /// Remove poll by object
     func removePoll(poll: ParsePoll) -> Bool {
         if let index = find(polls, poll) {
             polls.removeAtIndex(index)
@@ -569,7 +595,7 @@ class ParseVote: PFObject, PFSubclassing {
 
 extension PFAnalytics {
 
-    class func trackScreenShowInBackground(identifier: String, block: PFBooleanResultBlock!) {
+    class func fn_trackScreenShowInBackground(identifier: String, block: PFBooleanResultBlock! = nil) {
         trackEventInBackground("ScreenShow", dimensions: ["Name": identifier], block: block)
     }
 }

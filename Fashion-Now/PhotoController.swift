@@ -8,26 +8,26 @@
 
 class PhotoController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
-    let assetsLibrary = ALAssetsLibrary()
-    var sourceIsCamera = false
+    private let assetsLibrary = ALAssetsLibrary()
 
+    private(set) var imageLoaded = false
     var photo: ParsePhoto = ParsePhoto(user: ParseUser.currentUser()) {
         didSet {
-            if let imagePath = photo.image?.url {
+            imageLoaded = false
+            if let urlString = photo.image?.url {
                 // There is an URL. Show image view and load data.
                 imageContainerHidden = false
-                imageView.setImageWithURL(NSURL(string: imagePath), placeholderImage: nil, completed: { (image, error, imageCacheType, url) -> Void in
+                imageView.sd_setImageWithURL(NSURL(string: urlString), completed: { (image, error, cacheType, url) -> Void in
                     if let unwrappedImage = image {
-                        self.delegate?.photoController?(self, didLoadPhoto: self.photo)
+                        self.imageLoaded = true
+                        self.delegate?.photoControllerDidLoadImage(self)
                     } else {
-                        self.delegate?.photoController?(self, didFailToLoadPhoto: self.photo, error: error)
+                        self.delegate?.photoControllerDidFailToLoadImage(self, error: error)
                     }
-                }, usingActivityIndicatorStyle: .White)
+                })
             } else {
-                // No URL, hide image view and call delegate.
+                // No URL, hide image view
                 imageContainerHidden = true
-                let error = NSError() // TODO: Better error
-                delegate?.photoController?(self, didFailToLoadPhoto: photo, error: error)
             }
         }
     }
@@ -41,8 +41,6 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
             imageView.superview?.alpha = (imageContainerHidden ? 0 : 1)
         }
     }
-
-    @IBOutlet weak var sendButton: UIButton!
 
     // MARK: Edition buttons
 
@@ -93,18 +91,18 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         }
 
         // Call delegate
-        delegate?.photoController?(self, didEditPhoto: photo)
+        delegate?.photoControllerDidEditPhoto(self)
     }
 
     private func setPhotoImage(image: UIImage) {
         // Set photo properties
-        let imageData = image.fn_compressedJPEGData()
+        let imageData = image.fn_compressed()
         photo.image = PFFile(name: "image.jpg", data: imageData, contentType: "image/jpeg")
         imageView.image = image
         imageContainerHidden = false
 
         // Call delegate
-        delegate?.photoController?(self, didEditPhoto: photo)
+        delegate?.photoControllerDidEditPhoto(self)
     }
 
     @IBAction func imageButtonPressed(sender: UIButton) {
@@ -120,11 +118,9 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         // Present camera
         case cameraButton:
             imagePickerSouce = .Camera
-            sourceIsCamera = true
         // Present albuns
         case libraryButton:
             imagePickerSouce = .PhotoLibrary
-            sourceIsCamera = false
         // Unknown source, do nothing
         default:
             return
@@ -143,7 +139,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        deleteButton.tintColor = UIColor.fn_tintColor(alpha: 0.6)
+        deleteButton.tintColor = UIColor.fn_tint(alpha: 0.6)
     }
 
     // MARK: UINavigationControllerDelegate
@@ -162,7 +158,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         dismissViewControllerAnimated(true, completion: nil)
 
         // Save to Album if source is camera
-        if sourceIsCamera {
+        if picker.sourceType == .Camera {
             assetsLibrary.saveImage(image, toAlbum: "Fashion Now", completion: nil, failure: nil)
         }
     }
@@ -170,10 +166,10 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
 
 @objc protocol PhotoControllerDelegate {
 
-    optional func photoController(photoController: PhotoController, didLoadPhoto photo: ParsePhoto)
-    optional func photoController(photoController: PhotoController, didFailToLoadPhoto photo: ParsePhoto, error: NSError)
+    func photoControllerDidLoadImage(photoController: PhotoController)
+    func photoControllerDidFailToLoadImage(photoController: PhotoController, error: NSError)
 
-    optional func photoController(photoController: PhotoController, didEditPhoto photo: ParsePhoto)
+    func photoControllerDidEditPhoto(photoController: PhotoController)
 }
 
 class PhotoBackgroundView: UIImageView {

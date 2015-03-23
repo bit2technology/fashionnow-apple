@@ -28,20 +28,23 @@ Parse.Cloud.define("sendPush", function(request, response) {
 
 //IDEIA: UM CLOUD CODE QUE DEVOLVE O COUNT DAS DUAS OPCOES DA ENQUETE
 
-Parse.Cloud.define("getPollVoteList", function(request, response) {
-	var query = new Parse.Query("Poll")
-	query.include("createdBy")
-	query.include("photos")
-	query.descending("createdAt")
-	var user = new Parse.User()
-	user.set("id", request.params.userId)
-	query.notEqualTo("createdBy", user)
-	query.find({
-    	success: function(results) {
-    		response.success(results);
-    	},
-    	error: function() {
-      		response.error("Query failed");
-    	}
-  	});
+Parse.Cloud.afterSave("Poll", function(request) {
+    var query = new Parse.Query(Parse.Installation);
+    query.containedIn("userId", request.object.get("userIds"));
+    console.log(request.user.get("name") + " precisa de ajuda!")
+    Parse.Push.send({
+        where: query,
+        data: {
+            alert: request.user.get("name") + " precisa de ajuda!"
+        }
+    },{
+        succes: function() {
+            // Push successfull
+            response.success("Push sent");
+        },
+        error: function(error) {
+            // Handle error
+            response.error("Error send push");
+        }
+    })   
 })

@@ -69,7 +69,9 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
                 self.navigationItem.leftBarButtonItem?.enabled = true
                 self.activityIndicator.stopAnimating()
                 // Show error
-                if let unwrappedFacebookErrorLoginFailedReason = error.userInfo?[FBErrorLoginFailedReason] as? String { // FIXME: Error might be nil
+                if error == nil {
+                    self.facebookErrorMessage.hidden = false
+                } else if let unwrappedFacebookErrorLoginFailedReason = error.userInfo?[FBErrorLoginFailedReason] as? String {
                     self.facebookErrorMessage.hidden = false
                 } else {
                     self.connectionErrorMessage.hidden = false
@@ -105,7 +107,7 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        PFAnalytics.trackScreenShowInBackground("Login: Main", block: nil)
+        PFAnalytics.fn_trackScreenShowInBackground("Login: Main", block: nil)
     }
 
     // MARK: UINavigationControllerDelegate
