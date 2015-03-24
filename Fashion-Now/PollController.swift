@@ -10,6 +10,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
     
     var poll: ParsePoll = ParsePoll(user: ParseUser.currentUser()) {
         didSet {
+            photosLoaded = 0
             if let unwrappedPhotos = poll.photos {
                 leftPhotoController.photo = unwrappedPhotos[0]
                 rightPhotoController.photo = unwrappedPhotos[1]
@@ -48,14 +49,6 @@ class PollController: UIViewController, PhotoControllerDelegate {
     @IBOutlet weak var rightPhotoView: UIView!
     private var photoViews: [UIView] {
         return [leftPhotoView, rightPhotoView]
-    }
-
-    var imageButtonsHidden: Bool = false {
-        didSet {
-            for photoController in [leftPhotoController, rightPhotoController] {
-                photoController.imageButtonsHidden = self.imageButtonsHidden
-            }
-        }
     }
 
     var voteGesturesEnabled: Bool = false {
@@ -259,7 +252,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
     // MARK: PhotoControllerDelegate
 
-    func photoControllerDidEditPhoto(photoController: PhotoController) {
+    func photoEdited(photoController: PhotoController) {
         if leftPhotoController.photo.isValid && rightPhotoController.photo.isValid {
             poll.photos = [leftPhotoController.photo, rightPhotoController.photo]
         } else {
@@ -268,12 +261,14 @@ class PollController: UIViewController, PhotoControllerDelegate {
         delegate?.pollController?(self, didEditPoll: poll)
     }
 
-    func photoControllerDidFailToLoadImage(photoController: PhotoController, error: NSError) {
+    func photoLoadFailed(photoController: PhotoController, error: NSError) {
         delegate?.pollControllerDidFailToLoad?(self, error: error)
     }
 
-    func photoControllerDidLoadImage(photoController: PhotoController) {
-        if leftPhotoController.imageLoaded && rightPhotoController.imageLoaded {
+    private var photosLoaded = 0
+    func photoLoaded(photoController: PhotoController) {
+        photosLoaded++
+        if photosLoaded == 2 {
             delegate?.pollControllerDidFinishLoad?(self)
         }
     }
