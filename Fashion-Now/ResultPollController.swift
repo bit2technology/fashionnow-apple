@@ -11,14 +11,24 @@ import UIKit
 private let showAsAbsoluteCountKey = "ResuldtsShowAsAbsoluteCount"
 private let cacheResultsKey = "CacheResults"
 
-class ResultPollController: UIViewController, UIActionSheetDelegate {
+class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDelegate {
 
     private var pollController: PollController!
     var poll: ParsePoll! {
         didSet {
+            let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+            activityIndicator.color = UIColor.grayColor()
+            activityIndicator.backgroundColor = UIColor.fn_white()
+            activityIndicator.startAnimating()
+            activityIndicator.frame = navigationController!.view.bounds
+            activityIndicator.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+            navigationController!.view.addSubview(activityIndicator)
+            self.activityIndicator = activityIndicator
             pollController?.poll = poll
         }
     }
+
+    private weak var activityIndicator: UIActivityIndicatorView!
 
     var buttonActivity, buttonRefresh, buttonTrash: UIBarButtonItem!
 
@@ -187,5 +197,12 @@ class ResultPollController: UIViewController, UIActionSheetDelegate {
                 FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
             }
         }
+    }
+
+    func pollLoaded(pollController: PollController) {
+        activityIndicator?.removeFromSuperview()
+    }
+    func pollLoadFailed(pollController: PollController, error: NSError) {
+
     }
 }
