@@ -11,6 +11,9 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
     var photo: ParsePhoto = ParsePhoto(user: ParseUser.currentUser()) {
         didSet {
 
+            // Clean
+            imageView.image = nil
+
             // Editability
             let readonly = photo.objectId?.fn_count > 0
             for button in [cameraButton, libraryButton, deleteButton] {
@@ -57,7 +60,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
     /// Show or hide image container
     private func imageContainerHidden(hidden: Bool) {
         imageView.superview!.hidden = hidden
-        imageView.superview!.alpha = (hidden ? 0 : 1)
+        imageView.superview!.alpha = 1
     }
 
     // MARK: Edition buttons

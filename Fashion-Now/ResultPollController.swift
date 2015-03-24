@@ -14,11 +14,7 @@ private let cacheResultsKey = "CacheResults"
 class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDelegate {
 
     private var pollController: PollController!
-    var poll: ParsePoll! {
-        didSet {
-            pollController?.poll = poll
-        }
-    }
+    var poll: ParsePoll!
 
     private weak var activityIndicator: UIActivityIndicatorView!
 
@@ -159,11 +155,9 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
         self.activityIndicator = activityIndicator
 
         pollController.loadDelegate = self
+        pollController.poll = poll
 
         loadResults(nil)
-
-        //pollController.imageButtonsHidden = true
-        pollController.poll = poll
     }
 
     override func viewDidAppear(animated: Bool) {

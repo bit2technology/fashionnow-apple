@@ -12,7 +12,6 @@ class PollController: UIViewController, PhotoControllerDelegate {
         didSet {
 
             // Clear load counter and photos
-            photosLoaded = 0
             if let unwrappedPhotos = poll.photos {
                 leftPhotoController.photo = unwrappedPhotos[0]
                 rightPhotoController.photo = unwrappedPhotos[1]
@@ -264,10 +263,8 @@ class PollController: UIViewController, PhotoControllerDelegate {
         loadDelegate?.pollLoadFailed(self, error: error)
     }
 
-    private var photosLoaded = 0
     func photoLoaded(photoController: PhotoController) {
-        photosLoaded++
-        if photosLoaded == 2 {
+        if leftPhotoController.imageView.image != nil && rightPhotoController.imageView.image != nil {
             loadDelegate?.pollLoaded(self)
         }
     }
