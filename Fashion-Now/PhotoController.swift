@@ -139,8 +139,6 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
 
     // MARK: UIPickerViewDelegate
 
-    private let assetsLibrary = ALAssetsLibrary()
-
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
 
         // Track image source
@@ -162,7 +160,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         
         // Save to Album if source is camera
         if picker.sourceType == .Camera {
-            assetsLibrary.saveImage(image, toAlbum: FNLocalizedAppName, completion: nil, failure: nil)
+            ALAssetsLibrary().saveImage(image, toAlbum: FNLocalizedAppName, completion: nil, failure: nil)
         }
     }
 }
