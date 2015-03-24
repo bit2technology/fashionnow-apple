@@ -82,7 +82,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
     @IBOutlet weak var doubleTap: UITapGestureRecognizer!
     @IBAction func didDoubleTap(sender: UITapGestureRecognizer) {
         interactDelegate?.pollInteracted(self)
-        animateHighlight(index: indexForTouch(sender.locationInView(view)))
+        animateHighlight(index: indexForTouch(sender.locationInView(view)), source: .DoubleTap)
     }
 
     @IBOutlet weak var drager: UIPanGestureRecognizer!
@@ -99,15 +99,15 @@ class PollController: UIViewController, PhotoControllerDelegate {
         case .Ended:
             let velocityX = sender.velocityInView(view).x
             if abs(velocityX) > 1000 {
-                animateHighlight(index: (velocityX > 0 ? 1 : 2), withEaseInAnimation: false)
+                animateHighlight(index: (velocityX > 0 ? 1 : 2), withEaseInAnimation: false, source: .Drag)
                 return
             }
             if abs(rate) > 0.75 {
                 if rate > 0 && velocityX > 0 {
-                    animateHighlight(index: 1, withEaseInAnimation: false)
+                    animateHighlight(index: 1, withEaseInAnimation: false, source: .Drag)
                     return
                 } else if rate < 0 && velocityX < 0 {
-                    animateHighlight(index: 2, withEaseInAnimation: false)
+                    animateHighlight(index: 2, withEaseInAnimation: false, source: .Drag)
                     return
                 }
             }
@@ -121,7 +121,11 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
     // MARK: Vote and animation
 
-    func animateHighlight(#index: Int, withEaseInAnimation easeIn: Bool = true) {
+    enum HighlightSource {
+        case DoubleTap, Drag, Extern
+    }
+
+    func animateHighlight(#index: Int, withEaseInAnimation easeIn: Bool = true, source: HighlightSource) {
 
         var rate: CGFloat!
         switch index {
@@ -132,7 +136,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
         default:
             return
         }
-        interactDelegate?.pollWillHighlight(self, index: index)
+        interactDelegate?.pollWillHighlight(self, index: index, source: source)
         adjustLayout(rate, animationTimingFunction: CAMediaTimingFunction(name: (easeIn ? kCAMediaTimingFunctionEaseInEaseOut : kCAMediaTimingFunctionEaseOut)), callCompleteDelegate: true)
     }
     
@@ -274,7 +278,7 @@ protocol PollEditionDelegate: class {
 }
 protocol PollInteractionDelegate: class {
     func pollInteracted(pollController: PollController)
-    func pollWillHighlight(pollController: PollController, index: Int)
+    func pollWillHighlight(pollController: PollController, index: Int, source: PollController.HighlightSource)
     func pollDidHighlight(pollController: PollController)
 }
 protocol PollLoadDelegate: class {

@@ -4,9 +4,6 @@
 /* Class = "UIButton"; normalTitle = "Follow"; ObjectID = "1iE-fK-YeD"; */
 "1iE-fK-YeD.normalTitle" = "Seguir";
 
-/* Class = "UILabel"; text = "E-mail"; ObjectID = "1po-qc-85I"; */
-"1po-qc-85I.text" = "";
-
 /* Class = "UITabBarItem"; title = "Post"; ObjectID = "2O1-Ra-Pjk"; */
 "2O1-Ra-Pjk.title" = "Postar";
 
@@ -28,9 +25,6 @@
 /* Class = "UILabel"; text = "Birthday"; ObjectID = "9u8-J9-agp"; */
 "9u8-J9-agp.text" = "Data de nascimento";
 
-/* Class = "UILabel"; text = "Caption"; ObjectID = "AKQ-hp-5HE"; */
-"AKQ-hp-5HE.text" = "";
-
 /* Class = "UINavigationItem"; title = "Who can see?"; ObjectID = "BCe-DD-8Y6"; */
 "BCe-DD-8Y6.title" = "Quem pode ver?";
 
@@ -45,9 +39,6 @@
 
 /* Class = "UIButton"; normalTitle = "Vote"; ObjectID = "GPX-GA-SAX"; */
 "GPX-GA-SAX.normalTitle" = "Votar";
-
-/* Class = "UILabel"; text = "Label"; ObjectID = "Hr5-yk-mrX"; */
-"Hr5-yk-mrX.text" = "";
 
 /* Class = "UITextField"; placeholder = "Add caption"; ObjectID = "KUx-Xw-6OB"; */
 "KUx-Xw-6OB.placeholder" = "Adicionar legenda";
@@ -85,9 +76,6 @@
 /* Class = "UIBarButtonItem"; title = "Forgot"; ObjectID = "VHA-FD-oDJ"; */
 "VHA-FD-oDJ.title" = "Esqueci";
 
-/* Class = "UILabel"; text = "Caption"; ObjectID = "Zly-2v-7UO"; */
-"Zly-2v-7UO.text" = "";
-
 /* Class = "UITableViewSection"; headerTitle = "Credentials"; ObjectID = "cAD-Za-ZPA"; */
 "cAD-Za-ZPA.headerTitle" = "Credenciais";
 
@@ -102,12 +90,6 @@
 
 /* Class = "UIButton"; normalTitle = "Log in"; ObjectID = "exf-D7-gGy"; */
 "exf-D7-gGy.normalTitle" = "Login";
-
-/* Class = "UINavigationItem"; title = "FN 💜 FB"; ObjectID = "fxo-PT-oRu"; */
-"fxo-PT-oRu.title" = "";
-
-/* Class = "UILabel"; text = "0%"; ObjectID = "jPu-g6-gyu"; */
-"jPu-g6-gyu.text" = "";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "lnp-IN-Yzw"; */
 "lnp-IN-Yzw.text" = "Nome";
@@ -133,9 +115,6 @@
 /* Class = "UILabel"; text = "Fashion Now works better with Facebook. Don't worry, we'll respect your privacy."; ObjectID = "sIE-qd-ls5"; */
 "sIE-qd-ls5.text" = "Fashion Now funciona melhor com Facebook. Não se preocupe, respeitaremos sua privacidade.";
 
-/* Class = "UILabel"; text = "0%"; ObjectID = "sO1-m1-YcS"; */
-"sO1-m1-YcS.text" = "";
-
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "tXu-ZQ-igo"; */
 "tXu-ZQ-igo.placeholder" = "Senha";
 
@@ -144,7 +123,4 @@
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "voN-36-ZXr"; */
 "voN-36-ZXr.text" = "Título";
-
-/* Class = "UITableViewSection"; headerTitle = "Avatar"; ObjectID = "xQ2-XG-UaR"; */
-"xQ2-XG-UaR.headerTitle" = "";
 

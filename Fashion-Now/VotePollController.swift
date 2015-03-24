@@ -28,7 +28,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         setCleanInterface(false, animated: true)
     }
     @IBAction func voteButtonPressed(sender: UIButton) {
-        pollController.animateHighlight(index: find(voteButtons, sender)! + 1)
+        pollController.animateHighlight(index: find(voteButtons, sender)! + 1, source: .Extern)
     }
 
     // Clean interface
@@ -147,8 +147,6 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
 
         pollController.interactDelegate = self
         pollController.loadDelegate = self
-        //pollController.imageButtonsHidden = true
-        //pollController.voteGesturesEnabled = true
 
         voteButtons = [leftVoteButton, rightVoteButton]
         for voteButton in voteButtons {
@@ -184,7 +182,15 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         setCleanInterface(true, animated: true)
     }
 
-    func pollWillHighlight(pollController: PollController, index: Int) {
+    func pollWillHighlight(pollController: PollController, index: Int, source: PollController.HighlightSource) {
+
+        var voteMethod = "Button"
+        if source == .DoubleTap {
+            voteMethod = "Double Tap"
+        } else if source == .Drag {
+            voteMethod = "Drag"
+        }
+        PFAnalytics.fn_trackVoteMethodInBackground(voteMethod)
 
         let vote = ParseVote(user: ParseUser.currentUser())
         vote.pollId = pollController.poll.objectId

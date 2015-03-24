@@ -40,9 +40,6 @@
 /* Message for when the email reset was successful */
 "LOGIN_RESET_SUCCESS_MESSAGE" = "Link para recuperação de senha enviado";
 
-/* Default OK button title for entire app */
-"OK_BUTTON_TITLE" = "";
-
 /* String shown when user is setting the visibility of the poll */
 "PUBLIC_SELECTION" = "Público";
 

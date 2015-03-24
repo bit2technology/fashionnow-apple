@@ -41,12 +41,14 @@ class ParseInstallation: PFInstallation, PFSubclassing {
 // MARK: - User class
 
 let ParseUserAvatarImageKey = "avatarImage"
-let ParseUserBirthdayKey = "birthday"
+let ParseUserBirthdayKey = "birth"
 let ParseUserFacebookIdKey = "facebookId"
 let ParseUserGenderKey = "gender"
 let ParseUserHasPassword = "hasPassword"
 let ParseUserLocationKey = "location"
 let ParseUserNameKey = "name"
+
+private let dateFormat = "yyyy-MM-dd"
 
 class ParseUser: PFUser, PFSubclassing {
 
@@ -73,34 +75,17 @@ class ParseUser: PFUser, PFSubclassing {
         return nil
     }
 
-    var birthday: NSDate! {
+    /// Returns current date if no birthday provided
+    var birthday: NSDate {
         get {
-            let timeZoneIndependentFormatter = NSDateFormatter()
-            timeZoneIndependentFormatter.timeZone = NSTimeZone(name: "GMT")
-            timeZoneIndependentFormatter.dateFormat = "yyyy-MM-dd"
-            let adjustedNewBirthdayString = timeZoneIndependentFormatter.stringFromDate(birthdayNative ?? NSDate())
-            timeZoneIndependentFormatter.timeZone = nil
-            return timeZoneIndependentFormatter.dateFromString(adjustedNewBirthdayString)
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = dateFormat
+            return dateFormatter.dateFromString(self[ParseUserBirthdayKey] as? String ?? "") ?? NSDate()
         }
         set {
-            if newValue != nil {
-                let timeZoneIndependentFormatter = NSDateFormatter()
-                timeZoneIndependentFormatter.dateFormat = "yyyy-MM-dd"
-                let adjustedNewBirthdayString = timeZoneIndependentFormatter.stringFromDate(birthdayNative!)
-                timeZoneIndependentFormatter.timeZone = NSTimeZone(name: "GMT")
-                birthdayNative = timeZoneIndependentFormatter.dateFromString(adjustedNewBirthdayString)
-            } else {
-                birthdayNative = nil
-            }
-        }
-    }
-
-    private var birthdayNative: NSDate? {
-        get {
-            return self[ParseUserBirthdayKey] as? NSDate
-        }
-        set {
-            self[ParseUserBirthdayKey] = newValue ?? NSNull()
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = dateFormat
+            self[ParseUserBirthdayKey] = dateFormatter.stringFromDate(newValue)
         }
     }
 
@@ -597,11 +582,15 @@ class ParseVote: PFObject, PFSubclassing {
 
 extension PFAnalytics {
 
-    class func fn_trackScreenShowInBackground(identifier: String, block: PFBooleanResultBlock! = nil) {
-        trackEventInBackground("ScreenShow", dimensions: ["Name": identifier], block: block)
+    class func fn_trackImageSourceInBackground(source: String, block: PFBooleanResultBlock! = nil) {
+        trackEventInBackground("Image Source", dimensions: ["Source": source], block: block)
     }
 
-    class func fn_trackImageSourceInBackground(source: String, block: PFBooleanResultBlock! = nil) {
-        trackEventInBackground("ImageSource", dimensions: ["Source": source], block: block)
+    class func fn_trackScreenShowInBackground(identifier: String, block: PFBooleanResultBlock! = nil) {
+        trackEventInBackground("Screen Show", dimensions: ["Name": identifier], block: block)
+    }
+
+    class func fn_trackVoteMethodInBackground(method: String, block: PFBooleanResultBlock! = nil) {
+        trackEventInBackground("Vote Method", dimensions: ["Method": method], block: block)
     }
 }

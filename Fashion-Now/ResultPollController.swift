@@ -16,14 +16,6 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
     private var pollController: PollController!
     var poll: ParsePoll! {
         didSet {
-            let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-            activityIndicator.color = UIColor.grayColor()
-            activityIndicator.backgroundColor = UIColor.fn_white()
-            activityIndicator.startAnimating()
-            activityIndicator.frame = navigationController!.view.bounds
-            activityIndicator.autoresizingMask = .FlexibleWidth | .FlexibleHeight
-            navigationController!.view.addSubview(activityIndicator)
-            self.activityIndicator = activityIndicator
             pollController?.poll = poll
         }
     }
@@ -139,10 +131,10 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
         }
 
         // Bar button items
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
-        activityIndicator.frame.size.width = 44
-        activityIndicator.startAnimating()
-        buttonActivity = UIBarButtonItem(customView: activityIndicator)
+        let activityIndicatorItem = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        activityIndicatorItem.frame.size.width = 44
+        activityIndicatorItem.startAnimating()
+        buttonActivity = UIBarButtonItem(customView: activityIndicatorItem)
         buttonRefresh = UIBarButtonItem(image: UIImage(named: "BarButtonRefresh"), style: .Bordered, target: self, action: "loadResults:")
         buttonTrash = UIBarButtonItem(image: UIImage(named: "BarButtonTrash"), style: .Bordered, target: self, action: "deletePoll:")
 
@@ -156,6 +148,17 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
         dateFormatter.timeStyle = .ShortStyle
         dateFormatter.doesRelativeDateFormatting = true
         dateLabel.text = dateFormatter.stringFromDate(poll.createdAt)
+
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+        activityIndicator.color = UIColor.grayColor()
+        activityIndicator.backgroundColor = UIColor.fn_white()
+        activityIndicator.startAnimating()
+        activityIndicator.frame = view.bounds
+        activityIndicator.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        view.addSubview(activityIndicator)
+        self.activityIndicator = activityIndicator
+
+        pollController.loadDelegate = self
 
         loadResults(nil)
 
