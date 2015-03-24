@@ -8,7 +8,7 @@
 
 import UIKit
 
-class VotePollController: UIViewController, PollControllerDelegate {
+class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDelegate {
 
     private var polls = ParsePollList(type: .VotePublic)
 
@@ -145,9 +145,10 @@ class VotePollController: UIViewController, PollControllerDelegate {
 
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconVoteSelected")
 
-        pollController.delegate = self
+        pollController.interactDelegate = self
+        pollController.loadDelegate = self
         //pollController.imageButtonsHidden = true
-        pollController.voteGesturesEnabled = true
+        //pollController.voteGesturesEnabled = true
 
         voteButtons = [leftVoteButton, rightVoteButton]
         for voteButton in voteButtons {
@@ -171,15 +172,19 @@ class VotePollController: UIViewController, PollControllerDelegate {
 
     // MARK: PollControllerDelegate
 
-    func pollControllerDidFinishLoad(pollController: PollController) {
+    func pollLoaded(pollController: PollController) {
         setLoadingInterfaceHidden(true, animated: false)
     }
 
-    func pollControllerDidInteractWithInterface(pollController: PollController) {
+    func pollLoadFailed(pollController: PollController, error: NSError) {
+        // TODO: Failed
+    }
+
+    func pollInteracted(pollController: PollController) {
         setCleanInterface(true, animated: true)
     }
 
-    func pollControllerWillHighlight(pollController: PollController, index: Int) {
+    func pollWillHighlight(pollController: PollController, index: Int) {
 
         let vote = ParseVote(user: ParseUser.currentUser())
         vote.pollId = pollController.poll.objectId
@@ -187,7 +192,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
         vote.saveEventually(nil)
     }
 
-    func pollControllerDidHighlight(pollController: PollController) {
+    func pollDidHighlight(pollController: PollController) {
         NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "showLoadingInterfaceAndNextPoll:", userInfo: nil, repeats: false).fire()
     }
     func showLoadingInterfaceAndNextPoll(sender: NSTimer?) {

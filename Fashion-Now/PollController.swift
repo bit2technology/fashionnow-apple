@@ -10,6 +10,8 @@ class PollController: UIViewController, PhotoControllerDelegate {
     
     var poll: ParsePoll = ParsePoll(user: ParseUser.currentUser()) {
         didSet {
+
+            // Clear load counter and photos
             photosLoaded = 0
             if let unwrappedPhotos = poll.photos {
                 leftPhotoController.photo = unwrappedPhotos[0]
@@ -18,29 +20,27 @@ class PollController: UIViewController, PhotoControllerDelegate {
                 leftPhotoController.photo = ParsePhoto(user: poll.createdBy!)
                 rightPhotoController.photo = ParsePhoto(user: poll.createdBy!)
             }
+
+            // Reset layout
             adjustLayout(0, animationTimingFunction: nil, callCompleteDelegate: false)
+
             // Caption
             captionLabel.text = poll.caption
-            captionLabel.superview!.hidden = captionLabel.text?.fn_count <= 0
-            lockView.hidden = poll.objectId?.fn_count > 0 ? poll.ACL.getPublicReadAccess() : true
+            captionLabel.superview!.hidden = !(captionLabel.text?.fn_count > 0)
+            lockView.hidden = poll.ACL?.getPublicReadAccess() != false
+
+            // Enable gestures
+            tap.enabled = poll.objectId?.fn_count > 0
+            let votable = poll.createdBy?.objectId != ParseUser.currentUser().objectId
+            for gesture in [doubleTap, drager] {
+                gesture.enabled = votable
+            }
         }
     }
 
-    // Caption and related actions
-    @IBOutlet weak var captionLabel: UILabel!
-    @IBAction func captionLabelDidLongPress(sender: UIGestureRecognizer) {
-
-        switch sender.state {
-        case .Began, .Changed: // When touching caption view, show entire text.
-            captionLabel.numberOfLines = 0
-        default:
-            captionLabel.numberOfLines = 2
-        }
-    }
-
-    @IBOutlet weak var lockView: UIImageView!
-
-    weak var delegate: PollControllerDelegate?
+    weak var editDelegate: PollEditionDelegate?
+    weak var interactDelegate: PollInteractionDelegate?
+    weak var loadDelegate: PollLoadDelegate?
 
     private weak var leftPhotoController: PhotoController!
     private weak var rightPhotoController: PhotoController!
@@ -51,63 +51,49 @@ class PollController: UIViewController, PhotoControllerDelegate {
         return [leftPhotoView, rightPhotoView]
     }
 
-    var voteGesturesEnabled: Bool = false {
-        didSet {
-            for gesture in (leftPhotoView.gestureRecognizers! + rightPhotoView.gestureRecognizers! as [UIGestureRecognizer]) + [drager] {
-                gesture.enabled = voteGesturesEnabled
-            }
-        }
-    }
+    // Caption and related actions
+    @IBOutlet weak var captionLabel: UILabel!
+    @IBAction func captionLongPress(sender: UILongPressGestureRecognizer) {
 
-    // MARK: Vote and animation
-
-    func animateHighlight(#index: Int, withEaseInAnimation easeIn: Bool = true) {
-
-        var rate: CGFloat!
-        switch index {
-        case 1:
-            rate = 1
-        case 2:
-            rate = -1
+        switch sender.state {
+        case .Began, .Changed:
+            // When touching caption view, show entire text.
+            captionLabel.numberOfLines = 0
         default:
-            return
+            captionLabel.numberOfLines = 2
         }
-        delegate?.pollControllerWillHighlight?(self, index: index)
-        adjustLayout(rate, animationTimingFunction: CAMediaTimingFunction(name: (easeIn ? kCAMediaTimingFunctionEaseInEaseOut : kCAMediaTimingFunctionEaseOut)), callCompleteDelegate: true)
     }
 
-    @IBOutlet weak var leftTap: UITapGestureRecognizer!
-    @IBOutlet weak var rightTap: UITapGestureRecognizer!
+    @IBOutlet weak var lockView: UIImageView!
 
-    @IBOutlet weak var leftdoubleTap: UITapGestureRecognizer!
-    @IBOutlet weak var rightdoubleTap: UITapGestureRecognizer!
+    private func indexForTouch(point: CGPoint) -> Int {
+        return point.x > view.bounds.width / 2 ? 2 : 1
+    }
+
+    @IBOutlet weak var tap: UITapGestureRecognizer!
+    @IBAction func didTap(sender: UITapGestureRecognizer) {
+        let navController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Gallery Navigation Controller") as UINavigationController
+        let gallery = navController.topViewController as GalleryController
+        gallery.images = [leftPhotoController.imageView.image!, rightPhotoController.imageView.image!]
+        gallery.initialImageIndex = indexForTouch(sender.locationInView(view)) - 1
+        presentViewController(navController, animated: true, completion: nil)
+    }
+
+    @IBOutlet weak var doubleTap: UITapGestureRecognizer!
     @IBAction func didDoubleTap(sender: UITapGestureRecognizer) {
-
-        var index: Int!
-        
-        switch sender.view! {
-        case leftPhotoView:
-            index = 1
-        case rightPhotoView:
-            index = 2
-        default:
-            return
-        }
-
-        delegate?.pollControllerDidInteractWithInterface?(self)
-        animateHighlight(index: index)
+        interactDelegate?.pollInteracted(self)
+        animateHighlight(index: indexForTouch(sender.locationInView(view)))
     }
-
 
     @IBOutlet weak var drager: UIPanGestureRecognizer!
     @IBAction func didDrag(sender: UIPanGestureRecognizer) {
 
         var translationX = sender.translationInView(view).x * 1.6
         let rate = translationX / self.view.bounds.width
-        
+
         switch sender.state {
         case .Began:
-            delegate?.pollControllerDidInteractWithInterface?(self)
+            interactDelegate?.pollInteracted(self)
         case .Changed:
             adjustLayout(rate, animationTimingFunction: nil, callCompleteDelegate: false)
         case .Ended:
@@ -131,6 +117,23 @@ class PollController: UIViewController, PhotoControllerDelegate {
         default:
             return
         }
+    }
+
+    // MARK: Vote and animation
+
+    func animateHighlight(#index: Int, withEaseInAnimation easeIn: Bool = true) {
+
+        var rate: CGFloat!
+        switch index {
+        case 1:
+            rate = 1
+        case 2:
+            rate = -1
+        default:
+            return
+        }
+        interactDelegate?.pollWillHighlight(self, index: index)
+        adjustLayout(rate, animationTimingFunction: CAMediaTimingFunction(name: (easeIn ? kCAMediaTimingFunctionEaseInEaseOut : kCAMediaTimingFunctionEaseOut)), callCompleteDelegate: true)
     }
     
     private func adjustLayout(rate: CGFloat, animationTimingFunction: CAMediaTimingFunction?, callCompleteDelegate: Bool) {
@@ -165,7 +168,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
         CATransaction.begin()
         if callCompleteDelegate {
             CATransaction.setCompletionBlock({ () -> Void in
-                self.delegate?.pollControllerDidHighlight?(self)
+                self.interactDelegate?.pollDidHighlight(self)
                 return
             })
         }
@@ -222,8 +225,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
         lockView.hidden = true
 
-        leftTap.requireGestureRecognizerToFail(leftdoubleTap)
-        rightTap.requireGestureRecognizerToFail(rightdoubleTap)
+        tap.requireGestureRecognizerToFail(doubleTap)
 
         fn_applyPollMask(leftPhotoView, rightPhotoView)
     }
@@ -237,13 +239,6 @@ class PollController: UIViewController, PhotoControllerDelegate {
                 leftPhotoController = segue.destinationViewController as PhotoController
             case "Right Photo Controller":
                 rightPhotoController = segue.destinationViewController as PhotoController
-            case "Present Gallery Left", "Present Gallery Right":
-                let navController = segue.destinationViewController as UINavigationController
-                let galleryController = navController.topViewController as GalleryController
-                galleryController.images = [leftPhotoController.imageView.image!, rightPhotoController.imageView.image!]
-                if identifier == "Present Gallery Right" {
-                    galleryController.initialImageIndex = 1
-                }
             default:
                 return
             }
@@ -258,29 +253,31 @@ class PollController: UIViewController, PhotoControllerDelegate {
         } else {
             poll.photos = nil
         }
-        delegate?.pollController?(self, didEditPoll: poll)
+        editDelegate?.pollEdited(self)
     }
 
     func photoLoadFailed(photoController: PhotoController, error: NSError) {
-        delegate?.pollControllerDidFailToLoad?(self, error: error)
+        loadDelegate?.pollLoadFailed(self, error: error)
     }
 
     private var photosLoaded = 0
     func photoLoaded(photoController: PhotoController) {
         photosLoaded++
         if photosLoaded == 2 {
-            delegate?.pollControllerDidFinishLoad?(self)
+            loadDelegate?.pollLoaded(self)
         }
     }
 }
 
-@objc protocol PollControllerDelegate {
-
-    optional func pollController(pollController: PollController, didEditPoll poll:ParsePoll)
-
-    optional func pollControllerDidInteractWithInterface(pollController: PollController)
-    optional func pollControllerWillHighlight(pollController: PollController, index: Int)
-    optional func pollControllerDidHighlight(pollController: PollController)
-    optional func pollControllerDidFinishLoad(pollController: PollController)
-    optional func pollControllerDidFailToLoad(PollController: PollController, error: NSError)
+protocol PollEditionDelegate: class {
+    func pollEdited(pollController: PollController)
+}
+protocol PollInteractionDelegate: class {
+    func pollInteracted(pollController: PollController)
+    func pollWillHighlight(pollController: PollController, index: Int)
+    func pollDidHighlight(pollController: PollController)
+}
+protocol PollLoadDelegate: class {
+    func pollLoaded(pollController: PollController)
+    func pollLoadFailed(pollController: PollController, error: NSError)
 }

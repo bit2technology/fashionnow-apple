@@ -216,7 +216,9 @@ public class ParsePoll: PFObject, PFSubclassing {
     
     convenience init(user: ParseUser) {
         self.init()
-        ACL = PFACL(user: user)
+        let defaultACL = PFACL(user: user)
+        defaultACL.setPublicReadAccess(false)
+        ACL = defaultACL
         createdBy = user
         version = 1
     }

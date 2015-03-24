@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PostPollController: UIViewController, PollControllerDelegate, UITextFieldDelegate {
+class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDelegate {
 
     // Interface elements
     @IBOutlet weak var textField: UITextField!
@@ -97,7 +97,7 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
 
         textField.delegate = self
         textField.frame.size.width = view.bounds.size.width
-        pollController.delegate = self
+        pollController.editDelegate = self
 
         cacheFriendsList()
     }
@@ -109,8 +109,8 @@ class PostPollController: UIViewController, PollControllerDelegate, UITextFieldD
 
     // MARK: PollControllerDelegate
     
-    func pollController(pollController: PollController, didEditPoll poll: ParsePoll) {
-        navigationItem.rightBarButtonItem?.enabled = poll.isValid
+    func pollEdited(pollController: PollController) {
+        navigationItem.rightBarButtonItem?.enabled = pollController.poll.isValid
     }
 
     // MARK: UITextFieldDelegate

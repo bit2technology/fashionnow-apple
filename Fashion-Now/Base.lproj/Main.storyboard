@@ -142,7 +142,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xJA-3U-sng" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="439.46666666666664" y="2177.3333333333335"/>
+            <point key="canvasLocation" x="-38" y="2146"/>
         </scene>
         <!--Log In-->
         <scene sceneID="9od-5e-1Db">
@@ -264,7 +264,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gA1-ed-9m9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="439.46666666666664" y="2745.3333333333335"/>
+            <point key="canvasLocation" x="-38" y="2716"/>
         </scene>
         <!--Vote Poll Controller-->
         <scene sceneID="VVH-fN-2gA">
@@ -427,7 +427,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="752.5333333333333" y="-261.27999999999997"/>
+            <point key="canvasLocation" x="661" y="-277"/>
         </scene>
         <!--Post Poll Controller-->
         <scene sceneID="DGH-qf-Zqz">
@@ -484,7 +484,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="752.5333333333333" y="250.86666666666667"/>
+            <point key="canvasLocation" x="661" y="250"/>
         </scene>
         <!--Me Navigation-->
         <scene sceneID="H8i-C2-7Wl">
@@ -501,7 +501,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xdr-Ar-mLn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="550.39999999999998" y="777.21333333333337"/>
+            <point key="canvasLocation" x="286" y="776"/>
         </scene>
         <!--History-->
         <scene sceneID="N06-YM-3cg">
@@ -714,7 +714,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wVC-D2-I0P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="752.5333333333333" y="777.21333333333337"/>
+            <point key="canvasLocation" x="661" y="776"/>
         </scene>
         <!--Result Poll Controller-->
         <scene sceneID="x4R-Xz-BxP">
@@ -843,7 +843,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="954.66666666666663" y="777.21333333333337"/>
+            <point key="canvasLocation" x="1038" y="776"/>
         </scene>
         <!--Who can see?-->
         <scene sceneID="5qp-bD-6TV">
@@ -949,14 +949,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VNd-ng-GCT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="954.66666666666663" y="249.91999999999999"/>
+            <point key="canvasLocation" x="1038" y="250"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="reA-p0-HcY">
             <objects>
                 <tableViewController id="n9L-hk-vfW" customClass="LoginSignupController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="3MQ-yd-1YS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="1080"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="1050"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
@@ -1254,7 +1254,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="1080"/>
+                    <size key="freeformSize" width="320" height="1050"/>
                     <connections>
                         <outlet property="avatarImageView" destination="lTw-Ua-t3A" id="muZ-hv-uzN"/>
                         <outlet property="birthdayField" destination="F80-og-72K" id="n8M-e4-aEx"/>
@@ -1277,7 +1277,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xq6-l7-NYw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="661.33333333333337" y="2461.3333333333335"/>
+            <point key="canvasLocation" x="357" y="2431"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sT9-WB-ml1">
@@ -1293,7 +1293,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gRT-Sz-dcX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="661.33333333333337" y="1625.4266666666667"/>
+            <point key="canvasLocation" x="357" y="1577"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="CJf-es-BZO">
@@ -1315,7 +1315,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fpy-e7-ti8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="295.46666666666664" y="322.81333333333333"/>
+            <point key="canvasLocation" x="-324" y="543"/>
         </scene>
         <!--Poll Controller-->
         <scene sceneID="Vak-gc-gYh">
@@ -1325,33 +1325,29 @@
                         <viewControllerLayoutGuide type="top" id="SrB-gE-87J"/>
                         <viewControllerLayoutGuide type="bottom" id="e0n-el-6bw"/>
                     </layoutGuides>
-                    <view key="view" opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="Ngt-gb-2Qu">
+                    <view key="view" contentMode="scaleToFill" id="Ngt-gb-2Qu">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="22F-CN-JDl" userLabel="Left Photo">
                                 <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="aQj-E4-gl5" appends="YES" id="erB-aE-mck"/>
-                                    <outletCollection property="gestureRecognizers" destination="qhL-uy-211" appends="YES" id="V2C-7p-bhU"/>
                                     <segue destination="rPD-KC-83S" kind="embed" identifier="Left Photo Controller" id="4GQ-Aa-EaP"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TYB-j4-um4" userLabel="Right Photo">
                                 <rect key="frame" x="160" y="0.0" width="160" height="367"/>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="t7x-cR-kO3" appends="YES" id="Jf1-Ji-obS"/>
-                                    <outletCollection property="gestureRecognizers" destination="SwL-gZ-hWT" appends="YES" id="ldZ-i2-Ydi"/>
                                     <segue destination="rPD-KC-83S" kind="embed" identifier="Right Photo Controller" id="uM3-tb-eTB"/>
                                 </connections>
                             </containerView>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5EP-rp-ruk" userLabel="Caption">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="21"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Caption" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zny-H2-Bdr">
-                                        <rect key="frame" x="20" y="2" width="280" height="15"/>
+                                        <rect key="frame" x="20" y="3" width="280" height="14"/>
                                         <gestureRecognizers/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1361,22 +1357,34 @@
                                 <constraints>
                                     <constraint firstItem="zny-H2-Bdr" firstAttribute="leading" secondItem="5EP-rp-ruk" secondAttribute="leading" constant="20" id="1ov-Am-5Cn"/>
                                     <constraint firstAttribute="trailing" secondItem="zny-H2-Bdr" secondAttribute="trailing" constant="20" id="4Fg-it-v4G"/>
-                                    <constraint firstAttribute="bottom" secondItem="zny-H2-Bdr" secondAttribute="bottom" constant="4" id="CKZ-UV-cwQ"/>
-                                    <constraint firstItem="zny-H2-Bdr" firstAttribute="top" secondItem="5EP-rp-ruk" secondAttribute="top" constant="2" id="VvK-yM-QpB"/>
+                                    <constraint firstAttribute="bottom" secondItem="zny-H2-Bdr" secondAttribute="bottom" constant="3" id="CKZ-UV-cwQ"/>
+                                    <constraint firstItem="zny-H2-Bdr" firstAttribute="top" secondItem="5EP-rp-ruk" secondAttribute="top" constant="3" id="VvK-yM-QpB"/>
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="V8o-Ky-8nG" appends="YES" id="I76-4U-Svc"/>
                                     <outletCollection property="gestureRecognizers" destination="zdf-mX-5qy" appends="YES" id="qIz-hg-Bzf"/>
                                 </connections>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Lock" translatesAutoresizingMaskIntoConstraints="NO" id="PZq-MC-hyg">
-                                <rect key="frame" x="2" y="1" width="15" height="18"/>
+                            <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Lock" translatesAutoresizingMaskIntoConstraints="NO" id="PZq-MC-hyg">
+                                <rect key="frame" x="4" y="3" width="12" height="14"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
+                                        <size key="value" width="0.0" height="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </imageView>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="5EP-rp-ruk" firstAttribute="leading" secondItem="Ngt-gb-2Qu" secondAttribute="leading" id="C42-i7-09Y"/>
-                            <constraint firstItem="PZq-MC-hyg" firstAttribute="top" secondItem="SrB-gE-87J" secondAttribute="bottom" constant="1" id="Frg-X4-dgr"/>
+                            <constraint firstItem="PZq-MC-hyg" firstAttribute="top" secondItem="SrB-gE-87J" secondAttribute="bottom" constant="3" id="Frg-X4-dgr"/>
                             <constraint firstItem="5EP-rp-ruk" firstAttribute="top" secondItem="SrB-gE-87J" secondAttribute="bottom" id="IL4-4Y-Jil"/>
                             <constraint firstItem="22F-CN-JDl" firstAttribute="leading" secondItem="Ngt-gb-2Qu" secondAttribute="leading" id="Iqq-ko-KGk"/>
                             <constraint firstItem="22F-CN-JDl" firstAttribute="top" secondItem="Ngt-gb-2Qu" secondAttribute="top" id="IzQ-uG-Hsv"/>
@@ -1387,23 +1395,23 @@
                             <constraint firstItem="22F-CN-JDl" firstAttribute="width" secondItem="TYB-j4-um4" secondAttribute="width" id="d8v-PI-idv"/>
                             <constraint firstAttribute="bottom" secondItem="22F-CN-JDl" secondAttribute="bottom" id="etT-l5-kXL"/>
                             <constraint firstAttribute="trailing" secondItem="TYB-j4-um4" secondAttribute="trailing" id="odu-gc-3fV"/>
-                            <constraint firstItem="PZq-MC-hyg" firstAttribute="leading" secondItem="Ngt-gb-2Qu" secondAttribute="leading" constant="2" id="sPP-vq-gcR"/>
+                            <constraint firstItem="PZq-MC-hyg" firstAttribute="leading" secondItem="Ngt-gb-2Qu" secondAttribute="leading" constant="4" id="sPP-vq-gcR"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="kgl-Bo-434" appends="YES" id="D6O-sz-LXB"/>
+                            <outletCollection property="gestureRecognizers" destination="aQj-E4-gl5" appends="YES" id="Dxc-bZ-Xhn"/>
+                            <outletCollection property="gestureRecognizers" destination="qhL-uy-211" appends="YES" id="jNF-r4-c3h"/>
                         </connections>
                     </view>
                     <toolbarItems/>
                     <connections>
                         <outlet property="captionLabel" destination="zny-H2-Bdr" id="tZL-gl-zDT"/>
+                        <outlet property="doubleTap" destination="aQj-E4-gl5" id="sga-HV-yJm"/>
                         <outlet property="drager" destination="kgl-Bo-434" id="gK9-Zx-6gF"/>
                         <outlet property="leftPhotoView" destination="22F-CN-JDl" id="Xgc-LM-En5"/>
-                        <outlet property="leftTap" destination="qhL-uy-211" id="9FQ-Q8-B7X"/>
-                        <outlet property="leftdoubleTap" destination="aQj-E4-gl5" id="THR-f1-7T0"/>
                         <outlet property="lockView" destination="PZq-MC-hyg" id="czM-fX-aLp"/>
                         <outlet property="rightPhotoView" destination="TYB-j4-um4" id="jhq-Wr-tpH"/>
-                        <outlet property="rightTap" destination="SwL-gZ-hWT" id="R61-4a-u4r"/>
-                        <outlet property="rightdoubleTap" destination="t7x-cR-kO3" id="7uh-SJ-8Zb"/>
+                        <outlet property="tap" destination="qhL-uy-211" id="lOk-r6-yNe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t7F-ab-SSQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1412,29 +1420,19 @@
                         <action selector="didDrag:" destination="hpa-fw-Ay5" id="9o6-0T-99r"/>
                     </connections>
                 </panGestureRecognizer>
-                <tapGestureRecognizer enabled="NO" numberOfTapsRequired="2" id="aQj-E4-gl5" userLabel="Left Double Tap">
+                <tapGestureRecognizer enabled="NO" numberOfTapsRequired="2" id="aQj-E4-gl5" userLabel="Double Tap">
                     <connections>
                         <action selector="didDoubleTap:" destination="hpa-fw-Ay5" id="7Lr-UO-GDr"/>
                     </connections>
                 </tapGestureRecognizer>
-                <tapGestureRecognizer enabled="NO" numberOfTapsRequired="2" id="t7x-cR-kO3" userLabel="Right Double Tap">
+                <tapGestureRecognizer enabled="NO" id="qhL-uy-211" userLabel="Tap">
                     <connections>
-                        <action selector="didDoubleTap:" destination="hpa-fw-Ay5" id="qT7-Kw-opT"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer enabled="NO" id="qhL-uy-211" userLabel="Left Tap">
-                    <connections>
-                        <segue destination="2Zj-tv-2wS" kind="modal" identifier="Present Gallery Left" id="kgb-sn-oKA"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer enabled="NO" id="SwL-gZ-hWT" userLabel="Right Tap">
-                    <connections>
-                        <segue destination="2Zj-tv-2wS" kind="modal" identifier="Present Gallery Right" id="rQZ-rf-eNe"/>
+                        <action selector="didTap:" destination="hpa-fw-Ay5" id="ddX-wK-2xk"/>
                     </connections>
                 </tapGestureRecognizer>
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.0" id="V8o-Ky-8nG" userLabel="Caption Long Press">
                     <connections>
-                        <action selector="captionLabelDidLongPress:" destination="hpa-fw-Ay5" id="Vih-k7-uu4"/>
+                        <action selector="captionLongPress:" destination="hpa-fw-Ay5" id="KUq-je-nTY"/>
                     </connections>
                 </pongPressGestureRecognizer>
                 <panGestureRecognizer id="zdf-mX-5qy" userLabel="Caption Pan">
@@ -1443,7 +1441,7 @@
                     </connections>
                 </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1259" y="-582.5"/>
+            <point key="canvasLocation" x="1503" y="-384.5"/>
         </scene>
         <!--Photo Controller-->
         <scene sceneID="oDJ-hZ-wtb">
@@ -1556,12 +1554,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AbR-wv-pbr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1556" y="-582.5"/>
+            <point key="canvasLocation" x="1800" y="-384.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="cdr-w8-bRH">
             <objects>
-                <navigationController id="2Zj-tv-2wS" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Gallery Navigation Controller" id="2Zj-tv-2wS" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="zJq-G1-qZ4">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1573,7 +1571,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Df-8L-FFt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1422" y="36"/>
+            <point key="canvasLocation" x="1656" y="170"/>
         </scene>
         <!--Gallery-->
         <scene sceneID="TKG-G3-PVx">
@@ -1633,7 +1631,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DaN-zL-qWs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1804" y="36"/>
+            <point key="canvasLocation" x="2038" y="170"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pAc-yH-lCJ">
@@ -1651,7 +1649,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ox9-Wq-caD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="439.46666666666664" y="1625.4266666666667"/>
+            <point key="canvasLocation" x="-38" y="1577"/>
         </scene>
         <!--Vote-->
         <scene sceneID="w3X-gR-82r">
@@ -1670,7 +1668,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EVa-6h-L2l" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="550.39999999999998" y="-261.27999999999997"/>
+            <point key="canvasLocation" x="286" y="-277"/>
         </scene>
         <!--Post-->
         <scene sceneID="7Mt-CD-10B">
@@ -1689,7 +1687,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k2Y-Es-VEH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="550.39999999999998" y="250.86666666666667"/>
+            <point key="canvasLocation" x="286" y="250"/>
         </scene>
     </scenes>
     <resources>
@@ -1700,7 +1698,7 @@
         <image name="ButtonLibrary" width="32" height="32"/>
         <image name="ButtonNext" width="12" height="20"/>
         <image name="ButtonRoundBordersBackground" width="11" height="11"/>
-        <image name="Lock" width="15" height="18"/>
+        <image name="Lock" width="12" height="14"/>
         <image name="TabBarIconPostUnselected" width="25" height="25"/>
         <image name="TabBarIconVoteUnselected" width="25" height="25"/>
     </resources>
@@ -1710,9 +1708,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="oem-Cm-nHK"/>
-        <segue reference="IZA-Rh-gPV"/>
+        <segue reference="udm-ma-IdO"/>
         <segue reference="uM3-tb-eTB"/>
-        <segue reference="rQZ-rf-eNe"/>
+        <segue reference="oem-Cm-nHK"/>
     </inferredMetricsTieBreakers>
 </document>
