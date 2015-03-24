@@ -134,6 +134,14 @@ extension UIView {
             layer.masksToBounds = newValue > 0
         }
     }
+    @IBInspectable var shouldRasterize: Bool {
+        get {
+            return layer.shouldRasterize
+        }
+        set {
+            layer.shouldRasterize = newValue
+        }
+    }
 }
 
 // MARK: - Classes
@@ -232,6 +240,8 @@ enum FNErrorCode: Int {
     /// Tried to load a Photo with no image URL.
     case NoPhotoURL = 805
 }
+
+let FNLocalizedAppName = NSLocalizedString("APP_NAME", value: "Fashion Now" , comment: "Default for entire app")
 
 /// Returns "You are offline. Try again later." for English and its variants for other languages
 let FNLocalizedOfflineErrorDescription = NSLocalizedString("DEFAULT_ERROR_DESCRIPTION_OFFLINE", value: "You are offline. Try again later." , comment: "Default for entire app")

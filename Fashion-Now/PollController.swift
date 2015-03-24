@@ -215,7 +215,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
         leftPhotoController.delegate = self
         rightPhotoController.delegate = self
 
-        rightPhotoController.layout = .Right
+        rightPhotoController.layoutRight = true
 
         captionLabel.superview!.hidden = true
         captionLabel.numberOfLines = 2

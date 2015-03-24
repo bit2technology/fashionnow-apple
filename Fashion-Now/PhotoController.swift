@@ -12,16 +12,21 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         didSet {
 
             // Editability
-            let readonly = !photo.ACL.getWriteAccessForUser(ParseUser.currentUser())
+            let readonly = photo.objectId?.fn_count > 0
             for button in [cameraButton, libraryButton, deleteButton] {
                 button.hidden = readonly
             }
 
-            // Load image
+            // Load image and present or hide container
             if let urlString = photo.image?.url {
+
+                // Show image container and remove old aspect ratio constraint
                 imageContainerHidden(false)
+
+                // Load image
                 imageView.sd_setImageWithURL(NSURL(string: urlString), completed: { (image, error, cacheType, url) -> Void in
-                    if let unwrappedImage = image {
+                    if image != nil {
+                        self.imageAspectRatio(image)
                         self.delegate?.photoLoaded(self)
                     } else {
                         self.delegate?.photoLoadFailed(self, error: error)
@@ -33,18 +38,26 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         }
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        println("ar \(imageAspectRatio.constant)")
-    }
-
     weak var delegate: PhotoControllerDelegate?
 
-    @IBOutlet weak var imageAspectRatio: NSLayoutConstraint!
     @IBOutlet weak var imageView: UIImageView!
+    /// Adjusts the image view aspect ratio constraint to the size of the image
+    private func imageAspectRatio(image: UIImage) {
+
+        // Remove old aspect ratio
+        if NSLayoutConstraint.respondsToSelector("deactivateConstraints:") {
+            NSLayoutConstraint.deactivateConstraints(imageView.constraints())
+        } else {
+            imageView.removeConstraints(imageView.constraints())
+        }
+
+        // Add new
+        imageView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .Width, relatedBy: .Equal, toItem: imageView, attribute: .Height, multiplier: image.size.width / image.size.height, constant: 0))
+    }
+    /// Show or hide image container
     private func imageContainerHidden(hidden: Bool) {
-        imageView.superview?.hidden = hidden
-        imageView.superview?.alpha = (hidden ? 0 : 1)
+        imageView.superview!.hidden = hidden
+        imageView.superview!.alpha = (hidden ? 0 : 1)
     }
 
     // MARK: Edition buttons
@@ -54,24 +67,20 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
     // MARK: Layout
     
     @IBOutlet weak var deleteButtonCenterX: NSLayoutConstraint!
-    enum PhotoControllerLayout {
-        case Left, Right
-    }
-    var layout: PhotoControllerLayout = .Left {
-        didSet {
-            switch layout {
-            case .Left:
-                deleteButtonCenterX.constant = -9999
-            case .Right:
-                deleteButtonCenterX.constant = 9999
-            }
+    /// Defines if the layout should be for the right side or not
+    var layoutRight: Bool {
+        get {
+            return deleteButtonCenterX.constant > 0
+        }
+        set {
+            deleteButtonCenterX.constant = (newValue ? 9999 : -9999)
         }
     }
 
     @IBAction func deleteImage(sender: UIButton) {
 
         // Delete in model
-        self.photo.image = nil
+        photo.image = nil
 
         // Delete in view
         UIView.animateWithDuration(0.15, animations: { () -> Void in
@@ -90,8 +99,9 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         // Set photo properties
         let imageData = image.fn_compressed()
         photo.image = PFFile(name: "image.jpg", data: imageData, contentType: "image/jpeg")
-        imageView.image = image
+        imageView.image = UIImage(data: imageData)
         imageContainerHidden(false)
+        imageAspectRatio(image)
 
         // Call delegate
         delegate?.photoEdited(self)
@@ -99,25 +109,25 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
 
     @IBAction func imageButtonPressed(sender: UIButton) {
 
-        var souce: UIImagePickerControllerSourceType?
+        var source: UIImagePickerControllerSourceType!
 
         switch sender {
         // Present camera
         case cameraButton:
-            souce = .Camera
+            source = .Camera
         // Present albuns
         case libraryButton:
-            souce = .PhotoLibrary
+            source = .PhotoLibrary
         // Unknown source, do nothing
         default:
             return
         }
 
-        if let pickerSouce = souce {
-            let imagePickerController = UIImagePickerController()
-            imagePickerController.delegate = self
-            imagePickerController.sourceType = pickerSouce
-            presentViewController(imagePickerController, animated: true, completion: nil)
+        if source != nil {
+            let picker = UIImagePickerController()
+            picker.delegate = self
+            picker.sourceType = source
+            presentViewController(picker, animated: true, completion: nil)
         }
     }
 
@@ -133,20 +143,32 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
 
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
 
-        // Get edited or original image
+        // Track image source
+        var source = "Library"
+        if picker.sourceType == .Camera {
+            if picker.cameraDevice == .Rear {
+                source = "Camera Rear"
+            } else {
+                source = "Camera Front"
+            }
+        }
+        PFAnalytics.fn_trackImageSourceInBackground(source)
+
+        // Get and apply edited or original image
         var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as UIImage
         setPhotoImage(image)
         dismissViewControllerAnimated(true, completion: nil)
 
+        
         // Save to Album if source is camera
         if picker.sourceType == .Camera {
-            assetsLibrary.saveImage(image, toAlbum: "Fashion Now", completion: nil, failure: nil)
+            assetsLibrary.saveImage(image, toAlbum: FNLocalizedAppName, completion: nil, failure: nil)
         }
     }
 }
 
 /// Photo edition delegate
-@objc protocol PhotoControllerDelegate {
+protocol PhotoControllerDelegate: class {
     func photoLoaded(photoController: PhotoController)
     func photoLoadFailed(photoController: PhotoController, error: NSError)
     func photoEdited(photoController: PhotoController)

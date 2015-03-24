@@ -460,7 +460,7 @@
                     <navigationItem key="navigationItem" id="5pw-bJ-DDv">
                         <nil key="title"/>
                         <barButtonItem key="backBarButtonItem" title="Photos" id="p8Z-hd-6ug"/>
-                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add caption" minimumFontSize="17" id="KUx-Xw-6OB">
+                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add caption" minimumFontSize="17" id="KUx-Xw-6OB">
                             <rect key="frame" x="8" y="7" width="267" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1453,15 +1453,16 @@
                         <viewControllerLayoutGuide type="top" id="J5z-13-Iut"/>
                         <viewControllerLayoutGuide type="bottom" id="lwi-Vt-MNP"/>
                     </layoutGuides>
-                    <view key="view" opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="5Xe-GT-hcA">
+                    <view key="view" contentMode="scaleToFill" id="5Xe-GT-hcA">
                         <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b6v-RN-CyL" userLabel="Buttons Container">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b6v-RN-CyL" userLabel="Buttons Container">
                                 <rect key="frame" x="48" y="116" width="64" height="136"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FBu-Eh-kK4" userLabel="Camera Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FBu-Eh-kK4" userLabel="Camera Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" image="ButtonCamera" backgroundImage="ButtonCircleBackground">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1469,8 +1470,9 @@
                                             <action selector="imageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="HH1-oc-pKd"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uMi-wS-xwZ" userLabel="Library Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uMi-wS-xwZ" userLabel="Library Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="64" height="64"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" image="ButtonLibrary" backgroundImage="ButtonCircleBackground">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1479,6 +1481,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="FBu-Eh-kK4" firstAttribute="top" secondItem="b6v-RN-CyL" secondAttribute="top" id="Dkq-zu-pU1"/>
                                     <constraint firstAttribute="trailing" secondItem="FBu-Eh-kK4" secondAttribute="trailing" id="MYR-HN-T61"/>
@@ -1489,22 +1492,22 @@
                                     <constraint firstAttribute="bottom" secondItem="uMi-wS-xwZ" secondAttribute="bottom" id="eJf-PC-5py"/>
                                 </constraints>
                             </view>
-                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H8b-Ws-oM2" userLabel="Image Conainer" customClass="PhotoBackgroundView" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="-80" y="0.0" width="320" height="367"/>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H8b-Ws-oM2" userLabel="Image Conainer" customClass="PhotoBackgroundView" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="-160" y="0.0" width="480" height="367"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yhO-Ld-1tg">
-                                        <rect key="frame" x="57" y="0.0" width="206" height="367"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yhO-Ld-1tg">
+                                        <rect key="frame" x="137" y="0.0" width="206" height="367"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="yhO-Ld-1tg" secondAttribute="height" multiplier="9:16" id="ZdJ-tu-jru"/>
+                                            <constraint firstAttribute="width" secondItem="yhO-Ld-1tg" secondAttribute="height" multiplier="9:16" placeholder="YES" id="ZdJ-tu-jru"/>
                                         </constraints>
                                     </imageView>
                                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bty-dr-ys9" userLabel="Delete Button Align">
-                                        <rect key="frame" x="80" y="323" width="160" height="44"/>
+                                        <rect key="frame" x="160" y="323" width="160" height="44"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YYI-4A-sio" userLabel="Delete Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                            <button opaque="NO" alpha="0.75000000000000022" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YYI-4A-sio" userLabel="Delete Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
-                                                <state key="normal" image="ButtonTrash" backgroundImage="ButtonCircleBackgroundSmall">
+                                                <state key="normal" image="BarButtonTrash" backgroundImage="ButtonCircleBackgroundSmall">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -1521,6 +1524,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="centerX" secondItem="yhO-Ld-1tg" secondAttribute="centerX" id="IwN-V6-SM8"/>
                                     <constraint firstItem="yhO-Ld-1tg" firstAttribute="top" secondItem="H8b-Ws-oM2" secondAttribute="top" id="YfS-wH-E0a"/>
@@ -1530,8 +1534,9 @@
                                 </constraints>
                             </view>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="H8b-Ws-oM2" firstAttribute="width" secondItem="5Xe-GT-hcA" secondAttribute="width" multiplier="2" id="02M-1d-9kn"/>
+                            <constraint firstItem="H8b-Ws-oM2" firstAttribute="width" secondItem="5Xe-GT-hcA" secondAttribute="width" multiplier="3" id="02M-1d-9kn"/>
                             <constraint firstAttribute="centerX" secondItem="b6v-RN-CyL" secondAttribute="centerX" id="FfH-Q8-MeY"/>
                             <constraint firstAttribute="width" secondItem="bty-dr-ys9" secondAttribute="width" id="TTu-QP-LSk"/>
                             <constraint firstItem="H8b-Ws-oM2" firstAttribute="top" secondItem="5Xe-GT-hcA" secondAttribute="top" id="UyP-7d-YCi"/>
@@ -1545,7 +1550,6 @@
                         <outlet property="cameraButton" destination="FBu-Eh-kK4" id="YFa-VO-0p1"/>
                         <outlet property="deleteButton" destination="YYI-4A-sio" id="P8K-H0-smO"/>
                         <outlet property="deleteButtonCenterX" destination="m31-6A-8o2" id="0fr-FY-TMy"/>
-                        <outlet property="imageAspectRatio" destination="ZdJ-tu-jru" id="t3o-vE-3mW"/>
                         <outlet property="imageView" destination="yhO-Ld-1tg" id="NjT-wD-fFX"/>
                         <outlet property="libraryButton" destination="uMi-wS-xwZ" id="MMT-4v-XsA"/>
                     </connections>
@@ -1689,13 +1693,13 @@
         </scene>
     </scenes>
     <resources>
+        <image name="BarButtonTrash" width="16" height="23"/>
         <image name="ButtonCamera" width="32" height="32"/>
         <image name="ButtonCircleBackground" width="64" height="64"/>
         <image name="ButtonCircleBackgroundSmall" width="44" height="44"/>
         <image name="ButtonLibrary" width="32" height="32"/>
         <image name="ButtonNext" width="12" height="20"/>
         <image name="ButtonRoundBordersBackground" width="11" height="11"/>
-        <image name="ButtonTrash" width="32" height="32"/>
         <image name="Lock" width="15" height="18"/>
         <image name="TabBarIconPostUnselected" width="25" height="25"/>
         <image name="TabBarIconVoteUnselected" width="25" height="25"/>
@@ -1706,9 +1710,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="apZ-Yv-541"/>
-        <segue reference="uM3-tb-eTB"/>
         <segue reference="oem-Cm-nHK"/>
+        <segue reference="IZA-Rh-gPV"/>
+        <segue reference="uM3-tb-eTB"/>
         <segue reference="rQZ-rf-eNe"/>
     </inferredMetricsTieBreakers>
 </document>
