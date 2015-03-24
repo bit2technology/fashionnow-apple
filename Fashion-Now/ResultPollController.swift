@@ -149,7 +149,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate {
 
         loadResults(nil)
 
-        pollController.imageButtonsHidden = true
+        //pollController.imageButtonsHidden = true
         pollController.poll = poll
     }
 

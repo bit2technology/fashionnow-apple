@@ -196,7 +196,7 @@ class ParsePhoto: PFObject, PFSubclassing {
     // MARK: Helper methods
 
     var isValid: Bool {
-        return image != nil // Don't verify userId for compatibility reason and irrelevance
+        return image != nil
     }
 }
 
@@ -597,5 +597,9 @@ extension PFAnalytics {
 
     class func fn_trackScreenShowInBackground(identifier: String, block: PFBooleanResultBlock! = nil) {
         trackEventInBackground("ScreenShow", dimensions: ["Name": identifier], block: block)
+    }
+
+    class func fn_trackImageSourceInBackground(source: String, block: PFBooleanResultBlock! = nil) {
+        trackEventInBackground("ImageSource", dimensions: ["Source": source], block: block)
     }
 }

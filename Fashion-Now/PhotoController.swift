@@ -8,26 +8,32 @@
 
 class PhotoController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
-    private let assetsLibrary = ALAssetsLibrary()
-
-    private(set) var imageLoaded = false
     var photo: ParsePhoto = ParsePhoto(user: ParseUser.currentUser()) {
         didSet {
-            imageLoaded = false
+
+            // Editability
+            let readonly = photo.objectId?.fn_count > 0
+            for button in [cameraButton, libraryButton, deleteButton] {
+                button.hidden = readonly
+            }
+
+            // Load image and present or hide container
             if let urlString = photo.image?.url {
-                // There is an URL. Show image view and load data.
-                imageContainerHidden = false
+
+                // Show image container and remove old aspect ratio constraint
+                imageContainerHidden(false)
+
+                // Load image
                 imageView.sd_setImageWithURL(NSURL(string: urlString), completed: { (image, error, cacheType, url) -> Void in
-                    if let unwrappedImage = image {
-                        self.imageLoaded = true
-                        self.delegate?.photoControllerDidLoadImage(self)
+                    if image != nil {
+                        self.imageAspectRatio(image)
+                        self.delegate?.photoLoaded(self)
                     } else {
-                        self.delegate?.photoControllerDidFailToLoadImage(self, error: error)
+                        self.delegate?.photoLoadFailed(self, error: error)
                     }
                 })
             } else {
-                // No URL, hide image view
-                imageContainerHidden = true
+                imageContainerHidden(true)
             }
         }
     }
@@ -35,111 +41,94 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
     weak var delegate: PhotoControllerDelegate?
 
     @IBOutlet weak var imageView: UIImageView!
-    private var imageContainerHidden: Bool = true {
-        didSet {
-            imageView.superview?.hidden = imageContainerHidden
-            imageView.superview?.alpha = (imageContainerHidden ? 0 : 1)
+    /// Adjusts the image view aspect ratio constraint to the size of the image
+    private func imageAspectRatio(image: UIImage) {
+
+        // Remove old aspect ratio
+        if NSLayoutConstraint.respondsToSelector("deactivateConstraints:") {
+            NSLayoutConstraint.deactivateConstraints(imageView.constraints())
+        } else {
+            imageView.removeConstraints(imageView.constraints())
         }
+
+        // Add new
+        imageView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .Width, relatedBy: .Equal, toItem: imageView, attribute: .Height, multiplier: image.size.width / image.size.height, constant: 0))
+    }
+    /// Show or hide image container
+    private func imageContainerHidden(hidden: Bool) {
+        imageView.superview!.hidden = hidden
+        imageView.superview!.alpha = (hidden ? 0 : 1)
     }
 
     // MARK: Edition buttons
 
-    @IBOutlet weak var cameraButton: UIButton!
-    @IBOutlet weak var libraryButton: UIButton!
-    @IBOutlet weak var deleteButton: UIButton!
-    var imageButtonsHidden: Bool = false {
-        didSet {
-            for button in [cameraButton, libraryButton, deleteButton] {
-                button.hidden = imageButtonsHidden
-            }
-        }
-    }
+    @IBOutlet weak var cameraButton, libraryButton, deleteButton: UIButton!
 
     // MARK: Layout
     
     @IBOutlet weak var deleteButtonCenterX: NSLayoutConstraint!
-    enum PhotoControllerLayout {
-        case Left, Right
-    }
-    var layout: PhotoControllerLayout = .Left {
-        didSet {
-            switch layout {
-            case .Left:
-                deleteButtonCenterX.constant = -9999
-            case .Right:
-                deleteButtonCenterX.constant = 9999
-            }
+    /// Defines if the layout should be for the right side or not
+    var layoutRight: Bool {
+        get {
+            return deleteButtonCenterX.constant > 0
+        }
+        set {
+            deleteButtonCenterX.constant = (newValue ? 9999 : -9999)
         }
     }
 
     @IBAction func deleteImage(sender: UIButton) {
 
-        // Edit only if user has write access
-        if !photo.ACL.getWriteAccessForUser(ParseUser.currentUser()) {
-            return
-        }
-
         // Delete in model
-        self.photo.image = nil
+        photo.image = nil
 
         // Delete in view
         UIView.animateWithDuration(0.15, animations: { () -> Void in
             self.imageView.superview!.alpha = 0
         }) { (completed) -> Void in
-            self.imageContainerHidden = true
+            self.imageContainerHidden(true)
             self.imageView.image = nil
         }
 
         // Call delegate
-        delegate?.photoControllerDidEditPhoto(self)
+        delegate?.photoEdited(self)
     }
 
     private func setPhotoImage(image: UIImage) {
+
         // Set photo properties
         let imageData = image.fn_compressed()
         photo.image = PFFile(name: "image.jpg", data: imageData, contentType: "image/jpeg")
-        imageView.image = image
-        imageContainerHidden = false
+        imageView.image = UIImage(data: imageData)
+        imageContainerHidden(false)
+        imageAspectRatio(image)
 
         // Call delegate
-        delegate?.photoControllerDidEditPhoto(self)
+        delegate?.photoEdited(self)
     }
 
     @IBAction func imageButtonPressed(sender: UIButton) {
 
-        // Edit only if user has write access
-        if !photo.ACL.getWriteAccessForUser(ParseUser.currentUser()) {
-            return
-        }
-
-        var imagePickerSouce: UIImagePickerControllerSourceType?
+        var source: UIImagePickerControllerSourceType!
 
         switch sender {
         // Present camera
         case cameraButton:
-            imagePickerSouce = .Camera
+            source = .Camera
         // Present albuns
         case libraryButton:
-            imagePickerSouce = .PhotoLibrary
+            source = .PhotoLibrary
         // Unknown source, do nothing
         default:
             return
         }
 
-        if let unwrappedImagePickerSource = imagePickerSouce {
-            let imagePickerController = UIImagePickerController()
-            imagePickerController.delegate = self
-            imagePickerController.sourceType = unwrappedImagePickerSource
-            presentViewController(imagePickerController, animated: true, completion: nil)
+        if source != nil {
+            let picker = UIImagePickerController()
+            picker.delegate = self
+            picker.sourceType = source
+            presentViewController(picker, animated: true, completion: nil)
         }
-    }
-
-    // MARK: UIViewController
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        deleteButton.tintColor = UIColor.fn_tint(alpha: 0.6)
     }
 
     // MARK: UINavigationControllerDelegate
@@ -150,33 +139,45 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
 
     // MARK: UIPickerViewDelegate
 
+    private let assetsLibrary = ALAssetsLibrary()
+
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
 
-        // Get edited or original image
+        // Track image source
+        var source = "Library"
+        if picker.sourceType == .Camera {
+            if picker.cameraDevice == .Rear {
+                source = "Camera Rear"
+            } else {
+                source = "Camera Front"
+            }
+        }
+        PFAnalytics.fn_trackImageSourceInBackground(source)
+
+        // Get and apply edited or original image
         var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as UIImage
         setPhotoImage(image)
         dismissViewControllerAnimated(true, completion: nil)
 
+        
         // Save to Album if source is camera
         if picker.sourceType == .Camera {
-            assetsLibrary.saveImage(image, toAlbum: "Fashion Now", completion: nil, failure: nil)
+            assetsLibrary.saveImage(image, toAlbum: FNLocalizedAppName, completion: nil, failure: nil)
         }
     }
 }
 
-@objc protocol PhotoControllerDelegate {
-
-    func photoControllerDidLoadImage(photoController: PhotoController)
-    func photoControllerDidFailToLoadImage(photoController: PhotoController, error: NSError)
-
-    func photoControllerDidEditPhoto(photoController: PhotoController)
+/// Photo edition delegate
+protocol PhotoControllerDelegate: class {
+    func photoLoaded(photoController: PhotoController)
+    func photoLoadFailed(photoController: PhotoController, error: NSError)
+    func photoEdited(photoController: PhotoController)
 }
 
-class PhotoBackgroundView: UIImageView {
-
+/// View that adjusts background by tint color
+class PhotoBackgroundView: UIView {
     override func tintColorDidChange() {
         super.tintColorDidChange()
-
         backgroundColor = tintColor
     }
 }

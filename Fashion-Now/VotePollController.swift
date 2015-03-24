@@ -146,7 +146,7 @@ class VotePollController: UIViewController, PollControllerDelegate {
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconVoteSelected")
 
         pollController.delegate = self
-        pollController.imageButtonsHidden = true
+        //pollController.imageButtonsHidden = true
         pollController.voteGesturesEnabled = true
 
         voteButtons = [leftVoteButton, rightVoteButton]

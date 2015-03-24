@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6QH-p8-eFG">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="6QH-p8-eFG">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
@@ -25,7 +25,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="n9L-hk-vfW" kind="show" identifier="Sign Up" id="HlH-Xr-0Sn"/>
+                                    <segue destination="n9L-hk-vfW" kind="push" identifier="Sign Up" id="HlH-Xr-0Sn"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H1R-73-2vW">
@@ -61,7 +61,7 @@
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <segue destination="34U-YS-Pbl" kind="show" identifier="Log In" id="nyi-HI-p6p"/>
+                                                    <segue destination="34U-YS-Pbl" kind="push" identifier="Log In" id="nyi-HI-p6p"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -142,7 +142,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xJA-3U-sng" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="824" y="2300"/>
+            <point key="canvasLocation" x="439.46666666666664" y="2177.3333333333335"/>
         </scene>
         <!--Log In-->
         <scene sceneID="9od-5e-1Db">
@@ -264,7 +264,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gA1-ed-9m9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="824" y="2900"/>
+            <point key="canvasLocation" x="439.46666666666664" y="2745.3333333333335"/>
         </scene>
         <!--Vote Poll Controller-->
         <scene sceneID="VVH-fN-2gA">
@@ -427,7 +427,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1411" y="-276"/>
+            <point key="canvasLocation" x="752.5333333333333" y="-261.27999999999997"/>
         </scene>
         <!--Post Poll Controller-->
         <scene sceneID="DGH-qf-Zqz">
@@ -460,7 +460,7 @@
                     <navigationItem key="navigationItem" id="5pw-bJ-DDv">
                         <nil key="title"/>
                         <barButtonItem key="backBarButtonItem" title="Photos" id="p8Z-hd-6ug"/>
-                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add caption" minimumFontSize="17" id="KUx-Xw-6OB">
+                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add caption" minimumFontSize="17" id="KUx-Xw-6OB">
                             <rect key="frame" x="8" y="7" width="267" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -469,7 +469,7 @@
                         <barButtonItem key="rightBarButtonItem" enabled="NO" image="ButtonNext" id="UMb-Kl-08K">
                             <inset key="imageInsets" minX="0.0" minY="3" maxX="0.0" maxY="0.0"/>
                             <connections>
-                                <segue destination="Awm-rd-6j1" kind="show" identifier="Friends List" id="xyo-It-ypo"/>
+                                <segue destination="Awm-rd-6j1" kind="push" identifier="Friends List" id="xyo-It-ypo"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -484,7 +484,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1411" y="265"/>
+            <point key="canvasLocation" x="752.5333333333333" y="250.86666666666667"/>
         </scene>
         <!--Me Navigation-->
         <scene sceneID="H8i-C2-7Wl">
@@ -501,7 +501,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xdr-Ar-mLn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1032" y="821"/>
+            <point key="canvasLocation" x="550.39999999999998" y="777.21333333333337"/>
         </scene>
         <!--History-->
         <scene sceneID="N06-YM-3cg">
@@ -597,7 +597,7 @@
                                     <outlet property="activityIndicator" destination="91r-ru-MjU" id="duL-up-qUE"/>
                                     <outlet property="leftImageView" destination="e78-U5-UNn" id="xdl-74-k9g"/>
                                     <outlet property="rightImageView" destination="EZj-fe-Cgg" id="H2h-Hv-t6s"/>
-                                    <segue destination="D1M-pS-RBa" kind="show" identifier="Result Controller" id="9wz-o8-WiA"/>
+                                    <segue destination="D1M-pS-RBa" kind="push" identifier="Result Controller" id="9wz-o8-WiA"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -637,7 +637,7 @@
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
-                                                <segue destination="OJC-JN-eaN" kind="presentation" modalPresentationStyle="formSheet" id="NQb-ET-fId"/>
+                                                <segue destination="OJC-JN-eaN" kind="modal" modalPresentationStyle="formSheet" id="NQb-ET-fId"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -714,7 +714,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wVC-D2-I0P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1411" y="821"/>
+            <point key="canvasLocation" x="752.5333333333333" y="777.21333333333337"/>
         </scene>
         <!--Result Poll Controller-->
         <scene sceneID="x4R-Xz-BxP">
@@ -843,7 +843,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1790" y="821"/>
+            <point key="canvasLocation" x="954.66666666666663" y="777.21333333333337"/>
         </scene>
         <!--Who can see?-->
         <scene sceneID="5qp-bD-6TV">
@@ -949,7 +949,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VNd-ng-GCT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1790" y="264"/>
+            <point key="canvasLocation" x="954.66666666666663" y="249.91999999999999"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="reA-p0-HcY">
@@ -1277,7 +1277,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xq6-l7-NYw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1240" y="2600"/>
+            <point key="canvasLocation" x="661.33333333333337" y="2461.3333333333335"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sT9-WB-ml1">
@@ -1293,7 +1293,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gRT-Sz-dcX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1240" y="1717"/>
+            <point key="canvasLocation" x="661.33333333333337" y="1625.4266666666667"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="CJf-es-BZO">
@@ -1309,13 +1309,13 @@
                     <connections>
                         <segue destination="lMD-1Q-cPe" kind="relationship" relationship="viewControllers" id="EOH-kZ-a3B"/>
                         <segue destination="oUO-1p-KSF" kind="relationship" relationship="viewControllers" id="dIm-df-iYM"/>
-                        <segue destination="0Nc-ub-aly" kind="presentation" identifier="Login Controller" modalPresentationStyle="formSheet" id="neE-T0-GYT"/>
+                        <segue destination="0Nc-ub-aly" kind="modal" identifier="Login Controller" modalPresentationStyle="formSheet" id="neE-T0-GYT"/>
                         <segue destination="yJf-au-aBx" kind="relationship" relationship="viewControllers" id="URf-sy-6Z3"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fpy-e7-ti8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="554" y="341"/>
+            <point key="canvasLocation" x="295.46666666666664" y="322.81333333333333"/>
         </scene>
         <!--Poll Controller-->
         <scene sceneID="Vak-gc-gYh">
@@ -1331,9 +1331,6 @@
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="22F-CN-JDl" userLabel="Left Photo">
                                 <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
-                                <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                                    <rect key="frame" x="0.0" y="0.0" width="160" height="207"/>
-                                </variation>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="aQj-E4-gl5" appends="YES" id="erB-aE-mck"/>
                                     <outletCollection property="gestureRecognizers" destination="qhL-uy-211" appends="YES" id="V2C-7p-bhU"/>
@@ -1342,9 +1339,6 @@
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TYB-j4-um4" userLabel="Right Photo">
                                 <rect key="frame" x="160" y="0.0" width="160" height="367"/>
-                                <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                                    <rect key="frame" x="160" y="0.0" width="160" height="207"/>
-                                </variation>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="t7x-cR-kO3" appends="YES" id="Jf1-Ji-obS"/>
                                     <outletCollection property="gestureRecognizers" destination="SwL-gZ-hWT" appends="YES" id="ldZ-i2-Ydi"/>
@@ -1430,12 +1424,12 @@
                 </tapGestureRecognizer>
                 <tapGestureRecognizer enabled="NO" id="qhL-uy-211" userLabel="Left Tap">
                     <connections>
-                        <segue destination="2Zj-tv-2wS" kind="presentation" identifier="Present Gallery Left" id="kgb-sn-oKA"/>
+                        <segue destination="2Zj-tv-2wS" kind="modal" identifier="Present Gallery Left" id="kgb-sn-oKA"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer enabled="NO" id="SwL-gZ-hWT" userLabel="Right Tap">
                     <connections>
-                        <segue destination="2Zj-tv-2wS" kind="presentation" identifier="Present Gallery Right" id="rQZ-rf-eNe"/>
+                        <segue destination="2Zj-tv-2wS" kind="modal" identifier="Present Gallery Right" id="rQZ-rf-eNe"/>
                     </connections>
                 </tapGestureRecognizer>
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.0" id="V8o-Ky-8nG" userLabel="Caption Long Press">
@@ -1449,7 +1443,7 @@
                     </connections>
                 </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2039" y="-543.5"/>
+            <point key="canvasLocation" x="1259" y="-582.5"/>
         </scene>
         <!--Photo Controller-->
         <scene sceneID="oDJ-hZ-wtb">
@@ -1459,15 +1453,16 @@
                         <viewControllerLayoutGuide type="top" id="J5z-13-Iut"/>
                         <viewControllerLayoutGuide type="bottom" id="lwi-Vt-MNP"/>
                     </layoutGuides>
-                    <view key="view" opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="5Xe-GT-hcA">
+                    <view key="view" contentMode="scaleToFill" id="5Xe-GT-hcA">
                         <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b6v-RN-CyL" userLabel="Buttons Container">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b6v-RN-CyL" userLabel="Buttons Container">
                                 <rect key="frame" x="48" y="116" width="64" height="136"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FBu-Eh-kK4" userLabel="Camera Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FBu-Eh-kK4" userLabel="Camera Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" image="ButtonCamera" backgroundImage="ButtonCircleBackground">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1475,8 +1470,9 @@
                                             <action selector="imageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="HH1-oc-pKd"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uMi-wS-xwZ" userLabel="Library Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uMi-wS-xwZ" userLabel="Library Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="64" height="64"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" image="ButtonLibrary" backgroundImage="ButtonCircleBackground">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1485,6 +1481,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="FBu-Eh-kK4" firstAttribute="top" secondItem="b6v-RN-CyL" secondAttribute="top" id="Dkq-zu-pU1"/>
                                     <constraint firstAttribute="trailing" secondItem="FBu-Eh-kK4" secondAttribute="trailing" id="MYR-HN-T61"/>
@@ -1495,56 +1492,71 @@
                                     <constraint firstAttribute="bottom" secondItem="uMi-wS-xwZ" secondAttribute="bottom" id="eJf-PC-5py"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H8b-Ws-oM2" userLabel="Image Conainer">
-                                <rect key="frame" x="0.0" y="0.0" width="160" height="367"/>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H8b-Ws-oM2" userLabel="Image Conainer" customClass="PhotoBackgroundView" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="-160" y="0.0" width="480" height="367"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yhO-Ld-1tg" customClass="PhotoBackgroundView" customModule="Fashion_Now" customModuleProvider="target">
-                                        <rect key="frame" x="-480" y="0.0" width="1120" height="367"/>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yhO-Ld-1tg">
+                                        <rect key="frame" x="137" y="0.0" width="206" height="367"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="yhO-Ld-1tg" secondAttribute="height" multiplier="9:16" placeholder="YES" id="ZdJ-tu-jru"/>
+                                        </constraints>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YYI-4A-sio" userLabel="Delete Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="323" width="44" height="44"/>
-                                        <state key="normal" image="ButtonTrash" backgroundImage="ButtonCircleBackgroundSmall">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="deleteImage:" destination="rPD-KC-83S" eventType="touchUpInside" id="4Q4-YS-7lM"/>
-                                        </connections>
-                                    </button>
+                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bty-dr-ys9" userLabel="Delete Button Align">
+                                        <rect key="frame" x="160" y="323" width="160" height="44"/>
+                                        <subviews>
+                                            <button opaque="NO" alpha="0.75000000000000022" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YYI-4A-sio" userLabel="Delete Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                                <state key="normal" image="BarButtonTrash" backgroundImage="ButtonCircleBackgroundSmall">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="deleteImage:" destination="rPD-KC-83S" eventType="touchUpInside" id="4Q4-YS-7lM"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="YYI-4A-sio" secondAttribute="bottom" id="2aF-qW-hpS"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="YYI-4A-sio" secondAttribute="trailing" id="SeO-7W-07K"/>
+                                            <constraint firstItem="YYI-4A-sio" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bty-dr-ys9" secondAttribute="leading" id="TLt-uU-uRg"/>
+                                            <constraint firstItem="YYI-4A-sio" firstAttribute="top" secondItem="bty-dr-ys9" secondAttribute="top" id="a5a-9w-nEy"/>
+                                            <constraint firstItem="YYI-4A-sio" firstAttribute="centerX" secondItem="bty-dr-ys9" secondAttribute="centerX" priority="750" constant="-9999" id="m31-6A-8o2"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="YYI-4A-sio" secondAttribute="bottom" id="70o-TW-SHM"/>
                                     <constraint firstAttribute="centerX" secondItem="yhO-Ld-1tg" secondAttribute="centerX" id="IwN-V6-SM8"/>
                                     <constraint firstItem="yhO-Ld-1tg" firstAttribute="top" secondItem="H8b-Ws-oM2" secondAttribute="top" id="YfS-wH-E0a"/>
-                                    <constraint firstItem="YYI-4A-sio" firstAttribute="centerX" secondItem="H8b-Ws-oM2" secondAttribute="centerX" priority="250" constant="-9999" id="lLp-F2-r0I"/>
+                                    <constraint firstAttribute="bottom" secondItem="bty-dr-ys9" secondAttribute="bottom" id="dtr-IZ-Tzc"/>
                                     <constraint firstAttribute="bottom" secondItem="yhO-Ld-1tg" secondAttribute="bottom" id="maz-NH-143"/>
-                                    <constraint firstItem="YYI-4A-sio" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="H8b-Ws-oM2" secondAttribute="leading" id="vJF-o4-en0"/>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="YYI-4A-sio" secondAttribute="trailing" id="yEo-6E-Hsy"/>
+                                    <constraint firstAttribute="centerX" secondItem="bty-dr-ys9" secondAttribute="centerX" id="zJb-5g-iLc"/>
                                 </constraints>
                             </view>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="H8b-Ws-oM2" secondAttribute="trailing" id="20b-07-5S1"/>
+                            <constraint firstItem="H8b-Ws-oM2" firstAttribute="width" secondItem="5Xe-GT-hcA" secondAttribute="width" multiplier="3" id="02M-1d-9kn"/>
                             <constraint firstAttribute="centerX" secondItem="b6v-RN-CyL" secondAttribute="centerX" id="FfH-Q8-MeY"/>
-                            <constraint firstItem="yhO-Ld-1tg" firstAttribute="width" secondItem="5Xe-GT-hcA" secondAttribute="width" multiplier="7" id="Qfl-2z-dQV"/>
+                            <constraint firstAttribute="width" secondItem="bty-dr-ys9" secondAttribute="width" id="TTu-QP-LSk"/>
                             <constraint firstItem="H8b-Ws-oM2" firstAttribute="top" secondItem="5Xe-GT-hcA" secondAttribute="top" id="UyP-7d-YCi"/>
                             <constraint firstAttribute="bottom" secondItem="H8b-Ws-oM2" secondAttribute="bottom" id="ZXS-lC-BAJ"/>
+                            <constraint firstAttribute="centerX" secondItem="H8b-Ws-oM2" secondAttribute="centerX" id="agm-zm-n0U"/>
                             <constraint firstAttribute="centerY" secondItem="b6v-RN-CyL" secondAttribute="centerY" id="fcj-9C-9GW"/>
-                            <constraint firstItem="H8b-Ws-oM2" firstAttribute="leading" secondItem="5Xe-GT-hcA" secondAttribute="leading" id="mJ1-M7-drV"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
                     <connections>
                         <outlet property="cameraButton" destination="FBu-Eh-kK4" id="YFa-VO-0p1"/>
                         <outlet property="deleteButton" destination="YYI-4A-sio" id="P8K-H0-smO"/>
-                        <outlet property="deleteButtonCenterX" destination="lLp-F2-r0I" id="4A8-YZ-hGV"/>
+                        <outlet property="deleteButtonCenterX" destination="m31-6A-8o2" id="0fr-FY-TMy"/>
                         <outlet property="imageView" destination="yhO-Ld-1tg" id="NjT-wD-fFX"/>
                         <outlet property="libraryButton" destination="uMi-wS-xwZ" id="MMT-4v-XsA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AbR-wv-pbr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2340" y="-543.5"/>
+            <point key="canvasLocation" x="1556" y="-582.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="cdr-w8-bRH">
@@ -1561,7 +1573,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Df-8L-FFt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2218" y="85"/>
+            <point key="canvasLocation" x="1422" y="36"/>
         </scene>
         <!--Gallery-->
         <scene sceneID="TKG-G3-PVx">
@@ -1621,7 +1633,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DaN-zL-qWs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2596" y="85"/>
+            <point key="canvasLocation" x="1804" y="36"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pAc-yH-lCJ">
@@ -1639,7 +1651,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ox9-Wq-caD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="824" y="1717"/>
+            <point key="canvasLocation" x="439.46666666666664" y="1625.4266666666667"/>
         </scene>
         <!--Vote-->
         <scene sceneID="w3X-gR-82r">
@@ -1658,7 +1670,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EVa-6h-L2l" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1032" y="-276"/>
+            <point key="canvasLocation" x="550.39999999999998" y="-261.27999999999997"/>
         </scene>
         <!--Post-->
         <scene sceneID="7Mt-CD-10B">
@@ -1677,25 +1689,30 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k2Y-Es-VEH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1032" y="265"/>
+            <point key="canvasLocation" x="550.39999999999998" y="250.86666666666667"/>
         </scene>
     </scenes>
     <resources>
+        <image name="BarButtonTrash" width="16" height="23"/>
         <image name="ButtonCamera" width="32" height="32"/>
         <image name="ButtonCircleBackground" width="64" height="64"/>
         <image name="ButtonCircleBackgroundSmall" width="44" height="44"/>
         <image name="ButtonLibrary" width="32" height="32"/>
         <image name="ButtonNext" width="12" height="20"/>
         <image name="ButtonRoundBordersBackground" width="11" height="11"/>
-        <image name="ButtonTrash" width="32" height="32"/>
         <image name="Lock" width="15" height="18"/>
         <image name="TabBarIconPostUnselected" width="25" height="25"/>
         <image name="TabBarIconVoteUnselected" width="25" height="25"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="uM3-tb-eTB"/>
-        <segue reference="apZ-Yv-541"/>
         <segue reference="oem-Cm-nHK"/>
+        <segue reference="IZA-Rh-gPV"/>
+        <segue reference="uM3-tb-eTB"/>
         <segue reference="rQZ-rf-eNe"/>
     </inferredMetricsTieBreakers>
 </document>
