@@ -116,7 +116,6 @@ extension NSDate {
     /// Show description for date
     var fn_birthdayDescription: String {
         let dateFormatter = NSDateFormatter()
-        dateFormatter.timeZone = NSTimeZone(name: "GMT")
         dateFormatter.dateStyle = .MediumStyle
         return dateFormatter.stringFromDate(self)
     }

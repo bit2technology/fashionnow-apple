@@ -110,7 +110,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         polls.update(completionHandler: { (success, error) -> Void in
 
             if error != nil {
-                self.showErrorScreen()
+                self.showErrorScreen(error)
                 return
             }
 
@@ -134,8 +134,13 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         }
     }
 
-    private func showErrorScreen() {
+    private func showErrorScreen(error: NSError) {
         // TODO: Error Screen
+        if error.domain == FNErrorDomain && error.code == FNErrorCode.NothingNew.rawValue {
+            showNextPoll()
+            return
+        }
+        FNToast.show(text: error.localizedDescription, type: .Error)
     }
     
     // MARK: View lifecycle
@@ -175,7 +180,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
     }
 
     func pollLoadFailed(pollController: PollController, error: NSError) {
-        // TODO: Failed
+        NSLog("Poll load fail \(error)")
     }
 
     func pollInteracted(pollController: PollController) {

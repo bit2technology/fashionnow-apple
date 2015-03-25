@@ -1345,9 +1345,9 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Caption" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zny-H2-Bdr">
-                                        <rect key="frame" x="20" y="3" width="280" height="14"/>
+                                        <rect key="frame" x="20" y="2" width="280" height="16"/>
                                         <gestureRecognizers/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1357,8 +1357,8 @@
                                 <constraints>
                                     <constraint firstItem="zny-H2-Bdr" firstAttribute="leading" secondItem="5EP-rp-ruk" secondAttribute="leading" constant="20" id="1ov-Am-5Cn"/>
                                     <constraint firstAttribute="trailing" secondItem="zny-H2-Bdr" secondAttribute="trailing" constant="20" id="4Fg-it-v4G"/>
-                                    <constraint firstAttribute="bottom" secondItem="zny-H2-Bdr" secondAttribute="bottom" constant="3" id="CKZ-UV-cwQ"/>
-                                    <constraint firstItem="zny-H2-Bdr" firstAttribute="top" secondItem="5EP-rp-ruk" secondAttribute="top" constant="3" id="VvK-yM-QpB"/>
+                                    <constraint firstAttribute="bottom" secondItem="zny-H2-Bdr" secondAttribute="bottom" constant="2" id="CKZ-UV-cwQ"/>
+                                    <constraint firstItem="zny-H2-Bdr" firstAttribute="top" secondItem="5EP-rp-ruk" secondAttribute="top" constant="2" id="VvK-yM-QpB"/>
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="V8o-Ky-8nG" appends="YES" id="I76-4U-Svc"/>
