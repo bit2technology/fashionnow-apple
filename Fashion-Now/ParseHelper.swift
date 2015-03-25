@@ -583,14 +583,14 @@ class ParseVote: PFObject, PFSubclassing {
 extension PFAnalytics {
 
     class func fn_trackImageSourceInBackground(source: String, block: PFBooleanResultBlock! = nil) {
-        trackEventInBackground("Image Source", dimensions: ["Source": source], block: block)
+        trackEventInBackground("ImageSource", dimensions: ["Source": source], block: block)
     }
 
     class func fn_trackScreenShowInBackground(identifier: String, block: PFBooleanResultBlock! = nil) {
-        trackEventInBackground("Screen Show", dimensions: ["Name": identifier], block: block)
+        trackEventInBackground("ScreenShow", dimensions: ["Name": identifier], block: block)
     }
 
     class func fn_trackVoteMethodInBackground(method: String, block: PFBooleanResultBlock! = nil) {
-        trackEventInBackground("Vote Method", dimensions: ["Method": method], block: block)
+        trackEventInBackground("VoteMethod", dimensions: ["Method": method], block: block)
     }
 }
