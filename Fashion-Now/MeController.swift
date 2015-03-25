@@ -14,6 +14,13 @@ class MeController: UICollectionViewController {
     private var myPolls = ParsePollList(type: .Mine)
     /// List of posted polls before update
     private var postedPolls = [ParsePoll]()
+    /// Get currect poll
+    private func poll(index: Int) -> ParsePoll {
+        if index < postedPolls.count {
+            return postedPolls[index]
+        }
+        return myPolls[index - postedPolls.count]!
+    }
 
     private var scaledImages = [String: UIImage]()
 
@@ -30,7 +37,7 @@ class MeController: UICollectionViewController {
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
         notificationCenter.addObserver(self, selector: "pollDeleted:", name: FNPollDeletedNotificationName, object: nil)
-        notificationCenter.addObserver(self, selector: "pollPosted:", name:         FNPollPostedNotificationName, object: nil)
+        notificationCenter.addObserver(self, selector: "pollPosted:", name: FNPollPostedNotificationName, object: nil)
 
         // Configure refresh control for manual update
         let refreshControl = UIRefreshControl()
@@ -130,9 +137,9 @@ class MeController: UICollectionViewController {
 
     func pollDeleted(notification: NSNotification) {
         if let removedPoll = notification.userInfo?["poll"] as? ParsePoll {
-            if myPolls.removePoll(removedPoll) {
+            if let index = myPolls.removePoll(removedPoll) {
                 removedPoll.unpinInBackgroundWithBlock(nil)
-                collectionView?.reloadData()
+                collectionView?.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
             }
         }
     }
@@ -168,24 +175,13 @@ class MeController: UICollectionViewController {
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
 
-        // Get appropriate poll
-        var poll: ParsePoll!
-        if indexPath.item < postedPolls.count {
-            poll = postedPolls[indexPath.item]
-        } else {
-            poll = myPolls[indexPath.item - postedPolls.count]
-        }
-
         // Get cell
         let cell = (collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as MePollCell)
 
-        // Hide poll images
-        let container = cell.pollContainer
-        container.hidden = true
-
         // Set urls to check later if it is still the same cell
-        cell.leftImageUrl = poll?.photos?.first?.image?.url
-        cell.rightImageUrl = poll?.photos?.last?.image?.url
+        let poll = self.poll(indexPath.row)
+        cell.leftImageUrl = poll.photos?[0].image?.url
+        cell.rightImageUrl = poll.photos?[1].image?.url
 
         if cell.leftImageUrl != nil && cell.rightImageUrl != nil {
 
@@ -193,12 +189,25 @@ class MeController: UICollectionViewController {
             cell.leftImageView.image = scaledImages[cell.leftImageUrl!]
             cell.rightImageView.image = scaledImages[cell.rightImageUrl!]
             if cell.leftImageView.image != nil && cell.rightImageView.image != nil {
-                container.hidden = false
+                // Adjust aspect ratio
+                cell.leftImageView.fn_setAspectRatio(nil)
+                cell.rightImageView.fn_setAspectRatio(nil)
+                // Remove loading if still exists
+                if let indicator = cell.subviews.last as? UIActivityIndicatorView {
+                    indicator.removeFromSuperview()
+                }
                 return cell
             }
 
             // Show loading interface
-            cell.activityIndicator.startAnimating()
+            var activityIndicator: UIActivityIndicatorView!
+            if let indicator = cell.subviews.last as? UIActivityIndicatorView {
+                indicator.hidden = false
+                indicator.startAnimating()
+                activityIndicator = indicator
+            } else {
+                activityIndicator = cell.fn_setLoading(small: true)
+            }
 
             let completion: SDWebImageCompletionWithFinishedBlock = { (image, error, cacheType, completed, url) -> Void in
                 let urlString = url.absoluteString!
@@ -216,18 +225,28 @@ class MeController: UICollectionViewController {
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             self.scaledImages[urlString] = scaledImage
 
+                            var imageView: UIImageView!
                             if urlString == cell.leftImageUrl {
-                                cell.leftImageView.image = scaledImage
+                                imageView = cell.leftImageView
                             } else if urlString == cell.rightImageUrl {
-                                cell.rightImageView.image = scaledImage
+                                imageView = cell.rightImageView
                             } else {
                                 // Too late. Cell is already being used by another item. Just do nothing.
                                 return
                             }
 
+                            imageView.image = scaledImage
+                            imageView.fn_setAspectRatio(scaledImage)
+
+                            // Remove loading interface
                             if cell.leftImageView.image != nil && cell.rightImageView.image != nil {
-                                container.hidden = false
-                                cell.activityIndicator.stopAnimating()
+                                if let indicator = cell.subviews.last as? UIActivityIndicatorView {
+                                    UIView.animateWithDuration(0.15, animations: { () -> Void in
+                                        indicator.alpha = 0
+                                    }, completion: { (completed) -> Void in
+                                        indicator.removeFromSuperview()
+                                    })
+                                }
                             }
                         })
                     })
@@ -253,31 +272,30 @@ class MeController: UICollectionViewController {
 
 class MePollCell: UICollectionViewCell {
 
-    @IBOutlet weak var leftImageView: UIImageView!
-    @IBOutlet weak var rightImageView: UIImageView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    var pollContainer: UIView {
-        return leftImageView.superview!.superview!
+    @IBOutlet weak var leftImageView, rightImageView: UIImageView!
+    private var containers: [UIView] {
+        return [leftImageView.superview!, rightImageView.superview!]
     }
 
-    private var firstLayout = true
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        fn_applyPollMask(containers.first!, containers.last!)
+
+        let pollContainerLayer = leftImageView.superview!.superview!.layer
+        pollContainerLayer.rasterizationScale = UIScreen.mainScreen().scale
+        pollContainerLayer.shouldRasterize = true
+    }
+
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        if firstLayout {
-
-            let layer = leftImageView.superview!.superview!.layer
-            layer.rasterizationScale = UIScreen.mainScreen().scale
-            layer.shouldRasterize = true
-
-            let containers = [leftImageView.superview!, rightImageView.superview!]
-            fn_applyPollMask(containers.first!, containers.last!)
-            for container in containers {
-                container.layer.mask.transform = CATransform3DMakeScale(container.bounds.width, container.bounds.height, 1)
-            }
-
-            firstLayout = false
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(0)
+        for container in containers {
+            container.layer.mask.transform = CATransform3DMakeScale(container.bounds.width, container.bounds.height, 1)
         }
+        CATransaction.commit()
     }
 
     var leftImageUrl: String?

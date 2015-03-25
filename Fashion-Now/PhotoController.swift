@@ -29,7 +29,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
                 // Load image
                 imageView.sd_setImageWithURL(NSURL(string: urlString), completed: { (image, error, cacheType, url) -> Void in
                     if image != nil {
-                        self.imageAspectRatio(image)
+                        self.imageView.fn_setAspectRatio(image)
                         self.delegate?.photoLoaded(self)
                     } else {
                         self.delegate?.photoLoadFailed(self, error: error)
@@ -44,19 +44,6 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
     weak var delegate: PhotoControllerDelegate?
 
     @IBOutlet weak var imageView: UIImageView!
-    /// Adjusts the image view aspect ratio constraint to the size of the image
-    private func imageAspectRatio(image: UIImage) {
-
-        // Remove old aspect ratio
-        if NSLayoutConstraint.respondsToSelector("deactivateConstraints:") {
-            NSLayoutConstraint.deactivateConstraints(imageView.constraints())
-        } else {
-            imageView.removeConstraints(imageView.constraints())
-        }
-
-        // Add new
-        imageView.addConstraint(NSLayoutConstraint(item: imageView, attribute: .Width, relatedBy: .Equal, toItem: imageView, attribute: .Height, multiplier: image.size.width / image.size.height, constant: 0))
-    }
     /// Show or hide image container
     private func imageContainerHidden(hidden: Bool) {
         imageView.superview!.hidden = hidden
@@ -104,7 +91,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         photo.image = PFFile(name: "image.jpg", data: imageData, contentType: "image/jpeg")
         imageView.image = UIImage(data: imageData)
         imageContainerHidden(false)
-        imageAspectRatio(image)
+        imageView.fn_setAspectRatio(nil)
 
         // Call delegate
         delegate?.photoEdited(self)

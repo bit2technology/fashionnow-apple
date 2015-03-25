@@ -79,7 +79,7 @@ extension UIImage {
 
         var img: UIImage?
         if resizeScale < 1 {
-            let resizeRect = CGRect(x: 0, y: 0, width: size.width * resizeScale, height: size.height * resizeScale)
+            let resizeRect = CGRect(x: 0, y: 0, width: floor(size.width * resizeScale), height: floor(size.height * resizeScale))
             UIGraphicsBeginImageContextWithOptions(resizeRect.size, true, 1)
             drawInRect(resizeRect)
             img = UIGraphicsGetImageFromCurrentImageContext()
@@ -94,7 +94,7 @@ extension UIImage {
         let resizeScale = maxHeight / self.size.height
 
         if resizeScale < 1 {
-            let resizeRect = CGRect(x: 0, y: 0, width: size.width * resizeScale, height: size.height * resizeScale)
+            let resizeRect = CGRect(x: 0, y: 0, width: floor(size.width * resizeScale), height: floor(size.height * resizeScale))
             UIGraphicsBeginImageContextWithOptions(resizeRect.size, true, UIScreen.mainScreen().scale)
             drawInRect(resizeRect)
             let img = UIGraphicsGetImageFromCurrentImageContext()
@@ -141,6 +141,19 @@ extension UIView {
             layer.shouldRasterize = newValue
         }
     }
+
+    /// Set an activity indicator view as subview, covering everything and returns it.
+    func fn_setLoading(small: Bool = false, transluscent: Bool = false) -> UIActivityIndicatorView {
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: small ? .White : .WhiteLarge)
+        activityIndicator.color = UIColor.grayColor()
+        activityIndicator.backgroundColor = UIColor.fn_white(alpha: transluscent ? 0.5 : 1)
+        activityIndicator.startAnimating()
+        activityIndicator.frame = self.bounds
+        activityIndicator.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        activityIndicator.opaque = true
+        self.addSubview(activityIndicator)
+        return activityIndicator
+    }
 }
 
 extension UIImageView {
@@ -166,6 +179,25 @@ extension UIImageView {
         }
         set {
             layer.shadowRadius = newValue
+        }
+    }
+
+    /// Adjusts the image view aspect ratio constraint to the size of the image
+    func fn_setAspectRatio(image: UIImage?, needsLayout: Bool = true) {
+
+        if let correctImage = image ?? self.image {
+            // Remove old aspect ratio
+            if NSLayoutConstraint.respondsToSelector("deactivateConstraints:") {
+                NSLayoutConstraint.deactivateConstraints(self.constraints())
+            } else {
+                self.removeConstraints(self.constraints())
+            }
+
+            // Add new
+            self.addConstraint(NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Height, multiplier: correctImage.size.width / correctImage.size.height, constant: 0))
+            if needsLayout {
+                self.setNeedsLayout()
+            }
         }
     }
 }

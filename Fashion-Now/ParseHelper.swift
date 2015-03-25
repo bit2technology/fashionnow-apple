@@ -497,12 +497,12 @@ class ParsePollList: Printable, DebugPrintable {
     }
 
     /// Remove poll by object
-    func removePoll(poll: ParsePoll) -> Bool {
+    func removePoll(poll: ParsePoll) -> Int? {
         if let index = find(polls, poll) {
             polls.removeAtIndex(index)
-            return true
+            return index
         }
-        return false
+        return nil
     }
 
     // MARK: Array simulation
