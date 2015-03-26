@@ -30,6 +30,11 @@ extension UIColor {
         return UIColor(red: 0.039215686274509803921568627450980392156862745098039, green: 0.80784313725490196078431372549019607843137254901961, blue: 0.73725490196078431372549019607843137254901960784314, alpha: alpha)
     }
 
+    /// rgb(224, 242, 240)
+    class func fn_lighter(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(red: 0.87843137254901960784313725490196078431372549019608, green: 0.94901960784313725490196078431372549019607843137255, blue: 0.94117647058823529411764705882352941176470588235294, alpha: alpha)
+    }
+
     /// rgb(6, 137, 132)
     class func fn_dark(alpha: CGFloat = 1) -> UIColor {
         return UIColor(red: 0.023529411764705882352941176470588235294117647058824, green: 0.53725490196078431372549019607843137254901960784314, blue: 0.51764705882352941176470588235294117647058823529412, alpha: alpha)
@@ -143,10 +148,10 @@ extension UIView {
     }
 
     /// Set an activity indicator view as subview, covering everything and returns it.
-    func fn_setLoading(small: Bool = false, transluscent: Bool = false) -> UIActivityIndicatorView {
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: small ? .White : .WhiteLarge)
-        activityIndicator.color = UIColor.grayColor()
-        activityIndicator.backgroundColor = UIColor.fn_white(alpha: transluscent ? 0.5 : 1)
+    func fn_setLoading(style: UIActivityIndicatorViewStyle = .WhiteLarge, color: UIColor = UIColor.grayColor(), background: UIColor = UIColor.whiteColor()) -> UIActivityIndicatorView {
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: style)
+        activityIndicator.color = color
+        activityIndicator.backgroundColor = background
         activityIndicator.startAnimating()
         activityIndicator.frame = self.bounds
         activityIndicator.autoresizingMask = .FlexibleWidth | .FlexibleHeight

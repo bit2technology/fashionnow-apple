@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         }
 
-        // Logout if current user is invalid (is not anonymous and hasn't password or valid email)
+        // Logout if current user is invalid
         let currentUser = ParseUser.currentUser()
         if !currentUser.isValid {
             ParseUser.logOut()

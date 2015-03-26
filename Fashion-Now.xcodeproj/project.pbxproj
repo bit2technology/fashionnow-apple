@@ -26,6 +26,7 @@
 		4B9443591AB08B6D007DBAFD /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9443581AB08B6D007DBAFD /* AppHelper.swift */; };
 		4BAAAF8E1A14C5FB00AAFAFB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */; };
 		4BC4CF0B1A01164F0000A231 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4BC4CF0A1A01164F0000A231 /* .gitignore */; };
+		4BD255461AC45F7A004BF005 /* VoteFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD255451AC45F7A004BF005 /* VoteFilterController.swift */; };
 		4BDB6D151A221033003D56C1 /* FacebookHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDB6D141A221033003D56C1 /* FacebookHelper.swift */; };
 		4BE767DE1A239F6B00CCAA65 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4BE767DD1A239F6B00CCAA65 /* Settings.bundle */; };
 		4BEB9E181A01AA9A00A71764 /* ParseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEB9E171A01AA9A00A71764 /* ParseHelper.swift */; };
@@ -70,6 +71,7 @@
 		4B9443581AB08B6D007DBAFD /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppHelper.swift; sourceTree = "<group>"; };
 		4BAAAF8F1A14C5FB00AAFAFB /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4BC4CF0A1A01164F0000A231 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
+		4BD255451AC45F7A004BF005 /* VoteFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteFilterController.swift; sourceTree = "<group>"; };
 		4BDB6D141A221033003D56C1 /* FacebookHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookHelper.swift; sourceTree = "<group>"; };
 		4BE767DD1A239F6B00CCAA65 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		4BEB9E171A01AA9A00A71764 /* ParseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseHelper.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				4BF1D05A1A00F1EB00818658 /* AppDelegate.swift */,
 				4B3864641A178B80004ECAB8 /* TabBarController.swift */,
 				4BEB9E1F1A01ACA200A71764 /* VotePollController.swift */,
+				4BD255451AC45F7A004BF005 /* VoteFilterController.swift */,
 				4BEB9E1D1A01AC8500A71764 /* PostPollController.swift */,
 				4B39E0331A652CB800836639 /* FriendsListTableController.swift */,
 				4B45FA101ABD980000E2F7CC /* GalleryController.swift */,
@@ -446,6 +449,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B79AABB1A0E4D740097B069 /* LoginFacebookController.swift in Sources */,
+				4BD255461AC45F7A004BF005 /* VoteFilterController.swift in Sources */,
 				4B749E8D1A30916F00E9B128 /* ResultPollController.swift in Sources */,
 				4BEB9E1A1A01ABD200A71764 /* PhotoController.swift in Sources */,
 				4BEB9E201A01ACA200A71764 /* VotePollController.swift in Sources */,

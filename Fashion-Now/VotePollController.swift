@@ -55,7 +55,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
     @IBOutlet weak var emptyInterface: UIView!
 
     // Loading interface
-    @IBOutlet weak var loadingInterface: UIView!
+    private weak var loadingInterface: UIActivityIndicatorView!
     private func setLoadingInterfaceHidden(hidden: Bool, animated: Bool, completion: ((finished: Bool) -> Void)? = nil) {
         if hidden != loadingInterface.hidden && animated {
             loadingInterface.hidden = false
@@ -148,7 +148,11 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconVoteSelected")
+        navigationController!.tabBarItem.selectedImage = UIImage(named: "TabBarIconVoteSelected")
+
+        navigationItem.titleView!.frame.size.width = 9999
+
+        loadingInterface = /*navigationController!.*/view.fn_setLoading()
 
         pollController.interactDelegate = self
         pollController.loadDelegate = self

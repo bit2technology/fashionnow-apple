@@ -149,7 +149,7 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
         }
 
         // Update interface
-        let activityIndicatorView = navigationController!.view.fn_setLoading(small: false, transluscent: true)
+        let activityIndicatorView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
             var error: NSError?
             var currentUser = ParseUser.currentUser()

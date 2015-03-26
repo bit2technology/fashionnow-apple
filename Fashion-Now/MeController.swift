@@ -206,7 +206,7 @@ class MeController: UICollectionViewController {
                 indicator.startAnimating()
                 activityIndicator = indicator
             } else {
-                activityIndicator = cell.fn_setLoading(small: true)
+                activityIndicator = cell.fn_setLoading(style: .White, background: UIColor.fn_lighter(alpha: 1))
             }
 
             let completion: SDWebImageCompletionWithFinishedBlock = { (image, error, cacheType, completed, url) -> Void in
