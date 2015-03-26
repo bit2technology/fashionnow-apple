@@ -149,60 +149,27 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
         }
 
         // Update interface
-        // Done/Activity Indicator
-        let doneButtonItem = navigationItem.rightBarButtonItem
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
-        activityIndicator.startAnimating()
-        let activityItem = UIBarButtonItem(customView: activityIndicator)
-        navigationItem.setRightBarButtonItem(activityItem, animated: true)
-        // Left Bar Button Item
-        let hidesBackButton = navigationItem.hidesBackButton
-        navigationItem.setHidesBackButton(false, animated: true)
-        navigationItem.leftBarButtonItem?.enabled = false
-        // Image buttons
-        for button in [cameraButton, libraryButton] {
-            button.enabled = false
-        }
-        // Fields
-        for field in [nameField, locationField, emailField, usernameField, passwordField] {
-            field.enabled = false
-        }
-        // Table
-        tableView.allowsSelection = false
-
+        let activityIndicatorView = navigationController!.view.fn_setLoading(small: false, transluscent: true)
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
             var error: NSError?
             var currentUser = ParseUser.currentUser()
 
             /// Revert interface to original (enable interactive elements).
             func revertInterface() {
-                // Revert interface
-                // Buttons
-                navigationItem.setRightBarButtonItem(doneButtonItem, animated: true)
-                navigationItem.setHidesBackButton(hidesBackButton, animated: true)
-                navigationItem.leftBarButtonItem?.enabled = true
-                for button in [cameraButton, libraryButton] {
-                    button.enabled = true
-                }
-                // Fields
-                for field in [nameField, locationField, emailField, usernameField, passwordField] {
-                    field.enabled = true
-                }
-                // Table
-                tableView.allowsSelection = true
+                activityIndicatorView.removeFromSuperview()
             }
 
             /// Present error alert.
             func presentError(error: NSError) {
                 // Error handling
-                if error.code == kPFErrorConnectionFailed {
+                if error.code == PFErrorCode.ErrorConnectionFailed.rawValue {
                     UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_CONNECTION_TITLE", value: "Connection failed", comment: "Error message for Sign Up or Edit Profile"), message: NSLocalizedString("SIGNUP_ERROR_CONNECTION_MESSAGE", value: "Are you connected to the Internet?", comment: "Error message for Sign Up or Edit Profile"), delegate: nil, cancelButtonTitle: FNLocalizedOKButtonTitle).show()
 
-                } else if error.code == kPFErrorUsernameTaken {
+                } else if error.code == PFErrorCode.ErrorUsernameTaken.rawValue {
                     usernameLabel.textColor = UIColor.fn_error()
                     UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_USERNAME_TAKEN_TITLE", value: "Username already exists", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: FNLocalizedOKButtonTitle).show()
 
-                } else if error.code == kPFErrorUserEmailTaken {
+                } else if error.code == PFErrorCode.ErrorUserEmailTaken.rawValue {
                     emailLabel.textColor = UIColor.fn_error()
                     UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_EMAIL_TAKEN_TITLE", value: "Another user is using this e-mail", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: FNLocalizedOKButtonTitle).show()
 
@@ -307,7 +274,7 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
         }
 
         // Make some changes if user has already configured account
-        if currentUser.hasPassword == true {
+        if currentUser.isValid {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelButtonPressed:")
             usernameField.text = currentUser.username
             passwordField.text = "passwo" // Placeholder

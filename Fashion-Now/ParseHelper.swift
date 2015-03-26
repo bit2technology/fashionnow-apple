@@ -137,7 +137,14 @@ class ParseUser: PFUser, PFSubclassing {
     // MARK: Helper methods
 
     var isValid: Bool {
-        return PFAnonymousUtils.isLinkedWithUser(self) || (self.hasPassword == true && self.email?.isEmail() == true)
+        if PFAnonymousUtils.isLinkedWithUser(self) {
+            return true
+        } else if PFFacebookUtils.isLinkedWithUser(self) && !(facebookId?.fn_count > 0) {
+            return false
+        } else if hasPassword != true || email?.isEmail() != true {
+            return false
+        }
+        return true
     }
 }
 

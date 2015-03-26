@@ -40,7 +40,7 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate, UITextFi
             ParseUser.requestPasswordResetForEmailInBackground(email!) { (succeeded, error) -> Void in
                 if error == nil {
                     FNToast.show(text: NSLocalizedString("LOGIN_RESET_SUCCESS_MESSAGE", value: "Password reset instructions sent to your email", comment: "Message for when the email reset was successful"), type: .Error)
-                } else if error.domain == PFParseErrorDomain && error.code == kPFErrorUserWithEmailNotFound {
+                } else if error.domain == PFParseErrorDomain && error.code == PFErrorCode.ErrorUserWithEmailNotFound.rawValue {
                     FNToast.show(text: NSLocalizedString("LOGIN_RESET_ERROR_EMAIL_NOT_FOUND_MESSAGE", value: "There is no user registered with this email", comment: "Message for when there is no user with the email providen error"), type: .Error)
                 } else {
                     FNToast.show(text: NSLocalizedString("LOGIN_RESET_GENERAL_MESSAGE", value: "Please, check your internet connection", comment: "Message for general error, possibly connection related"), type: .Error)
@@ -83,7 +83,7 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate, UITextFi
                 self.navigationItem.rightBarButtonItem?.enabled = true
                 self.activityIndicator.stopAnimating()
 
-                if error.code == kPFErrorObjectNotFound {
+                if error.code == PFErrorCode.ErrorObjectNotFound.rawValue {
                     FNToast.show(text: NSLocalizedString("LOGIN_ERROR_USER_NOT_FOUNT_MESSAGE", value: "Username or password incorrect", comment: "Message for when user does not exist or wrong password"), type: .Error)
                 } else {
                     FNToast.show(text: NSLocalizedString("LOGIN_ERROR_GENERAL_MESSAGE", value: "Please, check your internet connection", comment: "Message for general error, possibly connection related"), type: .Error)
