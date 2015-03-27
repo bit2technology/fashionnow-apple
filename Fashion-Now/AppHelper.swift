@@ -223,6 +223,20 @@ class FNTemplateBackgroundButton: UIButton {
     }
 }
 
+/// UIImageView that gets the image and apply template rendering mode
+class FNTemplateImageView: UIImageView {
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        setTemplateImage(image)
+    }
+
+    func setTemplateImage(image: UIImage?) {
+        self.image = image?.imageWithRenderingMode(.AlwaysTemplate)
+    }
+}
+
 /// Helper for CRToastManager
 class FNToast {
 

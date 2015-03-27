@@ -7,7 +7,7 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--FN 💜 FB-->
+        <!--FN ❤️ FB-->
         <scene sceneID="dax-F6-DHD">
             <objects>
                 <viewController id="R8T-0b-tVZ" customClass="LoginFacebookController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
@@ -29,10 +29,10 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H1R-73-2vW">
-                                <rect key="frame" x="0.0" y="44" width="320" height="386"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="366"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tP5-G2-WZW">
-                                        <rect key="frame" x="0.0" y="118" width="320" height="150"/>
+                                        <rect key="frame" x="0.0" y="108" width="320" height="150"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fashion Now works better with Facebook. Don't worry, we'll respect your privacy." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="sIE-qd-ls5">
                                                 <rect key="frame" x="60" y="0.0" width="200" height="54"/>
@@ -76,11 +76,11 @@
                                         </constraints>
                                     </view>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Y7y-gn-L6g">
-                                        <rect key="frame" x="142" y="276" width="37" height="37"/>
+                                        <rect key="frame" x="142" y="266" width="37" height="37"/>
                                         <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     </activityIndicatorView>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Impossible to proceed. Are you connected to the Internet?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="4UF-ot-JIx">
-                                        <rect key="frame" x="60" y="276" width="200" height="54"/>
+                                        <rect key="frame" x="60" y="266" width="200" height="54"/>
                                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="d95-MF-VeW"/>
@@ -90,7 +90,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sorry, Fashion Now might be disallowed to connect to your account. Go to Settings &gt; Facebook to verify and try again." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="260" translatesAutoresizingMaskIntoConstraints="NO" id="pcR-hn-i1Q">
-                                        <rect key="frame" x="30" y="276" width="260" height="72"/>
+                                        <rect key="frame" x="30" y="266" width="260" height="72"/>
                                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="260" id="v00-sS-n0K"/>
@@ -123,7 +123,7 @@
                             <constraint firstItem="UVf-dJ-3oB" firstAttribute="top" secondItem="H1R-73-2vW" secondAttribute="bottom" id="lzM-X6-L7x"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="FN 💜 FB" id="fxo-PT-oRu">
+                    <navigationItem key="navigationItem" title="FN ❤️ FB" id="fxo-PT-oRu">
                         <barButtonItem key="backBarButtonItem" title="Back" id="9H3-pz-qNB"/>
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="5vt-0b-slv">
                             <connections>
@@ -309,10 +309,10 @@
                                 </connections>
                             </button>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rdg-hq-Mrj" userLabel="Empty Interface">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No more polls to vote" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="Pca-Ch-LI9">
-                                        <rect key="frame" x="60" y="230" width="200" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No more polls to vote 😢" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="Pca-Ch-LI9">
+                                        <rect key="frame" x="60" y="173" width="200" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="YJJ-mc-nQh"/>
                                         </constraints>
@@ -320,9 +320,20 @@
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the gear to change filters" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="fsi-Hj-o8b">
+                                        <rect key="frame" x="112" y="8" width="200" height="41"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="6tj-Qs-Oz3"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
+                                    <constraint firstItem="fsi-Hj-o8b" firstAttribute="top" secondItem="rdg-hq-Mrj" secondAttribute="top" constant="8" id="52E-QP-lca"/>
+                                    <constraint firstAttribute="trailing" secondItem="fsi-Hj-o8b" secondAttribute="trailing" constant="8" id="eOV-XO-wbN"/>
                                     <constraint firstAttribute="centerY" secondItem="Pca-Ch-LI9" secondAttribute="centerY" id="gY6-CA-UIa"/>
                                     <constraint firstAttribute="centerX" secondItem="Pca-Ch-LI9" secondAttribute="centerX" id="ont-tw-5FN"/>
                                 </constraints>
@@ -330,13 +341,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="rdg-hq-Mrj" firstAttribute="top" secondItem="xur-zt-maA" secondAttribute="bottom" id="180-bH-mSI"/>
                             <constraint firstItem="3bW-d0-UfL" firstAttribute="top" secondItem="EtK-fa-XtU" secondAttribute="bottom" id="34M-DU-YTM"/>
                             <constraint firstAttribute="trailing" secondItem="EtK-fa-XtU" secondAttribute="trailing" id="47u-FS-YP1"/>
+                            <constraint firstItem="3bW-d0-UfL" firstAttribute="top" secondItem="rdg-hq-Mrj" secondAttribute="bottom" id="7b7-bg-eUI"/>
                             <constraint firstItem="3bW-d0-UfL" firstAttribute="top" secondItem="GPX-GA-SAX" secondAttribute="bottom" constant="4" id="J7L-V4-r0m"/>
-                            <constraint firstItem="rdg-hq-Mrj" firstAttribute="top" secondItem="0mu-nJ-pcc" secondAttribute="top" id="KbK-fb-BHW"/>
                             <constraint firstAttribute="trailing" secondItem="rdg-hq-Mrj" secondAttribute="trailing" id="KiJ-5l-e2T"/>
                             <constraint firstItem="rdg-hq-Mrj" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" id="NmT-33-mqh"/>
-                            <constraint firstAttribute="bottom" secondItem="rdg-hq-Mrj" secondAttribute="bottom" id="So9-te-d3c"/>
                             <constraint firstItem="4XI-L8-6Pr" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" constant="-5" id="gqj-lz-256"/>
                             <constraint firstAttribute="trailing" secondItem="GPX-GA-SAX" secondAttribute="trailing" constant="-5" id="gtx-Kx-8sL"/>
                             <constraint firstItem="EtK-fa-XtU" firstAttribute="top" secondItem="xur-zt-maA" secondAttribute="bottom" id="il4-wn-Z6w"/>
@@ -389,7 +400,7 @@
                         </view>
                         <barButtonItem key="rightBarButtonItem" image="BarButtonGear" id="2Kp-GD-fss">
                             <connections>
-                                <segue destination="NmP-QA-Rro" kind="modal" id="M8z-nQ-CDo"/>
+                                <action selector="gearButtonPressed:" destination="6wq-1Y-TiB" id="YYD-RF-mCw"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -400,6 +411,7 @@
                         <outlet property="leftVoteButton" destination="4XI-L8-6Pr" id="Vaj-fJ-9Sg"/>
                         <outlet property="nameLabel" destination="dmJ-d0-zRi" id="9wt-b4-CcR"/>
                         <outlet property="rightVoteButton" destination="GPX-GA-SAX" id="bC1-wq-sV9"/>
+                        <segue destination="NmP-QA-Rro" kind="modal" identifier="Present Filters" id="PPL-30-sPx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vvg-GW-0gy" userLabel="First Responder" sceneMemberID="firstResponder"/>

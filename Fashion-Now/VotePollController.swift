@@ -8,7 +8,7 @@
 
 import UIKit
 
-class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDelegate {
+class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDelegate, UIActionSheetDelegate {
 
     private var polls = ParsePollList(type: .VotePublic)
 
@@ -52,31 +52,38 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
 
     // Loading interface
     private weak var loadingInterface: UIActivityIndicatorView!
-    private func setLoadingInterfaceHidden(hidden: Bool, animated: Bool, completion: ((finished: Bool) -> Void)? = nil) {
-        if hidden != loadingInterface.hidden && animated {
-            loadingInterface.hidden = false
-            UIView.animateWithDuration(0.15, animations: { () -> Void in
-                // animations
-                self.loadingInterface.alpha = (hidden ? 0 : 1)
-            }, completion: { (finished) -> Void in
-                // completion
-                self.loadingInterface.hidden = hidden
-                completion?(finished: finished)
-            })
-        } else {
-            loadingInterface.hidden = hidden
-            loadingInterface.alpha = (hidden ? 0 : 1)
-            completion?(finished: true)
+
+    @IBAction func gearButtonPressed(sender: UIBarButtonItem) {
+        let actionSheet = UIActionSheet()
+        actionSheet.delegate = self
+        // Buttons
+        var otherButtonTitles = [String]()
+        if PFAnonymousUtils.isLinkedWithUser(ParseUser.currentUser()) {
+            otherButtonTitles.append(NSLocalizedString("VotePollController.gearButton.actionSheet.loginButtonTitle", value: "Log In", comment: "Shown when user taps the gear button"))
         }
+        otherButtonTitles += [NSLocalizedString("VotePollController.gearButton.actionSheet.skipButtonTitle", value: "Skip", comment: "Shown when user taps the gear button"),
+                              NSLocalizedString("VotePollController.gearButton.actionSheet.reportButtonTitle", value: "Report", comment: "Shown when user taps the gear button")]
+        for buttonTitle in otherButtonTitles {
+            actionSheet.addButtonWithTitle(buttonTitle)
+        }
+        actionSheet.cancelButtonIndex = actionSheet.addButtonWithTitle(FNLocalizedCancelButtonTitle)
+        // Present
+        actionSheet.showFromBarButtonItem(sender, animated: true)
     }
 
-    private func showNextPoll() {
+    private func showNextPoll() -> Bool {
 
         if let nextPoll = polls.nextPoll(remove: true) {
-
             pollController.poll = nextPoll
+
+            // Avatar
+            if let avatarUrl = nextPoll.createdBy?.avatarURL(size: 40) {
+                avatarView.setImageWithURL(avatarUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), usingActivityIndicatorStyle: .White)
+            } else {
+                avatarView.image = nil
+            }
             // Name
-            nameLabel.text = nextPoll.createdBy?.name ?? nextPoll.createdBy?.email ?? NSLocalizedString("UNKNOW_USER", value: "Unknown", comment: "Shown when user has no name or email")
+            nameLabel.text = nextPoll.createdBy?.name ?? nextPoll.createdBy?.email ?? NSLocalizedString("VotePollController.titleView.nameLabel.unknown", value: "Unknown", comment: "Shown when user has no name or email")
             // Date
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateStyle = .ShortStyle
@@ -84,24 +91,24 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
             dateFormatter.doesRelativeDateFormatting = true
             dateLabel.text = dateFormatter.stringFromDate(nextPoll.createdAt)
 
-            // Avatar
-            if let avatarUrl = nextPoll.createdBy?.avatarURL(size: 40) {
-                avatarView.setImageWithURL(avatarUrl, usingActivityIndicatorStyle: .White)
-            } else {
-                avatarView.image = nil
-            }
-
-        } else {
-
-            // Adjust interface for no more polls
+            return true
+        }
+        else {
+            avatarView.image = nil
+            nameLabel.text = nil
+            dateLabel.text = nil
             emptyInterface.hidden = false
-            setLoadingInterfaceHidden(true, animated: true, completion: nil)
+            return false
         }
     }
 
     func loadPollList(notification: NSNotification?) {
+
+        // Reset interface
         emptyInterface.hidden = true
-        setLoadingInterfaceHidden(false, animated: false)
+        loadingInterface.startAnimating()
+
+        // Reload polls
         polls = ParsePollList(type: .VotePublic)
         polls.update(completionHandler: { (success, error) -> Void in
 
@@ -110,7 +117,10 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
                 return
             }
 
-            self.showNextPoll()
+            UIView.transitionWithView(self.navigationController!.view, duration: notification == nil ? 0.15 : 0, options: .TransitionCrossDissolve, animations: { () -> Void in
+                self.loadingInterface.startAnimating()
+                self.showNextPoll()
+            }, completion: nil)
         })
     }
 
@@ -130,12 +140,8 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         }
     }
 
-    private func showErrorScreen(error: NSError) {
+    private func showErrorScreen(error: NSError!) {
         // TODO: Error Screen
-        if error.domain == FNErrorDomain && error.code == FNErrorCode.NothingNew.rawValue {
-            showNextPoll()
-            return
-        }
         FNToast.show(text: error.localizedDescription, type: .Error)
     }
     
@@ -148,7 +154,10 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
 
         navigationItem.titleView!.frame.size.width = 9999
 
-        loadingInterface = /*navigationController!.*/view.fn_setLoading()
+        loadingInterface = view.fn_setLoading(background: UIColor.groupTableViewBackgroundColor())
+
+        nameLabel.text = nil
+        dateLabel.text = nil
 
         pollController.interactDelegate = self
         pollController.loadDelegate = self
@@ -163,6 +172,10 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadPollList:", name: LoginChangedNotificationName, object: nil)
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         PFAnalytics.fn_trackScreenShowInBackground("Vote: Main", block: nil)
@@ -175,11 +188,13 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
     // MARK: PollControllerDelegate
 
     func pollLoaded(pollController: PollController) {
-        setLoadingInterfaceHidden(true, animated: false)
+        UIView.transitionWithView(navigationController!.view, duration: 0.15, options: .TransitionCrossDissolve, animations: { () -> Void in
+            self.loadingInterface.stopAnimating()
+        }, completion: nil)
     }
 
     func pollLoadFailed(pollController: PollController, error: NSError) {
-        NSLog("Poll load fail \(error)")
+        showErrorScreen(error)
     }
 
     func pollInteracted(pollController: PollController) {
@@ -203,11 +218,9 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
     }
 
     func pollDidHighlight(pollController: PollController) {
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "showLoadingInterfaceAndNextPoll:", userInfo: nil, repeats: false).fire()
-    }
-    func showLoadingInterfaceAndNextPoll(sender: NSTimer?) {
-        setLoadingInterfaceHidden(false, animated: true) { (finished) -> Void in
+        UIView.transitionWithView(navigationController!.view, duration: 0.15, options: .TransitionCrossDissolve, animations: { () -> Void in
+            self.loadingInterface.startAnimating()
             self.showNextPoll()
-        }
+        }, completion: nil)
     }
 }
