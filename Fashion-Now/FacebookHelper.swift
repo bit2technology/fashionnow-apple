@@ -27,29 +27,14 @@ class FacebookHelper {
     }
 }
 
-extension FBGraphObject {
+class FacebookUser {
 
-    var email: String? {
-        get {
-            return self["email"] as? String
-        }
-    }
+    let email, first_name, gender, objectId: String?
 
-    var first_name: String? {
-        get {
-            return self["first_name"] as? String
-        }
-    }
-
-    var gender: String? {
-        get {
-            return self["gender"] as? String
-        }
-    }
-
-    var objectId: String? {
-        get {
-            return self["id"] as? String
-        }
+    init(graphObject: AnyObject?) {
+        email = graphObject?["email"] as? String
+        first_name = graphObject?["first_name"] as? String
+        gender = graphObject?["gender"] as? String
+        objectId = graphObject?["id"] as? String
     }
 }

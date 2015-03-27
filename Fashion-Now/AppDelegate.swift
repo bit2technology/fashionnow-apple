@@ -50,20 +50,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let currentInstallation = ParseInstallation.currentInstallation()
         currentInstallation.badge = 0
         currentInstallation.userId = currentUser.objectId
-        // Get aproximate location with https://freegeoip.net/
-        NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: "https://freegeoip.net/json")!, completionHandler: { (data, response, error) -> Void in
-            let geoInfo = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as? [String: AnyObject]
-            let latitude = geoInfo?["latitude"] as? Double
-            let longitude = geoInfo?["longitude"] as? Double
-            if latitude != nil && longitude != nil {
-                currentInstallation.location = PFGeoPoint(latitude: latitude!, longitude: longitude!)
-                currentInstallation.saveEventually(nil)
-            }
-        }).resume()
+        switch CLLocationManager.authorizationStatus() {
+        default:
+            // Get aproximate location with https://freegeoip.net/
+            NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: "https://freegeoip.net/json")!, completionHandler: { (data, response, error) -> Void in
+                let geoInfo = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as? [String: AnyObject]
+                let latitude = geoInfo?["latitude"] as? Double
+                let longitude = geoInfo?["longitude"] as? Double
+                if latitude != nil && longitude != nil {
+                    currentInstallation.location = PFGeoPoint(latitude: latitude!, longitude: longitude!)
+                    currentInstallation.saveEventually(nil)
+                }
+            }).resume()
+        }
 
         // Push notifications
         if application.respondsToSelector("registerUserNotificationSettings:") {
-            // Register for Push Notitications, if running iOS 8
+            // Register for Push Notitications, if running iOS 8 and later
             let settings = UIUserNotificationSettings(forTypes:.Alert | .Badge | .Sound, categories: nil)
             application.registerUserNotificationSettings(settings)
             application.registerForRemoteNotifications()
@@ -100,8 +103,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     /// Called every login or logout
     func loginChanged(notification: NSNotification) {
+        // Clear caches
         PFObject.unpinAllObjectsInBackgroundWithBlock(nil)
-        
+        let imageCache = SDImageCache.sharedImageCache()
+        imageCache.clearDisk()
+        imageCache.clearMemory()
         // Register new user ID in installation on login change
         let currentInstallation = ParseInstallation.currentInstallation()
         currentInstallation.userId = ParseUser.currentUser().objectId

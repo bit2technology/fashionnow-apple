@@ -13,7 +13,7 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
     private let genderValues = ["male", "female", "other"]
     private let genderLabels = [NSLocalizedString("GENDER_MALE", value: "Male", comment: "Gender labels"), NSLocalizedString("GENDER_FEMALE", value: "Female", comment: "Gender labels"), NSLocalizedString("GENDER_OTHER", value: "Other", comment: "Gender labels")]
 
-    var facebookUser: FBGraphObject?
+    var facebookUser: FacebookUser?
 
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var nameField: UITextField!

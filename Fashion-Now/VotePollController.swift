@@ -16,13 +16,13 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
 
     // Navigation bar items
     @IBOutlet weak var avatarView: UIImageView!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var nameLabel, dateLabel: UILabel!
 
     // Vote buttons
-    private var voteButtons: [UIButton]!
-    @IBOutlet weak var leftVoteButton: UIButton!
-    @IBOutlet weak var rightVoteButton: UIButton!
+    @IBOutlet weak var leftVoteButton, rightVoteButton: UIButton!
+    private var voteButtons: [UIButton] {
+        return [leftVoteButton, rightVoteButton]
+    }
     // Press actions
     @IBAction func voteButtonWillBePressed(sender: UIButton) {
         setCleanInterface(false, animated: true)
@@ -39,14 +39,10 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
             }
         }
     }
-    private func setCleanInterface(cleanInterface: Bool, animated: Bool) {
-        if cleanInterface != self.cleanInterface {
-            if animated {
-                UIView.animateWithDuration(0.15) { () -> Void in
-                    self.cleanInterface = cleanInterface
-                }
-            } else {
-                self.cleanInterface = cleanInterface
+    private func setCleanInterface(newValue: Bool, animated: Bool) {
+        if newValue != cleanInterface {
+            UIView.animateWithDuration(animated ? 0.15 : 0) { () -> Void in
+                self.cleanInterface = newValue
             }
         }
     }
@@ -76,7 +72,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
 
     private func showNextPoll() {
 
-        if let nextPoll = self.polls.nextPoll(remove: true) {
+        if let nextPoll = polls.nextPoll(remove: true) {
 
             pollController.poll = nextPoll
             // Name
@@ -89,8 +85,8 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
             dateLabel.text = dateFormatter.stringFromDate(nextPoll.createdAt)
 
             // Avatar
-            if let unwrappedAuthorFacebookId = nextPoll.createdBy?.facebookId {
-                avatarView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedAuthorFacebookId, size: 40), usingActivityIndicatorStyle: .White)
+            if let avatarUrl = nextPoll.createdBy?.avatarURL(size: 40) {
+                avatarView.setImageWithURL(avatarUrl, usingActivityIndicatorStyle: .White)
             } else {
                 avatarView.image = nil
             }
@@ -157,7 +153,6 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         pollController.interactDelegate = self
         pollController.loadDelegate = self
 
-        voteButtons = [leftVoteButton, rightVoteButton]
         for voteButton in voteButtons {
             voteButton.tintColor = UIColor.fn_tint(alpha: 0.5)
         }

@@ -88,7 +88,7 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
 
             case "Sign Up":
                 if let facebookUser = sender as? FBGraphObject {
-                    (segue.destinationViewController as LoginSignupController).facebookUser = facebookUser
+                    (segue.destinationViewController as LoginSignupController).facebookUser = FacebookUser(graphObject: facebookUser)
                     segue.destinationViewController.navigationItem.hidesBackButton = true
                 }
             default:
