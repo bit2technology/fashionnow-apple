@@ -339,7 +339,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="rdg-hq-Mrj" firstAttribute="top" secondItem="xur-zt-maA" secondAttribute="bottom" id="180-bH-mSI"/>
                             <constraint firstItem="3bW-d0-UfL" firstAttribute="top" secondItem="EtK-fa-XtU" secondAttribute="bottom" id="34M-DU-YTM"/>
@@ -398,9 +398,9 @@
                                 <constraint firstAttribute="bottom" secondItem="AvG-QN-hJT" secondAttribute="bottom" id="znM-iO-12R"/>
                             </constraints>
                         </view>
-                        <barButtonItem key="rightBarButtonItem" image="BarButtonGear" id="2Kp-GD-fss">
+                        <barButtonItem key="rightBarButtonItem" image="BarButtonGear" id="7cP-ys-3w6">
                             <connections>
-                                <action selector="gearButtonPressed:" destination="6wq-1Y-TiB" id="YYD-RF-mCw"/>
+                                <action selector="gearButtonPressed:" destination="6wq-1Y-TiB" id="C6H-MF-zjm"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

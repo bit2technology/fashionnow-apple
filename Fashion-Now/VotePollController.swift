@@ -8,9 +8,13 @@
 
 import UIKit
 
+private let transitionDuration = NSTimeInterval(0.15)
+
 class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDelegate, UIActionSheetDelegate {
 
     private var polls = ParsePollList(type: .VotePublic)
+
+    private var currentPoll: ParsePoll?
 
     private weak var pollController: PollController!
 
@@ -58,38 +62,52 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         actionSheet.delegate = self
         // Buttons
         var otherButtonTitles = [String]()
+        if currentPoll != nil {
+            otherButtonTitles += [NSLocalizedString("VotePollController.gearButton.actionSheet.reportButtonTitle", value: "Report (Not Working)", comment: "Shown when user taps the gear button"), NSLocalizedString("VotePollController.gearButton.actionSheet.skipButtonTitle", value: "Skip", comment: "Shown when user taps the gear button")]
+        }
         if PFAnonymousUtils.isLinkedWithUser(ParseUser.currentUser()) {
             otherButtonTitles.append(NSLocalizedString("VotePollController.gearButton.actionSheet.loginButtonTitle", value: "Log In", comment: "Shown when user taps the gear button"))
         }
-        otherButtonTitles += [NSLocalizedString("VotePollController.gearButton.actionSheet.skipButtonTitle", value: "Skip", comment: "Shown when user taps the gear button"),
-                              NSLocalizedString("VotePollController.gearButton.actionSheet.reportButtonTitle", value: "Report", comment: "Shown when user taps the gear button")]
         for buttonTitle in otherButtonTitles {
             actionSheet.addButtonWithTitle(buttonTitle)
         }
+        actionSheet.destructiveButtonIndex = 0
         actionSheet.cancelButtonIndex = actionSheet.addButtonWithTitle(FNLocalizedCancelButtonTitle)
         // Present
         actionSheet.showFromBarButtonItem(sender, animated: true)
     }
 
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+
+        switch buttonIndex {
+        case 1:
+            pollController.animateHighlight(index: 0, source: .Extern)
+        case 2 where actionSheet.cancelButtonIndex != 2: // Login
+            (tabBarController! as TabBarController).presentLoginController()
+        default:
+            break
+        }
+    }
+
     private func showNextPoll() -> Bool {
 
-        if let nextPoll = polls.nextPoll(remove: true) {
-            pollController.poll = nextPoll
+        currentPoll = polls.nextPoll(remove: true)
+
+        if let pollToShow = currentPoll {
+            pollController.poll = pollToShow
 
             // Avatar
-            if let avatarUrl = nextPoll.createdBy?.avatarURL(size: 40) {
+            if let avatarUrl = pollToShow.createdBy?.avatarURL(size: 40) {
                 avatarView.setImageWithURL(avatarUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), usingActivityIndicatorStyle: .White)
             } else {
                 avatarView.image = nil
             }
             // Name
-            nameLabel.text = nextPoll.createdBy?.name ?? nextPoll.createdBy?.email ?? NSLocalizedString("VotePollController.titleView.nameLabel.unknown", value: "Unknown", comment: "Shown when user has no name or email")
+            nameLabel.text = pollToShow.createdBy?.name ?? pollToShow.createdBy?.email ?? NSLocalizedString("VotePollController.titleView.nameLabel.unknown", value: "Unknown", comment: "Shown when user has no name or email")
             // Date
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateStyle = .ShortStyle
-            dateFormatter.timeStyle = .ShortStyle
-            dateFormatter.doesRelativeDateFormatting = true
-            dateLabel.text = dateFormatter.stringFromDate(nextPoll.createdAt)
+            let timeFormatter = TTTTimeIntervalFormatter()
+            timeFormatter.usesIdiomaticDeicticExpressions = true
+            dateLabel.text = timeFormatter.stringForTimeInterval(pollToShow.createdAt.timeIntervalSinceNow)
 
             return true
         }
@@ -112,14 +130,9 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         polls = ParsePollList(type: .VotePublic)
         polls.update(completionHandler: { (success, error) -> Void in
 
-            if error != nil {
-                self.showErrorScreen(error)
-                return
-            }
-
-            UIView.transitionWithView(self.navigationController!.view, duration: notification == nil ? 0.15 : 0, options: .TransitionCrossDissolve, animations: { () -> Void in
-                self.loadingInterface.startAnimating()
+            UIView.transitionWithView(self.navigationController!.view, duration: notification == nil ? transitionDuration : 0, options: .TransitionCrossDissolve, animations: { () -> Void in
                 self.showNextPoll()
+                self.handle(error: error)
             }, completion: nil)
         })
     }
@@ -140,9 +153,13 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         }
     }
 
-    private func showErrorScreen(error: NSError!) {
+    private func handle(#error: NSError?) {
         // TODO: Error Screen
-        FNToast.show(text: error.localizedDescription, type: .Error)
+        NSLog("VotePollController error: \(error)")
+        if let errorToHandle = error {
+            loadingInterface.stopAnimating()
+        }
+        //FNToast.show(text: error.localizedDescription, type: .Error)
     }
     
     // MARK: View lifecycle
@@ -188,13 +205,15 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
     // MARK: PollControllerDelegate
 
     func pollLoaded(pollController: PollController) {
-        UIView.transitionWithView(navigationController!.view, duration: 0.15, options: .TransitionCrossDissolve, animations: { () -> Void in
+        UIView.transitionWithView(navigationController!.view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
             self.loadingInterface.stopAnimating()
         }, completion: nil)
     }
 
     func pollLoadFailed(pollController: PollController, error: NSError) {
-        showErrorScreen(error)
+        UIView.transitionWithView(navigationController!.view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
+            self.handle(error: error)
+        }, completion: nil)
     }
 
     func pollInteracted(pollController: PollController) {
@@ -218,7 +237,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
     }
 
     func pollDidHighlight(pollController: PollController) {
-        UIView.transitionWithView(navigationController!.view, duration: 0.15, options: .TransitionCrossDissolve, animations: { () -> Void in
+        UIView.transitionWithView(navigationController!.view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
             self.loadingInterface.startAnimating()
             self.showNextPoll()
         }, completion: nil)

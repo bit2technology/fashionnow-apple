@@ -21,7 +21,8 @@ class PollController: UIViewController, PhotoControllerDelegate {
             }
 
             // Reset layout
-            adjustLayout(0, animationTimingFunction: nil, callCompleteDelegate: false)
+            adjustHorizontalLayout(0, animationTimingFunction: nil, callCompleteDelegate: false)
+            adjustVerticalLayout(0, animationTimingFunction: nil, callCompleteDelegate: false)
 
             // Caption
             captionLabel.text = poll.caption
@@ -84,36 +85,68 @@ class PollController: UIViewController, PhotoControllerDelegate {
         animateHighlight(index: indexForTouch(sender.locationInView(view)), source: .DoubleTap)
     }
 
+    private var verticalMoviment = false
     @IBOutlet weak var drager: UIPanGestureRecognizer!
     @IBAction func didDrag(sender: UIPanGestureRecognizer) {
 
         var translationX = sender.translationInView(view).x * 1.6
-        let rate = translationX / self.view.bounds.width
+        var horizontalRate = translationX / view.bounds.width
+        // Set rate limit
+        if horizontalRate > 2 {
+            horizontalRate = 2
+        } else if horizontalRate < -2 {
+            horizontalRate = -2
+        }
+
+        var translationY = sender.translationInView(view).y
+        var verticalRate = translationY / view.bounds.height
 
         switch sender.state {
         case .Began:
             interactDelegate?.pollInteracted(self)
+            verticalMoviment = abs(sender.translationInView(view).y) > abs(sender.translationInView(view).x)
         case .Changed:
-            adjustLayout(rate, animationTimingFunction: nil, callCompleteDelegate: false)
-        case .Ended:
-            let velocityX = sender.velocityInView(view).x
-            if abs(velocityX) > 1000 {
-                animateHighlight(index: (velocityX > 0 ? 1 : 2), withEaseInAnimation: false, source: .Drag)
-                return
+            if verticalMoviment {
+                adjustVerticalLayout(verticalRate, animationTimingFunction: nil, callCompleteDelegate: false)
+            } else {
+                adjustHorizontalLayout(horizontalRate, animationTimingFunction: nil, callCompleteDelegate: false)
             }
-            if abs(rate) > 0.75 {
-                if rate > 0 && velocityX > 0 {
-                    animateHighlight(index: 1, withEaseInAnimation: false, source: .Drag)
+        case .Ended:
+            if verticalMoviment {
+                let velocityY = sender.velocityInView(view).y
+                if velocityY < -1000 {
+                    animateHighlight(index: 0, withEaseInAnimation: false, source: .Drag)
                     return
-                } else if rate < 0 && velocityX < 0 {
-                    animateHighlight(index: 2, withEaseInAnimation: false, source: .Drag)
+                }
+                if verticalRate < -0.75 && velocityY < 0 {
+                    animateHighlight(index: 0, withEaseInAnimation: false, source: .Drag)
                     return
+                }
+            } else {
+                let velocityX = sender.velocityInView(view).x
+                if abs(velocityX) > 1000 {
+                    animateHighlight(index: (velocityX > 0 ? 1 : 2), withEaseInAnimation: false, source: .Drag)
+                    return
+                }
+                if abs(horizontalRate) > 0.75 {
+                    if horizontalRate > 0 && velocityX > 0 {
+                        animateHighlight(index: 1, withEaseInAnimation: false, source: .Drag)
+                        return
+                    } else if horizontalRate < 0 && velocityX < 0 {
+                        animateHighlight(index: 2, withEaseInAnimation: false, source: .Drag)
+                        return
+                    }
                 }
             }
             fallthrough
         case .Cancelled, .Failed:
-            adjustLayout(0, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut), callCompleteDelegate: false)
-        default:
+            if verticalMoviment {
+                adjustVerticalLayout(0, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut), callCompleteDelegate: false)
+            } else {
+                adjustHorizontalLayout(0, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut), callCompleteDelegate: false)
+            }
+            verticalMoviment = false
+        case .Possible:
             return
         }
     }
@@ -126,6 +159,8 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
     func animateHighlight(#index: Int, withEaseInAnimation easeIn: Bool = true, source: HighlightSource) {
 
+        interactDelegate?.pollWillHighlight(self, index: index, source: source)
+
         var rate: CGFloat!
         switch index {
         case 1:
@@ -133,26 +168,15 @@ class PollController: UIViewController, PhotoControllerDelegate {
         case 2:
             rate = -1
         default:
+            adjustVerticalLayout(-1.2, animationTimingFunction: CAMediaTimingFunction(name: (easeIn ? kCAMediaTimingFunctionEaseInEaseOut : kCAMediaTimingFunctionEaseOut)), callCompleteDelegate: true)
             return
         }
-        interactDelegate?.pollWillHighlight(self, index: index, source: source)
-        adjustLayout(rate, animationTimingFunction: CAMediaTimingFunction(name: (easeIn ? kCAMediaTimingFunctionEaseInEaseOut : kCAMediaTimingFunctionEaseOut)), callCompleteDelegate: true)
-    }
-    
-    private func adjustLayout(rate: CGFloat, animationTimingFunction: CAMediaTimingFunction?, callCompleteDelegate: Bool) {
 
-        // Helper functions
-        
-        func setLayerTransform(transform: CATransform3D, toView view: UIView, explicitAnimated animated: Bool) {
-            if animated {
-                let animation = CABasicAnimation(keyPath: "transform")
-                animation.fromValue = NSValue(CATransform3D: view.layer.transform)
-                animation.toValue = NSValue(CATransform3D: transform)
-                view.layer.addAnimation(animation, forKey: "transform")
-            }
-            view.layer.transform = transform
-        }
-        
+        adjustHorizontalLayout(rate, animationTimingFunction: CAMediaTimingFunction(name: (easeIn ? kCAMediaTimingFunctionEaseInEaseOut : kCAMediaTimingFunctionEaseOut)), callCompleteDelegate: true)
+    }
+
+    private func adjustHorizontalLayout(rate: CGFloat, animationTimingFunction: CAMediaTimingFunction?, callCompleteDelegate: Bool) {
+
         func setMaskTranslateX(translate: CGFloat, #view: UIView) {
             var layerMaskTransform = view.layer.mask.transform
             layerMaskTransform.m41 = translate
@@ -160,14 +184,15 @@ class PollController: UIViewController, PhotoControllerDelegate {
         }
 
         // Adjust layers transform for rate
-        
+
+        /// Rate in points
         var translationX = rate * view.bounds.width / 2
         if abs(rate) > 1 {
             translationX -= (rate - (rate > 0 ? 1 : -1)) * view.bounds.width / 2 * 0.75
         }
-        
+
         let draggingView = (translationX > 0 ? leftPhotoView : rightPhotoView)
-        
+
         CATransaction.begin()
         if callCompleteDelegate {
             CATransaction.setCompletionBlock({ () -> Void in
@@ -175,11 +200,9 @@ class PollController: UIViewController, PhotoControllerDelegate {
                 return
             })
         }
-        var animated = false
         if let unwrappedAnimationTimingFunction = animationTimingFunction {
             CATransaction.setAnimationDuration(0.15)
             CATransaction.setAnimationTimingFunction(unwrappedAnimationTimingFunction)
-            animated = true
         } else {
             CATransaction.setDisableActions(true)
         }
@@ -189,6 +212,43 @@ class PollController: UIViewController, PhotoControllerDelegate {
             setMaskTranslateX(translationX * (isDraggingView ? 0.75 : 1.25), view: photoView)
         }
         CATransaction.commit()
+    }
+
+    private func adjustVerticalLayout(rate: CGFloat, animationTimingFunction: CAMediaTimingFunction?, callCompleteDelegate: Bool) {
+
+        // Adjust layers transform for rate
+
+        /// Rate in points
+        var translationY = rate * view.bounds.height * 0.9
+        if rate > 0 {
+            translationY = 0
+        }
+
+        CATransaction.begin()
+        if callCompleteDelegate {
+            CATransaction.setCompletionBlock({ () -> Void in
+                self.interactDelegate?.pollDidHighlight(self)
+                return
+            })
+        }
+        if let unwrappedAnimationTimingFunction = animationTimingFunction {
+            CATransaction.setAnimationDuration(0.25)
+            CATransaction.setAnimationTimingFunction(unwrappedAnimationTimingFunction)
+        } else {
+            CATransaction.setDisableActions(true)
+        }
+        setLayerTransform(CATransform3DMakeTranslation(0, translationY, 0), toView: view, explicitAnimated: (animationTimingFunction != nil))
+        CATransaction.commit()
+    }
+
+    private func setLayerTransform(transform: CATransform3D, toView view: UIView, explicitAnimated animated: Bool) {
+        if animated {
+            let animation = CABasicAnimation(keyPath: "transform")
+            animation.fromValue = NSValue(CATransform3D: view.layer.transform)
+            animation.toValue = NSValue(CATransform3D: transform)
+            view.layer.addAnimation(animation, forKey: "transform")
+        }
+        view.layer.transform = transform
     }
 
     // MARK: Layout

@@ -6,6 +6,7 @@
 #import <ALAssetsLibrary-CustomPhotoAlbum/ALAssetsLibrary+CustomPhotoAlbum.h>
 #import <CRToast/CRToast.h>
 #import <FacebookSDK/FacebookSDK.h>
+#import <FormatterKit/TTTTimeIntervalFormatter.h>
 #import <Parse/Parse.h>
 #import <Parse/PFObject+Subclass.h>
 #import <ParseCrashReporting/ParseCrashReporting.h>
