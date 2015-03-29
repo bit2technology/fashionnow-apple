@@ -103,7 +103,7 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate, UITextFi
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        PFAnalytics.fn_trackScreenShowInBackground("Login: Password", block: nil)
+        PFAnalytics.fn_trackScreenInBackground("Login: Password", block: nil)
     }
 
     // MARK: UITextFieldDelegate

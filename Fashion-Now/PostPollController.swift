@@ -104,7 +104,7 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        PFAnalytics.fn_trackScreenShowInBackground("Post: Main", block: nil)
+        PFAnalytics.fn_trackScreenInBackground("Post: Main", block: nil)
     }
 
     // MARK: PollControllerDelegate

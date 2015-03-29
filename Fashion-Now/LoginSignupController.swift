@@ -283,7 +283,7 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        PFAnalytics.fn_trackScreenShowInBackground("Login: Signup", block: nil)
+        PFAnalytics.fn_trackScreenInBackground("Login: Signup", block: nil)
     }
 
     // MARK: UITextFieldDelegate

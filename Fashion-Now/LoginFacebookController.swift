@@ -107,7 +107,7 @@ class LoginFacebookController: UIViewController, UINavigationControllerDelegate 
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        PFAnalytics.fn_trackScreenShowInBackground("Login: Main", block: nil)
+        PFAnalytics.fn_trackScreenInBackground("Login: Main", block: nil)
     }
 
     // MARK: UINavigationControllerDelegate

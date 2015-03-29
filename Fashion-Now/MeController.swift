@@ -64,7 +64,7 @@ class MeController: UICollectionViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        PFAnalytics.fn_trackScreenShowInBackground("Me: Main", block: nil)
+        PFAnalytics.fn_trackScreenInBackground("Me: Main", block: nil)
     }
 
     deinit {

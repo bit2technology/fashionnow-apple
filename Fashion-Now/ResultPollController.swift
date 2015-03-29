@@ -160,7 +160,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        PFAnalytics.fn_trackScreenShowInBackground("Me: Result", block: nil)
+        PFAnalytics.fn_trackScreenInBackground("Me: Result", block: nil)
     }
 
     // MARK: UIActionSheetDelegate

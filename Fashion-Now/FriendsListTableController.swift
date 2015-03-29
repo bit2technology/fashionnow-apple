@@ -222,7 +222,7 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        PFAnalytics.fn_trackScreenShowInBackground("Post: Friends Selection", block: nil)
+        PFAnalytics.fn_trackScreenInBackground("Post: Friends Selection", block: nil)
     }
 
     @IBAction func refreshControlDidChangeValue(sender: UIRefreshControl) {

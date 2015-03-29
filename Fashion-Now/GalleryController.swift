@@ -66,7 +66,7 @@ class GalleryController: UIViewController, UIScrollViewDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        PFAnalytics.fn_trackScreenShowInBackground("Poll: Gallery")
+        PFAnalytics.fn_trackScreenInBackground("Poll: Gallery")
     }
 
     override func prefersStatusBarHidden() -> Bool {

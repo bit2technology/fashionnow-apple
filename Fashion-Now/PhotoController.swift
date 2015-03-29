@@ -140,7 +140,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
                 source = "Camera Front"
             }
         }
-        PFAnalytics.fn_trackImageSourceInBackground(source)
+        PFAnalytics.fn_trackPostInBackground(source)
 
         // Get and apply edited or original image
         var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as UIImage

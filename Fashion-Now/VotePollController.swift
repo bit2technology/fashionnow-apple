@@ -211,7 +211,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        PFAnalytics.fn_trackScreenShowInBackground("Vote: Main", block: nil)
+        PFAnalytics.fn_trackScreenInBackground("Vote: Main", block: nil)
     }
 
     deinit {
