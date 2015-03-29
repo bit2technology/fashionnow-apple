@@ -33,6 +33,7 @@ class MeController: UICollectionViewController {
         super.viewDidLoad()
 
         // Basic configuration
+        navigationController!.tabBarItem.selectedImage = UIImage(named: "TabBarIconProfileSelected")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Bordered, target: nil, action: nil)
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)

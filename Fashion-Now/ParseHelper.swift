@@ -209,7 +209,7 @@ public class ParsePoll: PFObject, PFSubclassing {
     convenience init(user: ParseUser) {
         self.init()
         let defaultACL = PFACL(user: user)
-        defaultACL.setPublicReadAccess(false)
+        defaultACL.setPublicReadAccess(true)
         ACL = defaultACL
         createdBy = user
         version = 1
@@ -597,7 +597,7 @@ extension PFAnalytics {
         trackEventInBackground("ScreenShow", dimensions: ["Name": identifier], block: block)
     }
 
-    class func fn_trackVoteMethodInBackground(method: String, block: PFBooleanResultBlock! = nil) {
-        trackEventInBackground("VoteMethod", dimensions: ["Method": method], block: block)
+    class func fn_trackVote(vote: NSNumber, method: String, block: PFBooleanResultBlock! = nil) {
+        trackEventInBackground("Vote", dimensions: ["Vote": vote, "Method": method], block: block)
     }
 }

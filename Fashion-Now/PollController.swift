@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
+private let defaultDuration: CFTimeInterval = 0.25
+
 class PollController: UIViewController, PhotoControllerDelegate {
     
     var poll: ParsePoll = ParsePoll(user: ParseUser.currentUser()) {
@@ -103,8 +105,9 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
         switch sender.state {
         case .Began:
-            interactDelegate?.pollInteracted(self)
             verticalMoviment = abs(sender.translationInView(view).y) > abs(sender.translationInView(view).x)
+            view.shouldRasterize = verticalMoviment
+            interactDelegate?.pollInteracted(self)
         case .Changed:
             if verticalMoviment {
                 adjustVerticalLayout(verticalRate, animationTimingFunction: nil, callCompleteDelegate: false)
@@ -146,6 +149,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
                 adjustHorizontalLayout(0, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut), callCompleteDelegate: false)
             }
             verticalMoviment = false
+            view.shouldRasterize = true
         case .Possible:
             return
         }
@@ -201,7 +205,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
             })
         }
         if let unwrappedAnimationTimingFunction = animationTimingFunction {
-            CATransaction.setAnimationDuration(0.15)
+            CATransaction.setAnimationDuration(defaultDuration)
             CATransaction.setAnimationTimingFunction(unwrappedAnimationTimingFunction)
         } else {
             CATransaction.setDisableActions(true)
@@ -232,7 +236,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
             })
         }
         if let unwrappedAnimationTimingFunction = animationTimingFunction {
-            CATransaction.setAnimationDuration(0.25)
+            CATransaction.setAnimationDuration(defaultDuration)
             CATransaction.setAnimationTimingFunction(unwrappedAnimationTimingFunction)
         } else {
             CATransaction.setDisableActions(true)

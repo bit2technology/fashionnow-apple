@@ -280,6 +280,17 @@
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EtK-fa-XtU">
                                 <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
+                                        <size key="value" width="0.0" height="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="hpa-fw-Ay5" kind="embed" identifier="Poll Controller" id="apZ-Yv-541"/>
                                 </connections>
@@ -330,7 +341,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="fsi-Hj-o8b" firstAttribute="top" secondItem="rdg-hq-Mrj" secondAttribute="top" constant="8" id="52E-QP-lca"/>
                                     <constraint firstAttribute="trailing" secondItem="fsi-Hj-o8b" secondAttribute="trailing" constant="8" id="eOV-XO-wbN"/>
@@ -339,7 +350,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="rdg-hq-Mrj" firstAttribute="top" secondItem="xur-zt-maA" secondAttribute="bottom" id="180-bH-mSI"/>
                             <constraint firstItem="3bW-d0-UfL" firstAttribute="top" secondItem="EtK-fa-XtU" secondAttribute="bottom" id="34M-DU-YTM"/>
@@ -479,7 +490,7 @@
         <scene sceneID="H8i-C2-7Wl">
             <objects>
                 <navigationController id="yJf-au-aBx" userLabel="Me Navigation" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="history" id="yIu-tG-KRu"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="TabBarIconProfileUnselected" id="yIu-tG-KRu"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="s4e-vF-TF0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -492,7 +503,7 @@
             </objects>
             <point key="canvasLocation" x="286" y="776"/>
         </scene>
-        <!--History-->
+        <!--Profile-->
         <scene sceneID="N06-YM-3cg">
             <objects>
                 <collectionViewController id="cEa-Or-vWC" customClass="MeController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
@@ -684,7 +695,7 @@
                             <outlet property="delegate" destination="cEa-Or-vWC" id="23E-Oa-XbS"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="History" id="SHi-hj-ibv">
+                    <navigationItem key="navigationItem" title="Profile" id="SHi-hj-ibv">
                         <barButtonItem key="rightBarButtonItem" title="Log Out" id="M8u-sa-PEm">
                             <connections>
                                 <action selector="logOutButtonPressed:" destination="cEa-Or-vWC" id="1Kt-t4-qgj"/>
@@ -1377,6 +1388,9 @@
                             <constraint firstAttribute="trailing" secondItem="TYB-j4-um4" secondAttribute="trailing" id="odu-gc-3fV"/>
                             <constraint firstItem="PZq-MC-hyg" firstAttribute="leading" secondItem="Ngt-gb-2Qu" secondAttribute="leading" constant="4" id="sPP-vq-gcR"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="shouldRasterize" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="kgl-Bo-434" appends="YES" id="D6O-sz-LXB"/>
                             <outletCollection property="gestureRecognizers" destination="aQj-E4-gl5" appends="YES" id="Dxc-bZ-Xhn"/>
@@ -1650,7 +1664,7 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Filters come here" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Pbi-sX-WMF">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -1711,11 +1725,11 @@
             </objects>
             <point key="canvasLocation" x="286" y="-277"/>
         </scene>
-        <!--Post-->
+        <!--Create-->
         <scene sceneID="7Mt-CD-10B">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="oUO-1p-KSF" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Post" image="TabBarIconPostUnselected" id="2O1-Ra-Pjk"/>
+                    <tabBarItem key="tabBarItem" title="Create" image="TabBarIconPostUnselected" id="2O1-Ra-Pjk"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="cG8-B3-08M">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1742,6 +1756,7 @@
         <image name="ButtonRoundBordersBackground" width="11" height="11"/>
         <image name="Lock" width="12" height="14"/>
         <image name="TabBarIconPostUnselected" width="25" height="25"/>
+        <image name="TabBarIconProfileUnselected" width="25" height="25"/>
         <image name="TabBarIconVoteUnselected" width="25" height="25"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -1750,8 +1765,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="uM3-tb-eTB"/>
-        <segue reference="apZ-Yv-541"/>
         <segue reference="oem-Cm-nHK"/>
+        <segue reference="apZ-Yv-541"/>
+        <segue reference="uM3-tb-eTB"/>
     </inferredMetricsTieBreakers>
 </document>

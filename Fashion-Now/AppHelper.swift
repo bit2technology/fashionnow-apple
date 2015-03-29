@@ -143,25 +143,10 @@ extension UIView {
             return layer.shouldRasterize
         }
         set {
+            layer.rasterizationScale = UIScreen.mainScreen().scale
             layer.shouldRasterize = newValue
         }
     }
-
-    /// Set an activity indicator view as subview, covering everything and returns it.
-    func fn_setLoading(style: UIActivityIndicatorViewStyle = .WhiteLarge, color: UIColor = UIColor.grayColor(), background: UIColor = UIColor.whiteColor()) -> UIActivityIndicatorView {
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: style)
-        activityIndicator.color = color
-        activityIndicator.backgroundColor = background
-        activityIndicator.startAnimating()
-        activityIndicator.frame = self.bounds
-        activityIndicator.autoresizingMask = .FlexibleWidth | .FlexibleHeight
-        activityIndicator.opaque = true
-        self.addSubview(activityIndicator)
-        return activityIndicator
-    }
-}
-
-extension UIImageView {
     @IBInspectable var shadowOffset: CGSize {
         get {
             return layer.shadowOffset
@@ -187,6 +172,21 @@ extension UIImageView {
         }
     }
 
+    /// Set an activity indicator view as subview, covering everything and returns it.
+    func fn_setLoading(style: UIActivityIndicatorViewStyle = .WhiteLarge, color: UIColor = UIColor.grayColor(), background: UIColor = UIColor.whiteColor()) -> UIActivityIndicatorView {
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: style)
+        activityIndicator.color = color
+        activityIndicator.backgroundColor = background
+        activityIndicator.startAnimating()
+        activityIndicator.frame = self.bounds
+        activityIndicator.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        activityIndicator.opaque = true
+        self.addSubview(activityIndicator)
+        return activityIndicator
+    }
+}
+
+extension UIImageView {
     /// Adjusts the image view aspect ratio constraint to the size of the image
     func fn_setAspectRatio(image: UIImage?, needsLayout: Bool = true) {
 
@@ -272,20 +272,20 @@ func fn_applyPollMask(left: UIView, right: UIView) {
     let spaceBetween: CGFloat = maskReferenceSize / 100
 
     let leftMaskPath = UIBezierPath()
-    leftMaskPath.moveToPoint(CGPoint(x: -6 * maskReferenceSize, y: 0))
+    leftMaskPath.moveToPoint(CGPoint(x: -2 * maskReferenceSize, y: 0))
     leftMaskPath.addLineToPoint(CGPoint(x: maskReferenceSize + (maskReferenceSize / 10) - spaceBetween, y: 0))
     leftMaskPath.addLineToPoint(CGPoint(x: maskReferenceSize - (maskReferenceSize / 10) - spaceBetween, y: maskReferenceSize))
-    leftMaskPath.addLineToPoint(CGPoint(x: -6 * maskReferenceSize, y: maskReferenceSize))
+    leftMaskPath.addLineToPoint(CGPoint(x: -2 * maskReferenceSize, y: maskReferenceSize))
     leftMaskPath.closePath()
     let leftMask = CAShapeLayer()
     leftMask.path = leftMaskPath.CGPath
     left.layer.mask = leftMask
 
     let rightMaskPath = UIBezierPath()
-    rightMaskPath.moveToPoint(CGPoint(x: 7 * maskReferenceSize, y: 0))
+    rightMaskPath.moveToPoint(CGPoint(x: 3 * maskReferenceSize, y: 0))
     rightMaskPath.addLineToPoint(CGPoint(x: (maskReferenceSize / 10) + spaceBetween, y: 0))
     rightMaskPath.addLineToPoint(CGPoint(x: (maskReferenceSize / -10) + spaceBetween, y: maskReferenceSize))
-    rightMaskPath.addLineToPoint(CGPoint(x: 7 * maskReferenceSize, y: maskReferenceSize))
+    rightMaskPath.addLineToPoint(CGPoint(x: 3 * maskReferenceSize, y: maskReferenceSize))
     rightMaskPath.closePath()
     let rightMask = CAShapeLayer()
     rightMask.path = rightMaskPath.CGPath
