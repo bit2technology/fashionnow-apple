@@ -54,16 +54,16 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   ActionSheetPicker-3.0: de0f71e30495ed0192f7d16d0fddcab6882a0ca3
-  ALAssetsLibrary-CustomPhotoAlbum: 78ebdfc8577c95974c5d71109bd31606ce175cfb
-  Bolts: dd9fb8433d67f5acc3b6b4d1379bbc5513d716c1
-  CRToast: f9f2c4b29776d68ba24c4d621cba59a83fea921b
+  ALAssetsLibrary-CustomPhotoAlbum: 4df413c22294b310f47c5525fa99523fd43419f9
+  Bolts: f8e2f94edbf9fec7bb8de5ecaaa3aa6b7de6f64e
+  CRToast: 99a28f4387def43b439ad88f957ce31357ff7373
   Facebook-iOS-SDK: cd87f0b2f0c1d9574b44e8fa2baacc275524bac3
-  FormatterKit: 547a808c41172136a3f3acb424ac9361d38bb32f
+  FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
   Parse: 3c2d4e6ade7b59d31c0bc8106340c6b81b31bc0f
   ParseCrashReporting: 9118391db9867e693bb6a8fb45000a95fab09681
   ParseFacebookUtils: f0c954253a65e945d7cb73400c33bc661f516b85
-  Reachability: 1ef8adf5c4e3d362f96515d4278f68dad3c26930
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
-  UIActivityIndicator-for-SDWebImage: 8bd92c15280fbe54816448c6b14674145eee05c7
+  UIActivityIndicator-for-SDWebImage: 7bf7ebbf0ed1747dedc0d6e949c4603a6d0f9e0c
 
 COCOAPODS: 0.36.1
