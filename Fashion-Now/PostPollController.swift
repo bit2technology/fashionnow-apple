@@ -26,11 +26,20 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
         navigationItem.rightBarButtonItem?.enabled = false
         textField.text = nil
         pollController.poll = ParsePoll(user: ParseUser.currentUser())
+        cachedFriendsList = nil
     }
 
+    private var downloadingFriendsList = false
     func cacheFriendsList() {
-        
+
+        if downloadingFriendsList {
+            // Already downloading. Just do nothing.
+            return
+        }
+
+        downloadingFriendsList = true
         FBRequestConnection.startForMyFriendsWithCompletionHandler { (requestConnection, object, error) -> Void in
+            self.downloadingFriendsList = false
 
             if error != nil {
                 NSLog("Friends list download error: \(error.localizedDescription)")
@@ -95,16 +104,24 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
 
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconPostSelected")
 
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "clean", name: LoginChangedNotificationName, object: nil)
+
         textField.delegate = self
         textField.frame.size.width = view.bounds.size.width
         pollController.editDelegate = self
-
-        cacheFriendsList()
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         PFAnalytics.fn_trackScreenInBackground("Post: Main", block: nil)
+
+        if !(cachedFriendsList?.count > 0) {
+            cacheFriendsList()
+        }
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     // MARK: PollControllerDelegate
