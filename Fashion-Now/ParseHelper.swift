@@ -53,7 +53,7 @@ private let dateFormat = "yyyy-MM-dd"
 class ParseUser: PFUser, PFSubclassing {
 
     override class func logOut() {
-        superclass()?.logOut()
+        superclass()!.logOut()
         FBSession.activeSession().closeAndClearTokenInformation()
     }
 
@@ -582,6 +582,13 @@ class ParseVote: PFObject, PFSubclassing {
 
     var isValid: Bool {
         return pollId?.fn_count > 0 && vote != nil && voteBy != nil
+    }
+}
+
+extension PFFile {
+
+    convenience init(imageData: NSData) {
+        self.init(name: "image.jpg", data: imageData, contentType: "image/jpeg")
     }
 }
 

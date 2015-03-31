@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
+private let animationDuration: NSTimeInterval = 0.25
+
 class PhotoController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     var photo: ParsePhoto = ParsePhoto(user: ParseUser.currentUser()) {
@@ -73,7 +75,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         photo.image = nil
 
         // Delete in view
-        UIView.animateWithDuration(0.15, animations: { () -> Void in
+        UIView.animateWithDuration(animationDuration, animations: { () -> Void in
             self.imageView.superview!.alpha = 0
         }) { (completed) -> Void in
             self.imageContainerHidden(true)
@@ -88,7 +90,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
 
         // Set photo properties
         let imageData = image.fn_compressed()
-        photo.image = PFFile(name: "image.jpg", data: imageData, contentType: "image/jpeg")
+        photo.image = PFFile(imageData: imageData)
         imageView.image = UIImage(data: imageData)
         imageContainerHidden(false)
         imageView.fn_setAspectRatio(nil)

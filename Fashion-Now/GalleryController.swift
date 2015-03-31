@@ -49,7 +49,7 @@ class GalleryController: UIViewController, UIScrollViewDelegate {
     }
 
     private func centerSubview(#scrollView: UIScrollView) {
-        let subview = scrollView.subviews[0] as UIView
+        let subview = scrollView.subviews.first as UIView
         subview.frame.origin.x = max((scrollView.bounds.size.width - scrollView.contentSize.width) / 2, 0.0)
         subview.frame.origin.y = max((scrollView.bounds.size.height - scrollView.contentSize.height) / 2, 0.0)
     }
@@ -87,7 +87,7 @@ class GalleryController: UIViewController, UIScrollViewDelegate {
     }
 
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-        return (scrollView.subviews[0] as UIView)
+        return (scrollView.subviews.first as UIView)
     }
 
     func scrollViewDidZoom(scrollView: UIScrollView) {

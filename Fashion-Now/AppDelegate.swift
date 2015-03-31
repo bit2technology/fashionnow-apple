@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject:AnyObject]?) -> Bool {
 
         // App basic configuration
-        window?.tintColor = UIColor.fn_tint()
+        window!.tintColor = UIColor.fn_tint()
 
         // Register subclasses
         // This is because overriding class function "load()" doesn't work on Swift 1.2+

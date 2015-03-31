@@ -8,7 +8,7 @@
 
 import UIKit
 
-private let transitionDuration: NSTimeInterval = 0.15
+private let transitionDuration: NSTimeInterval = 0.25
 
 class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDelegate, UIActionSheetDelegate {
 
@@ -39,13 +39,13 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
     private var cleanInterface: Bool = false {
         didSet {
             for voteButton in voteButtons {
-                voteButton.alpha = (cleanInterface ? 0.25 : 1)
+                voteButton.alpha = (cleanInterface ? 0.2 : 1)
             }
         }
     }
     private func setCleanInterface(newValue: Bool, animated: Bool) {
         if newValue != cleanInterface {
-            UIView.animateWithDuration(animated ? 0.15 : 0) { () -> Void in
+            UIView.animateWithDuration(animated ? transitionDuration : 0) { () -> Void in
                 self.cleanInterface = newValue
             }
         }
@@ -57,7 +57,8 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
     // Loading interface
     private weak var loadingInterface: UIActivityIndicatorView!
 
-    private let reportButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.reportButtonTitle", value: "Report Poll", comment: "Shown when user taps the gear button")
+    // TODO: Report button
+    //private let reportButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.reportButtonTitle", value: "Report Poll", comment: "Shown when user taps the gear button")
     private let skipButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.skipButtonTitle", value: "Skip Poll", comment: "Shown when user taps the gear button")
     private let filtersButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.filtersButtonTitle", value: "Apply Filters", comment: "Shown when user taps the gear button")
     private let loginButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.loginButtonTitle", value: "Log In", comment: "Shown when user taps the gear button")
@@ -69,7 +70,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         // Buttons
         var otherButtonTitles = [String]()
         if currentPoll != nil {
-            otherButtonTitles += [reportButtonTitle, skipButtonTitle]
+            otherButtonTitles += [/*reportButtonTitle,*/ skipButtonTitle]
         }
         otherButtonTitles.append(filtersButtonTitle)
         if PFAnonymousUtils.isLinkedWithUser(ParseUser.currentUser()) {
@@ -94,16 +95,16 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         }
     }
 
-    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
-        switch actionSheet.buttonTitleAtIndex(buttonIndex) {
-        case reportButtonTitle:
-            let alertView = UIAlertView(title: "Report Poll", message: "Tell us why you want to report this poll", delegate: nil, cancelButtonTitle: "Cancel", otherButtonTitles: "Report (Not Working)")
-            alertView.alertViewStyle = .PlainTextInput
-            alertView.show()
-        default:
-            break
-        }
-    }
+//    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
+//        switch actionSheet.buttonTitleAtIndex(buttonIndex) {
+//        case reportButtonTitle:
+//            let alertView = UIAlertView(title: "Report Poll", message: "Tell us why you want to report this poll", delegate: nil, cancelButtonTitle: "Cancel", otherButtonTitles: "Report (Not Working)")
+//            alertView.alertViewStyle = .PlainTextInput
+//            alertView.show()
+//        default:
+//            break
+//        }
+//    }
 
     private func showNextPoll() -> Bool {
 
