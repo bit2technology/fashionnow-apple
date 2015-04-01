@@ -585,19 +585,90 @@ class ParseVote: PFObject, PFSubclassing {
     }
 }
 
+// MARK: - Report class
+
+let ParseReportCommentKey = "comment"
+let ParseReportPollIdKey = "pollId"
+let ParseReportUserKey = "user"
+
+class ParseReport: PFObject, PFSubclassing {
+
+    class func parseClassName() -> String {
+        return "Report"
+    }
+
+    convenience init(user: ParseUser) {
+        self.init()
+        let defaultACL = PFACL(user: user)
+        defaultACL.setPublicReadAccess(true)
+        ACL = defaultACL
+        self.user = user
+    }
+
+    var comment: String? {
+        get {
+            return self[ParseReportCommentKey] as? String
+        }
+        set {
+            self[ParseReportCommentKey] = newValue ?? NSNull()
+        }
+    }
+
+    var pollId: String? {
+        get {
+            return self[ParseReportPollIdKey] as? String
+        }
+        set {
+            self[ParseReportPollIdKey] = newValue ?? NSNull()
+        }
+    }
+
+    var user: ParseUser? {
+        get {
+            return self[ParseReportUserKey] as? ParseUser
+        }
+        set {
+            self[ParseReportUserKey] = newValue ?? NSNull()
+        }
+    }
+}
+
+// MARK: - File
+
 extension PFFile {
 
-    convenience init(imageData: NSData) {
-        self.init(name: "image.jpg", data: imageData, contentType: "image/jpeg")
+    convenience init(fn_imageData data: NSData) {
+        self.init(name: "image.jpg", data: data, contentType: "image/jpeg")
     }
 }
 
 // MARK: - Analytics
 
+enum ErrorLocation: Int {
+    case AppDelegateLocationFromIPDownload = 0
+    case AppDelegateLocationFromIPSerialization = 1
+    case AppDelegateLocationFromIPSave = 2
+    case AppDelegateLoginChangedUnpin = 3
+    case AppDelegateLoginChangedSave = 4
+    case AppDelegateRegisterNotificationSave = 5
+    case PhotoControllerImageDownload = 6
+    case PhotoControllerImageSave = 7
+    case PhotoControllerAddToCameraRoll = 8
+    case VoteControllerHandle = 9
+    case VoteControllerLoadList = 10
+    case VoteControllerPollLoadFail = 11
+    case VoteControllerVoteSave = 12
+
+}
+
 extension PFAnalytics {
 
+    class func fn_trackErrorInBackground(error: NSError, location: ErrorLocation, block: PFBooleanResultBlock! = nil) {
+        trackEventInBackground("Error", dimensions: ["Domain": error.domain, "Code": "\(error.code)", "Location": "\(location.rawValue)"], block: block)
+    }
+
     class func fn_trackPostInBackground(imageSource: String, block: PFBooleanResultBlock! = nil) {
-        trackEventInBackground("ImageSource", dimensions: ["Source": imageSource], block: block)
+        trackEventInBackground("Post", dimensions: ["Source": imageSource], block: block)
     }
 
     class func fn_trackScreenInBackground(identifier: String, block: PFBooleanResultBlock! = nil) {

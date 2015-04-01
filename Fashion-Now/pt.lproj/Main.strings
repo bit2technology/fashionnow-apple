@@ -1,11 +1,8 @@
 /* Class = "UILabel"; text = "Name"; ObjectID = "0TE-HJ-F3a"; */
 "0TE-HJ-F3a.text" = "Nome";
 
-/* Class = "UIButton"; normalTitle = "Follow"; ObjectID = "1iE-fK-YeD"; */
-"1iE-fK-YeD.normalTitle" = "Seguir";
-
-/* Class = "UITabBarItem"; title = "Post"; ObjectID = "2O1-Ra-Pjk"; */
-"2O1-Ra-Pjk.title" = "Postar";
+/* Class = "UITabBarItem"; title = "Create"; ObjectID = "2O1-Ra-Pjk"; */
+"2O1-Ra-Pjk.title" = "Criar";
 
 /* Class = "UILabel"; text = "Impossible to proceed. Are you connected to the Internet?"; ObjectID = "4UF-ot-JIx"; */
 "4UF-ot-JIx.text" = "Impossível prosseguir. Você está conectado à Internet?";
@@ -16,11 +13,17 @@
 /* Class = "UIButton"; normalTitle = "Log in with password"; ObjectID = "5eZ-fB-11K"; */
 "5eZ-fB-11K.normalTitle" = "Login com senha";
 
+/* Class = "UINavigationItem"; title = "Gallery"; ObjectID = "8K3-ng-n0y"; */
+"8K3-ng-n0y.title" = "Galeria";
+
 /* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "9H3-pz-qNB"; */
 "9H3-pz-qNB.title" = "Voltar";
 
 /* Class = "UINavigationItem"; title = "Sign Up"; ObjectID = "9LK-rm-73H"; */
 "9LK-rm-73H.title" = "Registrar";
+
+/* Class = "UINavigationItem"; title = "Filter"; ObjectID = "9a4-Zq-fGJ"; */
+"9a4-Zq-fGJ.title" = "Filtrar";
 
 /* Class = "UILabel"; text = "Birthday"; ObjectID = "9u8-J9-agp"; */
 "9u8-J9-agp.text" = "Data de nascimento";
@@ -55,17 +58,20 @@
 /* Class = "UITextField"; placeholder = "Username"; ObjectID = "Ost-XS-Gaw"; */
 "Ost-XS-Gaw.placeholder" = "Nome de usuário";
 
-/* Class = "UILabel"; text = "No more polls to vote"; ObjectID = "Pca-Ch-LI9"; */
+/* Class = "UILabel"; text = "No more polls to vote 😢"; ObjectID = "Pca-Ch-LI9"; */
 "Pca-Ch-LI9.text" = "Sem mais enquetes para votar";
 
 /* Class = "UIBarButtonItem"; title = "Send"; ObjectID = "Qal-Vg-8Fh"; */
 "Qal-Vg-8Fh.title" = "Enviar";
 
-/* Class = "UINavigationItem"; title = "History"; ObjectID = "SHi-hj-ibv"; */
-"SHi-hj-ibv.title" = "Histórico";
+/* Class = "UINavigationItem"; title = "Profile"; ObjectID = "SHi-hj-ibv"; */
+"SHi-hj-ibv.title" = "Perfil";
 
 /* Class = "UITextField"; placeholder = "Optional"; ObjectID = "TTM-un-ddi"; */
 "TTM-un-ddi.placeholder" = "Opcional";
+
+/* Class = "UILabel"; text = "Date"; ObjectID = "Tov-fz-RZ3"; */
+"Tov-fz-RZ3.text" = "Data";
 
 /* Class = "UILabel"; text = "Gender"; ObjectID = "UI9-MR-EjJ"; */
 "UI9-MR-EjJ.text" = "Sexo";
@@ -76,6 +82,9 @@
 /* Class = "UIBarButtonItem"; title = "Forgot"; ObjectID = "VHA-FD-oDJ"; */
 "VHA-FD-oDJ.title" = "Esqueci";
 
+/* Class = "UILabel"; text = "Date"; ObjectID = "a0e-4P-C3U"; */
+"a0e-4P-C3U.text" = "Data";
+
 /* Class = "UITableViewSection"; headerTitle = "Credentials"; ObjectID = "cAD-Za-ZPA"; */
 "cAD-Za-ZPA.headerTitle" = "Credenciais";
 
@@ -85,23 +94,23 @@
 /* Class = "UILabel"; text = "Gender"; ObjectID = "dXF-75-eHu"; */
 "dXF-75-eHu.text" = "Sexo";
 
+/* Class = "UILabel"; text = "Name"; ObjectID = "dmJ-d0-zRi"; */
+"dmJ-d0-zRi.text" = "Nome";
+
 /* Class = "UINavigationItem"; title = "Log In"; ObjectID = "dwE-iZ-ESc"; */
 "dwE-iZ-ESc.title" = "Login";
 
 /* Class = "UIButton"; normalTitle = "Log in"; ObjectID = "exf-D7-gGy"; */
 "exf-D7-gGy.normalTitle" = "Login";
 
+/* Class = "UILabel"; text = "Tap the gear to change filters"; ObjectID = "fsi-Hj-o8b"; */
+"fsi-Hj-o8b.text" = "Toque na engrenagem para mudar filtros ou recarregar";
+
 /* Class = "UILabel"; text = "Name"; ObjectID = "lnp-IN-Yzw"; */
 "lnp-IN-Yzw.text" = "Nome";
 
-/* Class = "UINavigationItem"; title = "Result"; ObjectID = "m9p-AD-oA9"; */
-"m9p-AD-oA9.title" = "Resultado";
-
-/* Class = "UILabel"; text = "Name"; ObjectID = "mhc-nx-wcX"; */
-"mhc-nx-wcX.text" = "Nome";
-
-/* Class = "UILabel"; text = "Date"; ObjectID = "oWN-q7-Q6r"; */
-"oWN-q7-Q6r.text" = "Data";
+/* Class = "UILabel"; text = "Results"; ObjectID = "mT1-7P-I06"; */
+"mT1-7P-I06.text" = "Resultados";
 
 /* Class = "UIBarButtonItem"; title = "Photos"; ObjectID = "p8Z-hd-6ug"; */
 "p8Z-hd-6ug.title" = "Fotos";
@@ -118,9 +127,12 @@
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "tXu-ZQ-igo"; */
 "tXu-ZQ-igo.placeholder" = "Senha";
 
+/* Class = "UIButton"; normalTitle = "Load More"; ObjectID = "thF-Md-Kue"; */
+"thF-Md-Kue.normalTitle" = "Carregar Mais";
+
 /* Class = "UILabel"; text = "Password"; ObjectID = "ub0-D8-tJg"; */
 "ub0-D8-tJg.text" = "Senha";
 
-/* Class = "UILabel"; text = "Title"; ObjectID = "voN-36-ZXr"; */
-"voN-36-ZXr.text" = "Título";
+/* Class = "UITabBarItem"; title = "Profile"; ObjectID = "yIu-tG-KRu"; */
+"yIu-tG-KRu.title" = "Perfil";
 

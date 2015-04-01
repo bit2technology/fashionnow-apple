@@ -10,7 +10,7 @@ import UIKit
 
 private let transitionDuration: NSTimeInterval = 0.25
 
-class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDelegate, UIActionSheetDelegate {
+class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDelegate, UIActionSheetDelegate, UIAlertViewDelegate {
 
     private var polls = ParsePollList(type: .VotePublic)
 
@@ -57,10 +57,10 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
     // Loading interface
     private weak var loadingInterface: UIActivityIndicatorView!
 
-    // TODO: Report button
-    //private let reportButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.reportButtonTitle", value: "Report Poll", comment: "Shown when user taps the gear button")
+    private let reportButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.reportButtonTitle", value: "Report Poll", comment: "Shown when user taps the gear button")
     private let skipButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.skipButtonTitle", value: "Skip Poll", comment: "Shown when user taps the gear button")
     private let filtersButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.filtersButtonTitle", value: "Apply Filters", comment: "Shown when user taps the gear button")
+    private let refreshButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.refreshButtonTitle", value: "Refresh", comment: "Shown when user taps the gear button")
     private let loginButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.loginButtonTitle", value: "Log In", comment: "Shown when user taps the gear button")
 
     @IBAction func gearButtonPressed(sender: UIBarButtonItem) {
@@ -70,9 +70,9 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         // Buttons
         var otherButtonTitles = [String]()
         if currentPoll != nil {
-            otherButtonTitles += [/*reportButtonTitle,*/ skipButtonTitle]
+            otherButtonTitles += [reportButtonTitle, skipButtonTitle]
         }
-        otherButtonTitles.append(filtersButtonTitle)
+        otherButtonTitles += [/*filtersButtonTitle,*/ refreshButtonTitle] // TODO: Add filters
         if PFAnonymousUtils.isLinkedWithUser(ParseUser.currentUser()) {
             otherButtonTitles.append(loginButtonTitle)
         }
@@ -86,25 +86,40 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
 
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         switch actionSheet.buttonTitleAtIndex(buttonIndex) {
+
         case skipButtonTitle:
             pollController.animateHighlight(index: 0, source: .Extern)
+
+        case refreshButtonTitle:
+            UIView.transitionWithView(self.navigationController!.view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
+                self.loadPollList(nil)
+                }, completion: nil)
+
         case loginButtonTitle:
             (tabBarController! as TabBarController).presentLoginController()
+
         default:
             break
         }
     }
 
-//    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
-//        switch actionSheet.buttonTitleAtIndex(buttonIndex) {
-//        case reportButtonTitle:
-//            let alertView = UIAlertView(title: "Report Poll", message: "Tell us why you want to report this poll", delegate: nil, cancelButtonTitle: "Cancel", otherButtonTitles: "Report (Not Working)")
-//            alertView.alertViewStyle = .PlainTextInput
-//            alertView.show()
-//        default:
-//            break
-//        }
-//    }
+    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
+        switch actionSheet.buttonTitleAtIndex(buttonIndex) {
+        case reportButtonTitle:
+            let alertView = UIAlertView(title: NSLocalizedString("VotePollController.gearButton.reportAlert.title", value: "Report Poll", comment: "Shown when user reports a poll"), message: NSLocalizedString("VotePollController.gearButton.reportAlert.message", value: "Tell us why you want to report this poll", comment: "Shown when user reports a poll"), delegate: self, cancelButtonTitle: FNLocalizedCancelButtonTitle, otherButtonTitles: NSLocalizedString("VotePollController.gearButton.reportAlert.reportButtonTitle", value: "Report", comment: "Shown when user reports a poll"))
+            alertView.alertViewStyle = .PlainTextInput
+            alertView.show()
+        default:
+            break
+        }
+    }
+
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex != alertView.cancelButtonIndex {
+            // TODO: Report
+            pollController.animateHighlight(index: 0, source: .Extern)
+        }
+    }
 
     private func showNextPoll() -> Bool {
 
@@ -134,7 +149,6 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
             dateLabel.text = nil
             emptyInterface.hidden = false
             loadingInterface.stopAnimating()
-            navigationItem.rightBarButtonItem!.enabled = false
             return false
         }
     }
@@ -147,16 +161,14 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         avatarView.image = nil
         nameLabel.text = nil
         dateLabel.text = nil
-        navigationItem.rightBarButtonItem!.enabled = false
 
         // Reload polls
         polls = ParsePollList(type: .VotePublic)
         polls.update(completionHandler: { (success, error) -> Void in
 
             UIView.transitionWithView(self.navigationController!.view, duration: notification == nil ? transitionDuration : 0, options: .TransitionCrossDissolve, animations: { () -> Void in
-                self.navigationItem.rightBarButtonItem!.enabled = true
                 self.showNextPoll()
-                self.handle(error: error)
+                self.handle(error: error, location: .VoteControllerLoadList)
             }, completion: nil)
         })
     }
@@ -177,13 +189,12 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         }
     }
 
-    private func handle(#error: NSError?) {
-        // TODO: Error Screen
+    private func handle(#error: NSError?, location: ErrorLocation?) {
+        // TODO: Error handler
         if let errorToHandle = error {
-            NSLog("VotePollController error: \(errorToHandle)")
+            PFAnalytics.fn_trackErrorInBackground(errorToHandle, location: location ?? .VoteControllerHandle)
             loadingInterface.stopAnimating()
         }
-        //FNToast.show(text: error.localizedDescription, type: .Error)
     }
     
     // MARK: View lifecycle
@@ -233,7 +244,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
 
     func pollLoadFailed(pollController: PollController, error: NSError) {
         UIView.transitionWithView(navigationController!.view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
-            self.handle(error: error)
+            self.handle(error: error, location: .VoteControllerPollLoadFail)
         }, completion: nil)
     }
 
@@ -254,7 +265,11 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         let vote = ParseVote(user: ParseUser.currentUser())
         vote.pollId = pollController.poll.objectId
         vote.vote = index
-        vote.saveEventually(nil)
+        vote.saveEventually { (succeeded, error) -> Void in
+            if error != nil {
+                PFAnalytics.fn_trackErrorInBackground(error, location: .VoteControllerVoteSave)
+            }
+        }
     }
 
     func pollDidHighlight(pollController: PollController) {

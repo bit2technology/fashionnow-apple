@@ -75,12 +75,9 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         photo.image = nil
 
         // Delete in view
-        UIView.animateWithDuration(animationDuration, animations: { () -> Void in
-            self.imageView.superview!.alpha = 0
-        }) { (completed) -> Void in
-            self.imageContainerHidden(true)
-            self.imageView.image = nil
-        }
+        UIView.transitionWithView(view, duration: animationDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
+            self.photo = ParsePhoto(user: ParseUser.currentUser())
+        }, completion: nil)
 
         // Call delegate
         delegate?.photoEdited(self)
@@ -90,7 +87,12 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
 
         // Set photo properties
         let imageData = image.fn_compressed()
-        photo.image = PFFile(imageData: imageData)
+        photo.image = PFFile(fn_imageData: imageData)
+        photo.saveEventually { (succeeded, error) -> Void in
+            if error != nil {
+                PFAnalytics.fn_trackErrorInBackground(error, location: .PhotoControllerImageSave)
+            }
+        }
         imageView.image = UIImage(data: imageData)
         imageContainerHidden(false)
         imageView.fn_setAspectRatio(nil)
@@ -153,6 +155,9 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         // Save to Album if source is camera
         if picker.sourceType == .Camera {
             ALAssetsLibrary().saveImage(image, toAlbum: FNLocalizedAppName, completion: nil, failure: nil)
+            ALAssetsLibrary().saveImage(image, toAlbum: FNLocalizedAppName, completion: nil, failure: { (error) -> Void in
+                PFAnalytics.fn_trackErrorInBackground(error, location: .PhotoControllerAddToCameraRoll)
+            })
         }
     }
 }

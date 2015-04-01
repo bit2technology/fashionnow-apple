@@ -42,7 +42,7 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
             self.downloadingFriendsList = false
 
             if error != nil {
-                NSLog("Friends list download error: \(error.localizedDescription)")
+                NSLog("CachedFriendsList error: \(error.localizedDescription)")
                 self.delegate?.postPollControllerDidFailDownloadFriendsList(error)
                 return
             }

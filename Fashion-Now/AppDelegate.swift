@@ -54,12 +54,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         default:
             // Get aproximate location with https://freegeoip.net/
             NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: "https://freegeoip.net/json")!, completionHandler: { (data, response, error) -> Void in
-                let geoInfo = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as? [String: AnyObject]
-                let latitude = geoInfo?["latitude"] as? Double
-                let longitude = geoInfo?["longitude"] as? Double
+                if error != nil {
+                    PFAnalytics.fn_trackErrorInBackground(error, location: .AppDelegateLocationFromIPDownload)
+                    return
+                }
+                var jsonError: NSError?
+                let geoInfo = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &jsonError) as? [String: AnyObject]
+                if let unwJsonError = jsonError {
+                    PFAnalytics.fn_trackErrorInBackground(unwJsonError, location: .AppDelegateLocationFromIPSerialization)
+                    return
+                }
+                let latitude = geoInfo!["latitude"] as? Double
+                let longitude = geoInfo!["longitude"] as? Double
                 if latitude != nil && longitude != nil {
                     currentInstallation.location = PFGeoPoint(latitude: latitude!, longitude: longitude!)
-                    currentInstallation.saveEventually(nil)
+                    currentInstallation.saveEventually { (succeeded, error) -> Void in
+                        if error != nil {
+                            PFAnalytics.fn_trackErrorInBackground(error, location: .AppDelegateLocationFromIPSave)
+                        }
+                    }
                 }
             }).resume()
         }
@@ -104,14 +117,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Called every login or logout
     func loginChanged(notification: NSNotification) {
         // Clear caches
-        PFObject.unpinAllObjectsInBackgroundWithBlock(nil)
+        PFObject.unpinAllObjectsInBackgroundWithBlock { (succeeded, error) -> Void in
+            if error != nil {
+                PFAnalytics.fn_trackErrorInBackground(error, location: .AppDelegateLoginChangedUnpin)
+            }
+        }
         let imageCache = SDImageCache.sharedImageCache()
         imageCache.clearDisk()
         imageCache.clearMemory()
         // Register new user ID in installation on login change
         let currentInstallation = ParseInstallation.currentInstallation()
         currentInstallation.userId = ParseUser.currentUser().objectId
-        currentInstallation.saveEventually(nil)
+        currentInstallation.saveEventually { (succeeded, error) -> Void in
+            if error != nil {
+                PFAnalytics.fn_trackErrorInBackground(error, location: .AppDelegateLoginChangedSave)
+            }
+        }
     }
 
     // MARK: Push notifications
@@ -120,7 +141,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Store the deviceToken in the current installation and send it to Parse
         let currentInstallation = ParseInstallation.currentInstallation()
         currentInstallation.setDeviceTokenFromData(deviceToken)
-        currentInstallation.saveEventually(nil)
+        currentInstallation.saveEventually { (succeeded, error) -> Void in
+            if error != nil {
+                PFAnalytics.fn_trackErrorInBackground(error, location: .AppDelegateRegisterNotificationSave)
+            }
+        }
     }
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {

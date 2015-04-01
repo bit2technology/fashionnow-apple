@@ -1,5 +1,35 @@
 /* Default Cancel button title for entire app */
-"CANCEL_BUTTON_TITLE" = "Cancelar";
+"DEFAULT_BUTTON_TITLE_CANCEL" = "Cancelar";
+
+/* Default for entire app */
+"DEFAULT_ERROR_DESCRIPTION_OFFLINE" = "Você está offline. Tente novamente mais tarde.";
+
+/* Table view section header */
+"FriendsListTableController.headers.friends" = "Amigos";
+
+/* Table view section header */
+"FriendsListTableController.headers.general" = "Geral";
+
+/* Table view section header button to select all rows in that section */
+"FriendsListTableController.headers.selectAllButtonTitle" = "Selectionar Todos";
+
+/* Default caption for when users are inviting friends */
+"FriendsListTableController.invite.caption" = "Me ajude a escolher meu look com esse app!";
+
+/* Table view row title for invite friends to use the app */
+"FriendsListTableController.rowTitle.inviteFriens" = "Convidar Amigos";
+
+/* Table view row title for when user has no friends */
+"FriendsListTableController.rowTitle.noFriends" = "Sem amigos";
+
+/* Table view row title for make the poll public for all users */
+"FriendsListTableController.rowTitle.publicPoll" = "Enquete Pública";
+
+/* Shown when user sends the poll */
+"FriendsListTableController.send.fail" = "Impossível enviar";
+
+/* Shown when user sends the poll */
+"FriendsListTableController.send.succeeded" = "Enquete enviada";
 
 /* Gender labels */
 "GENDER_FEMALE" = "Mulher";
@@ -40,8 +70,11 @@
 /* Message for when the email reset was successful */
 "LOGIN_RESET_SUCCESS_MESSAGE" = "Link para recuperação de senha enviado";
 
-/* String shown when user is setting the visibility of the poll */
-"PUBLIC_SELECTION" = "Público";
+/* Shown when user is about to delete a poll */
+"ResultPollController.deleteSheet.destructiveButtonTitle" = "Deletar";
+
+/* Shown when user is about to delete a poll */
+"ResultPollController.deleteSheet.title" = "Você realmente quer deletar essa enquete? Esta ação não pode ser desfeita";
 
 /* Error message for Sign Up or Edit Profile */
 "SIGNUP_ERROR_CONNECTION_MESSAGE" = "Você está conectado à Internet?";
@@ -79,6 +112,9 @@
 /* User logged in with a Facebook account and must review his/her information. */
 "SIGNUP_REVIEW_TITLE" = "Editar Perfil";
 
-/* Shown when user has no name or email */
-"UNKNOW_USER" = "Desconhecido";
+/* Shown when user taps the gear button */
+"VotePollController.gearButton.actionSheet.loginButtonTitle" = "Login";
+
+/* Shown when user taps the gear button */
+"VotePollController.gearButton.actionSheet.refreshButtonTitle" = "Atualizar";
 

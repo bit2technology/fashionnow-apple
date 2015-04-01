@@ -7,7 +7,7 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--FN ❤️ FB-->
+        <!--FN + FB-->
         <scene sceneID="dax-F6-DHD">
             <objects>
                 <viewController id="R8T-0b-tVZ" customClass="LoginFacebookController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
@@ -123,7 +123,7 @@
                             <constraint firstItem="UVf-dJ-3oB" firstAttribute="top" secondItem="H1R-73-2vW" secondAttribute="bottom" id="lzM-X6-L7x"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="FN ❤️ FB" id="fxo-PT-oRu">
+                    <navigationItem key="navigationItem" title="FN + FB" id="fxo-PT-oRu">
                         <barButtonItem key="backBarButtonItem" title="Back" id="9H3-pz-qNB"/>
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="5vt-0b-slv">
                             <connections>
@@ -322,7 +322,7 @@
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rdg-hq-Mrj" userLabel="Empty Interface">
                                 <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No more polls to vote 😢" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="Pca-Ch-LI9">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No more polls to vote" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="Pca-Ch-LI9">
                                         <rect key="frame" x="60" y="173" width="200" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="YJJ-mc-nQh"/>
@@ -331,7 +331,7 @@
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the gear to change filters" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="fsi-Hj-o8b">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the gear to change filters or refresh" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="fsi-Hj-o8b">
                                         <rect key="frame" x="112" y="8" width="200" height="41"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="6tj-Qs-Oz3"/>
@@ -340,12 +340,20 @@
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="😢" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YBY-jO-Dm5">
+                                        <rect key="frame" x="140" y="198" width="40" height="48"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="fsi-Hj-o8b" firstAttribute="top" secondItem="rdg-hq-Mrj" secondAttribute="top" constant="8" id="52E-QP-lca"/>
+                                    <constraint firstItem="Pca-Ch-LI9" firstAttribute="centerX" secondItem="YBY-jO-Dm5" secondAttribute="centerX" id="GVI-p6-xlN"/>
                                     <constraint firstAttribute="trailing" secondItem="fsi-Hj-o8b" secondAttribute="trailing" constant="8" id="eOV-XO-wbN"/>
                                     <constraint firstAttribute="centerY" secondItem="Pca-Ch-LI9" secondAttribute="centerY" id="gY6-CA-UIa"/>
+                                    <constraint firstItem="YBY-jO-Dm5" firstAttribute="top" secondItem="Pca-Ch-LI9" secondAttribute="bottom" constant="4" id="kqH-Vk-HwP"/>
                                     <constraint firstAttribute="centerX" secondItem="Pca-Ch-LI9" secondAttribute="centerX" id="ont-tw-5FN"/>
                                 </constraints>
                             </view>
@@ -1765,8 +1773,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="oem-Cm-nHK"/>
         <segue reference="apZ-Yv-541"/>
         <segue reference="uM3-tb-eTB"/>
+        <segue reference="HlH-Xr-0Sn"/>
     </inferredMetricsTieBreakers>
 </document>

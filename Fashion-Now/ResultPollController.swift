@@ -86,7 +86,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
     }
 
     @IBAction func deletePoll(sender: UIBarButtonItem) {
-        UIActionSheet(title: "Do you really want to delete this poll? This action can't be undone.", delegate: self, cancelButtonTitle: FNLocalizedCancelButtonTitle, destructiveButtonTitle: "Delete").showFromBarButtonItem(sender, animated: true)
+        UIActionSheet(title: NSLocalizedString("ResultPollController.deleteSheet.title", value: "Do you really want to delete this poll? This action can't be undone.", comment: "Shown when user is about to delete a poll"), delegate: self, cancelButtonTitle: FNLocalizedCancelButtonTitle, destructiveButtonTitle: NSLocalizedString("ResultPollController.deleteSheet.destructiveButtonTitle", value: "Delete", comment: "Shown when user is about to delete a poll")).showFromBarButtonItem(sender, animated: true)
     }
 
     private func queryForVote(vote: Int) -> PFQuery {
@@ -135,7 +135,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
         buttonTrash = UIBarButtonItem(image: UIImage(named: "BarButtonTrash"), style: .Bordered, target: self, action: "deletePoll:")
 
         // Navigation item
-        navigationItem.titleView?.frame.size.width = 9999
+        navigationItem.titleView!.frame.size.width = 9999
         navigationItem.rightBarButtonItems = [buttonTrash, buttonActivity]
 
         // Date label

@@ -44,9 +44,9 @@ class MeController: UICollectionViewController {
         let refreshControl = UIRefreshControl()
         refreshControl.layer.zPosition = -9999
         refreshControl.addTarget(self, action: "refreshControlDidChangeValue:", forControlEvents: .ValueChanged)
-        collectionView?.addSubview(refreshControl)
+        collectionView!.addSubview(refreshControl)
         self.refreshControl = refreshControl
-        collectionView?.alwaysBounceVertical = true
+        collectionView!.alwaysBounceVertical = true
 
         // Set collection view item size
         let itemWidth = floor(((collectionView?.bounds.width ?? 320) - 8) / 3)
@@ -129,7 +129,7 @@ class MeController: UICollectionViewController {
 
         // Clean caches. Also load polls if new user is not anonymous
         myPolls = ParsePollList(type: .Mine)
-        collectionView?.reloadData()
+        collectionView!.reloadData()
         if !PFAnonymousUtils.isLinkedWithUser(ParseUser.currentUser()) {
             footer?.activityIndicator?.startAnimating()
             loadPolls()
@@ -140,7 +140,7 @@ class MeController: UICollectionViewController {
         if let removedPoll = notification.userInfo?["poll"] as? ParsePoll {
             if let index = myPolls.removePoll(removedPoll) {
                 removedPoll.unpinInBackgroundWithBlock(nil)
-                collectionView?.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
+                collectionView!.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
             }
         }
     }
@@ -148,7 +148,7 @@ class MeController: UICollectionViewController {
     func pollPosted(notification: NSNotification) {
         if let postedPoll = notification.userInfo?["poll"] as? ParsePoll {
             postedPolls.insert(postedPoll, atIndex: 0)
-            collectionView?.reloadData()
+            collectionView!.reloadData()
         }
     }
 
@@ -349,7 +349,6 @@ class MePollFooter: UICollectionReusableView {
     }
 
     @IBAction func loadButtonPressed(sender: UIButton) {
-
         prepare(updating: true)
         controller?.loadPolls(type: .Older)
     }
