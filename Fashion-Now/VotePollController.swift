@@ -133,6 +133,8 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
             nameLabel.text = nil
             dateLabel.text = nil
             emptyInterface.hidden = false
+            loadingInterface.stopAnimating()
+            navigationItem.rightBarButtonItem!.enabled = false
             return false
         }
     }
@@ -145,12 +147,14 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         avatarView.image = nil
         nameLabel.text = nil
         dateLabel.text = nil
+        navigationItem.rightBarButtonItem!.enabled = false
 
         // Reload polls
         polls = ParsePollList(type: .VotePublic)
         polls.update(completionHandler: { (success, error) -> Void in
 
             UIView.transitionWithView(self.navigationController!.view, duration: notification == nil ? transitionDuration : 0, options: .TransitionCrossDissolve, animations: { () -> Void in
+                self.navigationItem.rightBarButtonItem!.enabled = true
                 self.showNextPoll()
                 self.handle(error: error)
             }, completion: nil)
