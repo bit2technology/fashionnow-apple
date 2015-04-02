@@ -137,9 +137,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
             // Name
             nameLabel.text = pollToShow.createdBy?.name ?? pollToShow.createdBy?.email ?? NSLocalizedString("VotePollController.titleView.nameLabel.unknown", value: "Unknown", comment: "Shown when user has no name or email")
             // Date
-            let timeFormatter = TTTTimeIntervalFormatter()
-            timeFormatter.usesIdiomaticDeicticExpressions = true
-            dateLabel.text = timeFormatter.stringForTimeInterval(pollToShow.createdAt.timeIntervalSinceNow)
+            dateLabel.text = pollToShow.createdAt.timeAgoSinceNow()
 
             return true
         }

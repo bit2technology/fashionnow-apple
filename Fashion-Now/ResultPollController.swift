@@ -140,9 +140,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
         navigationItem.rightBarButtonItems = [buttonTrash, buttonActivity]
 
         // Date label
-        let timeFormatter = TTTTimeIntervalFormatter()
-        timeFormatter.usesIdiomaticDeicticExpressions = true
-        dateLabel.text = timeFormatter.stringForTimeInterval(poll.createdAt.timeIntervalSinceNow)
+        dateLabel.text = poll.createdAt.timeAgoSinceNow()
 
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
         activityIndicator.color = UIColor.grayColor()
