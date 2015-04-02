@@ -13,6 +13,7 @@
 		4B45FA111ABD980000E2F7CC /* GalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B45FA101ABD980000E2F7CC /* GalleryController.swift */; };
 		4B488C5A1A1F668200AEE393 /* LoginSignupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B488C591A1F668200AEE393 /* LoginSignupController.swift */; };
 		4B4BFA671A14239200BFD23F /* LoginEmailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4BFA661A14239200BFD23F /* LoginEmailController.swift */; };
+		4B6010831ACDE0C9000B0DF7 /* android-app.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B6010821ACDE0C9000B0DF7 /* android-app.png */; };
 		4B6B75F41AC0700800060E6F /* appstore-badge-pt.svg in Resources */ = {isa = PBXBuildFile; fileRef = 4B6B75F31AC0700800060E6F /* appstore-badge-pt.svg */; };
 		4B749E8D1A30916F00E9B128 /* ResultPollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B749E8C1A30916F00E9B128 /* ResultPollController.swift */; };
 		4B79AABB1A0E4D740097B069 /* LoginFacebookController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B79AABA1A0E4D740097B069 /* LoginFacebookController.swift */; };
@@ -26,6 +27,11 @@
 		4B8E448B1AB46AD800C4EBD7 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 4B8E44881AB46AD800C4EBD7 /* index.html */; };
 		4B9443591AB08B6D007DBAFD /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9443581AB08B6D007DBAFD /* AppHelper.swift */; };
 		4BAAAF8E1A14C5FB00AAFAFB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */; };
+		4BC252CB1ACD84D000DE430E /* PT1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC252C61ACD84D000DE430E /* PT1.png */; };
+		4BC252CC1ACD84D000DE430E /* PT2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC252C71ACD84D000DE430E /* PT2.png */; };
+		4BC252CD1ACD84D000DE430E /* PT3.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC252C81ACD84D000DE430E /* PT3.png */; };
+		4BC252CE1ACD84D000DE430E /* PT4.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC252C91ACD84D000DE430E /* PT4.png */; };
+		4BC252CF1ACD84D000DE430E /* PT5.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC252CA1ACD84D000DE430E /* PT5.png */; };
 		4BC4CF0B1A01164F0000A231 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4BC4CF0A1A01164F0000A231 /* .gitignore */; };
 		4BD255461AC45F7A004BF005 /* VoteFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD255451AC45F7A004BF005 /* VoteFilterController.swift */; };
 		4BDB6D151A221033003D56C1 /* FacebookHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDB6D141A221033003D56C1 /* FacebookHelper.swift */; };
@@ -58,6 +64,7 @@
 		4B45FA101ABD980000E2F7CC /* GalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryController.swift; sourceTree = "<group>"; };
 		4B488C591A1F668200AEE393 /* LoginSignupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSignupController.swift; sourceTree = "<group>"; };
 		4B4BFA661A14239200BFD23F /* LoginEmailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEmailController.swift; sourceTree = "<group>"; };
+		4B6010821ACDE0C9000B0DF7 /* android-app.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "android-app.png"; sourceTree = "<group>"; };
 		4B6B75F31AC0700800060E6F /* appstore-badge-pt.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "appstore-badge-pt.svg"; sourceTree = "<group>"; };
 		4B749E8C1A30916F00E9B128 /* ResultPollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultPollController.swift; sourceTree = "<group>"; };
 		4B79AABA1A0E4D740097B069 /* LoginFacebookController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFacebookController.swift; sourceTree = "<group>"; };
@@ -72,6 +79,11 @@
 		4B8E44881AB46AD800C4EBD7 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		4B9443581AB08B6D007DBAFD /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppHelper.swift; sourceTree = "<group>"; };
 		4BAAAF8F1A14C5FB00AAFAFB /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4BC252C61ACD84D000DE430E /* PT1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PT1.png; sourceTree = "<group>"; };
+		4BC252C71ACD84D000DE430E /* PT2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PT2.png; sourceTree = "<group>"; };
+		4BC252C81ACD84D000DE430E /* PT3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PT3.png; sourceTree = "<group>"; };
+		4BC252C91ACD84D000DE430E /* PT4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PT4.png; sourceTree = "<group>"; };
+		4BC252CA1ACD84D000DE430E /* PT5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PT5.png; sourceTree = "<group>"; };
 		4BC4CF0A1A01164F0000A231 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
 		4BD255451AC45F7A004BF005 /* VoteFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteFilterController.swift; sourceTree = "<group>"; };
 		4BDB6D141A221033003D56C1 /* FacebookHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookHelper.swift; sourceTree = "<group>"; };
@@ -126,6 +138,12 @@
 		4B6B75F21AC0700800060E6F /* images */ = {
 			isa = PBXGroup;
 			children = (
+				4B6010821ACDE0C9000B0DF7 /* android-app.png */,
+				4BC252C61ACD84D000DE430E /* PT1.png */,
+				4BC252C71ACD84D000DE430E /* PT2.png */,
+				4BC252C81ACD84D000DE430E /* PT3.png */,
+				4BC252C91ACD84D000DE430E /* PT4.png */,
+				4BC252CA1ACD84D000DE430E /* PT5.png */,
 				4B8558A41AC9749000E3C0C9 /* 036.png */,
 				4B6B75F31AC0700800060E6F /* appstore-badge-pt.svg */,
 			);
@@ -363,13 +381,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B8558A51AC9749000E3C0C9 /* 036.png in Resources */,
+				4BC252CD1ACD84D000DE430E /* PT3.png in Resources */,
 				4BC4CF0B1A01164F0000A231 /* .gitignore in Resources */,
+				4BC252CF1ACD84D000DE430E /* PT5.png in Resources */,
 				4BAAAF8E1A14C5FB00AAFAFB /* Localizable.strings in Resources */,
+				4BC252CB1ACD84D000DE430E /* PT1.png in Resources */,
 				4BF1D0631A00F1EB00818658 /* Main.storyboard in Resources */,
+				4BC252CE1ACD84D000DE430E /* PT4.png in Resources */,
+				4B6010831ACDE0C9000B0DF7 /* android-app.png in Resources */,
 				4B8E448B1AB46AD800C4EBD7 /* index.html in Resources */,
 				4BF1D0651A00F1EB00818658 /* Images.xcassets in Resources */,
 				4B8E448A1AB46AD800C4EBD7 /* global.json in Resources */,
 				4B8E44891AB46AD800C4EBD7 /* main.js in Resources */,
+				4BC252CC1ACD84D000DE430E /* PT2.png in Resources */,
 				4B7C2CA91A13A1DA00FB25B8 /* InfoPlist.strings in Resources */,
 				4B6B75F41AC0700800060E6F /* appstore-badge-pt.svg in Resources */,
 				4BE767DE1A239F6B00CCAA65 /* Settings.bundle in Resources */,

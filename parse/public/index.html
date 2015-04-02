@@ -1,33 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
     <head>
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <title>Fashion Now</title>
+        <meta name="theme-color" content="#07837b">
+        <link rel="icon" type="image/png" sizes="1024x1024" href="images/036.png">
+        <link rel="shortcut icon" type="image/png" sizes="1024x1024" href="images/036.png">
+        <!-- jQuery -->
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <!-- Smart banners -->
         <meta name="apple-itunes-app" content="app-id=940432969">
     </head>
     <body>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&appId=1647316532161447&version=v2.3";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
-                    <h1>
-                        <img class="img-responsive center-block" src="images/036.png" width="173px"/>
-                    </h1>
-                    <p>
-                        <a href="https://itunes.apple.com/app/fashion-now-your-fashion-assistant/id940432969">
-                            <img class="img-responsive center-block" src="images/appstore-badge-pt.svg" width="173px"/>
+                    <div class="page-header">
+                        <h1><img src="images/036.png" height="44px" style="vertical-align:text-bottom;"/> Fashion Now</h1>
+                    </div>
+                    <h2>Baixe agora</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-sm-3">
+                    <a href="https://itunes.apple.com/app/fashion-now-your-fashion-assistant/id940432969">
+                        <img src="images/appstore-badge-pt.svg" width="100%"/>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-sm-3">
+                    <a href="https://play.google.com/store/apps/details?id=com.titugo.fashionnow">
+                        <img alt="Disponível no Google Play" src="images/android-app.png" width="85%"/>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2>Como funciona?</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div id="screenshots" class="carousel slide" data-ride="carousel" style="max-width:640px">
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                                <img src="images/PT1.png"/>
+                            </div>
+                            <div class="item">
+                                <img src="images/PT2.png"/>
+                            </div>
+                            <div class="item">
+                                <img src="images/PT3.png"/>
+                            </div>
+                            <div class="item">
+                                <img src="images/PT4.png"/>
+                            </div>
+                            <div class="item">
+                                <img src="images/PT5.png"/>
+                            </div>
+                        </div>
+                        <!-- Controls -->
+                        <a class="left carousel-control" href="#screenshots" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Anterior</span>
                         </a>
-                    </p>
-                    <p>
-                        <a href="https://play.google.com/store/apps/details?id=com.titugo.fashionnow">
-                            <img class="img-responsive center-block" alt="Disponível no Google Play" src="https://developer.android.com/images/brand/pt-br_generic_rgb_wo_60.png"/>
+                        <a class="right carousel-control" href="#screenshots" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Próximo</span>
                         </a>
-                    </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="fb-like" data-href="http://www.facebook.com/fashionnowapp" data-layout="standard" data-action="like" data-show-faces="true" data-share="true" style="padding:15px 0"></div>
                 </div>
             </div>
         </div>

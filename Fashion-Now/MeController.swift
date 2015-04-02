@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MeController: UICollectionViewController {
+class MeController: UICollectionViewController, UIActionSheetDelegate {
 
     /// Main list of polls to show
     private var myPolls = ParsePollList(type: .Mine)
@@ -94,10 +94,16 @@ class MeController: UICollectionViewController {
         })
     }
 
-    @IBAction func logOutButtonPressed(snder: AnyObject) {
-        ParseUser.logOut()
-        NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
-        tabBarController!.selectedIndex = 0
+    @IBAction func gearButtonPressed(sender: UIBarButtonItem) {
+        UIActionSheet(title: nil, delegate: self, cancelButtonTitle: FNLocalizedCancelButtonTitle, destructiveButtonTitle: nil, otherButtonTitles: NSLocalizedString("MeController.gearButton.actionSheet.logOutButtonTitle", value: "Log Out", comment: "Shown when user taps the gear button")).showFromBarButtonItem(sender, animated: true)
+    }
+
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex != actionSheet.cancelButtonIndex {
+            ParseUser.logOut()
+            NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
+            tabBarController!.selectedIndex = 0
+        }
     }
 
     override func needsLogin() -> Bool {

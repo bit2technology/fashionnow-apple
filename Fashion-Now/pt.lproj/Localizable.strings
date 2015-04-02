@@ -70,6 +70,9 @@
 /* Message for when the email reset was successful */
 "LOGIN_RESET_SUCCESS_MESSAGE" = "Link para recuperação de senha enviado";
 
+/* Shown when user taps the gear button */
+"MeController.gearButton.actionSheet.logOutButtonTitle" = "Logout";
+
 /* Shown when user is about to delete a poll */
 "ResultPollController.deleteSheet.destructiveButtonTitle" = "Deletar";
 
@@ -113,8 +116,29 @@
 "SIGNUP_REVIEW_TITLE" = "Editar Perfil";
 
 /* Shown when user taps the gear button */
+"VotePollController.gearButton.actionSheet.filtersButtonTitle" = "Aplicar Filtros";
+
+/* Shown when user taps the gear button */
 "VotePollController.gearButton.actionSheet.loginButtonTitle" = "Login";
 
 /* Shown when user taps the gear button */
 "VotePollController.gearButton.actionSheet.refreshButtonTitle" = "Atualizar";
+
+/* Shown when user taps the gear button */
+"VotePollController.gearButton.actionSheet.reportButtonTitle" = "Denunciar Enqute";
+
+/* Shown when user taps the gear button */
+"VotePollController.gearButton.actionSheet.skipButtonTitle" = "Pular Enquete";
+
+/* Shown when user reports a poll */
+"VotePollController.gearButton.reportAlert.message" = "Diga-nos por que você quer denunciar esta enqute";
+
+/* Shown when user reports a poll */
+"VotePollController.gearButton.reportAlert.reportButtonTitle" = "Denunciar";
+
+/* Shown when user reports a poll */
+"VotePollController.gearButton.reportAlert.title" = "Denunciar Enquete";
+
+/* Shown when user has no name or email */
+"VotePollController.titleView.nameLabel.unknown" = "Desconhecido";
 

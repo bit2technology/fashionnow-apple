@@ -57,6 +57,10 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
         poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             activityIndicator.removeFromSuperview()
 
+            if error != nil {
+                PFAnalytics.fn_trackErrorInBackground(error, location: .FriendsListControllerSendPoll)
+            }
+
             if succeeded {
                 FNToast.show(text: NSLocalizedString("FriendsListTableController.send.succeeded", value: "Poll sent", comment: "Shown when user sends the poll"))
                 NSNotificationCenter.defaultCenter().postNotificationName(FNPollPostedNotificationName, object: self, userInfo: ["poll": self.poll])

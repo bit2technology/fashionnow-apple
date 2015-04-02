@@ -352,12 +352,12 @@ class ParsePollList: Printable, DebugPrintable {
         if downloading {
 
             // Already downloading. Just return error.
-            completionHandler(false, NSError(domain: FNErrorDomain, code: FNErrorCode.Busy.rawValue, userInfo: nil))
+            completionHandler(false, NSError(fn_code: .Busy))
             
         } else if lastUpdate?.timeIntervalSinceNow > updateLimitTime {
 
             // Tried to update too early. Just return error.
-            completionHandler(false, NSError(domain: FNErrorDomain, code: FNErrorCode.RequestTooOften.rawValue, userInfo: nil))
+            completionHandler(false, NSError(fn_code: .RequestTooOften))
 
         } else if Reachability.reachabilityForInternetConnection().isReachable() {
 
@@ -418,7 +418,7 @@ class ParsePollList: Printable, DebugPrintable {
                         }
                         if myVotes?.count >= unwrappedNewPolls.count {
                             // All new polls are voted. Just return error.
-                            self.finish(false, error: NSError(domain: FNErrorDomain, code: FNErrorCode.NothingNew.rawValue, userInfo: nil))
+                            self.finish(false, error: NSError(fn_code: .NothingNew))
                             return
                         }
                         if myVotes?.count > 0 {
@@ -460,14 +460,14 @@ class ParsePollList: Printable, DebugPrintable {
                 } else {
 
                     // Download error or no more polls
-                    self.finish(false, error: error ?? NSError(domain: FNErrorDomain, code: FNErrorCode.NothingNew.rawValue, userInfo: nil))
+                    self.finish(false, error: error ?? NSError(fn_code: .NothingNew))
                 }
             }
 
         } else if polls.count > 0 {
 
             // Offline but polls list is not empty. Just return error.
-            completionHandler(false, NSError(domain: FNErrorDomain, code: FNErrorCode.ConnectionLost.rawValue, userInfo: nil))
+            completionHandler(false, NSError(fn_code: .ConnectionLost))
 
         } else {
 
@@ -487,7 +487,7 @@ class ParsePollList: Printable, DebugPrintable {
                     self.polls = unwrappedCachedPolls
                     completionHandler(true, error)
                 } else {
-                    completionHandler(false, error ?? NSError(domain: FNErrorDomain, code: FNErrorCode.NoCache.rawValue, userInfo: nil))
+                    completionHandler(false, error ?? NSError(fn_code: .NoCache))
                 }
             })
         }
@@ -658,7 +658,11 @@ enum ErrorLocation: Int {
     case VoteControllerLoadList = 10
     case VoteControllerPollLoadFail = 11
     case VoteControllerVoteSave = 12
-
+    case PostControllerCacheFriendsFacebookRequest = 13
+    case PostControllerCacheFriendsQuery = 14
+    case FriendsListControllerSendPoll = 15
+    case ResultControllerDeletePoll = 16
+    case ResultControllerLoadResults = 17
 }
 
 extension PFAnalytics {

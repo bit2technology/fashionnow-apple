@@ -70,7 +70,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         // Buttons
         var otherButtonTitles = [String]()
         if currentPoll != nil {
-            otherButtonTitles += [reportButtonTitle, skipButtonTitle]
+            otherButtonTitles += [/*reportButtonTitle,*/ skipButtonTitle] // TODO: Add report
         }
         otherButtonTitles += [/*filtersButtonTitle,*/ refreshButtonTitle] // TODO: Add filters
         if PFAnonymousUtils.isLinkedWithUser(ParseUser.currentUser()) {
@@ -93,7 +93,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         case refreshButtonTitle:
             UIView.transitionWithView(self.navigationController!.view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
                 self.loadPollList(nil)
-                }, completion: nil)
+            }, completion: nil)
 
         case loginButtonTitle:
             (tabBarController! as TabBarController).presentLoginController()

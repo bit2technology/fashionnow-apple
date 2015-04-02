@@ -72,7 +72,8 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
 
                 // TODO: Handle error
                 if error != nil {
-                    FNToast.show(text: "ccc", type: .Error)
+                    PFAnalytics.fn_trackErrorInBackground(error!, location: .ResultControllerLoadResults)
+                    FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
                     return
                 }
 
@@ -181,6 +182,10 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
                 poll.deleteInBackgroundWithBlock({ (success, error) -> Void in
                     activityIndicator.removeFromSuperview()
 
+                    if error != nil {
+                        PFAnalytics.fn_trackErrorInBackground(error, location: .ResultControllerDeletePoll)
+                    }
+
                     if success {
                         NSNotificationCenter.defaultCenter().postNotificationName(FNPollDeletedNotificationName, object: self, userInfo: ["poll": self.poll])
                         self.navigationController?.popViewControllerAnimated(true)
@@ -189,6 +194,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
                     }
                 })
             } else {
+                PFAnalytics.fn_trackErrorInBackground(NSError(fn_code: .InternetUnreachable), location: .ResultControllerDeletePoll)
                 FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
             }
         }

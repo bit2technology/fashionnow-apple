@@ -292,6 +292,12 @@ func fn_applyPollMask(left: UIView, right: UIView) {
     right.layer.mask = rightMask
 }
 
+extension NSError {
+    convenience init(fn_code: FNErrorCode, userInfo: [NSObject:AnyObject]? = nil) {
+        self.init(domain: FNErrorDomain, code: fn_code.rawValue, userInfo: userInfo)
+    }
+}
+
 // MARK: - Constants
 
 /// Notification name for new poll saved
@@ -304,18 +310,22 @@ let FNErrorDomain = "com.bit2software.Fashion-Now"
 
 /// Error codes
 enum FNErrorCode: Int {
-    /// The operator is busy, probably from network activity
+    /// The operator is busy, probably from network activity.
     case Busy = 800
     /// App tried update, but there's nothing new
     case NothingNew = 801
-    /// App was online, but now is offline
+    /// App was online, but now is offline.
     case ConnectionLost = 802
-    /// App is offline and has no cache content
+    /// App is offline and has no cache content.
     case NoCache = 803
     /// Requests are limited. We need to save them.
     case RequestTooOften = 804
     /// Tried to load a Photo with no image URL.
     case NoPhotoURL = 805
+    /// No data or data is invalid.
+    case NoData = 806
+    /// Reachability framework cant find remote host.
+    case InternetUnreachable = 807
 }
 
 let FNLocalizedAppName = NSLocalizedString("APP_NAME", value: "Fashion Now" , comment: "Default for entire app")

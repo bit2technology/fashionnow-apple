@@ -43,11 +43,11 @@
 /* Class = "UIButton"; normalTitle = "Vote"; ObjectID = "GPX-GA-SAX"; */
 "GPX-GA-SAX.normalTitle" = "Votar";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "Hr5-yk-mrX"; */
+"Hr5-yk-mrX.text" = "Etiqueta";
+
 /* Class = "UITextField"; placeholder = "Add caption"; ObjectID = "KUx-Xw-6OB"; */
 "KUx-Xw-6OB.placeholder" = "Adicionar legenda";
-
-/* Class = "UIBarButtonItem"; title = "Log Out"; ObjectID = "M8u-sa-PEm"; */
-"M8u-sa-PEm.title" = "Logout";
 
 /* Class = "UITableViewSection"; headerTitle = "Overview"; ObjectID = "MRE-Ba-kQK"; */
 "MRE-Ba-kQK.headerTitle" = "Pessoal";
@@ -58,7 +58,7 @@
 /* Class = "UITextField"; placeholder = "Username"; ObjectID = "Ost-XS-Gaw"; */
 "Ost-XS-Gaw.placeholder" = "Nome de usuário";
 
-/* Class = "UILabel"; text = "No more polls to vote 😢"; ObjectID = "Pca-Ch-LI9"; */
+/* Class = "UILabel"; text = "No more polls to vote"; ObjectID = "Pca-Ch-LI9"; */
 "Pca-Ch-LI9.text" = "Sem mais enquetes para votar";
 
 /* Class = "UIBarButtonItem"; title = "Send"; ObjectID = "Qal-Vg-8Fh"; */
@@ -82,6 +82,9 @@
 /* Class = "UIBarButtonItem"; title = "Forgot"; ObjectID = "VHA-FD-oDJ"; */
 "VHA-FD-oDJ.title" = "Esqueci";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "Vz6-oX-I3M"; */
+"Vz6-oX-I3M.text" = "Etiqueta";
+
 /* Class = "UILabel"; text = "Date"; ObjectID = "a0e-4P-C3U"; */
 "a0e-4P-C3U.text" = "Data";
 
@@ -103,8 +106,8 @@
 /* Class = "UIButton"; normalTitle = "Log in"; ObjectID = "exf-D7-gGy"; */
 "exf-D7-gGy.normalTitle" = "Login";
 
-/* Class = "UILabel"; text = "Tap the gear to change filters"; ObjectID = "fsi-Hj-o8b"; */
-"fsi-Hj-o8b.text" = "Toque na engrenagem para mudar filtros ou recarregar";
+/* Class = "UILabel"; text = "Tap the gear to refresh"; ObjectID = "fsi-Hj-o8b"; */
+"fsi-Hj-o8b.text" = "Toque na engrenagem para recarregar";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "lnp-IN-Yzw"; */
 "lnp-IN-Yzw.text" = "Nome";
@@ -135,4 +138,7 @@
 
 /* Class = "UITabBarItem"; title = "Profile"; ObjectID = "yIu-tG-KRu"; */
 "yIu-tG-KRu.title" = "Perfil";
+
+/* Class = "UILabel"; text = "Caption"; ObjectID = "zny-H2-Bdr"; */
+"zny-H2-Bdr.text" = "Legenda";
 

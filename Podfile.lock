@@ -24,13 +24,13 @@ PODS:
   - FormatterKit/TimeIntervalFormatter (1.8.0)
   - FormatterKit/UnitOfInformationFormatter (1.8.0)
   - FormatterKit/URLRequestFormatter (1.8.0)
-  - Parse (1.7.0):
+  - Parse (1.7.1):
     - Bolts (~> 1.1)
-  - ParseCrashReporting (1.7.0):
-    - Parse (~> 1.7.0)
-  - ParseFacebookUtils (1.7.0):
+  - ParseCrashReporting (1.7.1):
+    - Parse (~> 1.7.1)
+  - ParseFacebookUtils (1.7.1):
     - Facebook-iOS-SDK (~> 3.23)
-    - Parse (~> 1.7.0)
+    - Parse (~> 1.7.1)
   - Reachability (3.2)
   - SDWebImage (3.7.2):
     - SDWebImage/Core (= 3.7.2)
@@ -59,9 +59,9 @@ SPEC CHECKSUMS:
   CRToast: 99a28f4387def43b439ad88f957ce31357ff7373
   Facebook-iOS-SDK: cd87f0b2f0c1d9574b44e8fa2baacc275524bac3
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
-  Parse: 3c2d4e6ade7b59d31c0bc8106340c6b81b31bc0f
-  ParseCrashReporting: 9118391db9867e693bb6a8fb45000a95fab09681
-  ParseFacebookUtils: f0c954253a65e945d7cb73400c33bc661f516b85
+  Parse: fa8ec29de6d82035635986c11946299fb1b38316
+  ParseCrashReporting: 9aeff8680d500e5e833564fca5b60333f7bb7403
+  ParseFacebookUtils: fa09adf78372b589163b5a71a34d6ebc7eb83395
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   UIActivityIndicator-for-SDWebImage: 7bf7ebbf0ed1747dedc0d6e949c4603a6d0f9e0c

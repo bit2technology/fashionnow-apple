@@ -331,8 +331,8 @@
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the gear to change filters or refresh" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="fsi-Hj-o8b">
-                                        <rect key="frame" x="112" y="8" width="200" height="41"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the gear to refresh" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="fsi-Hj-o8b">
+                                        <rect key="frame" x="112" y="8" width="200" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="6tj-Qs-Oz3"/>
                                         </constraints>
@@ -343,7 +343,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="😢" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YBY-jO-Dm5">
                                         <rect key="frame" x="140" y="198" width="40" height="48"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="40"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -704,9 +704,9 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" title="Profile" id="SHi-hj-ibv">
-                        <barButtonItem key="rightBarButtonItem" title="Log Out" id="M8u-sa-PEm">
+                        <barButtonItem key="rightBarButtonItem" image="BarButtonGear" id="M8u-sa-PEm">
                             <connections>
-                                <action selector="logOutButtonPressed:" destination="cEa-Or-vWC" id="1Kt-t4-qgj"/>
+                                <action selector="gearButtonPressed:" destination="cEa-Or-vWC" id="dPb-Gx-SZQ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

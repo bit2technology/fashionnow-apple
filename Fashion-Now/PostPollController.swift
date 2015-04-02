@@ -42,7 +42,7 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
             self.downloadingFriendsList = false
 
             if error != nil {
-                NSLog("CachedFriendsList error: \(error.localizedDescription)")
+                PFAnalytics.fn_trackErrorInBackground(error, location: .PostControllerCacheFriendsFacebookRequest)
                 self.delegate?.postPollControllerDidFailDownloadFriendsList(error)
                 return
             }
@@ -60,12 +60,20 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
                 friendsQuery.whereKey(ParseUserFacebookIdKey, containedIn: friendsFacebookIds)
                 friendsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
 
+                    if error != nil {
+                        PFAnalytics.fn_trackErrorInBackground(error, location: .PostControllerCacheFriendsQuery)
+                        self.delegate?.postPollControllerDidFailDownloadFriendsList(error)
+                        return
+                    }
+
                     self.cachedFriendsList = (objects as? [ParseUser]) ?? []
                     self.cachedFriendsList!.sort({$0.name < $1.name})
                     self.delegate?.postPollControllerDidFinishDownloadFriendsList(self.cachedFriendsList!)
                 }
             } else {
-                self.delegate?.postPollControllerDidFailDownloadFriendsList(nil)
+                let noDataError = NSError(fn_code: .NoData)
+                PFAnalytics.fn_trackErrorInBackground(noDataError, location: .PostControllerCacheFriendsFacebookRequest)
+                self.delegate?.postPollControllerDidFailDownloadFriendsList(noDataError)
             }
         }
     }
