@@ -6,12 +6,11 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-import UIKit
+private let pickerNoneLabel = NSLocalizedString("LoginSignupController.picker.none", value: "None", comment: "Gender labels")
+private let genderValues = ["male", "female", "other"]
+private let genderLabels = [NSLocalizedString("LoginSignupController.genders.male", value: "Male", comment: "Gender labels"), NSLocalizedString("LoginSignupController.genders.female", value: "Female", comment: "Gender labels"), NSLocalizedString("LoginSignupController.genders.other", value: "Other", comment: "Gender labels")]
 
-class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-
-    private let genderValues = ["male", "female", "other"]
-    private let genderLabels = [NSLocalizedString("GENDER_MALE", value: "Male", comment: "Gender labels"), NSLocalizedString("GENDER_FEMALE", value: "Female", comment: "Gender labels"), NSLocalizedString("GENDER_OTHER", value: "Other", comment: "Gender labels")]
+class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate {
 
     var facebookUser: FacebookUser?
 
@@ -19,10 +18,10 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var genderLabel: UILabel!
     @IBOutlet weak var genderField: UILabel!
-    private var gender: String!
+    private var gender: String?
     @IBOutlet weak var birthdayLabel: UILabel!
     @IBOutlet weak var birthdayField: UILabel!
-    private var birthday: NSDate!
+    private var birthday: NSDate?
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var locationField: UITextField!
 
@@ -56,16 +55,32 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
         switch indexPath {
 
         case NSIndexPath(forRow: 1, inSection: 0): // Gender
-            ActionSheetStringPicker.showPickerWithTitle(nil, rows: genderLabels, initialSelection: find(genderValues, gender) ?? genderValues.count - 1, doneBlock: { (picker, selectedIndex, selectedValue) -> Void in
-                self.gender = self.genderValues[selectedIndex]
+            let genderPicker = ActionSheetStringPicker(title: nil, rows: genderLabels, initialSelection: find(genderValues, gender ?? "") ?? 0, doneBlock: { (picker, selectedIndex, selectedValue) -> Void in
+                self.gender = genderValues[selectedIndex]
                 self.genderField.text = selectedValue as? String
             }, cancelBlock: nil, origin: view)
+            if gender != nil {
+                genderPicker.addCustomButtonWithTitle(pickerNoneLabel, actionBlock: { () -> Void in
+                    self.gender = nil
+                    self.genderField.text = nil
+                    genderPicker.hidePickerWithCancelAction()
+                })
+            }
+            genderPicker.showActionSheetPicker()
 
         case NSIndexPath(forRow: 2, inSection: 0): // Birthday
-            ActionSheetDatePicker.showPickerWithTitle(nil, datePickerMode: .Date, selectedDate: birthday, minimumDate: nil, maximumDate: nil, doneBlock: { (picker, selectedDate, origin) -> Void in
-                self.birthday = selectedDate as NSDate
-                self.birthdayField.text = self.birthday.fn_birthdayDescription
+            let datePicker = ActionSheetDatePicker(title: nil, datePickerMode: .Date, selectedDate: birthday ?? NSDate(), doneBlock: { (picker, selectedDate, origin) -> Void in
+                self.birthday = selectedDate as? NSDate // FIXME: Swift 1.2
+                self.birthdayField.text = self.birthday?.fn_birthdayDescription
             }, cancelBlock: nil, origin: view)
+            if birthday != nil {
+                datePicker.addCustomButtonWithTitle(pickerNoneLabel, actionBlock: { () -> Void in
+                    self.birthday = nil
+                    self.birthdayField.text = nil
+                    datePicker.hidePickerWithCancelAction()
+                })
+            }
+            datePicker.showActionSheetPicker()
 
         default:
             break
@@ -214,8 +229,8 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
             }
             // Set photo properties
             if self.avatarChanged {
-                let imageData = self.avatarImageView.image!.fn_compressed(maxSize: 256)
-                currentUser.avatarImage = PFFile(name: "avatar.jpg", data: imageData, contentType: "image/jpeg")
+                let imageData = self.avatarImageView.image!.fn_compressed(maxSize: 256, compressionQuality: 0.8)
+                currentUser.avatarImage = PFFile(fn_imageData: imageData)
             }
 
             // Save attempt
@@ -232,8 +247,6 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
         }
     }
 
-    
-
     // MARK: UIViewController
 
     override func viewDidLoad() {
@@ -247,11 +260,15 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
         avatarImageView.image = UIColor.fn_placeholder().fn_image()
 
         // The values for gender and birthday are filled with default values (even for anonymous users)
-        gender = currentUser.gender ?? facebookUser?.gender ?? genderValues.last
-        genderField.text = genderLabels[find(genderValues, gender) ?? genderLabels.count - 1]
+        gender = currentUser.gender ?? facebookUser?.gender
+        if let genderIndex = find(genderValues, gender ?? "") {
+            genderField.text = genderLabels[genderIndex]
+        } else {
+            genderField.text = nil
+        }
         // Birthday adjusted to GMT
         birthday = currentUser.birthday
-        birthdayField.text = birthday.fn_birthdayDescription
+        birthdayField.text = birthday?.fn_birthdayDescription
 
         // If user is anonymous, show standard (empty) controller
         if PFAnonymousUtils.isLinkedWithUser(currentUser) {
@@ -330,7 +347,7 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
 
         // Save to Album if source is camera
         if picker.sourceType == .Camera {
-            ALAssetsLibrary().saveImage(image, toAlbum: "Fashion Now", completion: nil, failure: nil)
+            ALAssetsLibrary().saveImage(image, toAlbum: FNLocalizedAppName, completion: nil, failure: nil)
         }
     }
 }

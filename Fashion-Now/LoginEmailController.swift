@@ -14,7 +14,6 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate, UITextFi
     @IBOutlet weak var passwordField: UITextField!
 
     @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     @IBAction func forgotButtonPressed(sender: UIBarButtonItem) {
         showResetAlertView()
@@ -65,8 +64,7 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate, UITextFi
         loginButton.enabled = false
         navigationItem.setHidesBackButton(true, animated: true)
         navigationItem.rightBarButtonItem?.enabled = false
-        activityIndicator.startAnimating()
-        
+
         ParseUser.logInWithUsernameInBackground(usernameField.text, password: passwordField.text) { (user, error) -> Void in
 
             if let unwrappedUser = user as? ParseUser {
@@ -81,7 +79,6 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate, UITextFi
                 self.loginButton.enabled = true
                 self.navigationItem.setHidesBackButton(false, animated: true)
                 self.navigationItem.rightBarButtonItem?.enabled = true
-                self.activityIndicator.stopAnimating()
 
                 if error.code == PFErrorCode.ErrorObjectNotFound.rawValue {
                     FNToast.show(text: NSLocalizedString("LOGIN_ERROR_USER_NOT_FOUNT_MESSAGE", value: "Username or password incorrect", comment: "Message for when user does not exist or wrong password"), type: .Error)
@@ -94,11 +91,10 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate, UITextFi
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        loginButton.setBackgroundImage(UIColor.fn_tint().fn_image(), forState: .Normal)
 
-        let tableViewHeaderHeight = view.bounds.height - 450
-        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: tableViewHeaderHeight))
+        let facebookLogin = tableView.tableHeaderView!
+        facebookLogin.frame.size.height = view.bounds.height - 240
+        tableView.tableHeaderView = facebookLogin
     }
 
     override func viewDidAppear(animated: Bool) {

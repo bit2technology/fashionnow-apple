@@ -76,16 +76,20 @@ class ParseUser: PFUser, PFSubclassing {
     }
 
     /// Returns current date if no birthday provided
-    var birthday: NSDate {
+    var birthday: NSDate? {
         get {
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = dateFormat
-            return dateFormatter.dateFromString(self[ParseUserBirthdayKey] as? String ?? "") ?? NSDate()
+            return dateFormatter.dateFromString(self[ParseUserBirthdayKey] as? String ?? "")
         }
         set {
+            if newValue == nil {
+                self[ParseUserBirthdayKey] = NSNull()
+                return
+            }
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = dateFormat
-            self[ParseUserBirthdayKey] = dateFormatter.stringFromDate(newValue)
+            self[ParseUserBirthdayKey] = dateFormatter.stringFromDate(newValue!)
         }
     }
 
