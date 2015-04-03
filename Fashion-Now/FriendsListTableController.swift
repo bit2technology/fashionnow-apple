@@ -92,7 +92,7 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
     }
 
     private let headerTitles = [NSLocalizedString("FriendsListTableController.headers.general", value: "General", comment: "Table view section header"), NSLocalizedString("FriendsListTableController.headers.friends", value: "Friends", comment: "Table view section header")]
-    private let selectAllButtonTitle = NSLocalizedString("FriendsListTableController.headers.selectAllButtonTitle", value: "Select All", comment: "Table view section header button to select all rows in that section")
+    private let selectAllButtonTitle = NSLocalizedString("FriendsListTableController.headers.selectAllButtonTitle", value: "All", comment: "Table view section header button to select all rows in that section")
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
             return nil
@@ -101,13 +101,15 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
         containerView.backgroundColor = UIColor.groupTableViewBackgroundColor()
         // Title
         let title = UILabel(frame: CGRect(x: 8, y: 0, width: 192, height: 32))
+        title.autoresizingMask = .FlexibleWidth
         title.font = UIFont.boldSystemFontOfSize(16)
         title.text =  headerTitles[section - 1]
         containerView.addSubview(title)
         // Button
         if section == 2 && friendsList?.count > 0 {
             let button = UIButton.buttonWithType(.System) as UIButton
-            button.frame = CGRect(x: 193, y: 0, width: 116, height: 32)
+            button.frame = CGRect(x: 212, y: 0, width: 100, height: 32)
+            button.autoresizingMask = .FlexibleLeftMargin
             button.setTitle(selectAllButtonTitle, forState: .Normal)
             button.addTarget(self, action: "selectAllFriends:", forControlEvents: .TouchUpInside)
             button.contentHorizontalAlignment = .Right

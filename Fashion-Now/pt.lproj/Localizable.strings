@@ -1,8 +1,11 @@
 /* Default Cancel button title for entire app */
-"DEFAULT_BUTTON_TITLE_CANCEL" = "Cancelar";
+"Default.buttonTitle.cancel" = "Cancelar";
 
 /* Default for entire app */
-"DEFAULT_ERROR_DESCRIPTION_OFFLINE" = "Você está offline. Tente novamente mais tarde.";
+"Default.errorDescription.offline" = "Você está offline. Tente de novo depois.";
+
+/* Default for entire app */
+"Default.errorDescription.unknown" = "Erro desconhecido. Tente de novo depois.";
 
 /* Table view section header */
 "FriendsListTableController.headers.friends" = "Amigos";
@@ -11,7 +14,7 @@
 "FriendsListTableController.headers.general" = "Geral";
 
 /* Table view section header button to select all rows in that section */
-"FriendsListTableController.headers.selectAllButtonTitle" = "Selectionar Todos";
+"FriendsListTableController.headers.selectAllButtonTitle" = "Todos";
 
 /* Default caption for when users are inviting friends */
 "FriendsListTableController.invite.caption" = "Me ajude a escolher meu look com esse app!";
@@ -20,7 +23,7 @@
 "FriendsListTableController.rowTitle.inviteFriens" = "Convidar Amigos";
 
 /* Table view row title for when user has no friends */
-"FriendsListTableController.rowTitle.noFriends" = "Sem amigos";
+"FriendsListTableController.rowTitle.noFriends" = "Sem Amigos";
 
 /* Table view row title for make the poll public for all users */
 "FriendsListTableController.rowTitle.publicPoll" = "Enquete Pública";
@@ -31,44 +34,29 @@
 /* Shown when user sends the poll */
 "FriendsListTableController.send.succeeded" = "Enquete enviada";
 
-/* Gender labels */
-"GENDER_FEMALE" = "Mulher";
-
-/* Gender labels */
-"GENDER_MALE" = "Homem";
-
-/* Gender labels */
-"GENDER_OTHER" = "Outro";
-
-/* Message for general error, possibly connection related */
-"LOGIN_ERROR_GENERAL_MESSAGE" = "Por favor, verifique sua conexão";
-
 /* Message for when user does not fill the fields */
-"LOGIN_ERROR_INCOMPLETE_MESSAGE" = "Você deve informar usuário e senha";
+"LoginController.loginErrorDescription.incomplete" = "Nome de usuário ou senha faltando";
 
 /* Message for when user does not exist or wrong password */
-"LOGIN_ERROR_USER_NOT_FOUNT_MESSAGE" = "Usuário ou senha incorretos";
-
-/* Message for when there is no user with the email providen error */
-"LOGIN_RESET_ERROR_EMAIL_NOT_FOUND_MESSAGE" = "Não há nenhum usuário com este email";
-
-/* Alert title for when user types an invalid email address */
-"LOGIN_RESET_ERROR_EMAIL_NOT_VALID_MESSAGE" = "Por favor, digite um endereço de email válido";
-
-/* Message for general error, possibly connection related */
-"LOGIN_RESET_GENERAL_MESSAGE" = "Por favor, verifique sua conexão";
-
-/* Alert button for reset password */
-"LOGIN_RESET_PASSWORD_BUTTON" = "Resetar";
+"LoginController.loginErrorDescription.userNotFound" = "Nome de usuário ou senha incorretos";
 
 /* Alert message for when user requests a password reset */
-"LOGIN_RESET_PASSWORD_MESSAGE" = "Enviaremos um link para resetar sua senha";
+"LoginController.resetPassword.alert.message" = "Enviaremos um link para resetar sua senha";
+
+/* Alert button for reset password */
+"LoginController.resetPassword.alert.resetButtonTitle" = "Resetar";
 
 /* Alert title for when user requests a password reset */
-"LOGIN_RESET_PASSWORD_TITLE" = "Digite seu email";
+"LoginController.resetPassword.alert.title" = "Escreva seu e-mail";
+
+/* Message for when there is no user with the email providen error */
+"LoginController.resetPassword.errorDescription.emailNotFound" = "Não há usuário cadastrado com esse e-mail";
+
+/* Alert title for when user types an invalid email address */
+"LoginController.resetPassword.errorDescription.emailNotValid" = "Por favor, insira um e-mail válido";
 
 /* Message for when the email reset was successful */
-"LOGIN_RESET_SUCCESS_MESSAGE" = "Link para recuperação de senha enviado";
+"LoginController.resetPassword.successMessage" = "Instruções para resetar senha enviadas para seu e-mail";
 
 /* Shown when user taps the gear button */
 "MeController.gearButton.actionSheet.logOutButtonTitle" = "Logout";
@@ -79,41 +67,47 @@
 /* Shown when user is about to delete a poll */
 "ResultPollController.deleteSheet.title" = "Você realmente quer deletar essa enquete? Esta ação não pode ser desfeita";
 
-/* Error message for Sign Up or Edit Profile */
-"SIGNUP_ERROR_CONNECTION_MESSAGE" = "Você está conectado à Internet?";
-
-/* Error message for Sign Up or Edit Profile */
-"SIGNUP_ERROR_CONNECTION_TITLE" = "Conexão falhou";
-
-/* Error message for Sign Up or Edit Profile */
-"SIGNUP_ERROR_EMAIL_MISSING" = "E-mail faltando";
-
-/* Error message for Sign Up or Edit Profile */
-"SIGNUP_ERROR_EMAIL_NOT_VALID" = "E-mail inválido";
-
-/* Error message for Sign Up or Edit Profile */
-"SIGNUP_ERROR_EMAIL_TAKEN_TITLE" = "Outro usuário está usando este e-mail";
-
-/* Error message for Sign Up or Edit Profile */
-"SIGNUP_ERROR_NAME_MISSING" = "Nome faltando";
-
-/* Error message for Sign Up or Edit Profile */
-"SIGNUP_ERROR_PASSWORD_TOO_SHORT" = "Senha muito curta (6 caracteres min.)";
-
-/* Title of alert of missing/wrong information */
-"SIGNUP_ERROR_REVIEW_TITLE" = "Revisar informações";
-
-/* Error message for Sign Up or Edit Profile */
-"SIGNUP_ERROR_UNKNOWN_TITLE" = "Desculpe, houve um erro";
-
-/* Error message for Sign Up or Edit Profile */
-"SIGNUP_ERROR_USERNAME_MISSING" = "Nome de usuário faltando";
-
-/* Error message for Sign Up or Edit Profile */
-"SIGNUP_ERROR_USERNAME_TAKEN_TITLE" = "Nome de usuário já existe";
-
 /* User logged in with a Facebook account and must review his/her information. */
 "SIGNUP_REVIEW_TITLE" = "Editar Perfil";
+
+/* Gender labels */
+"SignupController.genders.female" = "Mulher";
+
+/* Gender labels */
+"SignupController.genders.male" = "Homem";
+
+/* Gender labels */
+"SignupController.genders.other" = "Outros";
+
+/* Gender labels */
+"SignupController.picker.none" = "Nenhum";
+
+/* Title of alert of missing/wrong information */
+"SignupController.reviewAlert.title" = "Revisar informações";
+
+/* Error message for Sign Up or Edit Profile */
+"SignupController.saveErrorDescription.emailMissing" = "E-mail faltando";
+
+/* Error message for Sign Up or Edit Profile */
+"SignupController.saveErrorDescription.emailNotValid" = "E-mail inválido";
+
+/* Error message for Sign Up or Edit Profile */
+"SignupController.saveErrorDescription.emailTaken" = "Outro usuário já está usando este e-mail";
+
+/* Error message for Sign Up or Edit Profile */
+"SignupController.saveErrorDescription.nameMissing" = "Nome faltando";
+
+/* Error message for Sign Up or Edit Profile */
+"SignupController.saveErrorDescription.passwordTooShort" = "Senha muito curta (6 caracteres min.)";
+
+/* Error message for Sign Up or Edit Profile */
+"SignupController.saveErrorDescription.userTooYoung" = "Você precisa ter pelo menos 4 anos";
+
+/* Error message for Sign Up or Edit Profile */
+"SignupController.saveErrorDescription.usernameMissing" = "Nome de usuário faltando";
+
+/* Error message for Sign Up or Edit Profile */
+"SignupController.saveErrorDescription.usernameTaken" = "Nome de usuário já existe";
 
 /* Shown when user taps the gear button */
 "VotePollController.gearButton.actionSheet.filtersButtonTitle" = "Aplicar Filtros";

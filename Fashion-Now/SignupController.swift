@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-private let pickerNoneLabel = NSLocalizedString("LoginSignupController.picker.none", value: "None", comment: "Gender labels")
+private let pickerNoneLabel = NSLocalizedString("SignupController.picker.none", value: "None", comment: "Gender labels")
 private let genderValues = ["male", "female", "other"]
-private let genderLabels = [NSLocalizedString("LoginSignupController.genders.male", value: "Male", comment: "Gender labels"), NSLocalizedString("LoginSignupController.genders.female", value: "Female", comment: "Gender labels"), NSLocalizedString("LoginSignupController.genders.other", value: "Other", comment: "Gender labels")]
+private let genderLabels = [NSLocalizedString("SignupController.genders.male", value: "Male", comment: "Gender labels"), NSLocalizedString("SignupController.genders.female", value: "Female", comment: "Gender labels"), NSLocalizedString("SignupController.genders.other", value: "Other", comment: "Gender labels")]
 
-class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate {
+class SignupController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate {
 
     var facebookUser: FacebookUser?
 
@@ -126,40 +126,47 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
         var verifyMessages = [String]()
 
         // Name
-        if nameField.text == nil || countElements(nameField.text) <= 0 {
+        if !(nameField.text.fn_count > 0) {
             nameLabel.textColor = UIColor.fn_error()
             allFieldsValid = false
-            verifyMessages.append(NSLocalizedString("SIGNUP_ERROR_NAME_MISSING", value: "Name missing", comment: "Error message for Sign Up or Edit Profile"))
+            verifyMessages.append(NSLocalizedString("SignupController.saveErrorDescription.nameMissing", value: "Name missing", comment: "Error message for Sign Up or Edit Profile"))
         }
 
         // Email
-        if emailField.text == nil || countElements(emailField.text) <= 0 {
+        if !(emailField.text.fn_count > 0) {
             emailLabel.textColor = UIColor.fn_error()
             allFieldsValid = false
-            verifyMessages.append(NSLocalizedString("SIGNUP_ERROR_EMAIL_MISSING", value: "E-mail missing", comment: "Error message for Sign Up or Edit Profile"))
+            verifyMessages.append(NSLocalizedString("SignupController.saveErrorDescription.emailMissing", value: "E-mail missing", comment: "Error message for Sign Up or Edit Profile"))
         } else if !emailField.text.isEmail() {
             emailLabel.textColor = UIColor.fn_error()
             allFieldsValid = false
-            verifyMessages.append(NSLocalizedString("SIGNUP_ERROR_EMAIL_NOT_VALID", value: "E-mail not valid", comment: "Error message for Sign Up or Edit Profile"))
+            verifyMessages.append(NSLocalizedString("SignupController.saveErrorDescription.emailNotValid", value: "E-mail not valid", comment: "Error message for Sign Up or Edit Profile"))
         }
 
         // Username
-        if usernameField.text == nil || countElements(usernameField.text) <= 0 {
+        if !(usernameField.text.fn_count > 0) {
             usernameLabel.textColor = UIColor.fn_error()
             allFieldsValid = false
-            verifyMessages.append(NSLocalizedString("SIGNUP_ERROR_USERNAME_MISSING", value: "Username missing", comment: "Error message for Sign Up or Edit Profile"))
+            verifyMessages.append(NSLocalizedString("SignupController.saveErrorDescription.usernameMissing", value: "Username missing", comment: "Error message for Sign Up or Edit Profile"))
         }
 
         // Password
-        if passwordField.text == nil || countElements(passwordField.text) < 6 {
+        if !(passwordField.text.fn_count > 0) {
             passwordLabel.textColor = UIColor.fn_error()
             allFieldsValid = false
-            verifyMessages.append(NSLocalizedString("SIGNUP_ERROR_PASSWORD_TOO_SHORT", value: "Password too short (6 characters min.)", comment: "Error message for Sign Up or Edit Profile"))
+            verifyMessages.append(NSLocalizedString("SignupController.saveErrorDescription.passwordTooShort", value: "Password too short (6 characters min.)", comment: "Error message for Sign Up or Edit Profile"))
+        }
+
+        // Birthday
+        if birthday?.isLaterThan(NSDate().dateBySubtractingYears(4)) == true {
+            birthdayLabel.textColor = UIColor.fn_error()
+            allFieldsValid = false
+            verifyMessages.append(NSLocalizedString("SignupController.saveErrorDescription.userTooYoung", value: "You must be at least 4 years old", comment: "Error message for Sign Up or Edit Profile"))
         }
 
         // Show alert if one or more fields are not valid
         if !allFieldsValid {
-            UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_REVIEW_TITLE", value: "Review information" , comment: "Title of alert of missing/wrong information"), message: "\n".join(verifyMessages), delegate: nil, cancelButtonTitle: FNLocalizedOKButtonTitle).show()
+            UIAlertView(title: NSLocalizedString("SignupController.reviewAlert.title", value: "Review information" , comment: "Title of alert of missing/wrong information"), message: "\n".join(verifyMessages), delegate: nil, cancelButtonTitle: FNLocalizedOKButtonTitle).show()
             return
         }
 
@@ -169,27 +176,27 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
             var error: NSError?
             var currentUser = ParseUser.currentUser()
 
-            /// Revert interface to original (enable interactive elements).
-            func revertInterface() {
-                activityIndicatorView.removeFromSuperview()
-            }
-
             /// Present error alert.
             func presentError(error: NSError) {
+                activityIndicatorView.removeFromSuperview()
+                PFAnalytics.fn_trackErrorInBackground(error, location: .SignupControllerSaveUser)
+
                 // Error handling
-                if error.code == PFErrorCode.ErrorConnectionFailed.rawValue {
-                    UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_CONNECTION_TITLE", value: "Connection failed", comment: "Error message for Sign Up or Edit Profile"), message: NSLocalizedString("SIGNUP_ERROR_CONNECTION_MESSAGE", value: "Are you connected to the Internet?", comment: "Error message for Sign Up or Edit Profile"), delegate: nil, cancelButtonTitle: FNLocalizedOKButtonTitle).show()
+                switch error.code {
 
-                } else if error.code == PFErrorCode.ErrorUsernameTaken.rawValue {
+                case PFErrorCode.ErrorConnectionFailed.rawValue:
+                    FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
+
+                case PFErrorCode.ErrorUsernameTaken.rawValue:
                     usernameLabel.textColor = UIColor.fn_error()
-                    UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_USERNAME_TAKEN_TITLE", value: "Username already exists", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: FNLocalizedOKButtonTitle).show()
+                    FNToast.show(text: NSLocalizedString("SignupController.saveErrorDescription.usernameTaken", value: "Username already exists", comment: "Error message for Sign Up or Edit Profile"), type: .Error)
 
-                } else if error.code == PFErrorCode.ErrorUserEmailTaken.rawValue {
+                case PFErrorCode.ErrorUserEmailTaken.rawValue:
                     emailLabel.textColor = UIColor.fn_error()
-                    UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_EMAIL_TAKEN_TITLE", value: "Another user is using this e-mail", comment: "Error message for Sign Up or Edit Profile"), message: nil, delegate: nil, cancelButtonTitle: FNLocalizedOKButtonTitle).show()
+                    FNToast.show(text: NSLocalizedString("SignupController.saveErrorDescription.emailTaken", value: "Another user is using this e-mail", comment: "Error message for Sign Up or Edit Profile"), type: .Error)
 
-                } else {
-                    UIAlertView(title: NSLocalizedString("SIGNUP_ERROR_UNKNOWN_TITLE", value: "Sorry, there was an error", comment: "Error message for Sign Up or Edit Profile"), message: error.localizedDescription, delegate: nil, cancelButtonTitle: FNLocalizedOKButtonTitle).show()
+                default:
+                    FNToast.show(text: FNLocalizedUnknownErrorDescription, type: .Error)
                 }
             }
 
@@ -197,7 +204,6 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
             if currentUser.isDirty() {
                 currentUser.save(&error)
                 if let unwrappedError = error {
-                    revertInterface()
                     presentError(unwrappedError)
                     return
                 }
@@ -208,7 +214,6 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
             if let unwrappedNewCurrentUser = currentUserQuery.getObjectWithId(ParseUser.currentUser().objectId, error: &error) as? ParseUser {
                 currentUser = unwrappedNewCurrentUser
             } else {
-                revertInterface()
                 presentError(error!)
                 return
             }
@@ -236,7 +241,6 @@ class LoginSignupController: UITableViewController, UITextFieldDelegate, UINavig
             // Save attempt
             currentUser.save(&error)
             if let unwrappedError = error {
-                revertInterface()
                 presentError(unwrappedError)
                 return
             }

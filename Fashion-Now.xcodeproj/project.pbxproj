@@ -11,12 +11,11 @@
 		4B3864651A178B80004ECAB8 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3864641A178B80004ECAB8 /* TabBarController.swift */; };
 		4B39E0341A652CB800836639 /* FriendsListTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39E0331A652CB800836639 /* FriendsListTableController.swift */; };
 		4B45FA111ABD980000E2F7CC /* GalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B45FA101ABD980000E2F7CC /* GalleryController.swift */; };
-		4B488C5A1A1F668200AEE393 /* LoginSignupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B488C591A1F668200AEE393 /* LoginSignupController.swift */; };
-		4B4BFA671A14239200BFD23F /* LoginEmailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4BFA661A14239200BFD23F /* LoginEmailController.swift */; };
+		4B488C5A1A1F668200AEE393 /* SignupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B488C591A1F668200AEE393 /* SignupController.swift */; };
+		4B4BFA671A14239200BFD23F /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4BFA661A14239200BFD23F /* LoginController.swift */; };
 		4B6010831ACDE0C9000B0DF7 /* android-app.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B6010821ACDE0C9000B0DF7 /* android-app.png */; };
 		4B6B75F41AC0700800060E6F /* appstore-badge-pt.svg in Resources */ = {isa = PBXBuildFile; fileRef = 4B6B75F31AC0700800060E6F /* appstore-badge-pt.svg */; };
 		4B749E8D1A30916F00E9B128 /* ResultPollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B749E8C1A30916F00E9B128 /* ResultPollController.swift */; };
-		4B79AABB1A0E4D740097B069 /* LoginFacebookController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B79AABA1A0E4D740097B069 /* LoginFacebookController.swift */; };
 		4B7B3FFF1A35C0F30063CB90 /* LoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7B3FFE1A35C0F30063CB90 /* LoginHelper.swift */; };
 		4B7C2CA41A13A1D900FB25B8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B7C2CA61A13A1D900FB25B8 /* InfoPlist.strings */; };
 		4B7C2CA91A13A1DA00FB25B8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B7C2CAB1A13A1DA00FB25B8 /* InfoPlist.strings */; };
@@ -62,12 +61,11 @@
 		4B3864641A178B80004ECAB8 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4B39E0331A652CB800836639 /* FriendsListTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsListTableController.swift; sourceTree = "<group>"; };
 		4B45FA101ABD980000E2F7CC /* GalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryController.swift; sourceTree = "<group>"; };
-		4B488C591A1F668200AEE393 /* LoginSignupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSignupController.swift; sourceTree = "<group>"; };
-		4B4BFA661A14239200BFD23F /* LoginEmailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEmailController.swift; sourceTree = "<group>"; };
+		4B488C591A1F668200AEE393 /* SignupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupController.swift; sourceTree = "<group>"; };
+		4B4BFA661A14239200BFD23F /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		4B6010821ACDE0C9000B0DF7 /* android-app.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "android-app.png"; sourceTree = "<group>"; };
 		4B6B75F31AC0700800060E6F /* appstore-badge-pt.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "appstore-badge-pt.svg"; sourceTree = "<group>"; };
 		4B749E8C1A30916F00E9B128 /* ResultPollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultPollController.swift; sourceTree = "<group>"; };
-		4B79AABA1A0E4D740097B069 /* LoginFacebookController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFacebookController.swift; sourceTree = "<group>"; };
 		4B7B3FFE1A35C0F30063CB90 /* LoginHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHelper.swift; sourceTree = "<group>"; };
 		4B7C2CA01A13A06E00FB25B8 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Main.strings; sourceTree = "<group>"; };
 		4B7C2CA51A13A1D900FB25B8 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -154,9 +152,8 @@
 			isa = PBXGroup;
 			children = (
 				4B7B3FFE1A35C0F30063CB90 /* LoginHelper.swift */,
-				4B79AABA1A0E4D740097B069 /* LoginFacebookController.swift */,
-				4B488C591A1F668200AEE393 /* LoginSignupController.swift */,
-				4B4BFA661A14239200BFD23F /* LoginEmailController.swift */,
+				4B488C591A1F668200AEE393 /* SignupController.swift */,
+				4B4BFA661A14239200BFD23F /* LoginController.swift */,
 			);
 			name = "Login and Signup";
 			sourceTree = "<group>";
@@ -476,7 +473,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B79AABB1A0E4D740097B069 /* LoginFacebookController.swift in Sources */,
 				4BD255461AC45F7A004BF005 /* VoteFilterController.swift in Sources */,
 				4B749E8D1A30916F00E9B128 /* ResultPollController.swift in Sources */,
 				4BEB9E1A1A01ABD200A71764 /* PhotoController.swift in Sources */,
@@ -487,11 +483,11 @@
 				4B9443591AB08B6D007DBAFD /* AppHelper.swift in Sources */,
 				4BEB9E1E1A01AC8500A71764 /* PostPollController.swift in Sources */,
 				4B39E0341A652CB800836639 /* FriendsListTableController.swift in Sources */,
-				4B4BFA671A14239200BFD23F /* LoginEmailController.swift in Sources */,
+				4B4BFA671A14239200BFD23F /* LoginController.swift in Sources */,
 				4BF1D05B1A00F1EB00818658 /* AppDelegate.swift in Sources */,
 				4BEB9E181A01AA9A00A71764 /* ParseHelper.swift in Sources */,
 				4B7B3FFF1A35C0F30063CB90 /* LoginHelper.swift in Sources */,
-				4B488C5A1A1F668200AEE393 /* LoginSignupController.swift in Sources */,
+				4B488C5A1A1F668200AEE393 /* SignupController.swift in Sources */,
 				4B45FA111ABD980000E2F7CC /* GalleryController.swift in Sources */,
 				4B3864651A178B80004ECAB8 /* TabBarController.swift in Sources */,
 			);

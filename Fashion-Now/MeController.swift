@@ -100,9 +100,16 @@ class MeController: UICollectionViewController, UIActionSheetDelegate {
 
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex != actionSheet.cancelButtonIndex {
-            ParseUser.logOut()
-            NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
-            tabBarController!.selectedIndex = 0
+            let activityIndicator = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+            ParseUser.logOutInBackgroundWithBlock({ (error) -> Void in
+                activityIndicator.removeFromSuperview()
+                if error != nil {
+                    PFAnalytics.fn_trackErrorInBackground(error, location: .MeControllerLogOut)
+                }
+                NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
+                self.tabBarController!.selectedIndex = 0
+            })
+
         }
     }
 

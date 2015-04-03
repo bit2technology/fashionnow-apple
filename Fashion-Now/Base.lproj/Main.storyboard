@@ -10,8 +10,8 @@
         <!--Log In-->
         <scene sceneID="9od-5e-1Db">
             <objects>
-                <tableViewController id="34U-YS-Pbl" customClass="LoginEmailController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="xog-eb-X2o">
+                <tableViewController id="34U-YS-Pbl" customClass="LoginController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="xog-eb-X2o">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
@@ -34,10 +34,14 @@
                                         <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6fB-21-Fsa" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                             <rect key="frame" x="53" y="70" width="214" height="42"/>
                                             <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="tintColor" red="0.23137254900000001" green="0.34901960780000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                                             <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
                                             <state key="normal" title="Log in with Facebook" backgroundImage="ButtonRoundBordersBackground">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
+                                            <connections>
+                                                <action selector="facebookButtonPressed:" destination="34U-YS-Pbl" eventType="touchUpInside" id="PhI-sB-m2C"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -60,16 +64,20 @@
                             <rect key="frame" x="0.0" y="402" width="320" height="52"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dsO-AB-HsR">
-                                    <rect key="frame" x="20" y="0.0" width="136" height="44"/>
-                                    <state key="normal" title="Sign up" backgroundImage="ButtonRoundBordersBackground"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dsO-AB-HsR">
+                                    <rect key="frame" x="0.0" y="0.0" width="160" height="52"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                    <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="8"/>
+                                    <state key="normal" title="Sign up"/>
                                     <connections>
-                                        <action selector="loginButtonPressed:" destination="34U-YS-Pbl" eventType="touchUpInside" id="Wvs-Pc-ZNj"/>
+                                        <segue destination="n9L-hk-vfW" kind="push" identifier="Sign Up" id="AdF-1L-oCc"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="exf-D7-gGy">
-                                    <rect key="frame" x="164" y="0.0" width="136" height="44"/>
-                                    <state key="normal" title="Log in" backgroundImage="ButtonRoundBordersBackground"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="exf-D7-gGy">
+                                    <rect key="frame" x="160" y="0.0" width="160" height="52"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                    <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="8"/>
+                                    <state key="normal" title="Log in"/>
                                     <connections>
                                         <action selector="loginButtonPressed:" destination="34U-YS-Pbl" eventType="touchUpInside" id="izw-Z8-q1C"/>
                                     </connections>
@@ -77,14 +85,14 @@
                             </subviews>
                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="dsO-AB-HsR" secondAttribute="bottom" constant="8" id="4MV-5c-kYM"/>
+                                <constraint firstAttribute="bottom" secondItem="dsO-AB-HsR" secondAttribute="bottom" id="4MV-5c-kYM"/>
                                 <constraint firstItem="exf-D7-gGy" firstAttribute="top" secondItem="skf-Z8-I9r" secondAttribute="top" id="6dS-o3-9nA"/>
                                 <constraint firstItem="dsO-AB-HsR" firstAttribute="top" secondItem="skf-Z8-I9r" secondAttribute="top" id="76m-Qg-neD"/>
-                                <constraint firstItem="dsO-AB-HsR" firstAttribute="leading" secondItem="skf-Z8-I9r" secondAttribute="leading" constant="20" id="8vU-Dw-XdA"/>
-                                <constraint firstItem="exf-D7-gGy" firstAttribute="leading" secondItem="dsO-AB-HsR" secondAttribute="trailing" constant="8" id="Lko-TH-qfl"/>
-                                <constraint firstAttribute="trailing" secondItem="exf-D7-gGy" secondAttribute="trailing" constant="20" id="Xum-of-KJr"/>
+                                <constraint firstItem="dsO-AB-HsR" firstAttribute="leading" secondItem="skf-Z8-I9r" secondAttribute="leading" id="8vU-Dw-XdA"/>
+                                <constraint firstItem="exf-D7-gGy" firstAttribute="leading" secondItem="dsO-AB-HsR" secondAttribute="trailing" id="Lko-TH-qfl"/>
+                                <constraint firstAttribute="trailing" secondItem="exf-D7-gGy" secondAttribute="trailing" id="Xum-of-KJr"/>
                                 <constraint firstItem="exf-D7-gGy" firstAttribute="width" secondItem="dsO-AB-HsR" secondAttribute="width" id="hZl-9X-iyh"/>
-                                <constraint firstAttribute="bottom" secondItem="exf-D7-gGy" secondAttribute="bottom" constant="8" id="k0u-WO-t2d"/>
+                                <constraint firstAttribute="bottom" secondItem="exf-D7-gGy" secondAttribute="bottom" id="k0u-WO-t2d"/>
                             </constraints>
                         </view>
                         <sections>
@@ -145,6 +153,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Log In" id="dwE-iZ-ESc">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="5mE-5I-RS6">
+                            <connections>
+                                <action selector="cancelButtonPressed:" destination="34U-YS-Pbl" id="FZo-Sa-fJ3"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Forgot" id="VHA-FD-oDJ">
                             <connections>
                                 <action selector="forgotButtonPressed:" destination="34U-YS-Pbl" id="epl-4a-3oL"/>
@@ -152,14 +165,13 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="loginButton" destination="exf-D7-gGy" id="eCQ-l3-acz"/>
                         <outlet property="passwordField" destination="tXu-ZQ-igo" id="401-8K-cLl"/>
                         <outlet property="usernameField" destination="Ost-XS-Gaw" id="zy4-QJ-yo2"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gA1-ed-9m9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-38" y="2146"/>
+            <point key="canvasLocation" x="-38" y="2256"/>
         </scene>
         <!--Vote Poll Controller-->
         <scene sceneID="VVH-fN-2gA">
@@ -848,7 +860,7 @@
         <!--Sign Up-->
         <scene sceneID="reA-p0-HcY">
             <objects>
-                <tableViewController id="n9L-hk-vfW" customClass="LoginSignupController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="n9L-hk-vfW" customClass="SignupController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="3MQ-yd-1YS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="700"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -958,7 +970,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Optional" textAlignment="right" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="TTM-un-ddi">
+                                                <textField clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="TTM-un-ddi">
                                                     <rect key="frame" x="97" y="0.0" width="215" height="43"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1668,7 +1680,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="AdF-1L-oCc"/>
         <segue reference="apZ-Yv-541"/>
         <segue reference="uM3-tb-eTB"/>
     </inferredMetricsTieBreakers>
+    <color key="tintColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="1" colorSpace="calibratedRGB"/>
 </document>

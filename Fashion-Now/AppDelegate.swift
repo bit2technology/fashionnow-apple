@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 PFAnalytics.fn_trackErrorInBackground(error, location: .AppDelegateEnableRevocableSession)
             }
         }
-        PFFacebookUtils.initializeFacebook()
+        PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
 
         // Analytics
         if application.applicationState != .Background {
@@ -103,12 +103,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-        return FBAppCall.handleOpenURL(url, sourceApplication: sourceApplication, withSession: PFFacebookUtils.session())
+        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
-        FBAppCall.handleDidBecomeActiveWithSession(PFFacebookUtils.session())
-        FBAppEvents.activateApp()
+        FBSDKAppEvents.activateApp()
     }
 
     func applicationDidReceiveMemoryWarning(application: UIApplication) {

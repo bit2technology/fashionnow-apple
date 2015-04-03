@@ -88,7 +88,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         // Set photo properties
         let imageData = image.fn_compressed()
         photo.image = PFFile(fn_imageData: imageData)
-        photo.saveEventually { (succeeded, error) -> Void in
+        photo.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             if error != nil {
                 PFAnalytics.fn_trackErrorInBackground(error, location: .PhotoControllerImageSave)
             }

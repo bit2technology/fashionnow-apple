@@ -8,6 +8,12 @@
 
 // MARK: - Extensions
 
+extension Reachability {
+    class func fn_reachable() -> Bool {
+        return reachabilityForInternetConnection().isReachable()
+    }
+}
+
 extension UIColor {
 
     /// rgb(27, 27, 27)
@@ -326,6 +332,8 @@ enum FNErrorCode: Int {
     case NoData = 806
     /// Reachability framework cant find remote host.
     case InternetUnreachable = 807
+    /// User canceled the operation.
+    case UserCanceled = 808
 }
 
 let FNLocalizedAppName = NSLocalizedString("Default.appName", value: "Fashion Now" , comment: "Default for entire app")

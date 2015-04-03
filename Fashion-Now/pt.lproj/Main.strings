@@ -4,20 +4,14 @@
 /* Class = "UITabBarItem"; title = "Create"; ObjectID = "2O1-Ra-Pjk"; */
 "2O1-Ra-Pjk.title" = "Criar";
 
-/* Class = "UILabel"; text = "Impossible to proceed. Are you connected to the Internet?"; ObjectID = "4UF-ot-JIx"; */
-"4UF-ot-JIx.text" = "Impossível prosseguir. Você está conectado à Internet?";
-
 /* Class = "UIButton"; normalTitle = "Vote"; ObjectID = "4XI-L8-6Pr"; */
 "4XI-L8-6Pr.normalTitle" = "Votar";
 
-/* Class = "UIButton"; normalTitle = "Log in with password"; ObjectID = "5eZ-fB-11K"; */
-"5eZ-fB-11K.normalTitle" = "Login com senha";
+/* Class = "UIButton"; normalTitle = "Log in with Facebook"; ObjectID = "6fB-21-Fsa"; */
+"6fB-21-Fsa.normalTitle" = "Login com Facebook";
 
 /* Class = "UINavigationItem"; title = "Gallery"; ObjectID = "8K3-ng-n0y"; */
 "8K3-ng-n0y.title" = "Galeria";
-
-/* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "9H3-pz-qNB"; */
-"9H3-pz-qNB.title" = "Voltar";
 
 /* Class = "UINavigationItem"; title = "Sign Up"; ObjectID = "9LK-rm-73H"; */
 "9LK-rm-73H.title" = "Registrar";
@@ -31,8 +25,8 @@
 /* Class = "UINavigationItem"; title = "Who can see?"; ObjectID = "BCe-DD-8Y6"; */
 "BCe-DD-8Y6.title" = "Quem pode ver?";
 
-/* Class = "UIButton"; normalTitle = "Edit Profile"; ObjectID = "Cjt-nK-Mnt"; */
-"Cjt-nK-Mnt.normalTitle" = "Editar Perfil";
+/* Class = "UIButton"; normalTitle = "Edit profile"; ObjectID = "Cjt-nK-Mnt"; */
+"Cjt-nK-Mnt.normalTitle" = "Editar perfil";
 
 /* Class = "UILabel"; text = "Birthday"; ObjectID = "F80-og-72K"; */
 "F80-og-72K.text" = "Data de nascimento";
@@ -52,9 +46,6 @@
 /* Class = "UITableViewSection"; headerTitle = "Overview"; ObjectID = "MRE-Ba-kQK"; */
 "MRE-Ba-kQK.headerTitle" = "Pessoal";
 
-/* Class = "UIButton"; normalTitle = "Log in with Facebook"; ObjectID = "MXb-Ij-kte"; */
-"MXb-Ij-kte.normalTitle" = "Login com Facebook";
-
 /* Class = "UITextField"; placeholder = "Username"; ObjectID = "Ost-XS-Gaw"; */
 "Ost-XS-Gaw.placeholder" = "Nome de usuário";
 
@@ -67,17 +58,11 @@
 /* Class = "UINavigationItem"; title = "Profile"; ObjectID = "SHi-hj-ibv"; */
 "SHi-hj-ibv.title" = "Perfil";
 
-/* Class = "UITextField"; placeholder = "Optional"; ObjectID = "TTM-un-ddi"; */
-"TTM-un-ddi.placeholder" = "Opcional";
-
 /* Class = "UILabel"; text = "Date"; ObjectID = "Tov-fz-RZ3"; */
 "Tov-fz-RZ3.text" = "Data";
 
 /* Class = "UILabel"; text = "Gender"; ObjectID = "UI9-MR-EjJ"; */
 "UI9-MR-EjJ.text" = "Sexo";
-
-/* Class = "UIButton"; normalTitle = "Sign up with e-mail"; ObjectID = "UVf-dJ-3oB"; */
-"UVf-dJ-3oB.normalTitle" = "Registrar com e-mail";
 
 /* Class = "UIBarButtonItem"; title = "Forgot"; ObjectID = "VHA-FD-oDJ"; */
 "VHA-FD-oDJ.title" = "Esqueci";
@@ -100,6 +85,9 @@
 /* Class = "UILabel"; text = "Name"; ObjectID = "dmJ-d0-zRi"; */
 "dmJ-d0-zRi.text" = "Nome";
 
+/* Class = "UIButton"; normalTitle = "Sign up"; ObjectID = "dsO-AB-HsR"; */
+"dsO-AB-HsR.normalTitle" = "Registrar";
+
 /* Class = "UINavigationItem"; title = "Log In"; ObjectID = "dwE-iZ-ESc"; */
 "dwE-iZ-ESc.title" = "Login";
 
@@ -115,23 +103,20 @@
 /* Class = "UILabel"; text = "Results"; ObjectID = "mT1-7P-I06"; */
 "mT1-7P-I06.text" = "Resultados";
 
+/* Class = "UILabel"; text = "Fashion Now works better with Facebook. Don't worry, we'll respect your privacy."; ObjectID = "nE2-fN-c10"; */
+"nE2-fN-c10.text" = "Fashion Now funciona melhor com o Facebook. Não se preocupe, respeitaremos sua privacidade.";
+
 /* Class = "UIBarButtonItem"; title = "Photos"; ObjectID = "p8Z-hd-6ug"; */
 "p8Z-hd-6ug.title" = "Fotos";
-
-/* Class = "UILabel"; text = "Sorry, Fashion Now might be disallowed to connect to your account. Go to Settings > Facebook to verify and try again."; ObjectID = "pcR-hn-i1Q"; */
-"pcR-hn-i1Q.text" = "Desculpe, o Fashion Now pode estar desabilitado para conectar à sua conta. Vá para Configurações > Facebook para verificar e tente novamente";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "qr1-zd-zXB"; */
 "qr1-zd-zXB.text" = "Nome de usuário";
 
-/* Class = "UILabel"; text = "Fashion Now works better with Facebook. Don't worry, we'll respect your privacy."; ObjectID = "sIE-qd-ls5"; */
-"sIE-qd-ls5.text" = "Fashion Now funciona melhor com Facebook. Não se preocupe, respeitaremos sua privacidade.";
-
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "tXu-ZQ-igo"; */
 "tXu-ZQ-igo.placeholder" = "Senha";
 
-/* Class = "UIButton"; normalTitle = "Load More"; ObjectID = "thF-Md-Kue"; */
-"thF-Md-Kue.normalTitle" = "Carregar Mais";
+/* Class = "UIButton"; normalTitle = "Load more"; ObjectID = "thF-Md-Kue"; */
+"thF-Md-Kue.normalTitle" = "Carregar mais";
 
 /* Class = "UILabel"; text = "Password"; ObjectID = "ub0-D8-tJg"; */
 "ub0-D8-tJg.text" = "Senha";

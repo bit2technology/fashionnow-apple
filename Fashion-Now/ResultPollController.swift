@@ -168,14 +168,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
         if buttonIndex == actionSheet.destructiveButtonIndex {
 
             if Reachability.reachabilityForInternetConnection().isReachable() {
-
-                let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-                activityIndicator.color = UIColor.grayColor()
-                activityIndicator.backgroundColor = UIColor.fn_white(alpha: 0.5)
-                activityIndicator.startAnimating()
-                activityIndicator.frame = navigationController!.view.bounds
-                activityIndicator.autoresizingMask = .FlexibleWidth | .FlexibleHeight
-                navigationController!.view.addSubview(activityIndicator)
+                let activityIndicator = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
 
                 poll.deleteInBackgroundWithBlock({ (success, error) -> Void in
                     activityIndicator.removeFromSuperview()

@@ -38,7 +38,7 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
         }
 
         downloadingFriendsList = true
-        FBRequestConnection.startForMyFriendsWithCompletionHandler { (requestConnection, object, error) -> Void in
+        FBSDKGraphRequest(graphPath: "me/friends", parameters: nil).startWithCompletionHandler({ (requestConnection, object, error) -> Void in
             self.downloadingFriendsList = false
 
             if error != nil {
@@ -75,7 +75,7 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
                 PFAnalytics.fn_trackErrorInBackground(noDataError, location: .PostControllerCacheFriendsFacebookRequest)
                 self.delegate?.postPollControllerDidFailDownloadFriendsList(noDataError)
             }
-        }
+        })
     }
     
     // MARK: UIViewController
