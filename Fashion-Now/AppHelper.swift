@@ -328,13 +328,16 @@ enum FNErrorCode: Int {
     case InternetUnreachable = 807
 }
 
-let FNLocalizedAppName = NSLocalizedString("APP_NAME", value: "Fashion Now" , comment: "Default for entire app")
+let FNLocalizedAppName = NSLocalizedString("Default.appName", value: "Fashion Now" , comment: "Default for entire app")
 
 /// Returns "You are offline. Try again later." for English and its variants for other languages
-let FNLocalizedOfflineErrorDescription = NSLocalizedString("DEFAULT_ERROR_DESCRIPTION_OFFLINE", value: "You are offline. Try again later." , comment: "Default for entire app")
+let FNLocalizedOfflineErrorDescription = NSLocalizedString("Default.errorDescription.offline", value: "You are offline. Try again later." , comment: "Default for entire app")
+
+/// Returns "Unknown error. Try again later." for English and its variants for other languages
+let FNLocalizedUnknownErrorDescription = NSLocalizedString("Default.errorDescription.unknown", value: "Unknown error. Try again later." , comment: "Default for entire app")
 
 /// Returns "OK" for English and its variants for other languages
-let FNLocalizedOKButtonTitle = NSLocalizedString("DEFAULT_BUTTON_TITLE_OK", value: "OK" , comment: "Default OK button title for entire app")
+let FNLocalizedOKButtonTitle = NSLocalizedString("Default.buttonTitle.ok", value: "OK" , comment: "Default OK button title for entire app")
 
 /// Returns "Cancel" for English and its variants for other languages
-let FNLocalizedCancelButtonTitle = NSLocalizedString("DEFAULT_BUTTON_TITLE_CANCEL", value: "Cancel" , comment: "Default Cancel button title for entire app")
+let FNLocalizedCancelButtonTitle = NSLocalizedString("Default.buttonTitle.cancel", value: "Cancel" , comment: "Default Cancel button title for entire app")

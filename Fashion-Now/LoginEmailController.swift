@@ -53,40 +53,47 @@ class LoginEmailController: UITableViewController, UIAlertViewDelegate, UITextFi
     }
 
     @IBAction func loginButtonPressed(sender: UIButton!) {
+        view.endEditing(true)
 
-        if usernameField.text == nil || countElements(usernameField.text) <= 0 || passwordField.text == nil || countElements(passwordField.text) <= 0 {
-            FNToast.show(text: NSLocalizedString("LOGIN_ERROR_INCOMPLETE_MESSAGE", value: "You must provide both username and password", comment: "Message for when user does not fill the fields"), type: .Error)
+        // Check vality of fields
+        if usernameField.text.fn_count > 0 && passwordField.text.fn_count > 0 {
+
+            // Check internet connection
+            if Reachability.reachabilityForInternetConnection().isReachable() {
+                let loadingView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+
+                ParseUser.logInWithUsernameInBackground(usernameField.text, password: passwordField.text) { (user, error) -> Void in
+
+                    if let unwrappedUser = user as? ParseUser {
+                        // Successful login
+                        NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
+                        self.dismissLoginModalController()
+
+                    } else {
+                        loadingView.removeFromSuperview()
+                        self.usernameField.becomeFirstResponder()
+
+                        if error.code == PFErrorCode.ErrorObjectNotFound.rawValue {
+                            FNToast.show(text: NSLocalizedString("LOGIN_ERROR_USER_NOT_FOUNT_MESSAGE", value: "Username or password incorrect", comment: "Message for when user does not exist or wrong password"), type: .Error)
+                        } else {
+                            FNToast.show(text: FNLocalizedUnknownErrorDescription, type: .Error)
+                        }
+                    }
+                }
+
+            } else {
+                FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
+            }
+        } else {
+            FNToast.show(text: NSLocalizedString("LoginController.loginErrorDescription.incomplete", value: "You must provide both username and password", comment: "Message for when user does not fill the fields"), type: .Error)
             return
         }
 
-        usernameField.enabled = false
-        passwordField.enabled = false
-        loginButton.enabled = false
-        navigationItem.setHidesBackButton(true, animated: true)
-        navigationItem.rightBarButtonItem?.enabled = false
 
-        ParseUser.logInWithUsernameInBackground(usernameField.text, password: passwordField.text) { (user, error) -> Void in
 
-            if let unwrappedUser = user as? ParseUser {
-                // Successful login
-                NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
-                self.dismissLoginModalController()
 
-            } else {
-                self.usernameField.enabled = true
-                self.usernameField.becomeFirstResponder()
-                self.passwordField.enabled = true
-                self.loginButton.enabled = true
-                self.navigationItem.setHidesBackButton(false, animated: true)
-                self.navigationItem.rightBarButtonItem?.enabled = true
 
-                if error.code == PFErrorCode.ErrorObjectNotFound.rawValue {
-                    FNToast.show(text: NSLocalizedString("LOGIN_ERROR_USER_NOT_FOUNT_MESSAGE", value: "Username or password incorrect", comment: "Message for when user does not exist or wrong password"), type: .Error)
-                } else {
-                    FNToast.show(text: NSLocalizedString("LOGIN_ERROR_GENERAL_MESSAGE", value: "Please, check your internet connection", comment: "Message for general error, possibly connection related"), type: .Error)
-                }
-            }
-        }
+
     }
 
     override func viewWillAppear(animated: Bool) {

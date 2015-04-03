@@ -33,6 +33,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Parse configuration
         Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
         ParseUser.enableAutomaticUser()
+        ParseUser.enableRevocableSessionInBackgroundWithBlock { (error) -> Void in
+            if error != nil {
+                PFAnalytics.fn_trackErrorInBackground(error, location: .AppDelegateEnableRevocableSession)
+            }
+        }
         PFFacebookUtils.initializeFacebook()
 
         // Analytics

@@ -655,6 +655,7 @@ enum ErrorLocation: Int {
     case AppDelegateLoginChangedUnpin = 3
     case AppDelegateLoginChangedSave = 4
     case AppDelegateRegisterNotificationSave = 5
+    case AppDelegateEnableRevocableSession = 18
     case PhotoControllerImageDownload = 6
     case PhotoControllerImageSave = 7
     case PhotoControllerAddToCameraRoll = 8
