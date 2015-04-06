@@ -8,6 +8,7 @@
 #import <DateTools/DateTools.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <FBSDKShareKit/FBSDKShareKit.h>
 #import <Parse/Parse.h>
 #import <Parse/PFObject+Subclass.h>
 #import <ParseCrashReporting/ParseCrashReporting.h>

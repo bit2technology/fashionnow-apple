@@ -6,9 +6,10 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-import UIKit
+private let logOutButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.logOutButtonTitle", value: "Log Out", comment: "Shown when user taps the gear button")
+private let inviteButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.inviteButtonTitle", value: "Invite Friends", comment: "Shown when user taps the gear button")
 
-class MeController: UICollectionViewController, UIActionSheetDelegate {
+class MeController: UICollectionViewController, UIActionSheetDelegate, FBSDKAppInviteDialogDelegate {
 
     /// Main list of polls to show
     private var myPolls = ParsePollList(type: .Mine)
@@ -95,11 +96,17 @@ class MeController: UICollectionViewController, UIActionSheetDelegate {
     }
 
     @IBAction func gearButtonPressed(sender: UIBarButtonItem) {
-        UIActionSheet(title: nil, delegate: self, cancelButtonTitle: FNLocalizedCancelButtonTitle, destructiveButtonTitle: nil, otherButtonTitles: NSLocalizedString("MeController.gearButton.actionSheet.logOutButtonTitle", value: "Log Out", comment: "Shown when user taps the gear button")).showFromBarButtonItem(sender, animated: true)
+        let actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        actionSheet.addButtonWithTitle(logOutButtonTitle)
+        actionSheet.addButtonWithTitle(inviteButtonTitle)
+        actionSheet.cancelButtonIndex = actionSheet.addButtonWithTitle(FNLocalizedCancelButtonTitle)
+        actionSheet.showFromBarButtonItem(sender, animated: true)
     }
 
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        if buttonIndex != actionSheet.cancelButtonIndex {
+        switch actionSheet.buttonTitleAtIndex(buttonIndex) {
+
+        case logOutButtonTitle:
             let activityIndicator = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
             ParseUser.logOutInBackgroundWithBlock({ (error) -> Void in
                 activityIndicator.removeFromSuperview()
@@ -110,7 +117,18 @@ class MeController: UICollectionViewController, UIActionSheetDelegate {
                 self.tabBarController!.selectedIndex = 0
             })
 
+        case inviteButtonTitle:
+            FBSDKAppInviteDialog.showWithContent(FBSDKAppInviteContent(appLinkURL: NSURL(string: "http://www.fashionnowapp.com")), delegate: self)
+
+        default:
+            break
         }
+    }
+    func appInviteDialog(appInviteDialog: FBSDKAppInviteDialog!, didCompleteWithResults results: [NSObject : AnyObject]!) {
+        NSLog("invite complete \(results)")
+    }
+    func appInviteDialog(appInviteDialog: FBSDKAppInviteDialog!, didFailWithError error: NSError!) {
+        NSLog("invite fail \(error)")
     }
 
     override func needsLogin() -> Bool {

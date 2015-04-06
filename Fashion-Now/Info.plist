@@ -23,14 +23,17 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.fashionnowapp</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb1647316532161447</string>
+				<string>fashionnowapp</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1789</string>
+	<string>1796</string>
 	<key>FacebookAppID</key>
 	<string>1647316532161447</string>
 	<key>FacebookDisplayName</key>
