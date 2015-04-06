@@ -648,37 +648,10 @@ extension PFFile {
 
 // MARK: - Analytics
 
-enum ErrorLocation: Int {
-    case AppDelegateLocationFromIPDownload = 0
-    case AppDelegateLocationFromIPSerialization = 1
-    case AppDelegateLocationFromIPSave = 2
-    case AppDelegateLoginChangedUnpin = 3
-    case AppDelegateLoginChangedSave = 4
-    case AppDelegateRegisterNotificationSave = 5
-    case AppDelegateEnableRevocableSession = 18
-    case PhotoControllerImageDownload = 6
-    case PhotoControllerImageSave = 7
-    case PhotoControllerAddToCameraRoll = 8
-    case VoteControllerHandle = 9
-    case VoteControllerLoadList = 10
-    case VoteControllerPollLoadFail = 11
-    case VoteControllerVoteSave = 12
-    case PostControllerCacheFriendsFacebookRequest = 13
-    case PostControllerCacheFriendsQuery = 14
-    case FriendsListControllerSendPoll = 15
-    case MeControllerLogOut = 23
-    case ResultControllerDeletePoll = 16
-    case ResultControllerLoadResults = 17
-    case LoginControllerFacebookLogin = 19
-    case LoginControllerPasswordLogin = 20
-    case LoginControllerResetPassword = 21
-    case SignupControllerSaveUser = 22
-}
-
 extension PFAnalytics {
 
-    class func fn_trackErrorInBackground(error: NSError, location: ErrorLocation) {
-        trackEventInBackground("Error", dimensions: ["Domain": error.domain, "Code": "\(error.code)", "Location": "\(location.rawValue)"], block: nil)
+    class func fn_trackErrorInBackground(error: NSError, location: String) {
+        trackEventInBackground("Error", dimensions: ["Domain": error.domain, "Code": "\(error.code)", "Description": error.description, "Location": location], block: nil)
     }
 
     class func fn_trackPostInBackground(imageSource: String, block: PFBooleanResultBlock! = nil) {

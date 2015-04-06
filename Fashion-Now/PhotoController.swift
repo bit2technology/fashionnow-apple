@@ -90,7 +90,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         photo.image = PFFile(fn_imageData: imageData)
         photo.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             if error != nil {
-                PFAnalytics.fn_trackErrorInBackground(error, location: .PhotoControllerImageSave)
+                PFAnalytics.fn_trackErrorInBackground(error, location: "Photo: Save")
             }
         }
         imageView.image = UIImage(data: imageData)
@@ -154,9 +154,8 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         
         // Save to Album if source is camera
         if picker.sourceType == .Camera {
-            ALAssetsLibrary().saveImage(image, toAlbum: FNLocalizedAppName, completion: nil, failure: nil)
             ALAssetsLibrary().saveImage(image, toAlbum: FNLocalizedAppName, completion: nil, failure: { (error) -> Void in
-                PFAnalytics.fn_trackErrorInBackground(error, location: .PhotoControllerAddToCameraRoll)
+                PFAnalytics.fn_trackErrorInBackground(error, location: "Photo: Add To Camera Roll")
             })
         }
     }

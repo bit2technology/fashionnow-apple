@@ -104,7 +104,7 @@ class MeController: UICollectionViewController, UIActionSheetDelegate {
             ParseUser.logOutInBackgroundWithBlock({ (error) -> Void in
                 activityIndicator.removeFromSuperview()
                 if error != nil {
-                    PFAnalytics.fn_trackErrorInBackground(error, location: .MeControllerLogOut)
+                    PFAnalytics.fn_trackErrorInBackground(error, location: "Me: Log Out")
                 }
                 NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
                 self.tabBarController!.selectedIndex = 0

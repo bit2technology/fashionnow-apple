@@ -58,7 +58,7 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
             activityIndicator.removeFromSuperview()
 
             if error != nil {
-                PFAnalytics.fn_trackErrorInBackground(error, location: .FriendsListControllerSendPoll)
+                PFAnalytics.fn_trackErrorInBackground(error, location: "Friends List: Save Poll")
             }
 
             if succeeded {

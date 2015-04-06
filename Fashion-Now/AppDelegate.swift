@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ParseUser.enableAutomaticUser()
         ParseUser.enableRevocableSessionInBackgroundWithBlock { (error) -> Void in
             if error != nil {
-                PFAnalytics.fn_trackErrorInBackground(error, location: .AppDelegateEnableRevocableSession)
+                PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Enable Revocable Session")
             }
         }
         PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
@@ -60,13 +60,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Get aproximate location with https://freegeoip.net/
             NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: "https://freegeoip.net/json")!, completionHandler: { (data, response, error) -> Void in
                 if error != nil {
-                    PFAnalytics.fn_trackErrorInBackground(error, location: .AppDelegateLocationFromIPDownload)
+                    PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Location From IP Download")
                     return
                 }
                 var jsonError: NSError?
                 let geoInfo = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &jsonError) as? [String: AnyObject]
                 if let unwJsonError = jsonError {
-                    PFAnalytics.fn_trackErrorInBackground(unwJsonError, location: .AppDelegateLocationFromIPSerialization)
+                    PFAnalytics.fn_trackErrorInBackground(unwJsonError, location: "AppDelegate: Location From IP Serialization")
                     return
                 }
                 let latitude = geoInfo!["latitude"] as? Double
@@ -75,7 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     currentInstallation.location = PFGeoPoint(latitude: latitude!, longitude: longitude!)
                     currentInstallation.saveEventually { (succeeded, error) -> Void in
                         if error != nil {
-                            PFAnalytics.fn_trackErrorInBackground(error, location: .AppDelegateLocationFromIPSave)
+                            PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Location From IP Save")
                         }
                     }
                 }
@@ -123,7 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Clear caches
         PFObject.unpinAllObjectsInBackgroundWithBlock { (succeeded, error) -> Void in
             if error != nil {
-                PFAnalytics.fn_trackErrorInBackground(error, location: .AppDelegateLoginChangedUnpin)
+                PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Login Changed Unpin")
             }
         }
         let imageCache = SDImageCache.sharedImageCache()
@@ -134,7 +134,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         currentInstallation.userId = ParseUser.currentUser().objectId
         currentInstallation.saveEventually { (succeeded, error) -> Void in
             if error != nil {
-                PFAnalytics.fn_trackErrorInBackground(error, location: .AppDelegateLoginChangedSave)
+                PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Login Changed Save")
             }
         }
     }
@@ -147,9 +147,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         currentInstallation.setDeviceTokenFromData(deviceToken)
         currentInstallation.saveEventually { (succeeded, error) -> Void in
             if error != nil {
-                PFAnalytics.fn_trackErrorInBackground(error, location: .AppDelegateRegisterNotificationSave)
+                PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Register Notification Save")
             }
         }
+    }
+
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Register Notification Fail")
     }
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {

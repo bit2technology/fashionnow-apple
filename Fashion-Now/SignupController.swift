@@ -179,7 +179,7 @@ class SignupController: UITableViewController, UITextFieldDelegate, UINavigation
             /// Present error alert.
             func presentError(error: NSError) {
                 activityIndicatorView.removeFromSuperview()
-                PFAnalytics.fn_trackErrorInBackground(error, location: .SignupControllerSaveUser)
+                PFAnalytics.fn_trackErrorInBackground(error, location: "Signup: Save")
 
                 // Error handling
                 switch error.code {

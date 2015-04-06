@@ -39,7 +39,7 @@ class LoginController: UITableViewController, UIAlertViewDelegate, UITextFieldDe
                     ParseUser.requestPasswordResetForEmailInBackground(email!) { (succeeded, error) -> Void in
 
                         if error != nil {
-                            PFAnalytics.fn_trackErrorInBackground(error, location: .LoginControllerResetPassword)
+                            PFAnalytics.fn_trackErrorInBackground(error, location: "Login: Reset Password")
                             if error.domain == PFParseErrorDomain && error.code == PFErrorCode.ErrorUserWithEmailNotFound.rawValue {
                                 FNToast.show(text: NSLocalizedString("LoginController.resetPassword.errorDescription.emailNotFound", value: "There is no user registered with this email", comment: "Message for when there is no user with the email providen error"), type: .Error)
                             } else {
@@ -69,6 +69,7 @@ class LoginController: UITableViewController, UIAlertViewDelegate, UITextFieldDe
             let loadingView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
 
             // Login
+            PFFacebookUtils.facebookLoginManager().loginBehavior = .SystemAccount
             PFFacebookUtils.logInInBackgroundWithReadPermissions(["public_profile", "user_friends", "email"]) { (user, error) -> Void in
 
                 if let parseUser = user as? ParseUser {
@@ -97,7 +98,7 @@ class LoginController: UITableViewController, UIAlertViewDelegate, UITextFieldDe
 
                     // Unsuccessful login
                     loadingView.removeFromSuperview()
-                    PFAnalytics.fn_trackErrorInBackground(error ?? NSError(fn_code: .UserCanceled), location: .LoginControllerFacebookLogin)
+                    PFAnalytics.fn_trackErrorInBackground(error ?? NSError(fn_code: .UserCanceled), location: "Login: Facebook")
                     if error != nil {
                         FNToast.show(text: FNLocalizedUnknownErrorDescription, type: .Error)
                     }
@@ -144,7 +145,7 @@ class LoginController: UITableViewController, UIAlertViewDelegate, UITextFieldDe
                         loadingView.removeFromSuperview()
 
                         if error != nil {
-                            PFAnalytics.fn_trackErrorInBackground(error, location: .LoginControllerPasswordLogin)
+                            PFAnalytics.fn_trackErrorInBackground(error, location: "Login: Password")
                         }
 
                         if error.code == PFErrorCode.ErrorObjectNotFound.rawValue {

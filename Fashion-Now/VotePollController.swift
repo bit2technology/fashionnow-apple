@@ -166,7 +166,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
 
             UIView.transitionWithView(self.navigationController!.view, duration: notification == nil ? transitionDuration : 0, options: .TransitionCrossDissolve, animations: { () -> Void in
                 self.showNextPoll()
-                self.handle(error: error, location: .VoteControllerLoadList)
+                self.handle(error: error, location: "Vote: Load List")
             }, completion: nil)
         })
     }
@@ -187,10 +187,10 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         }
     }
 
-    private func handle(#error: NSError?, location: ErrorLocation?) {
+    private func handle(#error: NSError?, location: String?) {
         // TODO: Error handler
         if let errorToHandle = error {
-            PFAnalytics.fn_trackErrorInBackground(errorToHandle, location: location ?? .VoteControllerHandle)
+            PFAnalytics.fn_trackErrorInBackground(errorToHandle, location: location ?? "Vote: Error Handler")
             loadingInterface.stopAnimating()
         }
     }
@@ -242,7 +242,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
 
     func pollLoadFailed(pollController: PollController, error: NSError) {
         UIView.transitionWithView(navigationController!.view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
-            self.handle(error: error, location: .VoteControllerPollLoadFail)
+            self.handle(error: error, location: "Vote: Poll Load Fail")
         }, completion: nil)
     }
 
@@ -265,7 +265,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         vote.vote = index
         vote.saveEventually { (succeeded, error) -> Void in
             if error != nil {
-                PFAnalytics.fn_trackErrorInBackground(error, location: .VoteControllerVoteSave)
+                PFAnalytics.fn_trackErrorInBackground(error, location: "Vote: Save")
             }
         }
     }

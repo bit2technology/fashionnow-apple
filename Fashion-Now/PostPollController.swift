@@ -42,7 +42,7 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
             self.downloadingFriendsList = false
 
             if error != nil {
-                PFAnalytics.fn_trackErrorInBackground(error, location: .PostControllerCacheFriendsFacebookRequest)
+                PFAnalytics.fn_trackErrorInBackground(error, location: "Post: Cache Friends Facebook Request")
                 self.delegate?.postPollControllerDidFailDownloadFriendsList(error)
                 return
             }
@@ -61,7 +61,7 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
                 friendsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
 
                     if error != nil {
-                        PFAnalytics.fn_trackErrorInBackground(error, location: .PostControllerCacheFriendsQuery)
+                        PFAnalytics.fn_trackErrorInBackground(error, location: "Post: Cache Friends Query")
                         self.delegate?.postPollControllerDidFailDownloadFriendsList(error)
                         return
                     }
@@ -72,7 +72,7 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
                 }
             } else {
                 let noDataError = NSError(fn_code: .NoData)
-                PFAnalytics.fn_trackErrorInBackground(noDataError, location: .PostControllerCacheFriendsFacebookRequest)
+                PFAnalytics.fn_trackErrorInBackground(noDataError, location: "Post: Cache Friends Facebook Request")
                 self.delegate?.postPollControllerDidFailDownloadFriendsList(noDataError)
             }
         })
