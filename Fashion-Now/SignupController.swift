@@ -125,15 +125,8 @@ class SignupController: UITableViewController, UITextFieldDelegate, UINavigation
         var allFieldsValid = true
         var verifyMessages = [String]()
 
-        // Name
-        if !(nameField.text.fn_count > 0) {
-            nameLabel.textColor = UIColor.fn_error()
-            allFieldsValid = false
-            verifyMessages.append(NSLocalizedString("SignupController.saveErrorDescription.nameMissing", value: "Name missing", comment: "Error message for Sign Up or Edit Profile"))
-        }
-
         // Email
-        if !(emailField.text.fn_count > 0) {
+        if emailField.fn_text == nil {
             emailLabel.textColor = UIColor.fn_error()
             allFieldsValid = false
             verifyMessages.append(NSLocalizedString("SignupController.saveErrorDescription.emailMissing", value: "E-mail missing", comment: "Error message for Sign Up or Edit Profile"))
@@ -144,14 +137,14 @@ class SignupController: UITableViewController, UITextFieldDelegate, UINavigation
         }
 
         // Username
-        if !(usernameField.text.fn_count > 0) {
+        if usernameField.fn_text == nil {
             usernameLabel.textColor = UIColor.fn_error()
             allFieldsValid = false
             verifyMessages.append(NSLocalizedString("SignupController.saveErrorDescription.usernameMissing", value: "Username missing", comment: "Error message for Sign Up or Edit Profile"))
         }
 
         // Password
-        if !(passwordField.text.fn_count > 0) {
+        if !(passwordField.text.fn_count >= 6) {
             passwordLabel.textColor = UIColor.fn_error()
             allFieldsValid = false
             verifyMessages.append(NSLocalizedString("SignupController.saveErrorDescription.passwordTooShort", value: "Password too short (6 characters min.)", comment: "Error message for Sign Up or Edit Profile"))
@@ -219,10 +212,10 @@ class SignupController: UITableViewController, UITextFieldDelegate, UINavigation
             }
 
             // Update Parse user info
-            currentUser.name = self.nameField.text
+            currentUser.name = self.nameField.fn_text
             currentUser.gender = self.gender
             currentUser.birthday = self.birthday
-            currentUser.location = self.locationField.text
+            currentUser.location = self.locationField.fn_text
             currentUser.email = self.emailField.text
             currentUser.username = self.usernameField.text
             if self.passwordChanged {
@@ -353,5 +346,12 @@ class SignupController: UITableViewController, UITextFieldDelegate, UINavigation
         if picker.sourceType == .Camera {
             ALAssetsLibrary().saveImage(image, toAlbum: FNLocalizedAppName, completion: nil, failure: nil)
         }
+    }
+}
+
+private extension UITextField {
+    /// Returns nil if text == ""
+    var fn_text: String? {
+        return text.fn_count > 0 ? text : nil
     }
 }
