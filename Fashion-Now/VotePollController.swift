@@ -135,7 +135,8 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
                 avatarView.image = nil
             }
             // Name
-            nameLabel.text = pollToShow.createdBy?.name ?? pollToShow.createdBy?.username ?? NSLocalizedString("VotePollController.titleView.nameLabel.unknown", value: "Unknown", comment: "Shown when user has no name or email")
+            let createdBy = pollToShow.createdBy
+            nameLabel.text = createdBy?.name ?? createdBy?.email ?? createdBy?.username ?? NSLocalizedString("VotePollController.titleView.nameLabel.unknown", value: "Unknown", comment: "Shown when user has no name or email")
             // Date
             dateLabel.text = pollToShow.createdAt.timeAgoSinceNow()
 
