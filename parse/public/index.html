@@ -6,9 +6,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <title>Fashion Now</title>
+        <link rel="canonical" href="http://www.fashionnowapp.com"/>
         <meta name="theme-color" content="#07837b"/>
         <link rel="icon" type="image/png" sizes="1024x1024" href="images/036.png"/>
         <link rel="shortcut icon" type="image/png" sizes="1024x1024" href="images/036.png"/>
+        <style>
+        .fb-like, .fb-like iframe, .fb-like iframe[style], .fb-like span, .fb-like span[style], .fb-like table, .fb-like table[style] {
+           width: 100% !important;
+        }
+        </style>
         <!-- jQuery -->
         <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
         <!-- Bootstrap -->
@@ -17,14 +23,28 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <!-- Smart banners -->
         <meta name="apple-itunes-app" content="app-id=940432969"/>
+        <meta name="google-play-app" content="app-id=com.titugo.fashionnow"/>
+        <link rel="stylesheet" href="jquery.smartbanner.css" type="text/css" media="screen"/>
         <!-- App Link -->
         <meta property="al:ios:url" content="fashionnowapp://home"/>
         <meta property="al:ios:app_store_id" content="940432969"/>
-        <meta property="al:ios:app_name" content="Fashion Now"/>
-        <!--<meta property="al:android:url" content="couchinapp://invite_from_fb?tracking_id=12345"/>-->
-        <!--<meta property="al:android:app_name" content="Couchin"/>-->
-        <!--<meta property="al:android:package" content="com.titugo.fashionnow"/>-->
+        <!--<meta property="al:ios:app_name" content="Fashion Now"/>-->
+        <!--<meta property="al:android:url" content="fashionnowapp://home"/>-->
+        <!--<meta property="al:android:app_name" content="Fashion Now"/>-->
+        <meta property="al:android:package" content="com.titugo.fashionnow"/>
         <!--<meta property="al:web:url" content="http://www.fashionnowapp.com"/>-->
+        <!-- Open Graph -->
+        <meta property="og:image" content="http://www.fashionnowapp.com/images/036.png"/>
+        <meta property="og:image:type" content="image/jpeg"/>
+        <meta property="og:image:width" content="1024"/>
+        <meta property="og:image:height" content="1024"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="Fashion Now"/>
+        <meta property="og:url" content="http://www.fashionnowapp.com"/>
+        <meta property="og:description" content="Fashion Now é um app que tem como objetivo principal auxiliar as mulheres a decidirem o melhor look."/>
+        <meta property="og:determiner" content="the"/>
+        <meta property="og:locale" content="pt_BR"/>
+        <meta property="fb:app_id" content="1647316532161447"/>
     </head>
     <body>
         <div id="fb-root"></div>
@@ -35,7 +55,11 @@
             js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&appId=1647316532161447&version=v2.3";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));</script>
-        <div class="container">
+        <script src="jquery.smartbanner.js"></script>
+        <script type="text/javascript">
+            $().smartbanner();
+        </script>
+        <div class="container" style="overflow-x:hidden">
             <div class="row">
                 <div class="col-xs-12">
                     <div class="page-header">
@@ -96,7 +120,7 @@
             </div>
             <div class="row" style="padding:15px 0">
                 <div class="col-xs-12">
-                    <div class="fb-like" data-href="http://www.facebook.com/fashionnowapp" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+                    <div class="fb-like" data-href="http://www.facebook.com/fashionnowapp" data-layout="standard" data-action="like" data-show-faces="true" data-share="true" data-width="100%"></div>
                 </div>
             </div>
         </div>

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1D824CAC92C93D9205931DB7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 048B75AE9DC83A2F458FA468 /* libPods.a */; };
+		4B0F16B81AD499E400597AD2 /* jquery.smartbanner.css in Resources */ = {isa = PBXBuildFile; fileRef = 4B0F16B61AD499E400597AD2 /* jquery.smartbanner.css */; };
+		4B0F16B91AD499E400597AD2 /* jquery.smartbanner.js in Resources */ = {isa = PBXBuildFile; fileRef = 4B0F16B71AD499E400597AD2 /* jquery.smartbanner.js */; };
 		4B3864651A178B80004ECAB8 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3864641A178B80004ECAB8 /* TabBarController.swift */; };
 		4B39E0341A652CB800836639 /* FriendsListTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39E0331A652CB800836639 /* FriendsListTableController.swift */; };
 		4B45FA111ABD980000E2F7CC /* GalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B45FA101ABD980000E2F7CC /* GalleryController.swift */; };
@@ -58,6 +60,8 @@
 
 /* Begin PBXFileReference section */
 		048B75AE9DC83A2F458FA468 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B0F16B61AD499E400597AD2 /* jquery.smartbanner.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = jquery.smartbanner.css; sourceTree = "<group>"; };
+		4B0F16B71AD499E400597AD2 /* jquery.smartbanner.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jquery.smartbanner.js; sourceTree = "<group>"; };
 		4B3864641A178B80004ECAB8 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4B39E0331A652CB800836639 /* FriendsListTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsListTableController.swift; sourceTree = "<group>"; };
 		4B45FA101ABD980000E2F7CC /* GalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryController.swift; sourceTree = "<group>"; };
@@ -189,6 +193,8 @@
 			children = (
 				4B6B75F21AC0700800060E6F /* images */,
 				4B8E44881AB46AD800C4EBD7 /* index.html */,
+				4B0F16B61AD499E400597AD2 /* jquery.smartbanner.css */,
+				4B0F16B71AD499E400597AD2 /* jquery.smartbanner.js */,
 			);
 			path = public;
 			sourceTree = "<group>";
@@ -387,6 +393,8 @@
 				4BC252CE1ACD84D000DE430E /* PT4.png in Resources */,
 				4B6010831ACDE0C9000B0DF7 /* android-app.png in Resources */,
 				4B8E448B1AB46AD800C4EBD7 /* index.html in Resources */,
+				4B0F16B81AD499E400597AD2 /* jquery.smartbanner.css in Resources */,
+				4B0F16B91AD499E400597AD2 /* jquery.smartbanner.js in Resources */,
 				4BF1D0651A00F1EB00818658 /* Images.xcassets in Resources */,
 				4B8E448A1AB46AD800C4EBD7 /* global.json in Resources */,
 				4B8E44891AB46AD800C4EBD7 /* main.js in Resources */,
