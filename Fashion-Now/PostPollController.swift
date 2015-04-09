@@ -25,7 +25,7 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
     func clean() {
         navigationItem.rightBarButtonItem?.enabled = false
         textField.text = nil
-        pollController.poll = ParsePoll(user: ParseUser.currentUser())
+        pollController.poll = ParsePoll(user: ParseUser.current())
         cachedFriendsList = nil
     }
 
@@ -60,7 +60,7 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
                 friendsQuery.whereKey(ParseUserFacebookIdKey, containedIn: friendsFacebookIds)
                 friendsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
 
-                    if error != nil {
+                    if let error = error {
                         PFAnalytics.fn_trackErrorInBackground(error, location: "Post: Cache Friends Query")
                         self.delegate?.postPollControllerDidFailDownloadFriendsList(error)
                         return
@@ -91,12 +91,12 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
             switch identifier {
                 
             case "Poll Controller":
-                pollController = segue.destinationViewController as PollController
+                pollController = segue.destinationViewController as! PollController
 
             case "Friends List":
                 textField.resignFirstResponder()
                 pollController.poll.caption = textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-                let friendsListController = segue.destinationViewController as FriendsListTableController
+                let friendsListController = segue.destinationViewController as! FriendsListTableController
                 friendsListController.friendsList = cachedFriendsList
                 friendsListController.poll = pollController.poll
                 friendsListController.postPollController = self

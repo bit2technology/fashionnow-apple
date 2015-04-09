@@ -10,7 +10,7 @@ private let animationDuration: NSTimeInterval = 0.25
 
 class PhotoController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
-    var photo: ParsePhoto = ParsePhoto(user: ParseUser.currentUser()) {
+    var photo: ParsePhoto = ParsePhoto(user: ParseUser.current()) {
         didSet {
 
             // Clean
@@ -76,7 +76,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
 
         // Delete in view
         UIView.transitionWithView(view, duration: animationDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
-            self.photo = ParsePhoto(user: ParseUser.currentUser())
+            self.photo = ParsePhoto(user: ParseUser.current())
         }, completion: nil)
 
         // Call delegate
@@ -89,7 +89,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         let imageData = image.fn_compressed()
         photo.image = PFFile(fn_imageData: imageData)
         photo.saveInBackgroundWithBlock { (succeeded, error) -> Void in
-            if error != nil {
+            if let error = error {
                 PFAnalytics.fn_trackErrorInBackground(error, location: "Photo: Save")
             }
         }
@@ -147,7 +147,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         PFAnalytics.fn_trackPostInBackground(source)
 
         // Get and apply edited or original image
-        var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as UIImage
+        var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as! UIImage
         setPhotoImage(image)
         dismissViewControllerAnimated(true, completion: nil)
 

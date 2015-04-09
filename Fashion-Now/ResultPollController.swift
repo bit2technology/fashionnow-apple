@@ -92,7 +92,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
 
     private func queryForVote(vote: Int) -> PFQuery {
         return PFQuery(className: ParseVote.parseClassName())
-            .whereKey(ParseVotePollIdKey, equalTo: poll.objectId)
+            .whereKey(ParseVotePollIdKey, equalTo: poll.objectId!)
             .whereKey(ParseVoteVoteKey, equalTo: vote)
     }
 
@@ -102,7 +102,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
             switch identifier {
 
             case "Poll Controller":
-                pollController = segue.destinationViewController as PollController
+                pollController = segue.destinationViewController as! PollController
 
             default:
                 return
@@ -140,7 +140,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
         navigationItem.rightBarButtonItems = [buttonTrash, buttonActivity]
 
         // Date label
-        dateLabel.text = poll.createdAt.timeAgoSinceNow()
+        dateLabel.text = poll.createdAt!.timeAgoSinceNow()
 
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
         activityIndicator.color = UIColor.grayColor()
@@ -173,7 +173,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
                 poll.deleteInBackgroundWithBlock({ (success, error) -> Void in
                     activityIndicator.removeFromSuperview()
 
-                    if error != nil {
+                    if let error = error {
                         PFAnalytics.fn_trackErrorInBackground(error, location: "Result: Delete Poll")
                     }
 

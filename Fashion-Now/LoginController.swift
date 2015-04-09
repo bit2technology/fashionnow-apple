@@ -38,7 +38,7 @@ class LoginController: UITableViewController, UIAlertViewDelegate, UITextFieldDe
 
                     ParseUser.requestPasswordResetForEmailInBackground(email!) { (succeeded, error) -> Void in
 
-                        if error != nil {
+                        if let error = error {
                             PFAnalytics.fn_trackErrorInBackground(error, location: "Login: Reset Password")
                             if error.domain == PFParseErrorDomain && error.code == PFErrorCode.ErrorUserWithEmailNotFound.rawValue {
                                 FNToast.show(text: NSLocalizedString("LoginController.resetPassword.errorDescription.emailNotFound", value: "There is no user registered with this email", comment: "Message for when there is no user with the email providen error"), type: .Error)
@@ -144,15 +144,16 @@ class LoginController: UITableViewController, UIAlertViewDelegate, UITextFieldDe
                         // Unsuccessful login
                         loadingView.removeFromSuperview()
 
-                        if error != nil {
+                        if let error = error {
+
                             PFAnalytics.fn_trackErrorInBackground(error, location: "Login: Password")
+
+                            if error.code == PFErrorCode.ErrorObjectNotFound.rawValue {
+                                FNToast.show(text: NSLocalizedString("LoginController.loginErrorDescription.userNotFound", value: "Username or password incorrect", comment: "Message for when user does not exist or wrong password"), type: .Error)
+                            }
                         }
 
-                        if error.code == PFErrorCode.ErrorObjectNotFound.rawValue {
-                            FNToast.show(text: NSLocalizedString("LoginController.loginErrorDescription.userNotFound", value: "Username or password incorrect", comment: "Message for when user does not exist or wrong password"), type: .Error)
-                        } else {
-                            FNToast.show(text: FNLocalizedUnknownErrorDescription, type: .Error)
-                        }
+                        FNToast.show(text: FNLocalizedUnknownErrorDescription, type: .Error)
                     }
                 }
             } else {
@@ -185,7 +186,7 @@ class LoginController: UITableViewController, UIAlertViewDelegate, UITextFieldDe
             case "Sign Up":
                 if !(sender is UIButton) {
                     segue.destinationViewController.navigationItem.hidesBackButton = true
-                    (segue.destinationViewController as SignupController).facebookUser = FacebookUser(graphObject: sender)
+                    (segue.destinationViewController as! SignupController).facebookUser = FacebookUser(graphObject: sender)
                 }
 
             default:

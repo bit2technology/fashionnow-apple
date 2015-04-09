@@ -30,8 +30,8 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
         // If controller needs login and user is loged out, show login controller
-        if viewController.needsLogin() && PFAnonymousUtils.isLinkedWithUser(ParseUser.currentUser()) {
-            controllerIndex = find(tabBarController.viewControllers as [UIViewController], viewController)
+        if viewController.needsLogin() && PFAnonymousUtils.isLinkedWithUser(ParseUser.current()) {
+            controllerIndex = find(tabBarController.viewControllers as! [UIViewController], viewController)
             presentLoginController()
             return false
         }
@@ -44,7 +44,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
     func willDismissLoginController() {
         // If successful login and there is a controller to be selected, select new controleller
-        if !PFAnonymousUtils.isLinkedWithUser(ParseUser.currentUser()) && controllerIndex != nil {
+        if !PFAnonymousUtils.isLinkedWithUser(ParseUser.current()) && controllerIndex != nil {
             selectedIndex = controllerIndex!
         }
         controllerIndex = nil

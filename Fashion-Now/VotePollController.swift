@@ -73,7 +73,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
             otherButtonTitles += [/*reportButtonTitle,*/ skipButtonTitle] // TODO: Add report
         }
         otherButtonTitles += [/*filtersButtonTitle,*/ refreshButtonTitle] // TODO: Add filters
-        if PFAnonymousUtils.isLinkedWithUser(ParseUser.currentUser()) {
+        if PFAnonymousUtils.isLinkedWithUser(ParseUser.current()) {
             otherButtonTitles.append(loginButtonTitle)
         }
         for buttonTitle in otherButtonTitles {
@@ -96,7 +96,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
             }, completion: nil)
 
         case loginButtonTitle:
-            (tabBarController! as TabBarController).presentLoginController()
+            (tabBarController as! TabBarController).presentLoginController()
 
         default:
             break
@@ -136,9 +136,9 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
             }
             // Name
             let createdBy = pollToShow.createdBy
-            nameLabel.text = createdBy?.name ?? createdBy?.email ?? createdBy?.username ?? NSLocalizedString("VotePollController.titleView.nameLabel.unknown", value: "Unknown", comment: "Shown when user has no name or email")
+            nameLabel.text = createdBy?.name ?? createdBy?.username ?? NSLocalizedString("VotePollController.titleView.nameLabel.unknown", value: "Unknown", comment: "Shown when user has no name or email")
             // Date
-            dateLabel.text = pollToShow.createdAt.timeAgoSinceNow()
+            dateLabel.text = pollToShow.createdAt!.timeAgoSinceNow()
 
             return true
         }
@@ -180,7 +180,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
             switch identifier {
                 
             case "Poll Controller":
-                pollController = segue.destinationViewController as PollController
+                pollController = segue.destinationViewController as! PollController
                 
             default:
                 return
@@ -261,11 +261,11 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         }
         PFAnalytics.fn_trackVote(index, method: voteMethod)
 
-        let vote = ParseVote(user: ParseUser.currentUser())
+        let vote = ParseVote(user: ParseUser.current())
         vote.pollId = pollController.poll.objectId
         vote.vote = index
         vote.saveEventually { (succeeded, error) -> Void in
-            if error != nil {
+            if let error = error {
                 PFAnalytics.fn_trackErrorInBackground(error, location: "Vote: Save")
             }
         }

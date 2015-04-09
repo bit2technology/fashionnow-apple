@@ -119,7 +119,7 @@ extension UIImage {
 extension String {
     /// Same as count(self)
     var fn_count: Int {
-        return countElements(self)
+        return count(self)
     }
 }
 

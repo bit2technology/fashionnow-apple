@@ -10,7 +10,7 @@ private let defaultDuration: CFTimeInterval = 0.25
 
 class PollController: UIViewController, PhotoControllerDelegate {
     
-    var poll: ParsePoll = ParsePoll(user: ParseUser.currentUser()) {
+    var poll: ParsePoll = ParsePoll(user: ParseUser.current()) {
         didSet {
 
             // Clear load counter and photos
@@ -33,7 +33,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
             // Enable gestures
             tap.enabled = poll.objectId?.fn_count > 0
-            let votable = poll.createdBy?.objectId != ParseUser.currentUser().objectId
+            let votable = poll.createdBy?.objectId != ParseUser.current().objectId
             for gesture in [doubleTap, drager] {
                 gesture.enabled = votable
             }
@@ -74,8 +74,8 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
     @IBOutlet weak var tap: UITapGestureRecognizer!
     @IBAction func didTap(sender: UITapGestureRecognizer) {
-        let navController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Gallery Navigation Controller") as UINavigationController
-        let gallery = navController.topViewController as GalleryController
+        let navController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Gallery Navigation Controller") as! UINavigationController
+        let gallery = navController.topViewController as! GalleryController
         gallery.images = [leftPhotoController.imageView.image!, rightPhotoController.imageView.image!]
         gallery.initialImageIndex = indexForTouch(sender.locationInView(view)) - 1
         presentViewController(navController, animated: true, completion: nil)
@@ -303,9 +303,9 @@ class PollController: UIViewController, PhotoControllerDelegate {
             switch identifier {
 
             case "Left Photo Controller":
-                leftPhotoController = segue.destinationViewController as PhotoController
+                leftPhotoController = segue.destinationViewController as! PhotoController
             case "Right Photo Controller":
-                rightPhotoController = segue.destinationViewController as PhotoController
+                rightPhotoController = segue.destinationViewController as! PhotoController
             default:
                 return
             }

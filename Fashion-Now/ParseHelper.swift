@@ -57,6 +57,10 @@ class ParseUser: PFUser, PFSubclassing {
 //        FBSDKSession.activeSession().closeAndClearTokenInformation()
 //    }
 
+    class func current() -> Self {
+        return currentUser()!
+    }
+
     var avatarImage: PFFile? {
         get {
             return self[ParseUserAvatarImageKey] as? PFFile
@@ -302,7 +306,7 @@ class ParsePollList: Printable, DebugPrintable {
 
     /// Return new query by type of list
     private var pollQuery: PFQuery {
-        let currentUser = ParseUser.currentUser()
+        let currentUser = ParseUser.current()
         let query = PFQuery(className: ParsePoll.parseClassName())
             .includeKey(ParsePollCreatedByKey)
             .includeKey(ParsePollPhotosKey)
@@ -372,12 +376,12 @@ class ParsePollList: Printable, DebugPrintable {
             if pollsAreRemote {
                 switch type {
                 case .Newer:
-                    if let unwrappedFirstPoll = polls.first {
-                        query.whereKey(ParseObjectCreatedAtKey, greaterThan: unwrappedFirstPoll.createdAt)
+                    if let firstPoll = polls.first {
+                        query.whereKey(ParseObjectCreatedAtKey, greaterThan: firstPoll.createdAt!)
                     }
                 case .Older:
-                    if let unwrappedLastPoll = polls.last {
-                        query.whereKey(ParseObjectCreatedAtKey, lessThan: unwrappedLastPoll.createdAt)
+                    if let lastPoll = polls.last {
+                        query.whereKey(ParseObjectCreatedAtKey, lessThan: lastPoll.createdAt!)
                     }
                 }
             }
@@ -389,7 +393,7 @@ class ParsePollList: Printable, DebugPrintable {
                 var error: NSError?
 
                 // Save user if needed
-                let currentUser = ParseUser.currentUser()
+                let currentUser = ParseUser.current()
                 if currentUser.isDirty() {
                     currentUser.save(&error)
                     if error != nil {
@@ -407,7 +411,7 @@ class ParsePollList: Printable, DebugPrintable {
                         // Collect new polls IDs
                         var newPollsIds = [String]()
                         for poll in unwrappedNewPolls {
-                            newPollsIds.append(poll.objectId)
+                            newPollsIds.append(poll.objectId!)
                         }
 
                         // Find votes on these new polls
@@ -434,7 +438,7 @@ class ParsePollList: Printable, DebugPrintable {
                             // Remove the ones already voted
                             var notVotedNewPolls = [ParsePoll]()
                             for newPoll in unwrappedNewPolls {
-                                if find(myVotesPollIds, newPoll.objectId) == nil {
+                                if find(myVotesPollIds, newPoll.objectId!) == nil {
                                     notVotedNewPolls.append(newPoll)
                                 }
                             }

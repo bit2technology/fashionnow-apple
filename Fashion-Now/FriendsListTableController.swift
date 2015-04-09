@@ -25,7 +25,7 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
 
         // Choose poll visibility
 
-        let pollACL = PFACL(user: ParseUser.currentUser())
+        let pollACL = PFACL(user: ParseUser.current())
         pollACL.setPublicReadAccess(false)
         var userIds = [String]()
         for indexPath in checkedIndexPaths {
@@ -35,7 +35,7 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
             case 2:
                 let user = friendsList![indexPath.row]
                 pollACL.setReadAccess(true, forUser: user)
-                userIds.append(user.objectId)
+                userIds.append(user.objectId!)
             default:
                 break
             }
@@ -57,7 +57,7 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
         poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             activityIndicator.removeFromSuperview()
 
-            if error != nil {
+            if let error = error {
                 PFAnalytics.fn_trackErrorInBackground(error, location: "Friends List: Save Poll")
             }
 
@@ -107,7 +107,7 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
         containerView.addSubview(title)
         // Button
         if section == 2 && friendsList?.count > 0 {
-            let button = UIButton.buttonWithType(.System) as UIButton
+            let button = UIButton.buttonWithType(.System) as! UIButton
             button.frame = CGRect(x: 212, y: 0, width: 100, height: 32)
             button.autoresizingMask = .FlexibleLeftMargin
             button.setTitle(selectAllButtonTitle, forState: .Normal)
@@ -134,7 +134,7 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
         // Verify if it is a message cell
         if indexPath.section == 2 && indexPath.row == (friendsList?.count ?? 0) {
 
-            let cell = tableView.dequeueReusableCellWithIdentifier("Loading Cell", forIndexPath: indexPath) as FriendsLoadingCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("Loading Cell", forIndexPath: indexPath) as! FriendsLoadingCell
 
             cell.activityIndicator.stopAnimating()
 
@@ -149,7 +149,7 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
 
         // Normal cells
 
-        let cell = tableView.dequeueReusableCellWithIdentifier("Friends List Table Cell", forIndexPath: indexPath) as FriendListTableCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Friends List Table Cell", forIndexPath: indexPath) as! FriendListTableCell
 
         cell.accessoryType = find(checkedIndexPaths, indexPath) != nil ? .Checkmark : .None
 

@@ -167,7 +167,7 @@ class SignupController: UITableViewController, UITextFieldDelegate, UINavigation
         let activityIndicatorView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
             var error: NSError?
-            var currentUser = ParseUser.currentUser()
+            var currentUser = ParseUser.current()
 
             /// Present error alert.
             func presentError(error: NSError) {
@@ -181,11 +181,11 @@ class SignupController: UITableViewController, UITextFieldDelegate, UINavigation
                     FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
 
                 case PFErrorCode.ErrorUsernameTaken.rawValue:
-                    usernameLabel.textColor = UIColor.fn_error()
+                    self.usernameLabel.textColor = UIColor.fn_error()
                     FNToast.show(text: NSLocalizedString("SignupController.saveErrorDescription.usernameTaken", value: "Username already exists", comment: "Error message for Sign Up or Edit Profile"), type: .Error)
 
                 case PFErrorCode.ErrorUserEmailTaken.rawValue:
-                    emailLabel.textColor = UIColor.fn_error()
+                    self.emailLabel.textColor = UIColor.fn_error()
                     FNToast.show(text: NSLocalizedString("SignupController.saveErrorDescription.emailTaken", value: "Another user is using this e-mail", comment: "Error message for Sign Up or Edit Profile"), type: .Error)
 
                 default:
@@ -204,7 +204,7 @@ class SignupController: UITableViewController, UITextFieldDelegate, UINavigation
 
             // Get new instance of current user
             let currentUserQuery = PFQuery(className: ParseUser.parseClassName())
-            if let unwrappedNewCurrentUser = currentUserQuery.getObjectWithId(ParseUser.currentUser().objectId, error: &error) as? ParseUser {
+            if let unwrappedNewCurrentUser = currentUserQuery.getObjectWithId(currentUser.objectId!, error: &error) as? ParseUser {
                 currentUser = unwrappedNewCurrentUser
             } else {
                 presentError(error!)
@@ -249,7 +249,7 @@ class SignupController: UITableViewController, UITextFieldDelegate, UINavigation
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let currentUser = ParseUser.currentUser()
+        let currentUser = ParseUser.current()
 
         // Adjust layout
         genderField.textColor = UIColor.fn_tint()
@@ -337,7 +337,7 @@ class SignupController: UITableViewController, UITextFieldDelegate, UINavigation
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
 
         // Get edited or original image
-        var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as UIImage
+        var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as! UIImage
         avatarImageView.image = image
         avatarChanged = true
         dismissViewControllerAnimated(true, completion: nil)

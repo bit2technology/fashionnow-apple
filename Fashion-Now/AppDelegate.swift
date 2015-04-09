@@ -34,11 +34,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
         ParseUser.enableAutomaticUser()
         ParseUser.enableRevocableSessionInBackgroundWithBlock { (error) -> Void in
-            if error != nil {
+            if let error = error {
                 PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Enable Revocable Session")
             }
         }
-        PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
+        if let launchOptions = launchOptions {
+            PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
+        }
 
         // Analytics
         if application.applicationState != .Background {
@@ -46,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // Logout if current user is invalid
-        let currentUser = ParseUser.currentUser()
+        let currentUser = ParseUser.current()
         if !currentUser.isValid {
             ParseUser.logOut()
         }
@@ -74,7 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if latitude != nil && longitude != nil {
                     currentInstallation.location = PFGeoPoint(latitude: latitude!, longitude: longitude!)
                     currentInstallation.saveEventually { (succeeded, error) -> Void in
-                        if error != nil {
+                        if let error = error {
                             PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Location From IP Save")
                         }
                     }
@@ -122,7 +124,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func loginChanged(notification: NSNotification) {
         // Clear caches
         PFObject.unpinAllObjectsInBackgroundWithBlock { (succeeded, error) -> Void in
-            if error != nil {
+            if let error = error {
                 PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Login Changed Unpin")
             }
         }
@@ -131,9 +133,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         imageCache.clearMemory()
         // Register new user ID in installation on login change
         let currentInstallation = ParseInstallation.currentInstallation()
-        currentInstallation.userId = ParseUser.currentUser().objectId
+        currentInstallation.userId = ParseUser.current().objectId
         currentInstallation.saveEventually { (succeeded, error) -> Void in
-            if error != nil {
+            if let error = error {
                 PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Login Changed Save")
             }
         }
@@ -146,7 +148,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let currentInstallation = ParseInstallation.currentInstallation()
         currentInstallation.setDeviceTokenFromData(deviceToken)
         currentInstallation.saveEventually { (succeeded, error) -> Void in
-            if error != nil {
+            if let error = error {
                 PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Register Notification Save")
             }
         }

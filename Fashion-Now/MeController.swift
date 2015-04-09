@@ -86,7 +86,7 @@ class MeController: UICollectionViewController, UIActionSheetDelegate, FBSDKAppI
                 self.collectionView?.reloadData()
             }
             // Show error if necessary
-            else if showError && error != nil && (error.domain != FNErrorDomain || error.code == FNErrorCode.ConnectionLost.rawValue) {
+            else if showError, let error = error where (error.domain != FNErrorDomain || error.code == FNErrorCode.ConnectionLost.rawValue) {
                 FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
             }
 
@@ -110,7 +110,7 @@ class MeController: UICollectionViewController, UIActionSheetDelegate, FBSDKAppI
             let activityIndicator = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
             ParseUser.logOutInBackgroundWithBlock({ (error) -> Void in
                 activityIndicator.removeFromSuperview()
-                if error != nil {
+                if let error = error {
                     PFAnalytics.fn_trackErrorInBackground(error, location: "Me: Log Out")
                 }
                 NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
@@ -141,7 +141,7 @@ class MeController: UICollectionViewController, UIActionSheetDelegate, FBSDKAppI
 
             switch unwrappedId {
             case "Result Controller":
-                let idx = (collectionView!.indexPathsForSelectedItems().first as NSIndexPath).item
+                let idx = (collectionView!.indexPathsForSelectedItems().first as! NSIndexPath).item
                 // Get appropriate cell
                 var poll: ParsePoll!
                 if idx < postedPolls.count {
@@ -149,7 +149,7 @@ class MeController: UICollectionViewController, UIActionSheetDelegate, FBSDKAppI
                 } else {
                     poll = myPolls[idx - postedPolls.count]
                 }
-                (segue.destinationViewController as ResultPollController).poll = poll
+                (segue.destinationViewController as! ResultPollController).poll = poll
             default:
                 return
             }
@@ -161,7 +161,7 @@ class MeController: UICollectionViewController, UIActionSheetDelegate, FBSDKAppI
         // Clean caches. Also load polls if new user is not anonymous
         myPolls = ParsePollList(type: .Mine)
         collectionView!.reloadData()
-        if !PFAnonymousUtils.isLinkedWithUser(ParseUser.currentUser()) {
+        if !PFAnonymousUtils.isLinkedWithUser(ParseUser.current()) {
             footer?.activityIndicator?.startAnimating()
             loadPolls()
         }
@@ -193,13 +193,13 @@ class MeController: UICollectionViewController, UIActionSheetDelegate, FBSDKAppI
 
         // Header
         if kind == UICollectionElementKindSectionHeader {
-            let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Me Overview", forIndexPath: indexPath) as MePollHeader
+            let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Me Overview", forIndexPath: indexPath) as! MePollHeader
             self.header = header
             return header.updateContent()
         }
 
         // Footer
-        let footer = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Loading Footer", forIndexPath: indexPath) as MePollFooter
+        let footer = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Loading Footer", forIndexPath: indexPath) as! MePollFooter
         footer.controller = self
         self.footer = footer
         return footer.prepare(updating: myPolls.downloading)
@@ -208,7 +208,7 @@ class MeController: UICollectionViewController, UIActionSheetDelegate, FBSDKAppI
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
 
         // Get cell
-        let cell = (collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as MePollCell)
+        let cell = (collectionView.dequeueReusableCellWithReuseIdentifier("Poll", forIndexPath: indexPath) as! MePollCell)
 
         // Set urls to check later if it is still the same cell
         let poll = self.poll(indexPath.row)
@@ -248,7 +248,7 @@ class MeController: UICollectionViewController, UIActionSheetDelegate, FBSDKAppI
                 var scaledImage = image
                 if scaledImage != nil {
 
-                    var itemSize = (self.collectionViewLayout as UICollectionViewFlowLayout).itemSize
+                    var itemSize = (self.collectionViewLayout as! UICollectionViewFlowLayout).itemSize
 
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
 
@@ -341,7 +341,7 @@ class MePollHeader: UICollectionReusableView {
     @IBOutlet weak var nameLabel: UILabel!
 
     func updateContent() -> Self {
-        let currentUser = ParseUser.currentUser()
+        let currentUser = ParseUser.current()
 
         let currentUserUrl = currentUser.avatarURL(size: 84)
         if avatarUrl != currentUserUrl {
