@@ -1271,8 +1271,13 @@
                                     <outletCollection property="gestureRecognizers" destination="zdf-mX-5qy" appends="YES" id="qIz-hg-Bzf"/>
                                 </connections>
                             </view>
-                            <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Lock" translatesAutoresizingMaskIntoConstraints="NO" id="PZq-MC-hyg">
-                                <rect key="frame" x="4" y="3" width="12" height="14"/>
+                            <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="FriendsPublic" translatesAutoresizingMaskIntoConstraints="NO" id="PZq-MC-hyg" customClass="FNTemplateImageView" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="3" y="3" width="14" height="14"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="14" id="eC9-gS-dnR"/>
+                                    <constraint firstAttribute="height" constant="14" id="fnG-Hf-wr7"/>
+                                </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
                                         <size key="value" width="0.0" height="0.0"/>
@@ -1301,7 +1306,7 @@
                             <constraint firstItem="22F-CN-JDl" firstAttribute="width" secondItem="TYB-j4-um4" secondAttribute="width" id="d8v-PI-idv"/>
                             <constraint firstAttribute="bottom" secondItem="22F-CN-JDl" secondAttribute="bottom" id="etT-l5-kXL"/>
                             <constraint firstAttribute="trailing" secondItem="TYB-j4-um4" secondAttribute="trailing" id="odu-gc-3fV"/>
-                            <constraint firstItem="PZq-MC-hyg" firstAttribute="leading" secondItem="Ngt-gb-2Qu" secondAttribute="leading" constant="4" id="sPP-vq-gcR"/>
+                            <constraint firstItem="PZq-MC-hyg" firstAttribute="leading" secondItem="Ngt-gb-2Qu" secondAttribute="leading" constant="3" id="sPP-vq-gcR"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="shouldRasterize" value="YES"/>
@@ -1318,7 +1323,7 @@
                         <outlet property="doubleTap" destination="aQj-E4-gl5" id="sga-HV-yJm"/>
                         <outlet property="drager" destination="kgl-Bo-434" id="gK9-Zx-6gF"/>
                         <outlet property="leftPhotoView" destination="22F-CN-JDl" id="Xgc-LM-En5"/>
-                        <outlet property="lockView" destination="PZq-MC-hyg" id="czM-fX-aLp"/>
+                        <outlet property="publicIndicator" destination="PZq-MC-hyg" id="0mZ-FG-siZ"/>
                         <outlet property="rightPhotoView" destination="TYB-j4-um4" id="jhq-Wr-tpH"/>
                         <outlet property="tap" destination="qhL-uy-211" id="lOk-r6-yNe"/>
                     </connections>
@@ -1669,7 +1674,7 @@
         <image name="ButtonLibrary" width="32" height="32"/>
         <image name="ButtonNext" width="12" height="20"/>
         <image name="ButtonRoundBordersBackground" width="11" height="11"/>
-        <image name="Lock" width="12" height="14"/>
+        <image name="FriendsPublic" width="40" height="40"/>
         <image name="TabBarIconPostUnselected" width="25" height="25"/>
         <image name="TabBarIconProfileUnselected" width="25" height="25"/>
         <image name="TabBarIconVoteUnselected" width="25" height="25"/>
