@@ -31,7 +31,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
                 // Load image
                 imageView.sd_setImageWithURL(NSURL(string: urlString), completed: { (image, error, cacheType, url) -> Void in
                     if image != nil {
-                        self.imageView.fn_setAspectRatio(image)
+                        self.imageView.fn_setAspectRatio(image: image)
                         self.delegate?.photoLoaded(self)
                     } else {
                         self.delegate?.photoLoadFailed(self, error: error)
@@ -90,12 +90,12 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         photo.image = PFFile(fn_imageData: imageData)
         photo.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             if let error = error {
-                PFAnalytics.fn_trackErrorInBackground(error, location: "Photo: Save")
+                FNAnalytics.logError(error, location: "Photo: Save")
             }
         }
         imageView.image = UIImage(data: imageData)
         imageContainerHidden(false)
-        imageView.fn_setAspectRatio(nil)
+        imageView.fn_setAspectRatio(image: nil)
 
         // Call delegate
         delegate?.photoEdited(self)
@@ -144,7 +144,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
                 source = "Camera Front"
             }
         }
-        PFAnalytics.fn_trackPostInBackground(source)
+        FNAnalytics.logPhoto(source)
 
         // Get and apply edited or original image
         var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as! UIImage
@@ -155,7 +155,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         // Save to Album if source is camera
         if picker.sourceType == .Camera {
             ALAssetsLibrary().saveImage(image, toAlbum: FNLocalizedAppName, completion: nil, failure: { (error) -> Void in
-                PFAnalytics.fn_trackErrorInBackground(error, location: "Photo: Add To Camera Roll")
+                FNAnalytics.logError(error, location: "Photo: Add To Camera Roll")
             })
         }
     }

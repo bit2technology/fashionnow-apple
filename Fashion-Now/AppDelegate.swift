@@ -34,13 +34,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
         ParseUser.enableAutomaticUser()
         ParseUser.enableRevocableSessionInBackgroundWithBlock { (error) -> Void in
-            if let error = error {
-                PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Enable Revocable Session")
-            }
+            FNAnalytics.logError(error, location: "AppDelegate: Enable Revocable Session")
         }
-        if let launchOptions = launchOptions {
-            PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
-        }
+        PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions ?? [:])
 
         // Analytics
         if application.applicationState != .Background {
@@ -61,14 +57,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         default:
             // Get aproximate location with https://freegeoip.net/
             NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: "https://freegeoip.net/json")!, completionHandler: { (data, response, error) -> Void in
-                if error != nil {
-                    PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Location From IP Download")
+                if FNAnalytics.logError(error, location: "AppDelegate: Location From IP Download") {
                     return
                 }
                 var jsonError: NSError?
                 let geoInfo = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &jsonError) as? [String: AnyObject]
-                if let unwJsonError = jsonError {
-                    PFAnalytics.fn_trackErrorInBackground(unwJsonError, location: "AppDelegate: Location From IP Serialization")
+                if FNAnalytics.logError(jsonError, location: "AppDelegate: Location From IP Serialization") {
                     return
                 }
                 let latitude = geoInfo!["latitude"] as? Double
@@ -76,9 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if latitude != nil && longitude != nil {
                     currentInstallation.location = PFGeoPoint(latitude: latitude!, longitude: longitude!)
                     currentInstallation.saveEventually { (succeeded, error) -> Void in
-                        if let error = error {
-                            PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Location From IP Save")
-                        }
+                        FNAnalytics.logError(error, location: "AppDelegate: Location From IP Save")
                     }
                 }
             }).resume()
@@ -124,9 +116,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func loginChanged(notification: NSNotification) {
         // Clear caches
         PFObject.unpinAllObjectsInBackgroundWithBlock { (succeeded, error) -> Void in
-            if let error = error {
-                PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Login Changed Unpin")
-            }
+            FNAnalytics.logError(error, location: "AppDelegate: Login Changed Unpin")
         }
         let imageCache = SDImageCache.sharedImageCache()
         imageCache.clearDisk()
@@ -135,9 +125,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let currentInstallation = ParseInstallation.currentInstallation()
         currentInstallation.userId = ParseUser.current().objectId
         currentInstallation.saveEventually { (succeeded, error) -> Void in
-            if let error = error {
-                PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Login Changed Save")
-            }
+            FNAnalytics.logError(error, location: "AppDelegate: Login Changed Save")
         }
     }
 
@@ -148,14 +136,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let currentInstallation = ParseInstallation.currentInstallation()
         currentInstallation.setDeviceTokenFromData(deviceToken)
         currentInstallation.saveEventually { (succeeded, error) -> Void in
-            if let error = error {
-                PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Register Notification Save")
-            }
+            FNAnalytics.logError(error, location: "AppDelegate: Register Notification Save")
         }
     }
 
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
-        PFAnalytics.fn_trackErrorInBackground(error, location: "AppDelegate: Register Notification Fail")
+        FNAnalytics.logError(error, location: "AppDelegate: Register Notification Fail")
     }
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {

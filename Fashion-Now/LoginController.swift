@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-class LoginController: UITableViewController, UIAlertViewDelegate, UITextFieldDelegate {
+class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
@@ -39,7 +39,7 @@ class LoginController: UITableViewController, UIAlertViewDelegate, UITextFieldDe
                     ParseUser.requestPasswordResetForEmailInBackground(email!) { (succeeded, error) -> Void in
 
                         if let error = error {
-                            PFAnalytics.fn_trackErrorInBackground(error, location: "Login: Reset Password")
+                            FNAnalytics.logError(error, location: "Login: Reset Password")
                             if error.domain == PFParseErrorDomain && error.code == PFErrorCode.ErrorUserWithEmailNotFound.rawValue {
                                 FNToast.show(text: NSLocalizedString("LoginController.resetPassword.errorDescription.emailNotFound", value: "There is no user registered with this email", comment: "Message for when there is no user with the email providen error"), type: .Error)
                             } else {
@@ -98,7 +98,7 @@ class LoginController: UITableViewController, UIAlertViewDelegate, UITextFieldDe
 
                     // Unsuccessful login
                     loadingView.removeFromSuperview()
-                    PFAnalytics.fn_trackErrorInBackground(error ?? NSError(fn_code: .UserCanceled), location: "Login: Facebook")
+                    FNAnalytics.logError(error ?? NSError(fn_code: .UserCanceled), location: "Login: Facebook")
                     if error != nil {
                         FNToast.show(text: FNLocalizedUnknownErrorDescription, type: .Error)
                     }
@@ -146,7 +146,7 @@ class LoginController: UITableViewController, UIAlertViewDelegate, UITextFieldDe
 
                         if let error = error {
 
-                            PFAnalytics.fn_trackErrorInBackground(error, location: "Login: Password")
+                            FNAnalytics.logError(error, location: "Login: Password")
 
                             if error.code == PFErrorCode.ErrorObjectNotFound.rawValue {
                                 FNToast.show(text: NSLocalizedString("LoginController.loginErrorDescription.userNotFound", value: "Username or password incorrect", comment: "Message for when user does not exist or wrong password"), type: .Error)
@@ -172,11 +172,6 @@ class LoginController: UITableViewController, UIAlertViewDelegate, UITextFieldDe
         let facebookLogin = tableView.tableHeaderView!
         facebookLogin.frame.size.height = view.bounds.height - 240
         tableView.tableHeaderView = facebookLogin
-    }
-
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        PFAnalytics.fn_trackScreenInBackground("Login: Main", block: nil)
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

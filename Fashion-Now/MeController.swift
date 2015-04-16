@@ -9,7 +9,7 @@
 private let logOutButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.logOutButtonTitle", value: "Log Out", comment: "Shown when user taps the gear button")
 private let inviteButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.inviteButtonTitle", value: "Invite Friends", comment: "Shown when user taps the gear button")
 
-class MeController: UICollectionViewController, UIActionSheetDelegate, FBSDKAppInviteDialogDelegate {
+class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInviteDialogDelegate {
 
     /// Main list of polls to show
     private var myPolls = ParsePollList(type: .Mine)
@@ -63,11 +63,6 @@ class MeController: UICollectionViewController, UIActionSheetDelegate, FBSDKAppI
         header?.updateContent()
     }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        PFAnalytics.fn_trackScreenInBackground("Me: Main", block: nil)
-    }
-
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
@@ -111,7 +106,7 @@ class MeController: UICollectionViewController, UIActionSheetDelegate, FBSDKAppI
             ParseUser.logOutInBackgroundWithBlock({ (error) -> Void in
                 activityIndicator.removeFromSuperview()
                 if let error = error {
-                    PFAnalytics.fn_trackErrorInBackground(error, location: "Me: Log Out")
+                    FNAnalytics.logError(error, location: "Me: Log Out")
                 }
                 NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
                 self.tabBarController!.selectedIndex = 0
@@ -222,8 +217,8 @@ class MeController: UICollectionViewController, UIActionSheetDelegate, FBSDKAppI
             cell.rightImageView.image = scaledImages[cell.rightImageUrl!]
             if cell.leftImageView.image != nil && cell.rightImageView.image != nil {
                 // Adjust aspect ratio
-                cell.leftImageView.fn_setAspectRatio(nil)
-                cell.rightImageView.fn_setAspectRatio(nil)
+                cell.leftImageView.fn_setAspectRatio(image: nil)
+                cell.rightImageView.fn_setAspectRatio(image: nil)
                 // Remove loading if still exists
                 if let indicator = cell.subviews.last as? UIActivityIndicatorView {
                     indicator.removeFromSuperview()
@@ -268,7 +263,7 @@ class MeController: UICollectionViewController, UIActionSheetDelegate, FBSDKAppI
                             }
 
                             imageView.image = scaledImage
-                            imageView.fn_setAspectRatio(scaledImage)
+                            imageView.fn_setAspectRatio(image: scaledImage)
 
                             // Remove loading interface
                             if cell.leftImageView.image != nil && cell.rightImageView.image != nil {

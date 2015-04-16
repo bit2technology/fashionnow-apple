@@ -6,9 +6,39 @@
 //  Copyright (c) 2015 Bit2 Software. All rights reserved.
 //
 
+// MARK: - Functions
+
+/// Apply tilted separator
+func fn_applyPollMask(left: UIView, right: UIView) {
+
+    let maskReferenceSize: CGFloat = 1
+    let spaceBetween: CGFloat = maskReferenceSize / 100
+
+    let leftMaskPath = UIBezierPath()
+    leftMaskPath.moveToPoint(CGPoint(x: -2 * maskReferenceSize, y: 0))
+    leftMaskPath.addLineToPoint(CGPoint(x: maskReferenceSize + (maskReferenceSize / 10) - spaceBetween, y: 0))
+    leftMaskPath.addLineToPoint(CGPoint(x: maskReferenceSize - (maskReferenceSize / 10) - spaceBetween, y: maskReferenceSize))
+    leftMaskPath.addLineToPoint(CGPoint(x: -2 * maskReferenceSize, y: maskReferenceSize))
+    leftMaskPath.closePath()
+    let leftMask = CAShapeLayer()
+    leftMask.path = leftMaskPath.CGPath
+    left.layer.mask = leftMask
+
+    let rightMaskPath = UIBezierPath()
+    rightMaskPath.moveToPoint(CGPoint(x: 3 * maskReferenceSize, y: 0))
+    rightMaskPath.addLineToPoint(CGPoint(x: (maskReferenceSize / 10) + spaceBetween, y: 0))
+    rightMaskPath.addLineToPoint(CGPoint(x: (maskReferenceSize / -10) + spaceBetween, y: maskReferenceSize))
+    rightMaskPath.addLineToPoint(CGPoint(x: 3 * maskReferenceSize, y: maskReferenceSize))
+    rightMaskPath.closePath()
+    let rightMask = CAShapeLayer()
+    rightMask.path = rightMaskPath.CGPath
+    right.layer.mask = rightMask
+}
+
 // MARK: - Extensions
 
 extension Reachability {
+    /// Helper to test internet reachability
     class func fn_reachable() -> Bool {
         return reachabilityForInternetConnection().isReachable()
     }
@@ -102,7 +132,7 @@ extension UIImage {
     /// :returns: Resized image if necessary, opaque and with screen scale
     func fn_resized(maxHeight: CGFloat) -> UIImage {
 
-        let resizeScale = maxHeight / self.size.height
+        let resizeScale = maxHeight / size.height
 
         if resizeScale < 1 {
             let resizeRect = CGRect(x: 0, y: 0, width: floor(size.width * resizeScale), height: floor(size.height * resizeScale))
@@ -131,8 +161,6 @@ extension NSDate {
         return dateFormatter.stringFromDate(self)
     }
 }
-
-// MARK: Interface Builder Inspectables
 
 extension UIView {
     @IBInspectable var cornerRadius: CGFloat {
@@ -184,36 +212,75 @@ extension UIView {
         activityIndicator.color = color
         activityIndicator.backgroundColor = background
         activityIndicator.startAnimating()
-        activityIndicator.frame = self.bounds
+        activityIndicator.frame = bounds
         activityIndicator.autoresizingMask = .FlexibleWidth | .FlexibleHeight
         activityIndicator.opaque = true
-        self.addSubview(activityIndicator)
+        addSubview(activityIndicator)
         return activityIndicator
     }
 }
 
 extension UIImageView {
     /// Adjusts the image view aspect ratio constraint to the size of the image
-    func fn_setAspectRatio(image: UIImage?, needsLayout: Bool = true) {
+    func fn_setAspectRatio(image newImage: UIImage?, needsLayout: Bool = true) {
 
-        if let correctImage = image ?? self.image {
+        if let correctImage = newImage ?? image {
             // Remove old aspect ratio
             if NSLayoutConstraint.respondsToSelector("deactivateConstraints:") {
-                NSLayoutConstraint.deactivateConstraints(self.constraints())
+                NSLayoutConstraint.deactivateConstraints(constraints())
             } else {
-                self.removeConstraints(self.constraints())
+                removeConstraints(constraints())
             }
 
             // Add new
-            self.addConstraint(NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Height, multiplier: correctImage.size.width / correctImage.size.height, constant: 0))
+            addConstraint(NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Height, multiplier: correctImage.size.width / correctImage.size.height, constant: 0))
             if needsLayout {
-                self.setNeedsLayout()
+                setNeedsLayout()
             }
         }
     }
 }
 
+extension NSError {
+    convenience init(fn_code: FNErrorCode, userInfo: [NSObject:AnyObject]? = nil) {
+        self.init(domain: FNErrorDomain, code: fn_code.rawValue, userInfo: userInfo)
+    }
+}
+
 // MARK: - Classes
+
+class FNAnalytics {
+
+    class func logError(error: NSError?, location: String) -> Bool {
+        if let error = error {
+            FBSDKAppEvents.logEvent("Error", parameters: ["Domain": error.domain, "Code": error.code, "Description": error.description, "Location": location])
+            PFAnalytics.trackEventInBackground("Error", dimensions: ["Domain": error.domain, "Code": "\(error.code)", "Description": error.description, "Location": location], block: nil)
+            return true
+        }
+        return false
+    }
+
+    class func logRegistration(method: String?) {
+        if let method = method {
+            FBSDKAppEvents.logEvent(FBSDKAppEventNameCompletedRegistration, parameters: [FBSDKAppEventParameterNameRegistrationMethod: method])
+        }
+    }
+
+    class func logPhoto(imageSource: String) {
+        FBSDKAppEvents.logEvent("Photo Saved", parameters: ["Source": imageSource])
+        PFAnalytics.trackEventInBackground("Post", dimensions: ["Source": imageSource], block: nil)
+    }
+
+    class func logScreen(identifier: String, time: NSTimeInterval) {
+        FBSDKAppEvents.logEvent(FBSDKAppEventNameViewedContent, valueToSum: time, parameters: [FBSDKAppEventParameterNameContentID: identifier, FBSDKAppEventParameterNameContentType: "Screen"])
+        PFAnalytics.trackEventInBackground("Screen", dimensions: ["Name": identifier], block: nil)
+    }
+
+    class func logVote(vote: Int, method: String) {
+        FBSDKAppEvents.logEvent("Poll Voted", parameters: ["Vote": vote, "Method": method])
+        PFAnalytics.trackEventInBackground("Vote", dimensions: ["Vote": "\(vote)", "Method": method], block: nil)
+    }
+}
 
 /// UIButton that gets the background image and apply template rendering mode
 class FNTemplateBackgroundButton: UIButton {
@@ -238,8 +305,8 @@ class FNTemplateImageView: UIImageView {
         setTemplateImage(image)
     }
 
-    func setTemplateImage(image: UIImage?) {
-        self.image = image?.imageWithRenderingMode(.AlwaysTemplate)
+    func setTemplateImage(imageTemplate: UIImage?) {
+        image = imageTemplate?.imageWithRenderingMode(.AlwaysTemplate)
     }
 }
 
@@ -269,38 +336,48 @@ class FNToast {
     }
 }
 
-// MARK: - Mask
+class FNViewController: UIViewController {
 
-/// Apply tilted separator
-func fn_applyPollMask(left: UIView, right: UIView) {
+    private var appearDate = NSDate()
 
-    let maskReferenceSize: CGFloat = 1
-    let spaceBetween: CGFloat = maskReferenceSize / 100
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        appearDate = NSDate()
+    }
 
-    let leftMaskPath = UIBezierPath()
-    leftMaskPath.moveToPoint(CGPoint(x: -2 * maskReferenceSize, y: 0))
-    leftMaskPath.addLineToPoint(CGPoint(x: maskReferenceSize + (maskReferenceSize / 10) - spaceBetween, y: 0))
-    leftMaskPath.addLineToPoint(CGPoint(x: maskReferenceSize - (maskReferenceSize / 10) - spaceBetween, y: maskReferenceSize))
-    leftMaskPath.addLineToPoint(CGPoint(x: -2 * maskReferenceSize, y: maskReferenceSize))
-    leftMaskPath.closePath()
-    let leftMask = CAShapeLayer()
-    leftMask.path = leftMaskPath.CGPath
-    left.layer.mask = leftMask
-
-    let rightMaskPath = UIBezierPath()
-    rightMaskPath.moveToPoint(CGPoint(x: 3 * maskReferenceSize, y: 0))
-    rightMaskPath.addLineToPoint(CGPoint(x: (maskReferenceSize / 10) + spaceBetween, y: 0))
-    rightMaskPath.addLineToPoint(CGPoint(x: (maskReferenceSize / -10) + spaceBetween, y: maskReferenceSize))
-    rightMaskPath.addLineToPoint(CGPoint(x: 3 * maskReferenceSize, y: maskReferenceSize))
-    rightMaskPath.closePath()
-    let rightMask = CAShapeLayer()
-    rightMask.path = rightMaskPath.CGPath
-    right.layer.mask = rightMask
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        FNAnalytics.logScreen(title!, time: -appearDate.timeIntervalSinceNow)
+    }
 }
 
-extension NSError {
-    convenience init(fn_code: FNErrorCode, userInfo: [NSObject:AnyObject]? = nil) {
-        self.init(domain: FNErrorDomain, code: fn_code.rawValue, userInfo: userInfo)
+class FNTableController: UITableViewController {
+
+    private var appearDate = NSDate()
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        appearDate = NSDate()
+    }
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        FNAnalytics.logScreen(title!, time: -appearDate.timeIntervalSinceNow)
+    }
+}
+
+class FNCollectionController: UICollectionViewController {
+
+    private var appearDate = NSDate()
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        appearDate = NSDate()
+    }
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        FNAnalytics.logScreen(title!, time: -appearDate.timeIntervalSinceNow)
     }
 }
 

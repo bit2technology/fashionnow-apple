@@ -10,7 +10,7 @@ import UIKit
 
 private let transitionDuration: NSTimeInterval = 0.25
 
-class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDelegate, UIActionSheetDelegate, UIAlertViewDelegate {
+class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDelegate, UIActionSheetDelegate, UIAlertViewDelegate {
 
     private var polls = ParsePollList(type: .VotePublic)
 
@@ -191,7 +191,7 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
     private func handle(#error: NSError?, location: String?) {
         // TODO: Error handler
         if let errorToHandle = error {
-            PFAnalytics.fn_trackErrorInBackground(errorToHandle, location: location ?? "Vote: Error Handler")
+            FNAnalytics.logError(errorToHandle, location: location ?? "Vote: Error Handler")
             loadingInterface.stopAnimating()
         }
     }
@@ -224,11 +224,6 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         super.viewWillAppear(animated)
     }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        PFAnalytics.fn_trackScreenInBackground("Vote: Main", block: nil)
-    }
-
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
@@ -259,14 +254,14 @@ class VotePollController: UIViewController, PollInteractionDelegate, PollLoadDel
         } else if source == .Drag {
             voteMethod = "Drag"
         }
-        PFAnalytics.fn_trackVote(index, method: voteMethod)
+        FNAnalytics.logVote(index, method: voteMethod)
 
         let vote = ParseVote(user: ParseUser.current())
         vote.pollId = pollController.poll.objectId
         vote.vote = index
         vote.saveEventually { (succeeded, error) -> Void in
             if let error = error {
-                PFAnalytics.fn_trackErrorInBackground(error, location: "Vote: Save")
+                FNAnalytics.logError(error, location: "Vote: Save")
             }
         }
     }

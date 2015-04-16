@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GalleryController: UIViewController, UIScrollViewDelegate {
+class GalleryController: FNViewController, UIScrollViewDelegate {
 
     var initialImageIndex: Int?
     var images: [UIImage]!
@@ -61,12 +61,6 @@ class GalleryController: UIViewController, UIScrollViewDelegate {
         for scrollView in scrollViews {
             centerSubview(scrollView: scrollView)
         }
-    }
-
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-
-        PFAnalytics.fn_trackScreenInBackground("Poll: Gallery")
     }
 
     override func prefersStatusBarHidden() -> Bool {

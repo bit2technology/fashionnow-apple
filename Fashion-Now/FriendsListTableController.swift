@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FriendsListTableController: UITableViewController, PostPollControllerDelegate {
+class FriendsListTableController: FNTableController, PostPollControllerDelegate {
 
     // Model
     private var error: NSError?
@@ -32,9 +32,11 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
             switch indexPath.section {
             case 1:
                 pollACL.setPublicReadAccess(true)
+                pollACL.setPublicWriteAccess(true)
             case 2:
                 let user = friendsList![indexPath.row]
                 pollACL.setReadAccess(true, forUser: user)
+                pollACL.setWriteAccess(true, forUser: user)
                 userIds.append(user.objectId!)
             default:
                 break
@@ -58,7 +60,7 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
             activityIndicator.removeFromSuperview()
 
             if let error = error {
-                PFAnalytics.fn_trackErrorInBackground(error, location: "Friends List: Save Poll")
+                FNAnalytics.logError(error, location: "Friends List: Save Poll")
             }
 
             if succeeded {
@@ -219,11 +221,6 @@ class FriendsListTableController: UITableViewController, PostPollControllerDeleg
 
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        PFAnalytics.fn_trackScreenInBackground("Post: Friends Selection", block: nil)
     }
 
     @IBAction func refreshControlDidChangeValue(sender: UIRefreshControl) {

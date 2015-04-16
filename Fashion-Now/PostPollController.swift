@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDelegate {
+class PostPollController: FNViewController, PollEditionDelegate, UITextFieldDelegate {
 
     // Interface elements
     @IBOutlet weak var textField: UITextField!
@@ -42,7 +42,7 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
             self.downloadingFriendsList = false
 
             if error != nil {
-                PFAnalytics.fn_trackErrorInBackground(error, location: "Post: Cache Friends Facebook Request")
+                FNAnalytics.logError(error, location: "Post: Cache Friends Facebook Request")
                 self.delegate?.postPollControllerDidFailDownloadFriendsList(error)
                 return
             }
@@ -61,7 +61,7 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
                 friendsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
 
                     if let error = error {
-                        PFAnalytics.fn_trackErrorInBackground(error, location: "Post: Cache Friends Query")
+                        FNAnalytics.logError(error, location: "Post: Cache Friends Query")
                         self.delegate?.postPollControllerDidFailDownloadFriendsList(error)
                         return
                     }
@@ -72,7 +72,7 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
                 }
             } else {
                 let noDataError = NSError(fn_code: .NoData)
-                PFAnalytics.fn_trackErrorInBackground(noDataError, location: "Post: Cache Friends Facebook Request")
+                FNAnalytics.logError(noDataError, location: "Post: Cache Friends Facebook Request")
                 self.delegate?.postPollControllerDidFailDownloadFriendsList(noDataError)
             }
         })
@@ -121,7 +121,6 @@ class PostPollController: UIViewController, PollEditionDelegate, UITextFieldDele
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        PFAnalytics.fn_trackScreenInBackground("Post: Main", block: nil)
 
         if !(cachedFriendsList?.count > 0) {
             cacheFriendsList()

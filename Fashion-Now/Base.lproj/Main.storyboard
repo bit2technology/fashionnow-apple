@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="6QH-p8-eFG">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="6QH-p8-eFG">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Log In-->
+        <!--Login: Main-->
         <scene sceneID="9od-5e-1Db">
             <objects>
-                <tableViewController id="34U-YS-Pbl" customClass="LoginController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Login: Main" id="34U-YS-Pbl" customClass="LoginController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="xog-eb-X2o">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -173,10 +173,10 @@
             </objects>
             <point key="canvasLocation" x="-38" y="2256"/>
         </scene>
-        <!--Vote Poll Controller-->
+        <!--Vote: Main-->
         <scene sceneID="VVH-fN-2gA">
             <objects>
-                <viewController id="6wq-1Y-TiB" customClass="VotePollController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Vote: Main" id="6wq-1Y-TiB" customClass="VotePollController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="xur-zt-maA"/>
                         <viewControllerLayoutGuide type="bottom" id="3bW-d0-UfL"/>
@@ -344,10 +344,10 @@
             </objects>
             <point key="canvasLocation" x="661" y="-277"/>
         </scene>
-        <!--Post Poll Controller-->
+        <!--Post: Main-->
         <scene sceneID="DGH-qf-Zqz">
             <objects>
-                <viewController id="37Z-1j-EcS" customClass="PostPollController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Post: Main" id="37Z-1j-EcS" customClass="PostPollController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Iyt-Jh-hZw"/>
                         <viewControllerLayoutGuide type="bottom" id="JXH-OA-dU0"/>
@@ -418,10 +418,10 @@
             </objects>
             <point key="canvasLocation" x="286" y="776"/>
         </scene>
-        <!--Profile-->
+        <!--Profile: Main-->
         <scene sceneID="N06-YM-3cg">
             <objects>
-                <collectionViewController id="cEa-Or-vWC" customClass="MeController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController title="Profile: Main" id="cEa-Or-vWC" customClass="MeController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="HOW-qe-YmB">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -622,10 +622,10 @@
             </objects>
             <point key="canvasLocation" x="661" y="776"/>
         </scene>
-        <!--Result Poll Controller-->
+        <!--Profile: Results-->
         <scene sceneID="x4R-Xz-BxP">
             <objects>
-                <viewController id="D1M-pS-RBa" customClass="ResultPollController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Profile: Results" id="D1M-pS-RBa" customClass="ResultPollController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2RW-Vi-nXU"/>
                         <viewControllerLayoutGuide type="bottom" id="Rmp-rH-6eW"/>
@@ -751,10 +751,10 @@
             </objects>
             <point key="canvasLocation" x="1038" y="776"/>
         </scene>
-        <!--Who can see?-->
+        <!--Post: Options-->
         <scene sceneID="5qp-bD-6TV">
             <objects>
-                <tableViewController id="Awm-rd-6j1" customClass="FriendsListTableController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Post: Options" id="Awm-rd-6j1" customClass="FriendsListTableController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="56" sectionHeaderHeight="22" sectionFooterHeight="22" id="2ON-kr-Jyp">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -857,10 +857,10 @@
             </objects>
             <point key="canvasLocation" x="1038" y="250"/>
         </scene>
-        <!--Sign Up-->
+        <!--Login: Signup-->
         <scene sceneID="reA-p0-HcY">
             <objects>
-                <tableViewController id="n9L-hk-vfW" customClass="SignupController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Login: Signup" id="n9L-hk-vfW" customClass="SignupController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="3MQ-yd-1YS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="700"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1482,10 +1482,10 @@
             </objects>
             <point key="canvasLocation" x="2082" y="594"/>
         </scene>
-        <!--Gallery-->
+        <!--Poll: Gallery-->
         <scene sceneID="TKG-G3-PVx">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="CQ2-Ww-RCS" customClass="GalleryController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Poll: Gallery" automaticallyAdjustsScrollViewInsets="NO" id="CQ2-Ww-RCS" customClass="GalleryController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hOO-HU-TW1"/>
                         <viewControllerLayoutGuide type="bottom" id="D42-19-UYr"/>
@@ -1560,10 +1560,10 @@
             </objects>
             <point key="canvasLocation" x="-38" y="1577"/>
         </scene>
-        <!--Filter-->
+        <!--Vote: Filter-->
         <scene sceneID="8pV-PS-1c9">
             <objects>
-                <tableViewController id="ZvM-Z9-Q2b" customClass="VoteFilterController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Vote: Filter" id="ZvM-Z9-Q2b" customClass="VoteFilterController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="sdL-Dz-b7M">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1681,7 +1681,7 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="AdF-1L-oCc"/>
-        <segue reference="apZ-Yv-541"/>
+        <segue reference="udm-ma-IdO"/>
         <segue reference="uM3-tb-eTB"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="1" colorSpace="calibratedRGB"/>

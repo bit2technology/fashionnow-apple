@@ -10,7 +10,9 @@ private let pickerNoneLabel = NSLocalizedString("SignupController.picker.none", 
 private let genderValues = ["male", "female", "other"]
 private let genderLabels = [NSLocalizedString("SignupController.genders.male", value: "Male", comment: "Gender labels"), NSLocalizedString("SignupController.genders.female", value: "Female", comment: "Gender labels"), NSLocalizedString("SignupController.genders.other", value: "Other", comment: "Gender labels")]
 
-class SignupController: UITableViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate {
+class SignupController: FNTableController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate {
+
+    private var registrationMethod: String?
 
     var facebookUser: FacebookUser?
 
@@ -172,7 +174,7 @@ class SignupController: UITableViewController, UITextFieldDelegate, UINavigation
             /// Present error alert.
             func presentError(error: NSError) {
                 activityIndicatorView.removeFromSuperview()
-                PFAnalytics.fn_trackErrorInBackground(error, location: "Signup: Save")
+                FNAnalytics.logError(error, location: "Signup: Save")
 
                 // Error handling
                 switch error.code {
@@ -223,6 +225,7 @@ class SignupController: UITableViewController, UITextFieldDelegate, UINavigation
                 currentUser.hasPassword = true
             }
             if let unwrappedFacebookId = self.facebookUser?.objectId {
+                self.registrationMethod = "Facebook"
                 currentUser.facebookId = unwrappedFacebookId
             }
             // Set photo properties
@@ -239,6 +242,7 @@ class SignupController: UITableViewController, UITextFieldDelegate, UINavigation
             }
 
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                FNAnalytics.logRegistration(self.registrationMethod)
                 self.dismissLoginModalController()
             })
         }
@@ -269,6 +273,7 @@ class SignupController: UITableViewController, UITextFieldDelegate, UINavigation
 
         // If user is anonymous, show standard (empty) controller
         if PFAnonymousUtils.isLinkedWithUser(currentUser) {
+            registrationMethod = "Email"
             return
         }
 
@@ -293,11 +298,6 @@ class SignupController: UITableViewController, UITextFieldDelegate, UINavigation
             usernameField.text = currentUser.username
             passwordField.text = "passwo" // Placeholder
         }
-    }
-
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        PFAnalytics.fn_trackScreenInBackground("Login: Signup", block: nil)
     }
 
     // MARK: UITextFieldDelegate

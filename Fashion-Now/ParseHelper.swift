@@ -52,11 +52,6 @@ private let dateFormat = "yyyy-MM-dd"
 
 class ParseUser: PFUser, PFSubclassing {
 
-//    override class func logOut() {
-//        superclass()!.logOut()
-//        FBSDKSession.activeSession().closeAndClearTokenInformation()
-//    }
-
     class func current() -> Self {
         return currentUser()!
     }
@@ -70,16 +65,17 @@ class ParseUser: PFUser, PFSubclassing {
         }
     }
 
-    func avatarURL(size: Int? = nil) -> NSURL? {
-        if let unwrappedAvatarPath = avatarImage?.url {
-            return NSURL(string: unwrappedAvatarPath)
-        } else if let unwrappedFacebookId = facebookId {
-            return FacebookHelper.urlForPictureOfUser(id: unwrappedFacebookId, size: size)
+    /// Returns the url for the avatar (in parse, facebook or none)
+    func avatarURL(size: CGFloat? = nil) -> NSURL? {
+        if let avatarURL = avatarImage?.url {
+            return NSURL(string: avatarURL)
+        } else if let facebookId = facebookId {
+            return FacebookHelper.urlForPictureOfUser(id: facebookId, size: size)
         }
         return nil
     }
 
-    /// Returns current date if no birthday provided
+    /// Converts date string in NSDate and vice-versa
     var birthday: NSDate? {
         get {
             let dateFormatter = NSDateFormatter()
@@ -87,13 +83,14 @@ class ParseUser: PFUser, PFSubclassing {
             return dateFormatter.dateFromString(self[ParseUserBirthdayKey] as? String ?? "")
         }
         set {
-            if newValue == nil {
+            if let date = newValue {
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = dateFormat
+                self[ParseUserBirthdayKey] = dateFormatter.stringFromDate(date)
+            } else {
                 self[ParseUserBirthdayKey] = NSNull()
-                return
             }
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = dateFormat
-            self[ParseUserBirthdayKey] = dateFormatter.stringFromDate(newValue!)
+
         }
     }
 
@@ -149,10 +146,8 @@ class ParseUser: PFUser, PFSubclassing {
             return true
         } else if PFFacebookUtils.isLinkedWithUser(self) && !(facebookId?.fn_count > 0) {
             return false
-        } else if hasPassword != true || email?.isEmail() != true {
-            return false
         }
-        return true
+        return hasPassword == true && email?.isEmail() == true
     }
 }
 
@@ -216,9 +211,7 @@ public class ParsePoll: PFObject, PFSubclassing {
     
     convenience init(user: ParseUser) {
         self.init()
-        let defaultACL = PFACL(user: user)
-        defaultACL.setPublicReadAccess(true)
-        ACL = defaultACL
+        ACL = PFACL(user: user)
         createdBy = user
         version = 1
     }
@@ -275,7 +268,7 @@ public class ParsePoll: PFObject, PFSubclassing {
             return false
         }
         for photo in photos! {
-            if photo.isValid != true {
+            if !photo.isValid {
                 return false
             }
         }
@@ -607,9 +600,7 @@ class ParseReport: PFObject, PFSubclassing {
 
     convenience init(user: ParseUser) {
         self.init()
-        let defaultACL = PFACL(user: user)
-        defaultACL.setPublicReadAccess(true)
-        ACL = defaultACL
+        ACL = PFACL(user: user)
         self.user = user
     }
 
@@ -647,26 +638,5 @@ extension PFFile {
 
     convenience init(fn_imageData data: NSData) {
         self.init(name: "image.jpg", data: data, contentType: "image/jpeg")
-    }
-}
-
-// MARK: - Analytics
-
-extension PFAnalytics {
-
-    class func fn_trackErrorInBackground(error: NSError, location: String) {
-        trackEventInBackground("Error", dimensions: ["Domain": error.domain, "Code": "\(error.code)", "Description": error.description, "Location": location], block: nil)
-    }
-
-    class func fn_trackPostInBackground(imageSource: String, block: PFBooleanResultBlock! = nil) {
-        trackEventInBackground("Post", dimensions: ["Source": imageSource], block: block)
-    }
-
-    class func fn_trackScreenInBackground(identifier: String, block: PFBooleanResultBlock! = nil) {
-        trackEventInBackground("Screen", dimensions: ["Name": identifier], block: block)
-    }
-
-    class func fn_trackVote(vote: NSNumber, method: String, block: PFBooleanResultBlock! = nil) {
-        trackEventInBackground("Vote", dimensions: ["Vote": "\(vote)", "Method": method], block: block)
     }
 }

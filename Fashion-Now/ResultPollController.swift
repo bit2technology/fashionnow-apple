@@ -11,7 +11,7 @@ import UIKit
 private let showAsAbsoluteCountKey = "ResuldtsShowAsAbsoluteCount"
 private let cacheResultsKey = "CacheResults"
 
-class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDelegate {
+class ResultPollController: FNViewController, UIActionSheetDelegate, PollLoadDelegate {
 
     private var pollController: PollController!
     var poll: ParsePoll!
@@ -72,7 +72,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
 
                 // TODO: Handle error
                 if error != nil {
-                    PFAnalytics.fn_trackErrorInBackground(error!, location: "Result: Load Results")
+                    FNAnalytics.logError(error!, location: "Result: Load Results")
                     FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
                     return
                 }
@@ -157,11 +157,6 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
         loadResults(nil)
     }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        PFAnalytics.fn_trackScreenInBackground("Me: Result", block: nil)
-    }
-
     // MARK: UIActionSheetDelegate
 
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
@@ -174,7 +169,7 @@ class ResultPollController: UIViewController, UIActionSheetDelegate, PollLoadDel
                     activityIndicator.removeFromSuperview()
 
                     if let error = error {
-                        PFAnalytics.fn_trackErrorInBackground(error, location: "Result: Delete Poll")
+                        FNAnalytics.logError(error, location: "Result: Delete Poll")
                     }
 
                     if success {
