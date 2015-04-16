@@ -73,7 +73,7 @@ class ResultPollController: FNViewController, UIActionSheetDelegate, PollLoadDel
                 // TODO: Handle error
                 if error != nil {
                     FNAnalytics.logError(error!, location: "Result: Load Results")
-                    FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
+                    FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
                     return
                 }
 
@@ -176,11 +176,11 @@ class ResultPollController: FNViewController, UIActionSheetDelegate, PollLoadDel
                         NSNotificationCenter.defaultCenter().postNotificationName(FNPollDeletedNotificationName, object: self, userInfo: ["poll": self.poll])
                         self.navigationController?.popViewControllerAnimated(true)
                     } else {
-                        FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
+                        FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
                     }
                 })
             } else {
-                FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
+                FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
             }
         }
     }

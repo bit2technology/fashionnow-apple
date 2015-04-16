@@ -41,19 +41,19 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
                         if let error = error {
                             FNAnalytics.logError(error, location: "Login: Reset Password")
                             if error.domain == PFParseErrorDomain && error.code == PFErrorCode.ErrorUserWithEmailNotFound.rawValue {
-                                FNToast.show(text: NSLocalizedString("LoginController.resetPassword.errorDescription.emailNotFound", value: "There is no user registered with this email", comment: "Message for when there is no user with the email providen error"), type: .Error)
+                                FNToast.show(title: NSLocalizedString("LoginController.resetPassword.errorDescription.emailNotFound", value: "There is no user registered with this email", comment: "Message for when there is no user with the email providen error"), type: .Error)
                             } else {
-                                FNToast.show(text: FNLocalizedUnknownErrorDescription, type: .Error)
+                                FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
                             }
 
                         } else {
                             // Success
-                            FNToast.show(text: NSLocalizedString("LoginController.resetPassword.successMessage", value: "Password reset instructions sent to your email", comment: "Message for when the email reset was successful"))
+                            FNToast.show(title: NSLocalizedString("LoginController.resetPassword.successMessage", value: "Password reset instructions sent to your email", comment: "Message for when the email reset was successful"), type: .Success)
                         }
                     }
 
                 } else {
-                    FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
+                    FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
                 }
 
             } else {
@@ -100,12 +100,12 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
                     loadingView.removeFromSuperview()
                     FNAnalytics.logError(error ?? NSError(fn_code: .UserCanceled), location: "Login: Facebook")
                     if error != nil {
-                        FNToast.show(text: FNLocalizedUnknownErrorDescription, type: .Error)
+                        FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
                     }
                 }
             }
         } else {
-            FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
+            FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
         }
     }
 
@@ -149,18 +149,18 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
                             FNAnalytics.logError(error, location: "Login: Password")
 
                             if error.code == PFErrorCode.ErrorObjectNotFound.rawValue {
-                                FNToast.show(text: NSLocalizedString("LoginController.loginErrorDescription.userNotFound", value: "Username or password incorrect", comment: "Message for when user does not exist or wrong password"), type: .Error)
+                                FNToast.show(title: NSLocalizedString("LoginController.loginErrorDescription.userNotFound", value: "Username or password incorrect", comment: "Message for when user does not exist or wrong password"), type: .Error)
                             }
                         }
 
-                        FNToast.show(text: FNLocalizedUnknownErrorDescription, type: .Error)
+                        FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
                     }
                 }
             } else {
-                FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
+                FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
             }
         } else {
-            FNToast.show(text: NSLocalizedString("LoginController.loginErrorDescription.incomplete", value: "Username or password missing", comment: "Message for when user does not fill the fields"), type: .Error)
+            FNToast.show(title: NSLocalizedString("LoginController.loginErrorDescription.incomplete", value: "Username or password missing", comment: "Message for when user does not fill the fields"), type: .Error)
         }
     }
 

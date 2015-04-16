@@ -64,12 +64,12 @@ class FriendsListTableController: FNTableController, PostPollControllerDelegate 
             }
 
             if succeeded {
-                FNToast.show(text: NSLocalizedString("FriendsListTableController.send.succeeded", value: "Poll sent", comment: "Shown when user sends the poll"))
+                FNToast.show(title: NSLocalizedString("FriendsListTableController.send.succeeded", value: "Poll sent", comment: "Shown when user sends the poll"), type: .Success)
                 NSNotificationCenter.defaultCenter().postNotificationName(FNPollPostedNotificationName, object: self, userInfo: ["poll": self.poll])
                 self.postPollController.clean()
                 self.navigationController!.popToRootViewControllerAnimated(true)
             } else {
-                FNToast.show(text: NSLocalizedString("FriendsListTableController.send.fail", value: "Impossible to send", comment: "Shown when user sends the poll"), type: .Error)
+                FNToast.show(title: NSLocalizedString("FriendsListTableController.send.fail", value: "Impossible to send", comment: "Shown when user sends the poll"), type: .Error)
             }
         }
     }

@@ -310,29 +310,10 @@ class FNTemplateImageView: UIImageView {
     }
 }
 
-/// Helper for CRToastManager
+/// Helper for TSMessage
 class FNToast {
-
-    enum Type {
-        case Default, Error
-    }
-
-    class func show(#text: String, type: Type = .Default) {
-
-        var options = [String: AnyObject]()
-
-        // Text
-        options[kCRToastTextKey] = text
-
-        // Background Color
-        switch type {
-        case .Error:
-            options[kCRToastBackgroundColorKey] = UIColor.fn_error()
-        default:
-            break
-        }
-
-        CRToastManager.showNotificationWithOptions(options, completionBlock: nil)
+    class func show(#title: String, message: String? = nil, type: TSMessageNotificationType = .Message) {
+        TSMessage.showNotificationWithTitle(title, subtitle: message, type: type)
     }
 }
 
@@ -342,6 +323,7 @@ class FNViewController: UIViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        TSMessage.setDefaultViewController(self)
         appearDate = NSDate()
     }
 
@@ -357,6 +339,7 @@ class FNTableController: UITableViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        TSMessage.setDefaultViewController(self)
         appearDate = NSDate()
     }
 
@@ -372,6 +355,7 @@ class FNCollectionController: UICollectionViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        TSMessage.setDefaultViewController(self)
         appearDate = NSDate()
     }
 

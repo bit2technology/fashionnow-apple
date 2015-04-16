@@ -180,18 +180,18 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
                 switch error.code {
 
                 case PFErrorCode.ErrorConnectionFailed.rawValue:
-                    FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
+                    FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
 
                 case PFErrorCode.ErrorUsernameTaken.rawValue:
                     self.usernameLabel.textColor = UIColor.fn_error()
-                    FNToast.show(text: NSLocalizedString("SignupController.saveErrorDescription.usernameTaken", value: "Username already exists", comment: "Error message for Sign Up or Edit Profile"), type: .Error)
+                    FNToast.show(title: NSLocalizedString("SignupController.saveErrorDescription.usernameTaken", value: "Username already exists", comment: "Error message for Sign Up or Edit Profile"), type: .Error)
 
                 case PFErrorCode.ErrorUserEmailTaken.rawValue:
                     self.emailLabel.textColor = UIColor.fn_error()
-                    FNToast.show(text: NSLocalizedString("SignupController.saveErrorDescription.emailTaken", value: "Another user is using this e-mail", comment: "Error message for Sign Up or Edit Profile"), type: .Error)
+                    FNToast.show(title: NSLocalizedString("SignupController.saveErrorDescription.emailTaken", value: "Another user is using this e-mail", comment: "Error message for Sign Up or Edit Profile"), type: .Error)
 
                 default:
-                    FNToast.show(text: FNLocalizedUnknownErrorDescription, type: .Error)
+                    FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
                 }
             }
 

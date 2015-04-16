@@ -82,7 +82,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
             }
             // Show error if necessary
             else if showError, let error = error where (error.domain != FNErrorDomain || error.code == FNErrorCode.ConnectionLost.rawValue) {
-                FNToast.show(text: FNLocalizedOfflineErrorDescription, type: .Error)
+                FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
             }
 
             self.refreshControl.endRefreshing()

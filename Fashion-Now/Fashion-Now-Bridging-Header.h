@@ -4,7 +4,6 @@
 
 #import <ActionSheetPicker-3.0/ActionSheetPicker.h>
 #import <ALAssetsLibrary-CustomPhotoAlbum/ALAssetsLibrary+CustomPhotoAlbum.h>
-#import <CRToast/CRToast.h>
 #import <DateTools/DateTools.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
@@ -14,4 +13,5 @@
 #import <ParseCrashReporting/ParseCrashReporting.h>
 #import <ParseFacebookUtilsV4/PFFacebookUtils.h>
 #import <Reachability/Reachability.h>
+#import <TSMessages/TSMessage.h>
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>
