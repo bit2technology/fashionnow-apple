@@ -44,36 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // Logout if current user is invalid
-        let currentUser = ParseUser.current()
-        if !currentUser.isValid {
+        if !ParseUser.current().isValid {
             ParseUser.logOut()
-        }
-
-        // Erase badge number, set userID and update location
-        let currentInstallation = ParseInstallation.currentInstallation()
-        currentInstallation.badge = 0
-        currentInstallation.userId = currentUser.objectId
-        switch CLLocationManager.authorizationStatus() {
-        default:
-            // Get aproximate location with https://freegeoip.net/
-            NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: "https://freegeoip.net/json")!, completionHandler: { (data, response, error) -> Void in
-                if FNAnalytics.logError(error, location: "AppDelegate: Location From IP Download") {
-                    return
-                }
-                var jsonError: NSError?
-                let geoInfo = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &jsonError) as? [String: AnyObject]
-                if FNAnalytics.logError(jsonError, location: "AppDelegate: Location From IP Serialization") {
-                    return
-                }
-                let latitude = geoInfo!["latitude"] as? Double
-                let longitude = geoInfo!["longitude"] as? Double
-                if latitude != nil && longitude != nil {
-                    currentInstallation.location = PFGeoPoint(latitude: latitude!, longitude: longitude!)
-                    currentInstallation.saveEventually { (succeeded, error) -> Void in
-                        FNAnalytics.logError(error, location: "AppDelegate: Location From IP Save")
-                    }
-                }
-            }).resume()
         }
 
         // Push notifications
@@ -101,7 +73,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
+
+        // Facebook Analytics
         FBSDKAppEvents.activateApp()
+
+        // Erase badge number, set userID and update location
+        let currentInstallation = ParseInstallation.currentInstallation()
+        currentInstallation.badge = 0
+        currentInstallation.userId = ParseUser.current().objectId
+        switch CLLocationManager.authorizationStatus() {
+        default:
+            // Get aproximate location with https://freegeoip.net/
+            NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: "https://freegeoip.net/json")!, completionHandler: { (data, response, error) -> Void in
+                if FNAnalytics.logError(error, location: "AppDelegate: Location From IP Download") {
+                    return
+                }
+                var jsonError: NSError?
+                let geoInfo = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &jsonError) as? [String: AnyObject]
+                if FNAnalytics.logError(jsonError, location: "AppDelegate: Location From IP Serialization") {
+                    return
+                }
+                let latitude = geoInfo!["latitude"] as? Double
+                let longitude = geoInfo!["longitude"] as? Double
+                if latitude != nil && longitude != nil {
+                    currentInstallation.location = PFGeoPoint(latitude: latitude!, longitude: longitude!)
+                    currentInstallation.saveEventually { (succeeded, error) -> Void in
+                        FNAnalytics.logError(error, location: "AppDelegate: Location From IP Save")
+                    }
+                }
+            }).resume()
+        }
     }
 
     func applicationDidReceiveMemoryWarning(application: UIApplication) {
