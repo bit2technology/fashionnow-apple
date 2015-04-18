@@ -26,15 +26,15 @@ Parse.Cloud.define("sendPush", function (request, response) {
 Parse.Cloud.afterSave("Poll", function (request) {
     "use strict";
     
-    if (request.object.get("version") <= 1) {
+    if ((request.object.get("version") <= 1) && !request.object.get("flag")) {
         
         var query = new Parse.Query(Parse.Installation);
         query.containedIn("userId", request.object.get("userIds"));
-
+        
         Parse.Push.send({
             where: query,
             data: {
-                alert: request.user.get("name") + " precisa de ajuda!",
+                alert: (request.user ? request.user.get("name") : "Um amigo") + " precisa de ajuda" + (request.object.get("caption") ? ": \"" + request.object.get("caption") + "\"" : ""),
                 badge: "Increment"
             }
         }, {
@@ -69,24 +69,27 @@ Parse.Cloud.beforeSave("Vote", function (request, response) {
     }
 });
 
-Parse.Cloud.afterSave("Vote", function (request) {
-    "use strict";
-    
-    var query = new Parse.Query(Parse.Installation);
-    query.equalTo("userId", request.object.get("userId"));
-    
-    Parse.Push.send({
-        where: query,
-        data: {
-            alert: "Sua enquete recebeu um voto!",
-            badge: "Increment"
-        }
-    }, {
-        success: function () {
-            console.log("Push sent");
-        },
-        error: function (error) {
-            console.log("Push error " + error);
-        }
-    });
-});
+//Parse.Cloud.afterSave("Vote", function (request) {
+//    "use strict";
+//    
+//    if (request.object.get("vote") > 0) {
+//    
+//        var query = new Parse.Query(Parse.Installation);
+//        query.equalTo("userId", request.object.get("userId"));
+//
+//        Parse.Push.send({
+//            where: query,
+//            data: {
+//                alert: "Sua enquete recebeu um voto",
+//                badge: "Increment"
+//            }
+//        }, {
+//            success: function () {
+//                console.log("Push sent");
+//            },
+//            error: function (error) {
+//                console.error("Push error " + error);
+//            }
+//        });
+//    }
+//});
