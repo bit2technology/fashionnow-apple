@@ -275,16 +275,19 @@ class FNAnalytics {
     class func logPhoto(imageSource: String) {
         FBSDKAppEvents.logEvent("Photo Saved", parameters: ["Source": imageSource])
         PFAnalytics.trackEventInBackground("Post", dimensions: ["Source": imageSource], block: nil)
+        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Photo Saved", action: "Source", label: imageSource, value: nil).build() as [NSObject:AnyObject])
     }
 
     class func logScreen(identifier: String, time: NSTimeInterval) {
         FBSDKAppEvents.logEvent("Screen Viewed", valueToSum: time, parameters: ["Name": identifier])
         PFAnalytics.trackEventInBackground("Screen", dimensions: ["Name": identifier], block: nil)
+        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Screen Viewd", action: "Name", label: identifier, value: nil).build() as [NSObject:AnyObject])
     }
 
     class func logVote(vote: Int, method: String) {
         FBSDKAppEvents.logEvent("Poll Voted", parameters: ["Vote": vote, "Method": method])
         PFAnalytics.trackEventInBackground("Vote", dimensions: ["Vote": "\(vote)", "Method": method], block: nil)
+        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Vote", action: "Poll Voted", label: nil, value: nil).setAll(["Vote": "\(vote)", "Method": method]).build() as [NSObject:AnyObject])
     }
 }
 
@@ -331,9 +334,9 @@ class FNViewController: UIViewController {
         super.viewDidAppear(animated)
         TSMessage.setDefaultViewController(self)
         appearDate = NSDate()
-        let gAnalyticsTracker = GAI.sharedInstance().defaultTracker
-        gAnalyticsTracker.set(kGAIScreenName, value: title)
-        gAnalyticsTracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: title)
+        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
     }
 
     override func viewDidDisappear(animated: Bool) {
@@ -350,9 +353,9 @@ class FNTableController: UITableViewController {
         super.viewDidAppear(animated)
         TSMessage.setDefaultViewController(self)
         appearDate = NSDate()
-        let gAnalyticsTracker = GAI.sharedInstance().defaultTracker
-        gAnalyticsTracker.set(kGAIScreenName, value: title)
-        gAnalyticsTracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: title)
+        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
     }
 
     override func viewDidDisappear(animated: Bool) {
@@ -369,9 +372,9 @@ class FNCollectionController: UICollectionViewController {
         super.viewDidAppear(animated)
         TSMessage.setDefaultViewController(self)
         appearDate = NSDate()
-        let gAnalyticsTracker = GAI.sharedInstance().defaultTracker
-        gAnalyticsTracker.set(kGAIScreenName, value: title)
-        gAnalyticsTracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: title)
+        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
     }
 
     override func viewDidDisappear(animated: Bool) {

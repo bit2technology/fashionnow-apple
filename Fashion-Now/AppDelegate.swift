@@ -38,20 +38,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions ?? [:])
 
+        // Logout if current user is invalid
+        let currentUser = ParseUser.current()
+        if !currentUser.isValid {
+            ParseUser.logOut()
+        }
+
         // Analytics
+        // Parse/Facebook
         if application.applicationState != .Background {
             PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         }
-        let googleAnalytics = GAI.sharedInstance()
-        googleAnalytics.trackUncaughtExceptions = true
-        googleAnalytics.dispatchInterval = 20
-        googleAnalytics.logger.logLevel = .Verbose
-        googleAnalytics.trackerWithTrackingId("UA-62043366-1")
-
-        // Logout if current user is invalid
-        if !ParseUser.current().isValid {
-            ParseUser.logOut()
-        }
+        // Google
+        let gai = GAI.sharedInstance()
+        gai.trackUncaughtExceptions = true
+        gai.dispatchInterval = 20
+        #if DEBUG
+            gai.logger.logLevel = .Verbose
+        #endif
+        let tracker = gai.trackerWithTrackingId("UA-62043366-1")
+        tracker.set("&uid", value: currentUser.objectId)
 
         // Push notifications
         if application.respondsToSelector("registerUserNotificationSettings:") {
@@ -67,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Observe login change and update installation
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
 
-        // Clean cache
+        // Clean image cache
         SDImageCache.sharedImageCache().cleanDiskWithCompletionBlock(nil)
 
         return true
@@ -83,9 +89,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FBSDKAppEvents.activateApp()
 
         // Erase badge number, set userID and update location
-        let currentInstallation = ParseInstallation.currentInstallation()
-        currentInstallation.badge = 0
-        currentInstallation.userId = ParseUser.current().objectId
+        let install = ParseInstallation.currentInstallation()
+        install.badge = 0
+        install.userId = ParseUser.current().objectId
         switch CLLocationManager.authorizationStatus() {
         default:
             // Get aproximate location with https://freegeoip.net/
@@ -101,8 +107,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let latitude = geoInfo!["latitude"] as? Double
                 let longitude = geoInfo!["longitude"] as? Double
                 if latitude != nil && longitude != nil {
-                    currentInstallation.location = PFGeoPoint(latitude: latitude!, longitude: longitude!)
-                    currentInstallation.saveEventually { (succeeded, error) -> Void in
+                    install.location = PFGeoPoint(latitude: latitude!, longitude: longitude!)
+                    install.saveEventually { (succeeded, error) -> Void in
                         FNAnalytics.logError(error, location: "AppDelegate: Location From IP Save")
                     }
                 }
@@ -128,20 +134,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         imageCache.clearDisk()
         imageCache.clearMemory()
         // Register new user ID in installation on login change
-        let currentInstallation = ParseInstallation.currentInstallation()
-        currentInstallation.userId = ParseUser.current().objectId
-        currentInstallation.saveEventually { (succeeded, error) -> Void in
+        let install = ParseInstallation.currentInstallation()
+        let currentUser = ParseUser.current()
+        install.userId = currentUser.objectId
+        install.saveEventually { (succeeded, error) -> Void in
             FNAnalytics.logError(error, location: "AppDelegate: Login Changed Save")
         }
+        // Update analytics
+        GAI.sharedInstance().defaultTracker.set("&uid", value: currentUser.objectId)
     }
 
     // MARK: Push notifications
 
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         // Store the deviceToken in the current installation and send it to Parse
-        let currentInstallation = ParseInstallation.currentInstallation()
-        currentInstallation.setDeviceTokenFromData(deviceToken)
-        currentInstallation.saveEventually { (succeeded, error) -> Void in
+        let install = ParseInstallation.currentInstallation()
+        install.setDeviceTokenFromData(deviceToken)
+        install.saveEventually { (succeeded, error) -> Void in
             FNAnalytics.logError(error, location: "AppDelegate: Register Notification Save")
         }
     }
