@@ -6,7 +6,10 @@ Parse.Cloud.define("sendPush", function (request, response) {
     Parse.Push.send({
         where: query,
         data: {
-            alert: request.params.senderName + " precisa de ajuda!",
+            alert: {
+                "loc-key": "Push.loc-key.friendNeedsHelp",
+                "loc-args": ["Fulano"]
+            },
             badge: "Increment"
         }
     }, {

@@ -35,6 +35,11 @@ func fn_applyPollMask(left: UIView, right: UIView) {
     right.layer.mask = rightMask
 }
 
+private func fn_pushStrings() {
+    NSLocalizedString("Push.loc-key.friendNeedsHelp", value: "%1$@ needs help", comment: "Push message for when a friend posts a poll without caption")
+    NSLocalizedString("Push.loc-key.friendNeedsHelpCaption", value: "%1$@ needs help: \"%1$@\"", comment: "Push message for when a friend posts a poll with caption")
+}
+
 // MARK: - Extensions
 
 extension Reachability {
@@ -272,7 +277,7 @@ class FNAnalytics {
     }
 
     class func logScreen(identifier: String, time: NSTimeInterval) {
-        FBSDKAppEvents.logEvent(FBSDKAppEventNameViewedContent, valueToSum: time, parameters: [FBSDKAppEventParameterNameContentID: identifier, FBSDKAppEventParameterNameContentType: "Screen"])
+        FBSDKAppEvents.logEvent("Screen Viewed", valueToSum: time, parameters: ["Name": identifier])
         PFAnalytics.trackEventInBackground("Screen", dimensions: ["Name": identifier], block: nil)
     }
 
@@ -325,6 +330,9 @@ class FNViewController: UIViewController {
         super.viewDidAppear(animated)
         TSMessage.setDefaultViewController(self)
         appearDate = NSDate()
+        let gAnalyticsTracker = GAI.sharedInstance().defaultTracker
+        gAnalyticsTracker.set(kGAIScreenName, value: title)
+        gAnalyticsTracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
     }
 
     override func viewDidDisappear(animated: Bool) {

@@ -8,6 +8,9 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
+#import <GoogleAnalytics-iOS-SDK/GAI.h>
+#import <GoogleAnalytics-iOS-SDK/GAIDictionaryBuilder.h>
+#import <GoogleAnalytics-iOS-SDK/GAIFields.h>
 #import <Parse/Parse.h>
 #import <Parse/PFObject+Subclass.h>
 #import <ParseCrashReporting/ParseCrashReporting.h>

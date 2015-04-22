@@ -89,9 +89,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         let imageData = image.fn_compressed()
         photo.image = PFFile(fn_imageData: imageData)
         photo.saveInBackgroundWithBlock { (succeeded, error) -> Void in
-            if let error = error {
-                FNAnalytics.logError(error, location: "Photo: Save")
-            }
+            FNAnalytics.logError(error, location: "Photo: Save")
         }
         imageView.image = UIImage(data: imageData)
         imageContainerHidden(false)
@@ -135,29 +133,30 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
 
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
 
+        // Get and apply edited or original image
+        var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as! UIImage
+        setPhotoImage(image)
+        picker.dismissViewControllerAnimated(true, completion: nil)
+
         // Track image source
-        var source = "Library"
+        let source: String
         if picker.sourceType == .Camera {
+
             if picker.cameraDevice == .Rear {
                 source = "Camera Rear"
             } else {
                 source = "Camera Front"
             }
-        }
-        FNAnalytics.logPhoto(source)
 
-        // Get and apply edited or original image
-        var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as! UIImage
-        setPhotoImage(image)
-        dismissViewControllerAnimated(true, completion: nil)
-
-        
-        // Save to Album if source is camera
-        if picker.sourceType == .Camera {
+            // Save to Album if source is camera
             ALAssetsLibrary().saveImage(image, toAlbum: FNLocalizedAppName, completion: nil, failure: { (error) -> Void in
                 FNAnalytics.logError(error, location: "Photo: Add To Camera Roll")
             })
+
+        } else {
+            source = "Library"
         }
+        FNAnalytics.logPhoto(source)
     }
 }
 

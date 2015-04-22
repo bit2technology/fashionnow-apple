@@ -42,6 +42,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if application.applicationState != .Background {
             PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         }
+        let googleAnalytics = GAI.sharedInstance()
+        googleAnalytics.trackUncaughtExceptions = true
+        googleAnalytics.dispatchInterval = 20
+        googleAnalytics.logger.logLevel = .Verbose
+        googleAnalytics.trackerWithTrackingId("UA-62043366-1")
 
         // Logout if current user is invalid
         if !ParseUser.current().isValid {

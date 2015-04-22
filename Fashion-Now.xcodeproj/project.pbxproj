@@ -8,31 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		1D824CAC92C93D9205931DB7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 048B75AE9DC83A2F458FA468 /* libPods.a */; };
-		4B0F16B81AD499E400597AD2 /* jquery.smartbanner.css in Resources */ = {isa = PBXBuildFile; fileRef = 4B0F16B61AD499E400597AD2 /* jquery.smartbanner.css */; };
-		4B0F16B91AD499E400597AD2 /* jquery.smartbanner.js in Resources */ = {isa = PBXBuildFile; fileRef = 4B0F16B71AD499E400597AD2 /* jquery.smartbanner.js */; };
 		4B3864651A178B80004ECAB8 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3864641A178B80004ECAB8 /* TabBarController.swift */; };
 		4B39E0341A652CB800836639 /* FriendsListTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B39E0331A652CB800836639 /* FriendsListTableController.swift */; };
 		4B45FA111ABD980000E2F7CC /* GalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B45FA101ABD980000E2F7CC /* GalleryController.swift */; };
 		4B488C5A1A1F668200AEE393 /* SignupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B488C591A1F668200AEE393 /* SignupController.swift */; };
 		4B4BFA671A14239200BFD23F /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4BFA661A14239200BFD23F /* LoginController.swift */; };
-		4B6010831ACDE0C9000B0DF7 /* android-app.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B6010821ACDE0C9000B0DF7 /* android-app.png */; };
-		4B6B75F41AC0700800060E6F /* appstore-badge-pt.svg in Resources */ = {isa = PBXBuildFile; fileRef = 4B6B75F31AC0700800060E6F /* appstore-badge-pt.svg */; };
 		4B749E8D1A30916F00E9B128 /* ResultPollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B749E8C1A30916F00E9B128 /* ResultPollController.swift */; };
 		4B7B3FFF1A35C0F30063CB90 /* LoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7B3FFE1A35C0F30063CB90 /* LoginHelper.swift */; };
 		4B7C2CA41A13A1D900FB25B8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B7C2CA61A13A1D900FB25B8 /* InfoPlist.strings */; };
 		4B7C2CA91A13A1DA00FB25B8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B7C2CAB1A13A1DA00FB25B8 /* InfoPlist.strings */; };
 		4B7C3DEB1A1EB610004A4D37 /* MeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C3DEA1A1EB610004A4D37 /* MeController.swift */; };
-		4B8558A51AC9749000E3C0C9 /* 036.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8558A41AC9749000E3C0C9 /* 036.png */; };
-		4B8E44891AB46AD800C4EBD7 /* main.js in Resources */ = {isa = PBXBuildFile; fileRef = 4B8E44841AB46AD800C4EBD7 /* main.js */; };
-		4B8E448A1AB46AD800C4EBD7 /* global.json in Resources */ = {isa = PBXBuildFile; fileRef = 4B8E44861AB46AD800C4EBD7 /* global.json */; };
-		4B8E448B1AB46AD800C4EBD7 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 4B8E44881AB46AD800C4EBD7 /* index.html */; };
 		4B9443591AB08B6D007DBAFD /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9443581AB08B6D007DBAFD /* AppHelper.swift */; };
 		4BAAAF8E1A14C5FB00AAFAFB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */; };
-		4BC252CB1ACD84D000DE430E /* PT1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC252C61ACD84D000DE430E /* PT1.png */; };
-		4BC252CC1ACD84D000DE430E /* PT2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC252C71ACD84D000DE430E /* PT2.png */; };
-		4BC252CD1ACD84D000DE430E /* PT3.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC252C81ACD84D000DE430E /* PT3.png */; };
-		4BC252CE1ACD84D000DE430E /* PT4.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC252C91ACD84D000DE430E /* PT4.png */; };
-		4BC252CF1ACD84D000DE430E /* PT5.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC252CA1ACD84D000DE430E /* PT5.png */; };
 		4BC4CF0B1A01164F0000A231 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4BC4CF0A1A01164F0000A231 /* .gitignore */; };
 		4BD255461AC45F7A004BF005 /* VoteFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD255451AC45F7A004BF005 /* VoteFilterController.swift */; };
 		4BDB6D151A221033003D56C1 /* FacebookHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDB6D141A221033003D56C1 /* FacebookHelper.swift */; };
@@ -60,32 +47,20 @@
 
 /* Begin PBXFileReference section */
 		048B75AE9DC83A2F458FA468 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		4B0F16B61AD499E400597AD2 /* jquery.smartbanner.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = jquery.smartbanner.css; sourceTree = "<group>"; };
-		4B0F16B71AD499E400597AD2 /* jquery.smartbanner.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jquery.smartbanner.js; sourceTree = "<group>"; };
 		4B3864641A178B80004ECAB8 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4B39E0331A652CB800836639 /* FriendsListTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsListTableController.swift; sourceTree = "<group>"; };
 		4B45FA101ABD980000E2F7CC /* GalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryController.swift; sourceTree = "<group>"; };
 		4B488C591A1F668200AEE393 /* SignupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupController.swift; sourceTree = "<group>"; };
 		4B4BFA661A14239200BFD23F /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
-		4B6010821ACDE0C9000B0DF7 /* android-app.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "android-app.png"; sourceTree = "<group>"; };
-		4B6B75F31AC0700800060E6F /* appstore-badge-pt.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "appstore-badge-pt.svg"; sourceTree = "<group>"; };
 		4B749E8C1A30916F00E9B128 /* ResultPollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultPollController.swift; sourceTree = "<group>"; };
 		4B7B3FFE1A35C0F30063CB90 /* LoginHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHelper.swift; sourceTree = "<group>"; };
 		4B7C2CA01A13A06E00FB25B8 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Main.strings; sourceTree = "<group>"; };
 		4B7C2CA51A13A1D900FB25B8 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4B7C2CAA1A13A1DA00FB25B8 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4B7C3DEA1A1EB610004A4D37 /* MeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeController.swift; sourceTree = "<group>"; };
-		4B8558A41AC9749000E3C0C9 /* 036.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 036.png; sourceTree = "<group>"; };
-		4B8E44841AB46AD800C4EBD7 /* main.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = main.js; sourceTree = "<group>"; };
-		4B8E44861AB46AD800C4EBD7 /* global.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = global.json; sourceTree = "<group>"; };
-		4B8E44881AB46AD800C4EBD7 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		4B9443581AB08B6D007DBAFD /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppHelper.swift; sourceTree = "<group>"; };
 		4BAAAF8F1A14C5FB00AAFAFB /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
-		4BC252C61ACD84D000DE430E /* PT1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PT1.png; sourceTree = "<group>"; };
-		4BC252C71ACD84D000DE430E /* PT2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PT2.png; sourceTree = "<group>"; };
-		4BC252C81ACD84D000DE430E /* PT3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PT3.png; sourceTree = "<group>"; };
-		4BC252C91ACD84D000DE430E /* PT4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PT4.png; sourceTree = "<group>"; };
-		4BC252CA1ACD84D000DE430E /* PT5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PT5.png; sourceTree = "<group>"; };
+		4BBCD9AD1AE1F0D10002928F /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4BC4CF0A1A01164F0000A231 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
 		4BD255451AC45F7A004BF005 /* VoteFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteFilterController.swift; sourceTree = "<group>"; };
 		4BDB6D141A221033003D56C1 /* FacebookHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookHelper.swift; sourceTree = "<group>"; };
@@ -137,21 +112,6 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
-		4B6B75F21AC0700800060E6F /* images */ = {
-			isa = PBXGroup;
-			children = (
-				4B6010821ACDE0C9000B0DF7 /* android-app.png */,
-				4BC252C61ACD84D000DE430E /* PT1.png */,
-				4BC252C71ACD84D000DE430E /* PT2.png */,
-				4BC252C81ACD84D000DE430E /* PT3.png */,
-				4BC252C91ACD84D000DE430E /* PT4.png */,
-				4BC252CA1ACD84D000DE430E /* PT5.png */,
-				4B8558A41AC9749000E3C0C9 /* 036.png */,
-				4B6B75F31AC0700800060E6F /* appstore-badge-pt.svg */,
-			);
-			path = images;
-			sourceTree = "<group>";
-		};
 		4B7F000B1A293D060032A9BD /* Login and Signup */ = {
 			isa = PBXGroup;
 			children = (
@@ -162,49 +122,11 @@
 			name = "Login and Signup";
 			sourceTree = "<group>";
 		};
-		4B8E44821AB46AD800C4EBD7 /* parse */ = {
-			isa = PBXGroup;
-			children = (
-				4B8E44831AB46AD800C4EBD7 /* cloud */,
-				4B8E44851AB46AD800C4EBD7 /* config */,
-				4B8E44871AB46AD800C4EBD7 /* public */,
-			);
-			path = parse;
-			sourceTree = "<group>";
-		};
-		4B8E44831AB46AD800C4EBD7 /* cloud */ = {
-			isa = PBXGroup;
-			children = (
-				4B8E44841AB46AD800C4EBD7 /* main.js */,
-			);
-			path = cloud;
-			sourceTree = "<group>";
-		};
-		4B8E44851AB46AD800C4EBD7 /* config */ = {
-			isa = PBXGroup;
-			children = (
-				4B8E44861AB46AD800C4EBD7 /* global.json */,
-			);
-			path = config;
-			sourceTree = "<group>";
-		};
-		4B8E44871AB46AD800C4EBD7 /* public */ = {
-			isa = PBXGroup;
-			children = (
-				4B6B75F21AC0700800060E6F /* images */,
-				4B8E44881AB46AD800C4EBD7 /* index.html */,
-				4B0F16B61AD499E400597AD2 /* jquery.smartbanner.css */,
-				4B0F16B71AD499E400597AD2 /* jquery.smartbanner.js */,
-			);
-			path = public;
-			sourceTree = "<group>";
-		};
 		4BF1D04C1A00F1EB00818658 = {
 			isa = PBXGroup;
 			children = (
 				4BF1D0571A00F1EB00818658 /* Fashion Now */,
 				4BF1D0701A00F1EB00818658 /* Fashion NowTests */,
-				4B8E44821AB46AD800C4EBD7 /* parse */,
 				4BF1D0561A00F1EB00818658 /* Products */,
 				50BBFE5617CD5165D7925FD4 /* Pods */,
 				852B2819E90E3361AA2D69D7 /* Frameworks */,
@@ -383,24 +305,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B8558A51AC9749000E3C0C9 /* 036.png in Resources */,
-				4BC252CD1ACD84D000DE430E /* PT3.png in Resources */,
 				4BC4CF0B1A01164F0000A231 /* .gitignore in Resources */,
-				4BC252CF1ACD84D000DE430E /* PT5.png in Resources */,
 				4BAAAF8E1A14C5FB00AAFAFB /* Localizable.strings in Resources */,
-				4BC252CB1ACD84D000DE430E /* PT1.png in Resources */,
 				4BF1D0631A00F1EB00818658 /* Main.storyboard in Resources */,
-				4BC252CE1ACD84D000DE430E /* PT4.png in Resources */,
-				4B6010831ACDE0C9000B0DF7 /* android-app.png in Resources */,
-				4B8E448B1AB46AD800C4EBD7 /* index.html in Resources */,
-				4B0F16B81AD499E400597AD2 /* jquery.smartbanner.css in Resources */,
-				4B0F16B91AD499E400597AD2 /* jquery.smartbanner.js in Resources */,
 				4BF1D0651A00F1EB00818658 /* Images.xcassets in Resources */,
-				4B8E448A1AB46AD800C4EBD7 /* global.json in Resources */,
-				4B8E44891AB46AD800C4EBD7 /* main.js in Resources */,
-				4BC252CC1ACD84D000DE430E /* PT2.png in Resources */,
 				4B7C2CA91A13A1DA00FB25B8 /* InfoPlist.strings in Resources */,
-				4B6B75F41AC0700800060E6F /* appstore-badge-pt.svg in Resources */,
 				4BE767DE1A239F6B00CCAA65 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -540,6 +449,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				4BAAAF8F1A14C5FB00AAFAFB /* pt */,
+				4BBCD9AD1AE1F0D10002928F /* Base */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
