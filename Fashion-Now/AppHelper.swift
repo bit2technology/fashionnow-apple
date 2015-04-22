@@ -260,6 +260,7 @@ class FNAnalytics {
         if let error = error {
             FBSDKAppEvents.logEvent("Error", parameters: ["Domain": error.domain, "Code": error.code, "Description": error.description, "Location": location])
             PFAnalytics.trackEventInBackground("Error", dimensions: ["Domain": error.domain, "Code": "\(error.code)", "Description": error.description, "Location": location], block: nil)
+            GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createExceptionWithDescription("Domain:\(error.domain) code:\(error.code)", withFatal: false).build() as [NSObject:AnyObject])
             return true
         }
         return false
@@ -349,6 +350,9 @@ class FNTableController: UITableViewController {
         super.viewDidAppear(animated)
         TSMessage.setDefaultViewController(self)
         appearDate = NSDate()
+        let gAnalyticsTracker = GAI.sharedInstance().defaultTracker
+        gAnalyticsTracker.set(kGAIScreenName, value: title)
+        gAnalyticsTracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
     }
 
     override func viewDidDisappear(animated: Bool) {
@@ -365,6 +369,9 @@ class FNCollectionController: UICollectionViewController {
         super.viewDidAppear(animated)
         TSMessage.setDefaultViewController(self)
         appearDate = NSDate()
+        let gAnalyticsTracker = GAI.sharedInstance().defaultTracker
+        gAnalyticsTracker.set(kGAIScreenName, value: title)
+        gAnalyticsTracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
     }
 
     override func viewDidDisappear(animated: Bool) {
