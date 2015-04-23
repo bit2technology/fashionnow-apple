@@ -258,9 +258,10 @@ class FNAnalytics {
 
     class func logError(error: NSError?, location: String) -> Bool {
         if let error = error {
-            FBSDKAppEvents.logEvent("Error", parameters: ["Domain": error.domain, "Code": error.code, "Description": error.description, "Location": location])
-            PFAnalytics.trackEventInBackground("Error", dimensions: ["Domain": error.domain, "Code": "\(error.code)", "Description": error.description, "Location": location], block: nil)
-            GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createExceptionWithDescription("Domain:\(error.domain) code:\(error.code)", withFatal: false).build() as [NSObject:AnyObject])
+            var params = ["Domain": error.domain, "Code": "\(error.code)", "Location": location]
+            GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createExceptionWithDescription(error.description, withFatal: false).setAll(params).build() as [NSObject:AnyObject])
+            params["Description"] = error.description
+            FBSDKAppEvents.logEvent("Error", parameters: params)
             return true
         }
         return false
@@ -273,21 +274,21 @@ class FNAnalytics {
     }
 
     class func logPhoto(imageSource: String) {
-        FBSDKAppEvents.logEvent("Photo Saved", parameters: ["Source": imageSource])
-        PFAnalytics.trackEventInBackground("Post", dimensions: ["Source": imageSource], block: nil)
-        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Photo Saved", action: "Source", label: imageSource, value: nil).build() as [NSObject:AnyObject])
+        let params = ["Source": imageSource]
+        FBSDKAppEvents.logEvent("Photo Saved", parameters: params)
+        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Photo Saved", action: "Source", label: nil, value: nil).setAll(params).build() as [NSObject:AnyObject])
     }
 
     class func logScreen(identifier: String, time: NSTimeInterval) {
-        FBSDKAppEvents.logEvent("Screen Viewed", valueToSum: time, parameters: ["Name": identifier])
-        PFAnalytics.trackEventInBackground("Screen", dimensions: ["Name": identifier], block: nil)
-        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Screen Viewd", action: "Name", label: identifier, value: nil).build() as [NSObject:AnyObject])
+        let params = ["Name": identifier]
+        FBSDKAppEvents.logEvent("Screen Viewed", valueToSum: time, parameters: params)
+        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Screen Viewd", action: "Name", label: nil, value: nil).setAll(params).build() as [NSObject:AnyObject])
     }
 
     class func logVote(vote: Int, method: String) {
-        FBSDKAppEvents.logEvent("Poll Voted", parameters: ["Vote": vote, "Method": method])
-        PFAnalytics.trackEventInBackground("Vote", dimensions: ["Vote": "\(vote)", "Method": method], block: nil)
-        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Vote", action: "Poll Voted", label: nil, value: nil).setAll(["Vote": "\(vote)", "Method": method]).build() as [NSObject:AnyObject])
+        let params = ["Vote": "\(vote)", "Method": method]
+        FBSDKAppEvents.logEvent("Poll Voted", parameters: params)
+        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Vote", action: "Poll Voted", label: nil, value: nil).setAll(params).build() as [NSObject:AnyObject])
     }
 }
 
