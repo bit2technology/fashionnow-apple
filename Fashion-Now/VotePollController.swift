@@ -222,6 +222,29 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+
+        let page1 = EAIntroPage()
+        page1.title = "Welcome to Fashion Now"
+        page1.desc = "This is the first time you use the app. Thank you!"
+        page1.bgColor = UIColor.fn_tint()
+        page1.titleIconView = UIImageView(image: UIImage(named: "ButtonCamera"))
+
+        let page2 = EAIntroPage()
+        page2.title = "Title 2"
+        page2.desc = "Description 2"
+        page2.bgColor = UIColor.purpleColor()
+        page2.titleIconView = UIImageView(image: UIImage(named: "ButtonLibrary"))
+
+        let page3 = EAIntroPage()
+        page3.title = "Title 3"
+        page3.desc = "Description 3"
+        page3.bgColor = UIColor.darkGrayColor()
+        page3.titleIconView = UIImageView(image: UIImage(named: "ButtonCamera"))
+
+        let intro = EAIntroView(frame: tabBarController!.view.bounds, andPages: [page1, page2, page3])
+//        intro.motionEffectsRelativeValue = 40
+//        intro.useMotionEffects = true
+        intro.showInView(tabBarController!.view, animateDuration: 0)
     }
 
     deinit {

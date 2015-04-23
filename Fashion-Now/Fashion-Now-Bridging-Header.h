@@ -5,6 +5,7 @@
 #import <ActionSheetPicker-3.0/ActionSheetPicker.h>
 #import <ALAssetsLibrary-CustomPhotoAlbum/ALAssetsLibrary+CustomPhotoAlbum.h>
 #import <DateTools/DateTools.h>
+#import <EAIntroView/EAIntroView.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
