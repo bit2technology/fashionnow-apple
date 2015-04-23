@@ -36,8 +36,9 @@ func fn_applyPollMask(left: UIView, right: UIView) {
 }
 
 private func fn_pushStrings() {
-    NSLocalizedString("Push.loc-key.friendNeedsHelp", value: "%1$@ needs help", comment: "Push message for when a friend posts a poll without caption")
-    NSLocalizedString("Push.loc-key.friendNeedsHelpCaption", value: "%1$@ needs help: \"%1$@\"", comment: "Push message for when a friend posts a poll with caption")
+    NSLocalizedString("P001", value: "New Poll", comment: "Push message for when a friend posts a poll without caption")
+    NSLocalizedString("P002", value: "%1$@ needs help", comment: "Push message for when a friend posts a poll without caption")
+    NSLocalizedString("P003", value: "%1$@ needs help: \"%1$@\"", comment: "Push message for when a friend posts a poll with caption")
 }
 
 // MARK: - Extensions
@@ -249,6 +250,24 @@ extension UIImageView {
 extension NSError {
     convenience init(fn_code: FNErrorCode, userInfo: [NSObject:AnyObject]? = nil) {
         self.init(domain: FNErrorDomain, code: fn_code.rawValue, userInfo: userInfo)
+    }
+}
+
+extension UIViewController {
+    var fn_tabBarController: TabBarController {
+        return tabBarController as! TabBarController
+    }
+}
+
+extension UINavigationController {
+    public override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+        return topViewController.preferredStatusBarUpdateAnimation()
+    }
+    public override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return topViewController.preferredStatusBarStyle()
+    }
+    public override func prefersStatusBarHidden() -> Bool {
+        return topViewController.prefersStatusBarHidden()
     }
 }
 

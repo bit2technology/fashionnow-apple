@@ -11,6 +11,8 @@ import UIKit
 /// Custom UITabBarController, for login behavior
 class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
+    // Presentation
+
     override func supportedInterfaceOrientations() -> Int {
         return Int(UIInterfaceOrientationMask.Portrait.rawValue)
     }
@@ -23,7 +25,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         delegate = self
     }
 
-    // MARK: UITabBarControllerDelegate and other selection methods
+    // MARK: UITabBarControllerDelegate
 
     // The controller index that will be selected with a successful login
     private var controllerIndex: Int?
@@ -37,6 +39,8 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         }
         return true
     }
+
+    // MARK: Login controller methods
 
     func presentLoginController() {
         performSegueWithIdentifier("Login Controller", sender: self)

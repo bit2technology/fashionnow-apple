@@ -95,9 +95,6 @@
 "SignupController.saveErrorDescription.emailTaken" = "Outro usuário já está usando este e-mail";
 
 /* Error message for Sign Up or Edit Profile */
-"SignupController.saveErrorDescription.nameMissing" = "Nome faltando";
-
-/* Error message for Sign Up or Edit Profile */
 "SignupController.saveErrorDescription.passwordTooShort" = "Senha muito curta (6 caracteres min.)";
 
 /* Error message for Sign Up or Edit Profile */

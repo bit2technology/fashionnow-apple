@@ -10,13 +10,15 @@ import UIKit
 
 private let transitionDuration: NSTimeInterval = 0.25
 
-class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDelegate, UIActionSheetDelegate, UIAlertViewDelegate {
+class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDelegate, UIActionSheetDelegate, UIAlertViewDelegate, EAIntroDelegate {
 
     private var polls = ParsePollList(type: .VotePublic)
 
     private var currentPoll: ParsePoll?
 
     private weak var pollController: PollController!
+
+    private var statusBarStyle = UIStatusBarStyle.Default
 
     // Navigation bar items
     @IBOutlet weak var avatarView: UIImageView!
@@ -248,15 +250,36 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         page5.desc = "Start voting right now"
         page5.bgImage = UIImage(named: "Photo005.jpg")
 
-        let intro = EAIntroView(frame: tabBarController!.view.bounds, andPages: [page1, page2, page3, page4, page5])
-        intro.tapToNext = true
-        intro.motionEffectsRelativeValue = 40
+        let intro = EAIntroView(frame: fn_tabBarController.view.bounds, andPages: [page1, page2, page3, page4, page5])
+        intro.delegate = self
+        intro.motionEffectsRelativeValue = 20
         intro.useMotionEffects = true
-        intro.showInView(tabBarController!.view, animateDuration: 0)
+        intro.showInView(fn_tabBarController.view, animateDuration: 0)
+        statusBarStyle = .LightContent
+        UIView.animateWithDuration(0, animations: { () -> Void in
+            self.setNeedsStatusBarAppearanceUpdate()
+        })
+    }
+
+    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+        return .Fade
+    }
+
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return statusBarStyle
     }
 
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
+    // MARK: EAIntroDelegate
+
+    func introDidFinish(introView: EAIntroView!) {
+        statusBarStyle = .Default
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            self.setNeedsStatusBarAppearanceUpdate()
+        })
     }
 
     // MARK: PollControllerDelegate
