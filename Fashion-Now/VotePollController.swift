@@ -224,26 +224,34 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         super.viewWillAppear(animated)
 
         let page1 = EAIntroPage()
-        page1.title = "Welcome to Fashion Now"
-        page1.desc = "This is the first time you use the app. Thank you!"
-        page1.bgColor = UIColor.fn_tint()
-        page1.titleIconView = UIImageView(image: UIImage(named: "ButtonCamera"))
+        page1.title = "Welcome to Fashion Now"
+        page1.desc = "This is the Intro"
+        page1.bgImage = UIImage(named: "Photo001.jpg")
 
         let page2 = EAIntroPage()
-        page2.title = "Title 2"
-        page2.desc = "Description 2"
-        page2.bgColor = UIColor.purpleColor()
-        page2.titleIconView = UIImageView(image: UIImage(named: "ButtonLibrary"))
+        page2.title = "I created these backgrounds"
+        page2.desc = "See if you like them"
+        page2.bgImage = UIImage(named: "Photo002.jpg")
 
         let page3 = EAIntroPage()
-        page3.title = "Title 3"
-        page3.desc = "Description 3"
-        page3.bgColor = UIColor.darkGrayColor()
-        page3.titleIconView = UIImageView(image: UIImage(named: "ButtonCamera"))
+        page3.title = "Licence"
+        page3.desc = "All these photos are free to use!"
+        page3.bgImage = UIImage(named: "Photo003.jpg")
 
-        let intro = EAIntroView(frame: tabBarController!.view.bounds, andPages: [page1, page2, page3])
-//        intro.motionEffectsRelativeValue = 40
-//        intro.useMotionEffects = true
+        let page4 = EAIntroPage()
+        page4.title = "Effect"
+        page4.desc = "Tilt your device and see what happens"
+        page4.bgImage = UIImage(named: "Photo004.jpg")
+
+        let page5 = EAIntroPage()
+        page5.title = "Ready to go"
+        page5.desc = "Start voting right now"
+        page5.bgImage = UIImage(named: "Photo005.jpg")
+
+        let intro = EAIntroView(frame: tabBarController!.view.bounds, andPages: [page1, page2, page3, page4, page5])
+        intro.tapToNext = true
+        intro.motionEffectsRelativeValue = 40
+        intro.useMotionEffects = true
         intro.showInView(tabBarController!.view, animateDuration: 0)
     }
 

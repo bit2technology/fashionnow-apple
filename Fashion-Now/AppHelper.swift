@@ -398,7 +398,7 @@ let FNErrorDomain = "com.bit2software.Fashion-Now"
 enum FNErrorCode: Int {
     /// The operator is busy, probably from network activity.
     case Busy = 800
-    /// App tried update, but there's nothing new
+    /// App tried update, but there’s nothing new
     case NothingNew = 801
     /// App was online, but now is offline.
     case ConnectionLost = 802

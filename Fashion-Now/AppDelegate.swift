@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window!.tintColor = UIColor.fn_tint()
 
         // Register subclasses
-        // This is because overriding class function "load()" doesn't work on Swift 1.2+
+        // This is because overriding class function "load()" doesn’t work on Swift 1.2+
         ParseInstallation.registerSubclass()
         ParsePhoto.registerSubclass()
         ParsePoll.registerSubclass()

@@ -87,7 +87,7 @@ class ResultPollController: FNViewController, UIActionSheetDelegate, PollLoadDel
     }
 
     @IBAction func deletePoll(sender: UIBarButtonItem) {
-        UIActionSheet(title: NSLocalizedString("ResultPollController.deleteSheet.title", value: "Do you really want to delete this poll? This action can't be undone.", comment: "Shown when user is about to delete a poll"), delegate: self, cancelButtonTitle: FNLocalizedCancelButtonTitle, destructiveButtonTitle: NSLocalizedString("ResultPollController.deleteSheet.destructiveButtonTitle", value: "Delete", comment: "Shown when user is about to delete a poll")).showFromBarButtonItem(sender, animated: true)
+        UIActionSheet(title: NSLocalizedString("ResultPollController.deleteSheet.title", value: "Do you really want to delete this poll? This action can’t be undone.", comment: "Shown when user is about to delete a poll"), delegate: self, cancelButtonTitle: FNLocalizedCancelButtonTitle, destructiveButtonTitle: NSLocalizedString("ResultPollController.deleteSheet.destructiveButtonTitle", value: "Delete", comment: "Shown when user is about to delete a poll")).showFromBarButtonItem(sender, animated: true)
     }
 
     private func queryForVote(vote: Int) -> PFQuery {
