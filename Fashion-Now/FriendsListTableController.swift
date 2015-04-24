@@ -167,13 +167,9 @@ class FriendsListTableController: FNTableController, PostPollControllerDelegate 
 
         case 2:
             cell.avatarView.contentMode = .ScaleToFill
-            let user = friendsList?[indexPath.row]
-            if let unwrappedAuthorFacebookId = user?.facebookId {
-                cell.avatarView.setImageWithURL(FacebookHelper.urlForPictureOfUser(id: unwrappedAuthorFacebookId, size: 40), usingActivityIndicatorStyle: .White)
-            } else {
-                cell.avatarView.image = nil
-            }
-            cell.nameLabel.text = user?.name
+            let user = friendsList![indexPath.row]
+            cell.avatarView.setImageWithURL(user.avatarURL(size: 40), usingActivityIndicatorStyle: .White)
+            cell.nameLabel.text = user.name
 
         default:
             break

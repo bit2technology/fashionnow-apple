@@ -45,6 +45,7 @@ let ParseUserBirthdayKey = "birth"
 let ParseUserFacebookIdKey = "facebookId"
 let ParseUserGenderKey = "gender"
 let ParseUserHasPassword = "hasPassword"
+let ParseUserHasUsername = "hasUsername"
 let ParseUserLocationKey = "location"
 let ParseUserNameKey = "name"
 
@@ -70,7 +71,7 @@ class ParseUser: PFUser, PFSubclassing {
         if let avatarURL = avatarImage?.url {
             return NSURL(string: avatarURL)
         } else if let facebookId = facebookId {
-            return FacebookHelper.urlForPictureOfUser(id: facebookId, size: size)
+            return FacebookUser(id: facebookId).avatarUrl(size: size)
         }
         return nil
     }
@@ -121,6 +122,15 @@ class ParseUser: PFUser, PFSubclassing {
         }
     }
 
+    var hasUsername: Bool? {
+        get {
+            return self[ParseUserHasUsername] as? Bool
+        }
+        set {
+            self[ParseUserHasUsername] = newValue ?? NSNull()
+        }
+    }
+
     var location: String? {
         get {
             return self[ParseUserLocationKey] as? String
@@ -144,10 +154,11 @@ class ParseUser: PFUser, PFSubclassing {
     var isValid: Bool {
         if PFAnonymousUtils.isLinkedWithUser(self) {
             return true
-        } else if PFFacebookUtils.isLinkedWithUser(self) && !(facebookId?.fn_count > 0) {
+        } else if PFFacebookUtils.isLinkedWithUser(self) {
+            // TODO: Verify and download info if necessary (facebookId?.fn_count > 0)
             return false
         }
-        return hasPassword == true && email?.isEmail() == true
+        return email?.isEmail() == true && hasUsername == true && hasPassword == true
     }
 }
 
