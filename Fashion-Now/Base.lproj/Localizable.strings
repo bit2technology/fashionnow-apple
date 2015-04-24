@@ -1,1 +1,9 @@
-"Push.loc-key.friendNeedsHelp" = "%1$@ needs help";
+/* Push message for when a friend posts a poll without caption */
+"P001" = "New Poll";
+
+/* Push message for when a friend posts a poll without caption */
+"P002" = "%1$@ needs help";
+
+/* Push message for when a friend posts a poll with caption */
+"P003" = "%1$@ needs help: \"%2$@\"";
+

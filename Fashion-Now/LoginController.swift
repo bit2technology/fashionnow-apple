@@ -190,8 +190,23 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
         }
     }
 
+    override func scrollViewDidScroll(scrollView: UIScrollView) {
+        println("scroll: \(scrollView.contentOffset)")
+    }
+
     // MARK: UITextFieldDelegate
 
+//    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+//        let rect = CGRect(x: 0, y: tableView.contentSize.height - 1, width: 1, height: 1)
+//        println("rect:\(rect)")
+//        tableView.scrollRectToVisible(rect, animated: true)
+//        return true
+//    }
+
+    func textFieldDidBeginEditing(textField: UITextField) {
+        tableView.setContentOffset(CGPoint(x: 0, y: 126), animated: true)
+    }
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         switch textField {
 

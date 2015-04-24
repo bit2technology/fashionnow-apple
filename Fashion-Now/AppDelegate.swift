@@ -53,9 +53,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let gai = GAI.sharedInstance()
         gai.trackUncaughtExceptions = true
         gai.dispatchInterval = 20
-        #if DEBUG
-            gai.logger.logLevel = .Verbose
-        #endif
         let tracker = gai.trackerWithTrackingId("UA-62043366-1")
         tracker.set("&uid", value: currentUser.objectId)
 

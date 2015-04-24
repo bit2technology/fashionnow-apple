@@ -69,6 +69,8 @@
 		4BC4CF0A1A01164F0000A231 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
 		4BD255451AC45F7A004BF005 /* VoteFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteFilterController.swift; sourceTree = "<group>"; };
 		4BDB6D141A221033003D56C1 /* FacebookHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookHelper.swift; sourceTree = "<group>"; };
+		4BE6ED791AE9910600562D62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4BE6ED7A1AE9910700562D62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4BE767DD1A239F6B00CCAA65 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		4BEB9E171A01AA9A00A71764 /* ParseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseHelper.swift; sourceTree = "<group>"; };
 		4BEB9E191A01ABD200A71764 /* PhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoController.swift; sourceTree = "<group>"; };
@@ -461,6 +463,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				4B7C2CA51A13A1D900FB25B8 /* pt */,
+				4BE6ED791AE9910600562D62 /* Base */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -469,6 +472,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				4B7C2CAA1A13A1DA00FB25B8 /* pt */,
+				4BE6ED7A1AE9910700562D62 /* Base */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

@@ -11,10 +11,10 @@
         <scene sceneID="9od-5e-1Db">
             <objects>
                 <tableViewController title="Login: Main" id="34U-YS-Pbl" customClass="LoginController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="xog-eb-X2o">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="xog-eb-X2o">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="6BC-xi-4HN">
                             <rect key="frame" x="0.0" y="64" width="320" height="240"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -22,10 +22,10 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lwo-dp-27Y">
                                     <rect key="frame" x="0.0" y="64" width="320" height="112"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fashion Now works better with Facebook. Don’t worry, we’ll respect your privacy." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="nE2-fN-c10">
-                                            <rect key="frame" x="60" y="0.0" width="200" height="54"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fashion Now works better with Facebook. Don’t worry, we’ll respect your privacy." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="220" translatesAutoresizingMaskIntoConstraints="NO" id="nE2-fN-c10">
+                                            <rect key="frame" x="50" y="0.0" width="220" height="54"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="200" id="jRK-CT-wcr"/>
+                                                <constraint firstAttribute="width" constant="220" id="jRK-CT-wcr"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -65,19 +65,17 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dsO-AB-HsR">
-                                    <rect key="frame" x="0.0" y="0.0" width="160" height="52"/>
+                                    <rect key="frame" x="8" y="0.0" width="148" height="44"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                    <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="8"/>
                                     <state key="normal" title="Sign up"/>
                                     <connections>
                                         <segue destination="n9L-hk-vfW" kind="push" identifier="Sign Up" id="AdF-1L-oCc"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="exf-D7-gGy">
-                                    <rect key="frame" x="160" y="0.0" width="160" height="52"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                    <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="8"/>
-                                    <state key="normal" title="Log in"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="exf-D7-gGy" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                    <rect key="frame" x="164" y="0.0" width="148" height="44"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                    <state key="normal" title="Log in" backgroundImage="ButtonRoundBordersBackground"/>
                                     <connections>
                                         <action selector="loginButtonPressed:" destination="34U-YS-Pbl" eventType="touchUpInside" id="izw-Z8-q1C"/>
                                     </connections>
@@ -85,14 +83,14 @@
                             </subviews>
                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="dsO-AB-HsR" secondAttribute="bottom" id="4MV-5c-kYM"/>
+                                <constraint firstAttribute="bottom" secondItem="dsO-AB-HsR" secondAttribute="bottom" constant="8" id="4MV-5c-kYM"/>
                                 <constraint firstItem="exf-D7-gGy" firstAttribute="top" secondItem="skf-Z8-I9r" secondAttribute="top" id="6dS-o3-9nA"/>
                                 <constraint firstItem="dsO-AB-HsR" firstAttribute="top" secondItem="skf-Z8-I9r" secondAttribute="top" id="76m-Qg-neD"/>
-                                <constraint firstItem="dsO-AB-HsR" firstAttribute="leading" secondItem="skf-Z8-I9r" secondAttribute="leading" id="8vU-Dw-XdA"/>
-                                <constraint firstItem="exf-D7-gGy" firstAttribute="leading" secondItem="dsO-AB-HsR" secondAttribute="trailing" id="Lko-TH-qfl"/>
-                                <constraint firstAttribute="trailing" secondItem="exf-D7-gGy" secondAttribute="trailing" id="Xum-of-KJr"/>
+                                <constraint firstItem="dsO-AB-HsR" firstAttribute="leading" secondItem="skf-Z8-I9r" secondAttribute="leading" constant="8" id="8vU-Dw-XdA"/>
+                                <constraint firstItem="exf-D7-gGy" firstAttribute="leading" secondItem="dsO-AB-HsR" secondAttribute="trailing" constant="8" id="Lko-TH-qfl"/>
+                                <constraint firstAttribute="trailing" secondItem="exf-D7-gGy" secondAttribute="trailing" constant="8" id="Xum-of-KJr"/>
                                 <constraint firstItem="exf-D7-gGy" firstAttribute="width" secondItem="dsO-AB-HsR" secondAttribute="width" id="hZl-9X-iyh"/>
-                                <constraint firstAttribute="bottom" secondItem="exf-D7-gGy" secondAttribute="bottom" id="k0u-WO-t2d"/>
+                                <constraint firstAttribute="bottom" secondItem="exf-D7-gGy" secondAttribute="bottom" constant="8" id="k0u-WO-t2d"/>
                             </constraints>
                         </view>
                         <sections>
