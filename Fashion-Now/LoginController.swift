@@ -86,12 +86,12 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
                     } else {
 
                         // Get information from Facebook
-                        FBSDKGraphRequest(graphPath: "me?fields=id,first_name,email,gender", parameters: nil).startWithCompletionHandler { (requestConnection, result, error) -> Void in
+                        FacebookUser.getCurrent({ (user, error) -> Void in
 
                             // Send Facebook information for review in next screen
                             loadingView.removeFromSuperview()
-                            self.performSegueWithIdentifier("Sign Up", sender: result)
-                        }
+                            self.performSegueWithIdentifier("Sign Up", sender: user)
+                        })
                     }
 
                 } else {
@@ -181,7 +181,7 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
             case "Sign Up":
                 if !(sender is UIButton) {
                     segue.destinationViewController.navigationItem.hidesBackButton = true
-                    (segue.destinationViewController as! SignupController).facebookUser = FacebookUser(graphObject: sender)
+                    (segue.destinationViewController as! SignupController).facebookUser = sender as? FacebookUser
                 }
 
             default:

@@ -10,11 +10,11 @@ class FacebookUser {
 
     let email, first_name, gender, objectId: String?
 
-    init(graphObject: AnyObject?) {
-        email = graphObject?["email"] as? String
-        first_name = graphObject?["first_name"] as? String
-        gender = graphObject?["gender"] as? String
-        objectId = graphObject?["id"] as? String
+    init(graphObject: [String: String]) {
+        email = graphObject["email"]
+        first_name = graphObject["first_name"]
+        gender = graphObject["gender"]
+        objectId = graphObject["id"]
     }
 
     convenience init(id: String) {
@@ -34,7 +34,19 @@ class FacebookUser {
         }
     }
 
-    class func getCurrent(completion: (user: FacebookUser?, error: NSError?)) {
+    class func getCurrent(completion: (user: FacebookUser?, error: NSError?) -> Void) {
 
+        // Get information from Facebook
+        FBSDKGraphRequest(graphPath: "me?fields=id,first_name,email,gender", parameters: nil).startWithCompletionHandler { (requestConnection, object, error) -> Void in
+
+            let user: FacebookUser?
+            if let graphObject = object as? [String: String] {
+                user = FacebookUser(graphObject: graphObject)
+            } else {
+                user = nil
+            }
+
+            completion(user: user, error: error)
+        }
     }
 }

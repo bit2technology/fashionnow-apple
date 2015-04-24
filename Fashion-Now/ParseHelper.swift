@@ -42,10 +42,11 @@ class ParseInstallation: PFInstallation, PFSubclassing {
 
 let ParseUserAvatarImageKey = "avatarImage"
 let ParseUserBirthdayKey = "birth"
+let ParseUserEmailVerifiedKey = "emailVerified"
 let ParseUserFacebookIdKey = "facebookId"
 let ParseUserGenderKey = "gender"
-let ParseUserHasPassword = "hasPassword"
-let ParseUserHasUsername = "hasUsername"
+let ParseUserHasPasswordKey = "hasPassword"
+let ParseUserHasUsernameKey = "hasUsername"
 let ParseUserLocationKey = "location"
 let ParseUserNameKey = "name"
 
@@ -95,6 +96,10 @@ class ParseUser: PFUser, PFSubclassing {
         }
     }
 
+    var emailVerified: Bool {
+        return self[ParseUserEmailVerifiedKey] as? Bool ?? false
+    }
+
     var facebookId: String? {
         get {
             return self[ParseUserFacebookIdKey] as? String
@@ -113,21 +118,21 @@ class ParseUser: PFUser, PFSubclassing {
         }
     }
 
-    var hasPassword: Bool? {
+    var hasPassword: Bool {
         get {
-            return self[ParseUserHasPassword] as? Bool
+            return self[ParseUserHasPasswordKey] as? Bool ?? false
         }
         set {
-            self[ParseUserHasPassword] = newValue ?? NSNull()
+            self[ParseUserHasPasswordKey] = newValue
         }
     }
 
-    var hasUsername: Bool? {
+    var hasUsername: Bool {
         get {
-            return self[ParseUserHasUsername] as? Bool
+            return self[ParseUserHasUsernameKey] as? Bool ?? false
         }
         set {
-            self[ParseUserHasUsername] = newValue ?? NSNull()
+            self[ParseUserHasUsernameKey] = newValue
         }
     }
 
@@ -150,6 +155,14 @@ class ParseUser: PFUser, PFSubclassing {
     }
 
     // MARK: Helper methods
+
+    var canPostPoll: Bool {
+        if emailVerified {
+            return true
+        }
+        // TODO: Verify other ways
+        return false
+    }
 
     var isValid: Bool {
         if PFAnonymousUtils.isLinkedWithUser(self) {
@@ -210,6 +223,8 @@ class ParsePhoto: PFObject, PFSubclassing {
 
 let ParsePollCaptionKey = "caption"
 let ParsePollCreatedByKey = "createdBy"
+let ParsePollFlagKey = "flag"
+let ParsePollHiddenKey = "hidden"
 let ParsePollPhotosKey = "photos"
 let ParsePollUserIdsKey = "userIds"
 let ParsePollVersionKey = "version"
@@ -245,6 +260,24 @@ public class ParsePoll: PFObject, PFSubclassing {
         }
     }
 
+    var flag: Int {
+        get {
+            return self[ParsePollFlagKey] as? Int ?? 0
+        }
+        set {
+            self[ParsePollFlagKey] = newValue
+        }
+    }
+
+    var hidden: Bool {
+        get {
+            return self[ParsePollHiddenKey] as? Bool ?? false
+        }
+        set {
+            self[ParsePollHiddenKey] = newValue
+        }
+    }
+
     var photos: [ParsePhoto]? {
         get {
             return self[ParsePollPhotosKey] as? [ParsePhoto]
@@ -263,9 +296,9 @@ public class ParsePoll: PFObject, PFSubclassing {
         }
     }
 
-    var version: NSNumber? {
+    var version: Int? {
         get {
-            return self[ParsePollVersionKey] as? NSNumber
+            return self[ParsePollVersionKey] as? Int
         }
         set {
             self[ParsePollVersionKey] = newValue ?? NSNull()
@@ -547,6 +580,7 @@ class ParsePollList: Printable, DebugPrintable {
 
 let ParseVoteByKey = "voteBy"
 let ParseVotePollIdKey = "pollId"
+let ParseVoteVersionKey = "version"
 let ParseVoteVoteKey = "vote"
 
 class ParseVote: PFObject, PFSubclassing {
@@ -572,12 +606,21 @@ class ParseVote: PFObject, PFSubclassing {
         }
     }
 
-    var vote: NSNumber? {
+    var vote: Int? {
         get {
-            return self[ParseVoteVoteKey] as? NSNumber
+            return self[ParseVoteVoteKey] as? Int
         }
         set {
             self[ParseVoteVoteKey] = newValue ?? NSNull()
+        }
+    }
+
+    var version: Int? {
+        get {
+            return self[ParseVoteVersionKey] as? Int
+        }
+        set {
+            self[ParseVoteVersionKey] = newValue ?? NSNull()
         }
     }
 
