@@ -77,22 +77,9 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
                     // Successful login
                     NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
 
-                    // If user is valid, finish login flow. Otherwise, download information from Facebook and go to next screen.
-                    if parseUser.facebookId?.fn_count > 0 && parseUser.isValid {
-
-                        // Go back to primary controller
-                        self.dismissLoginModalController()
-
-                    } else {
-
-                        // Get information from Facebook
-                        FacebookUser.getCurrent({ (user, error) -> Void in
-
-                            // Send Facebook information for review in next screen
-                            loadingView.removeFromSuperview()
-                            self.performSegueWithIdentifier("Sign Up", sender: user)
-                        })
-                    }
+                    // Download info from Facebook and return
+                    parseUser.completeInfoFacebook()
+                    self.dismissLoginModalController()
 
                 } else {
 
@@ -151,9 +138,9 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
                             if error.code == PFErrorCode.ErrorObjectNotFound.rawValue {
                                 FNToast.show(title: NSLocalizedString("LoginController.loginErrorDescription.userNotFound", value: "Username or password incorrect", comment: "Message for when user does not exist or wrong password"), type: .Error)
                             }
+                        } else {
+                            FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
                         }
-
-                        FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
                     }
                 }
             } else {
