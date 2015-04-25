@@ -429,77 +429,66 @@ class ParsePollList: Printable, DebugPrintable {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
                 var error: NSError?
 
-                // Save user if needed
-                let currentUser = ParseUser.current()
-                if currentUser.isDirty() {
-                    currentUser.save(&error)
-                    if error != nil {
-                        self.finish(false, error: error)
-                        return
-                    }
-                }
+                if let newPolls = query.findObjects(&error) as? [ParsePoll] where newPolls.count > 0 {
 
-                var unwrappedNewPolls: [ParsePoll]! = query.findObjects(&error) as? [ParsePoll] // FIXME: Swift 1.2
-                if error == nil && unwrappedNewPolls != nil && unwrappedNewPolls.count > 0 {
-
-                    // Remove already voted polls only if type is one of the vote types
-                    if self.type != .Mine {
-
-                        // Collect new polls IDs
-                        var newPollsIds = [String]()
-                        for poll in unwrappedNewPolls {
-                            newPollsIds.append(poll.objectId!)
-                        }
-
-                        // Find votes on these new polls
-                        let myVotesQuery = PFQuery(className: ParseVote.parseClassName())
-                            .whereKey(ParseVotePollIdKey, containedIn: newPollsIds)
-                            .whereKey(ParseVoteByKey, equalTo: currentUser)
-                        myVotesQuery.limit = ParseQueryLimit
-                        let myVotes = myVotesQuery.findObjects(&error) as? [ParseVote]
-                        if error != nil {
-                            self.finish(false, error: error)
-                            return
-                        }
-                        if myVotes?.count >= unwrappedNewPolls.count {
-                            // All new polls are voted. Just return error.
-                            self.finish(false, error: NSError(fn_code: .NothingNew))
-                            return
-                        }
-                        if myVotes?.count > 0 {
-                            // Collect already voted polls IDs
-                            var myVotesPollIds = [String]()
-                            for vote in myVotes! {
-                                myVotesPollIds.append(vote.pollId!)
-                            }
-                            // Remove the ones already voted
-                            var notVotedNewPolls = [ParsePoll]()
-                            for newPoll in unwrappedNewPolls {
-                                if find(myVotesPollIds, newPoll.objectId!) == nil {
-                                    notVotedNewPolls.append(newPoll)
-                                }
-                            }
-                            unwrappedNewPolls = notVotedNewPolls
-                        }
-                    }
+//                    // Remove already voted polls only if type is one of the vote types
+//                    if self.type != .Mine {
+//
+//                        // Collect new polls IDs
+//                        var newPollsIds = [String]()
+//                        for poll in unwrappedNewPolls {
+//                            newPollsIds.append(poll.objectId!)
+//                        }
+//
+//                        // Find votes on these new polls
+//                        let myVotesQuery = PFQuery(className: ParseVote.parseClassName())
+//                            .whereKey(ParseVotePollIdKey, containedIn: newPollsIds)
+//                            .whereKey(ParseVoteByKey, equalTo: currentUser)
+//                        myVotesQuery.limit = ParseQueryLimit
+//                        let myVotes = myVotesQuery.findObjects(&error) as? [ParseVote]
+//                        if error != nil {
+//                            self.finish(false, error: error)
+//                            return
+//                        }
+//                        if myVotes?.count >= unwrappedNewPolls.count {
+//                            // All new polls are voted. Just return error.
+//                            self.finish(false, error: NSError(fn_code: .NothingNew))
+//                            return
+//                        }
+//                        if myVotes?.count > 0 {
+//                            // Collect already voted polls IDs
+//                            var myVotesPollIds = [String]()
+//                            for vote in myVotes! {
+//                                myVotesPollIds.append(vote.pollId!)
+//                            }
+//                            // Remove the ones already voted
+//                            var notVotedNewPolls = [ParsePoll]()
+//                            for newPoll in unwrappedNewPolls {
+//                                if find(myVotesPollIds, newPoll.objectId!) == nil {
+//                                    notVotedNewPolls.append(newPoll)
+//                                }
+//                            }
+//                            unwrappedNewPolls = notVotedNewPolls
+//                        }
+//                    }
 
                     if self.pollsAreRemote {
                         // Insert before or after depending on type of update
                         switch type {
                         case .Newer:
-                            self.polls = unwrappedNewPolls + self.polls
+                            self.polls = newPolls + self.polls
                         case .Older:
-                            self.polls += unwrappedNewPolls
+                            self.polls += newPolls
                         }
 
                     } else {
                         // If this is first remote update, replace entire list
-                        self.polls = unwrappedNewPolls
+                        self.polls = newPolls
                         self.pollsAreRemote = true
                     }
 
                     // Cache polls and return
-                    PFObject.pinAllInBackground(unwrappedNewPolls, block: nil)
+                    PFObject.pinAllInBackground(newPolls, block: nil)
                     self.finish(true, error: error)
 
                 } else {
@@ -580,6 +569,8 @@ class ParsePollList: Printable, DebugPrintable {
 
 let ParseVoteByKey = "voteBy"
 let ParseVotePollIdKey = "pollId"
+let ParseVotePollCreatedAtKey = "pollCreatedAt"
+let ParseVotePollCreatedByKey = "pollCreatedBy"
 let ParseVoteVersionKey = "version"
 let ParseVoteVoteKey = "vote"
 
@@ -595,6 +586,7 @@ class ParseVote: PFObject, PFSubclassing {
         defaultACL.setPublicReadAccess(true)
         ACL = defaultACL
         voteBy = user
+        version = 1
     }
 
     var pollId: String? {
@@ -603,6 +595,24 @@ class ParseVote: PFObject, PFSubclassing {
         }
         set {
             self[ParseVotePollIdKey] = newValue ?? NSNull()
+        }
+    }
+
+    var pollCreatedAt: NSDate? {
+        get {
+            return self[ParseVotePollCreatedAtKey] as? NSDate
+        }
+        set {
+            self[ParseVotePollCreatedAtKey] = newValue ?? NSNull()
+        }
+    }
+
+    var pollCreatedBy: String? {
+        get {
+            return self[ParseVotePollCreatedByKey] as? String
+        }
+        set {
+            self[ParseVotePollCreatedByKey] = newValue ?? NSNull()
         }
     }
 
