@@ -31,7 +31,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ParseCrashReporting.enable()
         
         // Parse configuration
+        #if DEBUG
+        Parse.setApplicationId("AIQ4OyhhFVequZa6eXLCDdEpxu9qE0JyFkkfczWw", clientKey: "4dMOa5Ts1cvKVcnlIv2E4wYudyN7iJoH0gQDxpVy")
+        #else
         Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
+        #endif
         ParseUser.enableAutomaticUser()
         ParseUser.enableRevocableSessionInBackgroundWithBlock { (error) -> Void in
             FNAnalytics.logError(error, location: "AppDelegate: Enable Revocable Session")
@@ -50,10 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         }
         // Google
-        let gai = GAI.sharedInstance()
-        gai.trackUncaughtExceptions = true
-        gai.dispatchInterval = 20
-        let tracker = gai.trackerWithTrackingId("UA-62043366-1")
+        let tracker = GAI.sharedInstance().trackerWithTrackingId("UA-62043366-1")
         tracker.set("&uid", value: currentUser.objectId)
 
         // Push notifications

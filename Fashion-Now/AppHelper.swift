@@ -36,7 +36,7 @@ func fn_applyPollMask(left: UIView, right: UIView) {
 }
 
 private func fn_pushStrings() {
-    NSLocalizedString("P001", value: "New Poll", comment: "Push message for when a friend posts a poll without caption")
+    NSLocalizedString("P001", value: "New Poll", comment: "Push title for when a friend posts a poll")
     NSLocalizedString("P002", value: "%1$@ needs help", comment: "Push message for when a friend posts a poll without caption")
     NSLocalizedString("P003", value: "%1$@ needs help: \"%1$@\"", comment: "Push message for when a friend posts a poll with caption")
 }
@@ -92,9 +92,10 @@ extension UIColor {
         return UIColor(red: 1, green: 0, blue: 0, alpha: alpha)
     }
 
-    /// rgb(211, 211, 211)
-    class func fn_placeholder(alpha: CGFloat = 1) -> UIColor {
-        return UIColor(red: 0.82745098039215686274509803921568627450980392156863, green: 0.82745098039215686274509803921568627450980392156863, blue: 0.82745098039215686274509803921568627450980392156863, alpha: alpha)
+    /// rgb(187, 186, 194)
+    class func fn_placeholder(alpha: CGFloat = 1) -> UIColor { // TODO: Calculate
+        return UIColor(red: 187/255.0, green: 186/255.0, blue: 194/255.0, alpha: alpha)
+//        return UIColor(red: 0.82745098039215686274509803921568627450980392156863, green: 0.82745098039215686274509803921568627450980392156863, blue: 0.82745098039215686274509803921568627450980392156863, alpha: alpha) 211
     }
 
     /// :returns: Random color

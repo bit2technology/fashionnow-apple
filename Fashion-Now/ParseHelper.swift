@@ -104,17 +104,16 @@ class ParseUser: PFUser, PFSubclassing {
         }
     }
 
+    var displayName: String {
+        return name ?? username!
+    }
+
     var emailVerified: Bool {
         return self[ParseUserEmailVerifiedKey] as? Bool ?? false
     }
 
     var facebookId: String? {
-        get {
-            return self[ParseUserFacebookIdKey] as? String
-        }
-        set {
-            self[ParseUserFacebookIdKey] = newValue ?? NSNull()
-        }
+        return self[ParseUserFacebookIdKey] as? String
     }
 
     var gender: String? {
@@ -165,10 +164,9 @@ class ParseUser: PFUser, PFSubclassing {
     // MARK: Helper methods
 
     /// This method downloads info from logged Facebook account and completes the user object if necessary.
-    func completeInfoFacebook() {
+    func completeInfoFacebook(completion: PFBooleanResultBlock?) {
         if !(facebookId?.fn_count > 0) {
             FacebookUser.getCurrent { (user, error) -> Void in
-                self.facebookId = user?.objectId
                 if !(self.name?.fn_count > 0) {
                     self.name = user?.first_name
                 }
@@ -178,9 +176,7 @@ class ParseUser: PFUser, PFSubclassing {
                 if !(self.gender?.fn_count > 0) {
                     self.gender = user?.gender
                 }
-                self.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
-                    FNAnalytics.logError(error, location: "Complete User Info With Facebook")
-                })
+                self.saveInBackgroundWithBlock(completion)
             }
         }
     }
@@ -205,7 +201,9 @@ class ParseUser: PFUser, PFSubclassing {
         if PFAnonymousUtils.isLinkedWithUser(self) {
             return true
         } else if PFFacebookUtils.isLinkedWithUser(self) {
-            completeInfoFacebook()
+            completeInfoFacebook({ (succeeded, error) -> Void in
+                FNAnalytics.logError(error, location: "User is valid: Facebook info download")
+            })
             return true
         }
         return email?.isEmail() == true && hasUsername == true && hasPassword == true

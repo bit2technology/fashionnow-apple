@@ -138,7 +138,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
             }
             // Name
             let createdBy = pollToShow.createdBy
-            nameLabel.text = createdBy?.name ?? createdBy?.username ?? NSLocalizedString("VotePollController.titleView.nameLabel.unknown", value: "Unknown", comment: "Shown when user has no name or email")
+            nameLabel.text = createdBy?.displayName
             // Date
             dateLabel.text = pollToShow.createdAt!.timeAgoSinceNow()
 

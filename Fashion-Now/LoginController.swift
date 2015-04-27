@@ -76,10 +76,18 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
 
                     // Successful login
                     NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
+                    FNAnalytics.logRegistration("Facebook")
 
                     // Download info from Facebook and return
-                    parseUser.completeInfoFacebook()
-                    self.dismissLoginModalController()
+                    parseUser.completeInfoFacebook({ (succeeded, error) -> Void in
+                        FNAnalytics.logError(error, location: "Login: With Facebook")
+
+                        if succeeded {
+                            self.dismissLoginModalController()
+                        } else {
+                            // TODO: error handler (i.e. email already exists)
+                        }
+                    })
 
                 } else {
 
@@ -114,7 +122,7 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
                         NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
 
                         // If user is valid, finish login flow. Otherwise, go to next screen.
-                        if parseUser.facebookId?.fn_count > 0 && parseUser.isValid {
+                        if parseUser.isValid {
 
                             // Go back to primary controller
                             self.dismissLoginModalController()
@@ -159,22 +167,6 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
         let facebookLogin = tableView.tableHeaderView!
         facebookLogin.frame.size.height = view.bounds.height - 240
         tableView.tableHeaderView = facebookLogin
-    }
-
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let segueId = segue.identifier {
-            switch segueId {
-
-            case "Sign Up":
-                if !(sender is UIButton) {
-                    segue.destinationViewController.navigationItem.hidesBackButton = true
-                    (segue.destinationViewController as! SignupController).facebookUser = sender as? FacebookUser
-                }
-
-            default:
-                break
-            }
-        }
     }
 
     override func scrollViewDidScroll(scrollView: UIScrollView) {

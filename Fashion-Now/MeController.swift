@@ -62,6 +62,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
         super.viewWillAppear(animated)
 
         // Update header information
+        navigationItem.title = ParseUser.current().displayName
         header?.updateContent()
     }
 
@@ -339,17 +340,14 @@ class MePollHeader: UICollectionReusableView {
 
     @IBOutlet weak var avatarImageView: UIImageView!
     var avatarUrl: NSURL?
-    @IBOutlet weak var nameLabel: UILabel!
 
     func updateContent() -> Self {
-        let currentUser = ParseUser.current()
 
-        let currentUserUrl = currentUser.avatarURL(size: 84)
+        let currentUserUrl = ParseUser.current().avatarURL(size: 84)
         if avatarUrl != currentUserUrl {
             avatarUrl = currentUserUrl
             avatarImageView.setImageWithURL(currentUserUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         }
-        nameLabel.text = currentUser.name
 
         return self
     }

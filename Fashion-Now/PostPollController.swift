@@ -38,7 +38,7 @@ class PostPollController: FNViewController, PollEditionDelegate, UITextFieldDele
         }
 
         downloadingFriendsList = true
-        FBSDKGraphRequest(graphPath: "me/friends", parameters: nil).startWithCompletionHandler({ (requestConnection, object, error) -> Void in
+        FBSDKGraphRequest(graphPath: "me/friends?limit=1000", parameters: nil).startWithCompletionHandler({ (requestConnection, object, error) -> Void in
             self.downloadingFriendsList = false
 
             if error != nil {

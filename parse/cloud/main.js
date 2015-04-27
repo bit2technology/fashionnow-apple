@@ -1,6 +1,15 @@
 Parse.Cloud.define("sendPush", function (request, response) {
     "use strict";
-    var query = new Parse.Query(Parse.Installation);
+    var query = new Parse.Query(Parse.Installation),
+        locKey = "P002",
+        locArgs = [request.user.name || request.user.username];
+    
+    // Change notification style if there is a caption
+    if (request.params.caption) {
+        locKey = "P003";
+        locArgs += request.params.caption;
+    }
+    
     query.containedIn("userId", request.params.userIds);
 
     Parse.Push.send({
@@ -8,8 +17,8 @@ Parse.Cloud.define("sendPush", function (request, response) {
         data: {
             alert: {
                 "title-loc-key": "P001",
-                "loc-key": "P002",
-                "loc-args": ["Fulano"]
+                "loc-key": locKey,
+                "loc-args": locArgs
             },
             badge: "Increment"
         }
@@ -25,7 +34,19 @@ Parse.Cloud.define("sendPush", function (request, response) {
     });
 });
 
-//IDEIA: UM CLOUD CODE QUE DEVOLVE O COUNT DAS DUAS OPCOES DA ENQUETE
+Parse.Cloud.beforeSave(Parse.User, function (request, response) {
+    "use strict";
+    
+    // Get Facebook authorization info
+    var auth = request.object.get("authData"),
+        facebookAuth = auth ? auth.facebook : null;
+    // Update facebookId
+    request.object.set("facebookId", facebookAuth ? facebookAuth.id : null);
+                       
+    response.success();
+});
+
+// ####################### COMPATIBILITY WITH OLD VERSIONS ###############################
 
 Parse.Cloud.afterSave("Poll", function (request) {
     "use strict";
@@ -57,11 +78,12 @@ Parse.Cloud.afterSave("Poll", function (request) {
 Parse.Cloud.beforeSave("Vote", function (request, response) {
     "use strict";
     
-    if (!request.object.get("userId")) {
+    if (!request.object.get("pollCreatedBy")) {
         
         var query = new Parse.Query("Poll").include("createdBy").select(["createdBy"]).get(request.object.get("pollId"), {
             success: function (poll) {
-                request.object.set("userId", poll.get("createdBy").id);
+                request.object.set("pollCreatedBy", poll.get("createdBy").id);
+                request.object.set("pollCreatedAt", poll.createdAt);
                 response.success();
             },
             error: function (poll, error) {

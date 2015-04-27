@@ -9,21 +9,40 @@
 private let pickerNoneLabel = NSLocalizedString("SignupController.picker.none", value: "None", comment: "Gender labels")
 private let genderValues = ["male", "female", "other"]
 private let genderLabels = [NSLocalizedString("SignupController.genders.male", value: "Male", comment: "Gender labels"), NSLocalizedString("SignupController.genders.female", value: "Female", comment: "Gender labels"), NSLocalizedString("SignupController.genders.other", value: "Other", comment: "Gender labels")]
+let labelPlaceholderText = "Optional" // FIXME: Translate
 
 class SignupController: FNTableController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate {
 
     private var registrationMethod: String?
 
-    var facebookUser: FacebookUser?
-
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var genderLabel: UILabel!
     @IBOutlet weak var genderField: UILabel!
-    private var gender: String?
+    private var gender: String? {
+        didSet {
+            if let genderIndex = find(genderValues, gender ?? "") {
+                genderField.textColor = UIColor.fn_tint()
+                genderField.text = genderLabels[genderIndex]
+            } else {
+                genderField.textColor = UIColor.fn_placeholder()
+                genderField.text = labelPlaceholderText
+            }
+        }
+    }
     @IBOutlet weak var birthdayLabel: UILabel!
     @IBOutlet weak var birthdayField: UILabel!
-    private var birthday: NSDate?
+    private var birthday: NSDate? {
+        didSet {
+            if let birthday = birthday {
+                birthdayField.textColor = UIColor.fn_tint()
+                birthdayField.text = birthday.fn_birthdayDescription
+            } else {
+                birthdayField.textColor = UIColor.fn_placeholder()
+                birthdayField.text = labelPlaceholderText
+            }
+        }
+    }
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var locationField: UITextField!
 
@@ -59,12 +78,10 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
         case NSIndexPath(forRow: 1, inSection: 0): // Gender
             let genderPicker = ActionSheetStringPicker(title: nil, rows: genderLabels, initialSelection: find(genderValues, gender ?? "") ?? 0, doneBlock: { (picker, selectedIndex, selectedValue) -> Void in
                 self.gender = genderValues[selectedIndex]
-                self.genderField.text = selectedValue as? String
             }, cancelBlock: nil, origin: view)
             if gender != nil {
                 genderPicker.addCustomButtonWithTitle(pickerNoneLabel, actionBlock: { () -> Void in
                     self.gender = nil
-                    self.genderField.text = nil
                     genderPicker.hidePickerWithCancelAction()
                 })
             }
@@ -72,13 +89,11 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
 
         case NSIndexPath(forRow: 2, inSection: 0): // Birthday
             let datePicker = ActionSheetDatePicker(title: nil, datePickerMode: .Date, selectedDate: birthday ?? NSDate(), doneBlock: { (picker, selectedDate, origin) -> Void in
-                self.birthday = selectedDate as? NSDate // FIXME: Swift 1.2
-                self.birthdayField.text = self.birthday?.fn_birthdayDescription
+                self.birthday = selectedDate as? NSDate
             }, cancelBlock: nil, origin: view)
             if birthday != nil {
                 datePicker.addCustomButtonWithTitle(pickerNoneLabel, actionBlock: { () -> Void in
                     self.birthday = nil
-                    self.birthdayField.text = nil
                     datePicker.hidePickerWithCancelAction()
                 })
             }
@@ -224,10 +239,6 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
                 currentUser.password = self.passwordField.text
                 currentUser.hasPassword = true
             }
-            if let unwrappedFacebookId = self.facebookUser?.objectId {
-                self.registrationMethod = "Facebook"
-                currentUser.facebookId = unwrappedFacebookId
-            }
             // Set photo properties
             if self.avatarChanged {
                 let imageData = self.avatarImageView.image!.fn_compressed(maxSize: 256, compressionQuality: 0.8)
@@ -256,20 +267,12 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
         let currentUser = ParseUser.current()
 
         // Adjust layout
-        genderField.textColor = UIColor.fn_tint()
-        birthdayField.textColor = UIColor.fn_tint()
         avatarImageView.image = UIColor.fn_placeholder().fn_image()
 
-        // The values for gender and birthday are filled with default values (even for anonymous users)
-        gender = currentUser.gender ?? facebookUser?.gender
-        if let genderIndex = find(genderValues, gender ?? "") {
-            genderField.text = genderLabels[genderIndex]
-        } else {
-            genderField.text = nil
-        }
-        // Birthday adjusted to GMT
+        // Fill values
+        gender = currentUser.gender
         birthday = currentUser.birthday
-        birthdayField.text = birthday?.fn_birthdayDescription
+
 
         // If user is anonymous, show standard (empty) controller
         if PFAnonymousUtils.isLinkedWithUser(currentUser) {
@@ -282,11 +285,11 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
 
         // Fill fields with Parse or Facebook information
         // Name
-        nameField.text = currentUser.name ?? facebookUser?.first_name
+        nameField.text = currentUser.name
         // Location
         locationField.text = currentUser.location
         // Email
-        emailField.text = currentUser.email ?? facebookUser?.email
+        emailField.text = currentUser.email
         // Avatar
         if let unwrappedAvatarUrl = currentUser.avatarURL(size: 84) {
             avatarImageView.setImageWithURL(unwrappedAvatarUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
