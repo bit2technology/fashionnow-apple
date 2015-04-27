@@ -435,6 +435,8 @@ enum FNErrorCode: Int {
     case UserCanceled = 808
 }
 
+let FNFacebookReadPermissions = ["public_profile", "user_friends", "email"]
+
 let FNLocalizedAppName = NSLocalizedString("Default.appName", value: "Fashion Now" , comment: "Default for entire app")
 
 /// Returns "You are offline. Try again later." for English and its variants for other languages

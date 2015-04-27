@@ -70,7 +70,7 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
 
             // Login
             PFFacebookUtils.facebookLoginManager().loginBehavior = .SystemAccount
-            PFFacebookUtils.logInInBackgroundWithReadPermissions(["public_profile", "user_friends", "email"]) { (user, error) -> Void in
+            PFFacebookUtils.logInInBackgroundWithReadPermissions(FNFacebookReadPermissions) { (user, error) -> Void in
 
                 if let parseUser = user as? ParseUser {
 

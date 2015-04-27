@@ -32,7 +32,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
         // If controller needs login and user is loged out, show login controller
-        if viewController.needsLogin() && PFAnonymousUtils.isLinkedWithUser(ParseUser.current()) {
+        if viewController.needsLogin() && !ParseUser.current().isLogged {
             controllerIndex = find(tabBarController.viewControllers as! [UIViewController], viewController)
             presentLoginController()
             return false

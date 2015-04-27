@@ -7,6 +7,8 @@
 //
 
 private let logOutButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.logOutButtonTitle", value: "Log Out", comment: "Shown when user taps the gear button")
+private let linkFacebookButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.linkFacebookButtonTitle", value: "Connect to Facebook", comment: "Shown when user taps the gear button")
+private let unlinkFacebookButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.unlinkFacebookButtonTitle", value: "Disconnect of Facebook", comment: "Shown when user taps the gear button")
 private let inviteButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.inviteButtonTitle", value: "Invite Friends", comment: "Shown when user taps the gear button")
 
 class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInviteDialogDelegate {
@@ -92,8 +94,9 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
 
     @IBAction func gearButtonPressed(sender: UIBarButtonItem) {
         let actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        actionSheet.addButtonWithTitle(logOutButtonTitle)
         actionSheet.addButtonWithTitle(inviteButtonTitle)
+        actionSheet.addButtonWithTitle(ParseUser.current().isLoggedFacebook ? unlinkFacebookButtonTitle : linkFacebookButtonTitle)
+        actionSheet.addButtonWithTitle(logOutButtonTitle)
         actionSheet.cancelButtonIndex = actionSheet.addButtonWithTitle(FNLocalizedCancelButtonTitle)
         actionSheet.showFromBarButtonItem(sender, animated: true)
     }
@@ -102,18 +105,30 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
         switch actionSheet.buttonTitleAtIndex(buttonIndex) {
 
         case logOutButtonTitle:
-            let activityIndicator = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+            let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
             ParseUser.logOutInBackgroundWithBlock({ (error) -> Void in
                 activityIndicator.removeFromSuperview()
-                if let error = error {
-                    FNAnalytics.logError(error, location: "Me: Log Out")
-                }
+                FNAnalytics.logError(error, location: "Me: Log Out")
                 NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
-                self.tabBarController!.selectedIndex = 0
+                self.fn_tabBarController.selectedIndex = 0
             })
 
         case inviteButtonTitle:
             FBSDKAppInviteDialog.showWithContent(FBSDKAppInviteContent(appLinkURL: NSURL(string: "http://www.fashionnowapp.com")), delegate: self)
+
+        case linkFacebookButtonTitle:
+            let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+            PFFacebookUtils.linkUserInBackground(ParseUser.current(), withReadPermissions: FNFacebookReadPermissions, block: { (succeeded, error) -> Void in
+                activityIndicator.removeFromSuperview()
+                FNAnalytics.logError(error, location: "Me: Link Facebook")
+            })
+
+        case unlinkFacebookButtonTitle:
+            let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+            PFFacebookUtils.unlinkUserInBackground(ParseUser.current(), block: { (succeeded, error) -> Void in
+                activityIndicator.removeFromSuperview()
+                FNAnalytics.logError(error, location: "Me: Unlink Facebook")
+            })
 
         default:
             break
@@ -137,14 +152,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
             switch unwrappedId {
             case "Result Controller":
                 let idx = (collectionView!.indexPathsForSelectedItems().first as! NSIndexPath).item
-                // Get appropriate cell
-                var poll: ParsePoll!
-                if idx < postedPolls.count {
-                    poll = postedPolls[idx]
-                } else {
-                    poll = myPolls[idx - postedPolls.count]
-                }
-                (segue.destinationViewController as! ResultPollController).poll = poll
+                (segue.destinationViewController as! ResultPollController).poll = poll(idx)
             default:
                 return
             }
@@ -156,25 +164,23 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
         // Clean caches. Also load polls if new user is not anonymous
         myPolls = ParsePollList(type: .Mine)
         collectionView!.reloadData()
-        if !PFAnonymousUtils.isLinkedWithUser(ParseUser.current()) {
+        if ParseUser.current().isLogged {
             footer?.activityIndicator?.startAnimating()
             loadPolls()
         }
     }
 
     func pollDeleted(notification: NSNotification) {
-        if let removedPoll = notification.userInfo?["poll"] as? ParsePoll {
-            if let index = myPolls.removePoll(removedPoll) {
-                removedPoll.unpinInBackgroundWithBlock(nil)
-                collectionView!.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
-            }
+        if let removedPoll = notification.userInfo?["poll"] as? ParsePoll, let index = myPolls.removePoll(removedPoll) {
+            removedPoll.unpinInBackgroundWithBlock(nil)
+            collectionView!.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
         }
     }
 
     func pollPosted(notification: NSNotification) {
         if let postedPoll = notification.userInfo?["poll"] as? ParsePoll {
             postedPolls.insert(postedPoll, atIndex: 0)
-            collectionView!.reloadData()
+            collectionView!.insertItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
         }
     }
 

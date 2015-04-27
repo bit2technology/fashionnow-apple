@@ -193,6 +193,14 @@ class ParseUser: PFUser, PFSubclassing {
         return false
     }
 
+    var isLogged: Bool {
+        return !PFAnonymousUtils.isLinkedWithUser(self)
+    }
+
+    var isLoggedFacebook: Bool {
+        return PFFacebookUtils.isLinkedWithUser(self)
+    }
+
     var isValid: Bool {
         if PFAnonymousUtils.isLinkedWithUser(self) {
             return true
@@ -336,6 +344,10 @@ public class ParsePoll: PFObject, PFSubclassing {
 
     // MARK: Helper methods
 
+    func incrementVoteCount(vote: Int?) {
+        // TODO: !!!!!!!!
+    }
+
     var isValid: Bool {
         if photos == nil {
             return false
@@ -349,8 +361,11 @@ public class ParsePoll: PFObject, PFSubclassing {
     }
 }
 
+// MARK: - Poll List class
+
 private let pollLimit = 24
 private let updateLimitTime: NSTimeInterval = -5 // Needs to be negative
+
 class ParsePollList: Printable, DebugPrintable {
 
     // It there is more than one type of not vote, algorithm must change
@@ -557,7 +572,7 @@ class ParsePollList: Printable, DebugPrintable {
 let ParseVoteByKey = "voteBy"
 let ParseVotePollIdKey = "pollId"
 let ParseVotePollCreatedAtKey = "pollCreatedAt"
-let ParseVotePollCreatedByKey = "pollCreatedBy"
+let ParseVotePollCreatedByIdKey = "pollCreatedBy"
 let ParseVoteVersionKey = "version"
 let ParseVoteVoteKey = "vote"
 
@@ -567,13 +582,17 @@ class ParseVote: PFObject, PFSubclassing {
         return "Vote"
     }
 
-    convenience init(user: ParseUser) {
-        self.init()
-        let defaultACL = PFACL()
-        defaultACL.setPublicReadAccess(true)
-        ACL = defaultACL
-        voteBy = user
-        version = 1
+    class func sendVote(vote voteNumber: Int, poll: ParsePoll, block: PFBooleanResultBlock?) {
+        let vote = ParseVote()
+        vote.pollId = poll.objectId
+        vote.version = 2
+        vote.vote = voteNumber
+        // Poll redundancy
+        vote.pollCreatedAt = poll.createdAt
+        vote.pollCreatedById = poll.createdBy?.objectId
+        // Vote redundancy in Poll
+        poll.incrementVoteCount(voteNumber)
+        saveAllInBackground([vote, poll], block: block)
     }
 
     var pollId: String? {
@@ -594,12 +613,12 @@ class ParseVote: PFObject, PFSubclassing {
         }
     }
 
-    var pollCreatedBy: String? {
+    var pollCreatedById: String? {
         get {
-            return self[ParseVotePollCreatedByKey] as? String
+            return self[ParseVotePollCreatedByIdKey] as? String
         }
         set {
-            self[ParseVotePollCreatedByKey] = newValue ?? NSNull()
+            self[ParseVotePollCreatedByIdKey] = newValue ?? NSNull()
         }
     }
 
