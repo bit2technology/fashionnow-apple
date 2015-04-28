@@ -227,6 +227,17 @@ extension UIView {
     }
 }
 
+extension UIButton {
+    @IBInspectable var centerText: Bool {
+        get {
+            return titleLabel!.textAlignment == .Center
+        }
+        set {
+            titleLabel?.textAlignment = newValue ? .Center : .Left
+        }
+    }
+}
+
 extension UIImageView {
     /// Adjusts the image view aspect ratio constraint to the size of the image
     func fn_setAspectRatio(image newImage: UIImage?, needsLayout: Bool = true) {

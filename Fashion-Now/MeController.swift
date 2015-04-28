@@ -45,6 +45,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
 
         // Configure refresh control for manual update
         let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = UIColor.lightGrayColor()
         refreshControl.layer.zPosition = -9999
         refreshControl.addTarget(self, action: "refreshControlDidChangeValue:", forControlEvents: .ValueChanged)
         collectionView!.addSubview(refreshControl)
@@ -72,6 +73,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
 
     func refreshControlDidChangeValue(sender: UIRefreshControl) {
         loadPolls()
+        header?.updateContent()
     }
 
     // Tries to update poll list
@@ -121,6 +123,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
             let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
             PFFacebookUtils.linkUserInBackground(ParseUser.current(), withReadPermissions: FNFacebookReadPermissions, block: { (succeeded, error) -> Void in
                 activityIndicator.removeFromSuperview()
+                self.header?.updateContent()
                 FNAnalytics.logError(error, location: "Me: Link Facebook")
             })
 
@@ -128,6 +131,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
             let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
             PFFacebookUtils.unlinkUserInBackground(ParseUser.current(), block: { (succeeded, error) -> Void in
                 activityIndicator.removeFromSuperview()
+                self.header?.updateContent()
                 FNAnalytics.logError(error, location: "Me: Unlink Facebook")
             })
 
@@ -196,6 +200,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
         // Header
         if kind == UICollectionElementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Me Overview", forIndexPath: indexPath) as! MePollHeader
+            header.meController = self
             self.header = header
             return header.updateContent()
         }
@@ -338,16 +343,59 @@ class MePollCell: UICollectionViewCell {
 
 class MePollHeader: UICollectionReusableView {
 
+    var meController: MeController?
+
     @IBOutlet weak var avatarImageView: UIImageView!
     var avatarUrl: NSURL?
 
-    func updateContent() -> Self {
+    @IBOutlet weak var pollsButton: UIButton!
+    @IBOutlet weak var votesButton: UIButton!
+    @IBOutlet weak var friendsButton: UIButton!
+    @IBOutlet weak var locationLabel: UILabel!
 
-        let currentUserUrl = ParseUser.current().avatarURL(size: 84)
+    @IBAction func pollsButtonPressed(sender: UIButton) {
+        if meController?.collectionView(meController!.collectionView!, numberOfItemsInSection: 0) > 3 {
+            meController!.collectionView!.setContentOffset(CGPoint(x: 0, y: frame.height - 64), animated: true)
+        }
+    }
+
+    func updateContent() -> Self {
+        let currentUser = ParseUser.current()
+
+        // Avatar
+        let currentUserUrl = currentUser.avatarURL(size: 84)
         if avatarUrl != currentUserUrl {
             avatarUrl = currentUserUrl
             avatarImageView.setImageWithURL(currentUserUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         }
+
+        ParsePollList(type: .Mine).query.countObjectsInBackgroundWithBlock { (count, error) -> Void in
+            if !FNAnalytics.logError(error, location: "Me: Count polls") {
+                // TODO: Improve
+                self.pollsButton.setTitle("\(count)\nPolls", forState: .Normal)
+            }
+        }
+
+        let votesQuery = PFQuery(className: ParseVote.parseClassName())
+        votesQuery.whereKey(ParseVoteByKey, equalTo: currentUser)
+        votesQuery.whereKey(ParseVoteVoteKey, greaterThan: 0)
+        votesQuery.countObjectsInBackgroundWithBlock { (count, error) -> Void in
+            if !FNAnalytics.logError(error, location: "Me: Count votes") {
+                // TODO: Improve
+                self.votesButton.setTitle("\(count)\nVotes", forState: .Normal)
+            }
+        }
+
+        FBSDKGraphRequest(graphPath: "me/friends?fields=id&limit=\(Int.max)", parameters: nil).startWithCompletionHandler { (requestConnection, result, error) -> Void in
+            if !FNAnalytics.logError(error, location: "Me: Count friends") {
+                // TODO: Improve
+                let count = result?["data"]?.count
+                self.friendsButton.setTitle("\(count ?? 0)\nFriends", forState: .Normal)
+            }
+        }
+
+        // Location
+        locationLabel.text = currentUser.location
 
         return self
     }

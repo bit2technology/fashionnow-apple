@@ -54,7 +54,6 @@ let ParseUserEmailVerifiedKey = "emailVerified"
 let ParseUserFacebookIdKey = "facebookId"
 let ParseUserGenderKey = "gender"
 let ParseUserHasPasswordKey = "hasPassword"
-let ParseUserHasUsernameKey = "hasUsername"
 let ParseUserLocationKey = "location"
 let ParseUserNameKey = "name"
 
@@ -134,15 +133,6 @@ class ParseUser: PFUser, PFSubclassing {
         }
     }
 
-    var hasUsername: Bool {
-        get {
-            return self[ParseUserHasUsernameKey] as? Bool ?? false
-        }
-        set {
-            self[ParseUserHasUsernameKey] = newValue
-        }
-    }
-
     var location: String? {
         get {
             return self[ParseUserLocationKey] as? String
@@ -164,10 +154,10 @@ class ParseUser: PFUser, PFSubclassing {
     // MARK: Helper methods
 
     /// This method downloads info from logged Facebook account and completes the user object if necessary.
-    func completeInfoFacebook(tryEmail: Bool = true, completion: PFBooleanResultBlock?) {
+    func completeInfoFacebook(completion: PFBooleanResultBlock?) {
         if !(facebookId?.fn_count > 0) {
             FacebookUser.getCurrent { (user, error) -> Void in
-                if !(self.email?.fn_count > 0) && tryEmail {
+                if !(self.email?.fn_count > 0){
                     self.email = user?.email
                 }
                 if !(self.name?.fn_count > 0) {
@@ -176,8 +166,17 @@ class ParseUser: PFUser, PFSubclassing {
                 if !(self.gender?.fn_count > 0) {
                     self.gender = user?.gender
                 }
-                self.saveInBackgroundWithBlock(completion)
+                self.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
+                    if error?.domain == PFParseErrorDomain && error?.code == PFErrorCode.ErrorUserEmailTaken.rawValue {
+                        self.email = nil
+                        self.saveInBackgroundWithBlock(completion)
+                    } else {
+                        completion?(succeeded, error)
+                    }
+                })
             }
+        } else {
+            completion?(true, nil)
         }
     }
 
@@ -201,12 +200,12 @@ class ParseUser: PFUser, PFSubclassing {
         if PFAnonymousUtils.isLinkedWithUser(self) {
             return true
         } else if PFFacebookUtils.isLinkedWithUser(self) {
-            completeInfoFacebook(completion: { (succeeded, error) -> Void in
+            completeInfoFacebook({ (succeeded, error) -> Void in
                 FNAnalytics.logError(error, location: "User is valid: Facebook info download")
             })
             return true
         }
-        return email?.isEmail() == true && hasUsername == true && hasPassword == true
+        return email?.isEmail() == true && hasPassword == true
     }
 }
 
@@ -385,26 +384,27 @@ class ParsePollList: Printable, DebugPrintable {
     let type: Type
 
     /// Return new query by type of list
-    private var pollQuery: PFQuery {
+    var query: PFQuery {
         let currentUser = ParseUser.current()
-        let query = PFQuery(className: ParsePoll.parseClassName())
+        let pollQuery = PFQuery(className: ParsePoll.parseClassName())
+            .whereKey(ParsePollHiddenKey, notEqualTo: true)
             .includeKey(ParsePollCreatedByKey)
             .includeKey(ParsePollPhotosKey)
             .orderByDescending(ParseObjectCreatedAtKey)
-        query.limit = pollLimit
+        pollQuery.limit = pollLimit
         switch type {
         case .Mine:
-            return query.whereKey(ParsePollCreatedByKey, equalTo: currentUser)
+            return pollQuery.whereKey(ParsePollCreatedByKey, equalTo: currentUser)
         case .VotePublic:
             if currentUser.objectId?.fn_count > 0 {
                 let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
-                    .orderByDescending(ParseObjectCreatedAtKey)
+                    .orderByDescending(ParseVotePollCreatedAtKey)
                     .whereKey(ParseVoteByKey, equalTo: currentUser)
                 votesByMeQuery.limit = ParseQueryLimit
-                query.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)
+                pollQuery.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)
                     .whereKey(ParsePollCreatedByKey, notEqualTo: currentUser)
             }
-            return query
+            return pollQuery
         }
     }
 
@@ -454,16 +454,16 @@ class ParsePollList: Printable, DebugPrintable {
             // Online. Update polls list (or download it for the first time).
 
             // Configure request
-            let query = pollQuery
+            let pollQuery = query
             if pollsAreRemote {
                 switch type {
                 case .Newer:
                     if let firstPoll = polls.first {
-                        query.whereKey(ParseObjectCreatedAtKey, greaterThan: firstPoll.createdAt!)
+                        pollQuery.whereKey(ParseObjectCreatedAtKey, greaterThan: firstPoll.createdAt!)
                     }
                 case .Older:
                     if let lastPoll = polls.last {
-                        query.whereKey(ParseObjectCreatedAtKey, lessThan: lastPoll.createdAt!)
+                        pollQuery.whereKey(ParseObjectCreatedAtKey, lessThan: lastPoll.createdAt!)
                     }
                 }
             }
@@ -471,7 +471,7 @@ class ParsePollList: Printable, DebugPrintable {
             // Start download
             downloading = true
             self.completionHandler = completionHandler
-            query.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+            pollQuery.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
 
                 if let newPolls = objects as? [ParsePoll] where newPolls.count > 0 {
 
@@ -511,12 +511,12 @@ class ParsePollList: Printable, DebugPrintable {
             // Offline. Fill with cached polls if available.
 
             // Configure request
-            let query = pollQuery.fromLocalDatastore()
-            query.limit = ParseQueryLimit
+            let offlineQuery = query.fromLocalDatastore()
+            offlineQuery.limit = ParseQueryLimit
 
             // Start download
             downloading = true
-            query.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+            offlineQuery.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
                 self.downloading = false
 
                 if let cachedPolls = objects as? [ParsePoll] where cachedPolls.count > 0 {
@@ -585,6 +585,7 @@ class ParseVote: PFObject, PFSubclassing {
         vote.pollId = poll.objectId
         vote.version = 2
         vote.vote = voteNumber
+        vote.voteBy = ParseUser.current()
         // Poll redundancy
         vote.pollCreatedAt = poll.createdAt
         vote.pollCreatedById = poll.createdBy?.objectId

@@ -15,6 +15,121 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
         dismissLoginModalController()
     }
 
+    // MARK: Login with Facebook
+
+    @IBAction func facebookButtonPressed(sender: UIButton) {
+
+        // Check internet connection
+        if Reachability.fn_reachable() {
+            let loadingView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+
+            let previousUserId = ParseUser.current().objectId
+
+            // Login
+            PFFacebookUtils.facebookLoginManager().loginBehavior = .SystemAccount
+            PFFacebookUtils.logInInBackgroundWithReadPermissions(FNFacebookReadPermissions) { (user, error) -> Void in
+
+                if let parseUser = user as? ParseUser {
+
+                    // Successful login
+                    NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
+                    if previousUserId == nil || previousUserId == parseUser.objectId {
+                        // This is a sign up (first login with Facebook)
+                        FNAnalytics.logRegistration("Facebook")
+                    }
+
+                    // Download info from Facebook and return
+                    parseUser.completeInfoFacebook({ (succeeded, error) -> Void in
+
+                        if succeeded {
+                            self.dismissLoginModalController()
+                        } else {
+                            // Unsuccessful Facebook info completion
+                            FNAnalytics.logError(error, location: "Login: Facebook Info")
+                            FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
+                        }
+                    })
+
+                } else {
+
+                    // Unsuccessful login
+                    loadingView.removeFromSuperview()
+                    FNAnalytics.logError(error ?? NSError(fn_code: .UserCanceled), location: "Login: Facebook")
+                    if error != nil {
+                        FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
+                    }
+                }
+            }
+        } else {
+            FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
+        }
+    }
+
+    // MARK: Login with password
+
+    @IBAction func loginButtonPressed(sender: UIButton!) {
+        view.endEditing(true)
+
+        // Check vality of fields
+        if usernameField.text.fn_count > 0 && passwordField.text.fn_count > 0 {
+
+            // Check internet connection
+            if Reachability.fn_reachable() {
+                let loadingView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+
+                ParseUser.logInWithUsernameInBackground(usernameField.text, password: passwordField.text) { (user, error) -> Void in
+
+                    if let parseUser = user as? ParseUser {
+
+                        // Successful login
+                        NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
+
+                        // Go back to primary controller
+                        self.dismissLoginModalController()
+
+                    } else {
+
+                        // Unsuccessful login
+                        loadingView.removeFromSuperview()
+
+                        if let error = error {
+
+                            FNAnalytics.logError(error, location: "Login: Password")
+
+                            if error.code == PFErrorCode.ErrorObjectNotFound.rawValue {
+                                FNToast.show(title: NSLocalizedString("LoginController.loginErrorDescription.userNotFound", value: "Username or password incorrect", comment: "Message for when user does not exist or wrong password"), type: .Error)
+                            }
+                        } else {
+                            FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
+                        }
+                    }
+                }
+            } else {
+                FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
+            }
+        } else {
+            FNToast.show(title: NSLocalizedString("LoginController.loginErrorDescription.incomplete", value: "Username or password missing", comment: "Message for when user does not fill the fields"), type: .Error)
+        }
+    }
+
+    // MARK: UITextFieldDelegate
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        switch textField {
+
+        case usernameField:
+            passwordField.becomeFirstResponder()
+        case passwordField:
+            loginButtonPressed(nil)
+        default:
+            textField.resignFirstResponder()
+        }
+
+        return false
+    }
+
+    // MARK: Reset password
+
     @IBAction func forgotButtonPressed(sender: UIButton) {
         showResetAlertView()
     }
@@ -60,133 +175,5 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
                 showResetAlertView(message: NSLocalizedString("LoginController.resetPassword.errorDescription.emailNotValid", value: "Please, insert a valid email address", comment: "Alert title for when user types an invalid email address"))
             }
         }
-    }
-
-    @IBAction func facebookButtonPressed(sender: UIButton) {
-
-        // Check internet connection
-        if Reachability.fn_reachable() {
-            let loadingView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
-
-            // Login
-            PFFacebookUtils.facebookLoginManager().loginBehavior = .SystemAccount
-            PFFacebookUtils.logInInBackgroundWithReadPermissions(FNFacebookReadPermissions) { (user, error) -> Void in
-
-                if let parseUser = user as? ParseUser {
-
-                    // Successful login
-                    NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
-                    FNAnalytics.logRegistration("Facebook")
-
-                    // Download info from Facebook and return
-                    parseUser.completeInfoFacebook(completion: { (succeeded, error) -> Void in
-                        FNAnalytics.logError(error, location: "Login: With Facebook")
-
-                        if succeeded {
-                            self.dismissLoginModalController()
-                        } else {
-                            // TODO: error handler (i.e. email already exists)
-                        }
-                    })
-
-                } else {
-
-                    // Unsuccessful login
-                    loadingView.removeFromSuperview()
-                    FNAnalytics.logError(error ?? NSError(fn_code: .UserCanceled), location: "Login: Facebook")
-                    if error != nil {
-                        FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
-                    }
-                }
-            }
-        } else {
-            FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
-        }
-    }
-
-    @IBAction func loginButtonPressed(sender: UIButton!) {
-        view.endEditing(true)
-
-        // Check vality of fields
-        if usernameField.text.fn_count > 0 && passwordField.text.fn_count > 0 {
-
-            // Check internet connection
-            if Reachability.fn_reachable() {
-                let loadingView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
-
-                ParseUser.logInWithUsernameInBackground(usernameField.text, password: passwordField.text) { (user, error) -> Void in
-
-                    if let parseUser = user as? ParseUser {
-
-                        // Successful login
-                        NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
-
-                        // If user is valid, finish login flow. Otherwise, go to next screen.
-                        if parseUser.isValid {
-
-                            // Go back to primary controller
-                            self.dismissLoginModalController()
-
-                        } else {
-
-                            // Send user for review in next screen
-                            loadingView.removeFromSuperview()
-                            self.performSegueWithIdentifier("Sign Up", sender: nil)
-                        }
-
-                    } else {
-
-                        // Unsuccessful login
-                        loadingView.removeFromSuperview()
-
-                        if let error = error {
-
-                            FNAnalytics.logError(error, location: "Login: Password")
-
-                            if error.code == PFErrorCode.ErrorObjectNotFound.rawValue {
-                                FNToast.show(title: NSLocalizedString("LoginController.loginErrorDescription.userNotFound", value: "Username or password incorrect", comment: "Message for when user does not exist or wrong password"), type: .Error)
-                            }
-                        } else {
-                            FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
-                        }
-                    }
-                }
-            } else {
-                FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
-            }
-        } else {
-            FNToast.show(title: NSLocalizedString("LoginController.loginErrorDescription.incomplete", value: "Username or password missing", comment: "Message for when user does not fill the fields"), type: .Error)
-        }
-    }
-
-    override func scrollViewDidScroll(scrollView: UIScrollView) {
-        println("scroll: \(scrollView.contentOffset)")
-    }
-
-    // MARK: UITextFieldDelegate
-
-//    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-//        let rect = CGRect(x: 0, y: tableView.contentSize.height - 1, width: 1, height: 1)
-//        println("rect:\(rect)")
-//        tableView.scrollRectToVisible(rect, animated: true)
-//        return true
-//    }
-
-    func textFieldDidBeginEditing(textField: UITextField) {
-        tableView.setContentOffset(CGPoint(x: 0, y: 126), animated: true)
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        switch textField {
-
-        case usernameField:
-            passwordField.becomeFirstResponder()
-        case passwordField:
-            loginButtonPressed(nil)
-        default:
-            textField.resignFirstResponder()
-        }
-
-        return false
     }
 }

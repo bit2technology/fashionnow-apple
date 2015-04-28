@@ -19,8 +19,8 @@ extension String {
 extension UIViewController {
 
     func dismissLoginModalController() {
-        if let unwrappedTabBarController = (presentingViewController ?? tabBarController) as? TabBarController {
-            unwrappedTabBarController.willDismissLoginController()
+        if let tabController = (presentingViewController ?? tabBarController) as? TabBarController {
+            tabController.willDismissLoginController()
             dismissViewControllerAnimated(true, completion: nil)
         }
     }
@@ -33,6 +33,6 @@ extension UIViewController {
 extension UINavigationController {
 
     override func needsLogin() -> Bool {
-        return topViewController.needsLogin()
+        return viewControllers.first!.needsLogin()
     }
 }

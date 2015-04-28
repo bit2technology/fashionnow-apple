@@ -29,7 +29,7 @@ Parse.Cloud.define("sendPush", function (request, response) {
         },
         error: function (error) {
             // Handle error
-            response.error("Error");
+            response.error("Error: " + error);
         }
     });
 });
@@ -51,7 +51,7 @@ Parse.Cloud.beforeSave(Parse.User, function (request, response) {
 Parse.Cloud.afterSave("Poll", function (request) {
     "use strict";
     
-    if ((request.object.get("version") <= 1) && !request.object.get("flag")) {
+    if ((request.object.get("version") <= 1) && !request.object.get("hidden")) {
         
         var query = new Parse.Query(Parse.Installation);
         query.containedIn("userId", request.object.get("userIds"));

@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ParseInstallation.registerSubclass()
         ParsePhoto.registerSubclass()
         ParsePoll.registerSubclass()
+        ParseReport.registerSubclass()
         ParseUser.registerSubclass()
         ParseVote.registerSubclass()
 
@@ -40,13 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ParseUser.enableRevocableSessionInBackgroundWithBlock { (error) -> Void in
             FNAnalytics.logError(error, location: "AppDelegate: Enable Revocable Session")
         }
-        PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions ?? [:])
-
-        // Logout if current user is invalid
-        let currentUser = ParseUser.current()
-        if !currentUser.isValid {
-            ParseUser.logOut()
-        }
+        PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
 
         // Analytics
         // Parse/Facebook
@@ -55,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         // Google
         let tracker = GAI.sharedInstance().trackerWithTrackingId("UA-62043366-1")
-        tracker.set("&uid", value: currentUser.objectId)
+        tracker.set("&uid", value: ParseUser.current().objectId)
 
         // Push notifications
         if application.respondsToSelector("registerUserNotificationSettings:") {
@@ -78,7 +73,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+        if FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation) {
+            return true
+        }
+
+        // TODO: Open specific poll
+        return false
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
@@ -124,13 +124,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     /// Called every login or logout
     func loginChanged(notification: NSNotification) {
+
         // Clear caches
-        PFObject.unpinAllObjectsInBackgroundWithBlock { (succeeded, error) -> Void in
-            FNAnalytics.logError(error, location: "AppDelegate: Login Changed Unpin")
-        }
         let imageCache = SDImageCache.sharedImageCache()
         imageCache.clearDisk()
         imageCache.clearMemory()
+        PFObject.unpinAllObjectsInBackgroundWithBlock { (succeeded, error) -> Void in
+            FNAnalytics.logError(error, location: "AppDelegate: Login Changed Unpin")
+        }
+
         // Register new user ID in installation on login change
         let install = ParseInstallation.currentInstallation()
         let currentUser = ParseUser.current()
@@ -138,6 +140,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         install.saveEventually { (succeeded, error) -> Void in
             FNAnalytics.logError(error, location: "AppDelegate: Login Changed Save")
         }
+
         // Update analytics
         GAI.sharedInstance().defaultTracker.set("&uid", value: currentUser.objectId)
     }
@@ -158,12 +161,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+
+        // FIXME: Error with JSON notification
+        NSLog("handlePush?")
         PFPush.handlePush(userInfo)
+        NSLog("pushHandled")
         if application.applicationState == .Inactive {
             // The application was just brought from the background to the foreground,
             // so we consider the app as having been "opened by a push notification."
+            NSLog("trackPush?")
             PFAnalytics.trackAppOpenedWithRemoteNotificationPayloadInBackground(userInfo, block: nil)
+            NSLog("pushTracked")
         }
+
+        // TODO: Open specific poll
     }
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {

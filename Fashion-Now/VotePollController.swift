@@ -10,6 +10,12 @@ import UIKit
 
 private let transitionDuration: NSTimeInterval = 0.25
 
+private let reportButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.reportButtonTitle", value: "Report Poll", comment: "Shown when user taps the gear button")
+private let skipButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.skipButtonTitle", value: "Skip Poll", comment: "Shown when user taps the gear button")
+private let filtersButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.filtersButtonTitle", value: "Apply Filters", comment: "Shown when user taps the gear button")
+private let refreshButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.refreshButtonTitle", value: "Refresh", comment: "Shown when user taps the gear button")
+private let loginButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.loginButtonTitle", value: "Log In", comment: "Shown when user taps the gear button")
+
 class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDelegate, UIActionSheetDelegate, UIAlertViewDelegate, EAIntroDelegate {
 
     private var polls = ParsePollList(type: .VotePublic)
@@ -53,17 +59,15 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         }
     }
 
-    // Empty polls interface
-    @IBOutlet weak var emptyInterface: UIView!
+    // Message interface with a button to refresh
+    @IBOutlet weak var refreshMessage: UILabel!
+    private func setRefreshMessage(text: String? = nil, hidden: Bool = false) {
+        refreshMessage.text = text
+        refreshMessage.superview!.superview!.hidden = hidden
+    }
 
     // Loading interface
     private weak var loadingInterface: UIActivityIndicatorView!
-
-    private let reportButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.reportButtonTitle", value: "Report Poll", comment: "Shown when user taps the gear button")
-    private let skipButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.skipButtonTitle", value: "Skip Poll", comment: "Shown when user taps the gear button")
-    private let filtersButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.filtersButtonTitle", value: "Apply Filters", comment: "Shown when user taps the gear button")
-    private let refreshButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.refreshButtonTitle", value: "Refresh", comment: "Shown when user taps the gear button")
-    private let loginButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.loginButtonTitle", value: "Log In", comment: "Shown when user taps the gear button")
 
     @IBAction func gearButtonPressed(sender: UIBarButtonItem) {
 
@@ -72,7 +76,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         // Buttons
         var otherButtonTitles = [String]()
         if currentPoll != nil {
-            otherButtonTitles += [/*reportButtonTitle,*/ skipButtonTitle] // TODO: Add report
+            otherButtonTitles += [reportButtonTitle, skipButtonTitle]
         }
         otherButtonTitles += [/*filtersButtonTitle,*/ refreshButtonTitle] // TODO: Add filters
         if PFAnonymousUtils.isLinkedWithUser(ParseUser.current()) {
@@ -148,30 +152,36 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
             avatarView.image = nil
             nameLabel.text = nil
             dateLabel.text = nil
-            emptyInterface.hidden = false
+            setRefreshMessage(text: "No more polls") // TODO: Translate
             loadingInterface.stopAnimating()
             return false
         }
     }
 
-    func loadPollList(notification: NSNotification?) {
+    @IBAction func loadPollList(sender: AnyObject?) {
 
-        // Reset interface
-        emptyInterface.hidden = true
-        loadingInterface.startAnimating()
-        avatarView.image = nil
-        nameLabel.text = nil
-        dateLabel.text = nil
+        let duration = sender is NSNotification ? 0 : transitionDuration
 
-        // Reload polls
-        polls = ParsePollList(type: .VotePublic)
-        polls.update(completionHandler: { (success, error) -> Void in
+        UIView.transitionWithView(self.navigationController!.view, duration: duration, options: .TransitionCrossDissolve, animations: { () -> Void in
 
-            UIView.transitionWithView(self.navigationController!.view, duration: notification == nil ? transitionDuration : 0, options: .TransitionCrossDissolve, animations: { () -> Void in
-                self.showNextPoll()
-                self.handle(error: error, location: "Vote: Load List")
-            }, completion: nil)
-        })
+            // Reset interface
+            self.setRefreshMessage(hidden: true)
+            self.loadingInterface.startAnimating()
+            self.avatarView.image = nil
+            self.nameLabel.text = nil
+            self.dateLabel.text = nil
+
+            // Reload polls
+            self.polls = ParsePollList(type: .VotePublic)
+            self.polls.update(completionHandler: { (success, error) -> Void in
+
+                UIView.transitionWithView(self.navigationController!.view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
+                    self.showNextPoll()
+                    self.handle(error: error, location: "Vote: Load List")
+                }, completion: nil)
+            })
+
+        }, completion: nil)
     }
 
     // MARK: UIViewController
@@ -191,11 +201,13 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     }
 
     private func handle(#error: NSError?, location: String?) {
-        // TODO: Error handler
         if let errorToHandle = error {
             FNAnalytics.logError(errorToHandle, location: location ?? "Vote: Error Handler")
-            loadingInterface.stopAnimating()
+            setRefreshMessage(text: errorToHandle.localizedDescription)
+        } else {
+            setRefreshMessage(text: FNLocalizedUnknownErrorDescription)
         }
+        loadingInterface.stopAnimating()
     }
     
     // MARK: View lifecycle
