@@ -31,13 +31,15 @@ PODS:
     - GoogleAnalytics-iOS-SDK/Core (= 3.10)
   - GoogleAnalytics-iOS-SDK/Core (3.10)
   - HexColors (2.2.1)
-  - Parse (1.7.1):
+  - Parse (1.7.2):
     - Bolts (~> 1.1)
-  - ParseCrashReporting (1.7.1):
-    - Parse (~> 1.7.1)
-  - ParseFacebookUtilsV4 (1.7.1):
+  - ParseCrashReporting (1.7.2):
+    - Bolts (~> 1.1)
+    - Parse (~> 1.7.2)
+  - ParseFacebookUtilsV4 (1.7.2):
+    - Bolts (~> 1.1)
     - Facebook-iOS-SDK/LoginKit (~> 4.0)
-    - Parse (~> 1.7.1)
+    - Parse (~> 1.7.2)
   - Reachability (3.2)
   - SDWebImage (3.7.2):
     - SDWebImage/Core (= 3.7.2)
@@ -73,9 +75,9 @@ SPEC CHECKSUMS:
   Facebook-iOS-SDK: 6d05532c97e9c542f8d87f94b7f6ee217493d00b
   GoogleAnalytics-iOS-SDK: 4f98a376c1d61e6ac4ca47951655820314856eef
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
-  Parse: fa8ec29de6d82035635986c11946299fb1b38316
-  ParseCrashReporting: 9aeff8680d500e5e833564fca5b60333f7bb7403
-  ParseFacebookUtilsV4: fc44a339e38513fb6fc0bafbef34f69df6559e06
+  Parse: e1959adb9fe2fcd4736dac20b3ac691d47a4f06c
+  ParseCrashReporting: 794a166ff1ce4d7c671ffb7fd86f381b806bddb7
+  ParseFacebookUtilsV4: 79d6f3c54da18651c8208e0f785a54988a2d9a1c
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   TSMessages: 2a52642128d7ab15b46930c810b9c9403a2b58f3

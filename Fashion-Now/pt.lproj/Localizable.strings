@@ -130,6 +130,3 @@
 /* Shown when user reports a poll */
 "VotePollController.gearButton.reportAlert.title" = "Denunciar Enquete";
 
-/* Shown when user has no name or email */
-"VotePollController.titleView.nameLabel.unknown" = "Desconhecido";
-

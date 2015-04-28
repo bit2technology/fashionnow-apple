@@ -226,42 +226,42 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        if !tutoPresented {
-            let page1 = EAIntroPage()
-            page1.title = "Welcome to Fashion Now"
-            page1.desc = "This is the Intro"
-            page1.bgImage = UIImage(named: "Photo001.jpg")
-
-            let page2 = EAIntroPage()
-            page2.title = "I created these backgrounds"
-            page2.desc = "See if you like them"
-            page2.bgImage = UIImage(named: "Photo002.jpg")
-
-            let page3 = EAIntroPage()
-            page3.title = "Licence"
-            page3.desc = "All these photos are free to use!"
-            page3.bgImage = UIImage(named: "Photo003.jpg")
-
-            let page4 = EAIntroPage()
-            page4.title = "Effect"
-            page4.desc = "Tilt your device and see what happens"
-            page4.bgImage = UIImage(named: "Photo004.jpg")
-
-            let page5 = EAIntroPage()
-            page5.title = "Ready to go"
-            page5.desc = "Start voting right now"
-            page5.bgImage = UIImage(named: "Photo005.jpg")
-
-            let intro = EAIntroView(frame: fn_tabBarController.view.bounds, andPages: [page1, page2, page3, page4, page5])
-            intro.delegate = self
-            intro.bgViewContentMode = .ScaleToFill
-            intro.showInView(fn_tabBarController.view, animateDuration: 0)
-            statusBarStyle = .LightContent
-            tutoPresented = true
-            UIView.animateWithDuration(0, animations: { () -> Void in
-                self.setNeedsStatusBarAppearanceUpdate()
-            })
-        }
+//        if !tutoPresented {
+//            let page1 = EAIntroPage()
+//            page1.title = "Welcome to Fashion Now"
+//            page1.desc = "This is the Intro"
+//            page1.bgImage = UIImage(named: "Photo001.jpg")
+//
+//            let page2 = EAIntroPage()
+//            page2.title = "I created these backgrounds"
+//            page2.desc = "See if you like them"
+//            page2.bgImage = UIImage(named: "Photo002.jpg")
+//
+//            let page3 = EAIntroPage()
+//            page3.title = "Licence"
+//            page3.desc = "All these photos are free to use!"
+//            page3.bgImage = UIImage(named: "Photo003.jpg")
+//
+//            let page4 = EAIntroPage()
+//            page4.title = "Effect"
+//            page4.desc = "Tilt your device and see what happens"
+//            page4.bgImage = UIImage(named: "Photo004.jpg")
+//
+//            let page5 = EAIntroPage()
+//            page5.title = "Ready to go"
+//            page5.desc = "Start voting right now"
+//            page5.bgImage = UIImage(named: "Photo005.jpg")
+//
+//            let intro = EAIntroView(frame: fn_tabBarController.view.bounds, andPages: [page1, page2, page3, page4, page5])
+//            intro.delegate = self
+//            intro.bgViewContentMode = .ScaleToFill
+//            intro.showInView(fn_tabBarController.view, animateDuration: 0)
+//            statusBarStyle = .LightContent
+//            tutoPresented = true
+//            UIView.animateWithDuration(0, animations: { () -> Void in
+//                self.setNeedsStatusBarAppearanceUpdate()
+//            })
+//        }
     }
 
     override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {

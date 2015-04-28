@@ -164,14 +164,14 @@ class ParseUser: PFUser, PFSubclassing {
     // MARK: Helper methods
 
     /// This method downloads info from logged Facebook account and completes the user object if necessary.
-    func completeInfoFacebook(completion: PFBooleanResultBlock?) {
+    func completeInfoFacebook(tryEmail: Bool = true, completion: PFBooleanResultBlock?) {
         if !(facebookId?.fn_count > 0) {
             FacebookUser.getCurrent { (user, error) -> Void in
+                if !(self.email?.fn_count > 0) && tryEmail {
+                    self.email = user?.email
+                }
                 if !(self.name?.fn_count > 0) {
                     self.name = user?.first_name
-                }
-                if !(self.email?.fn_count > 0) {
-                    self.email = user?.email
                 }
                 if !(self.gender?.fn_count > 0) {
                     self.gender = user?.gender
@@ -201,7 +201,7 @@ class ParseUser: PFUser, PFSubclassing {
         if PFAnonymousUtils.isLinkedWithUser(self) {
             return true
         } else if PFFacebookUtils.isLinkedWithUser(self) {
-            completeInfoFacebook({ (succeeded, error) -> Void in
+            completeInfoFacebook(completion: { (succeeded, error) -> Void in
                 FNAnalytics.logError(error, location: "User is valid: Facebook info download")
             })
             return true

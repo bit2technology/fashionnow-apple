@@ -15,7 +15,7 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
         dismissLoginModalController()
     }
 
-    @IBAction func forgotButtonPressed(sender: UIBarButtonItem) {
+    @IBAction func forgotButtonPressed(sender: UIButton) {
         showResetAlertView()
     }
 
@@ -79,7 +79,7 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
                     FNAnalytics.logRegistration("Facebook")
 
                     // Download info from Facebook and return
-                    parseUser.completeInfoFacebook({ (succeeded, error) -> Void in
+                    parseUser.completeInfoFacebook(completion: { (succeeded, error) -> Void in
                         FNAnalytics.logError(error, location: "Login: With Facebook")
 
                         if succeeded {
@@ -157,16 +157,6 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
         } else {
             FNToast.show(title: NSLocalizedString("LoginController.loginErrorDescription.incomplete", value: "Username or password missing", comment: "Message for when user does not fill the fields"), type: .Error)
         }
-    }
-
-    // MARK: UIViewController
-
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-
-        let facebookLogin = tableView.tableHeaderView!
-        facebookLogin.frame.size.height = view.bounds.height - 240
-        tableView.tableHeaderView = facebookLogin
     }
 
     override func scrollViewDidScroll(scrollView: UIScrollView) {
