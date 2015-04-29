@@ -61,9 +61,12 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
     // Message interface with a button to refresh
     @IBOutlet weak var refreshMessage: UILabel!
+    private var refreshMessageContainer: UIView {
+        return refreshMessage.superview!.superview!
+    }
     private func setRefreshMessage(text: String? = nil, hidden: Bool = false) {
         refreshMessage.text = text
-        refreshMessage.superview!.superview!.hidden = hidden
+        refreshMessageContainer.hidden = hidden
     }
 
     // Loading interface
@@ -218,6 +221,10 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
         loadingInterface = view.fn_setLoading(background: UIColor.groupTableViewBackgroundColor())
 
+        refreshMessageContainer.frame = view.bounds
+        refreshMessageContainer.autoresizingMask = .FlexibleHeight | .FlexibleWidth
+        view.addSubview(refreshMessageContainer)
+
         pollController.interactDelegate = self
         pollController.loadDelegate = self
 
@@ -330,11 +337,12 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
         // FIXME: Test
         var params = ["from": pollController.poll.createdBy!.displayName, "to": ["t6EvTaxkz3"], "poll": pollController.poll.objectId!] as [NSObject : AnyObject]
-        if pollController.poll.caption?.fn_count > 0 {
-            params["caption"] = pollController.poll.caption
+        let caption = pollController.poll.caption?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        if caption?.fn_count > 0 {
+            params["caption"] = caption
         }
         PFCloud.callFunctionInBackground("sendPush", withParameters: params) { (result, error) -> Void in
-            NSLog("sendPush result:\(result) error:\(error)")
+            //FNAnalytics.logError(error, location: "Vote: Send Push")
         }
     }
 

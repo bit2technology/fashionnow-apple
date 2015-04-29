@@ -179,7 +179,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gA1-ed-9m9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-38" y="2146"/>
+            <point key="canvasLocation" x="109" y="2027"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="xBD-Y7-y6W">
@@ -334,7 +334,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sxm-SZ-9GR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-38" y="2715"/>
+            <point key="canvasLocation" x="109" y="2595"/>
         </scene>
         <!--Vote: Main-->
         <scene sceneID="VVH-fN-2gA">
@@ -389,62 +389,12 @@
                                     <action selector="voteButtonWillBePressed:" destination="6wq-1Y-TiB" eventType="touchDown" id="m09-Mf-dRt"/>
                                 </connections>
                             </button>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rdg-hq-Mrj" userLabel="Refresh Interface">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7wD-R2-s6K">
-                                        <rect key="frame" x="60" y="204" width="200" height="73"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Refresh Message" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="Pca-Ch-LI9">
-                                                <rect key="frame" x="0.0" y="0.0" width="200" height="21"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="200" id="YJJ-mc-nQh"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IDg-Yz-tIq" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                                <rect key="frame" x="49" y="29" width="102" height="44"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="44" id="znJ-sP-lK4"/>
-                                                </constraints>
-                                                <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
-                                                <state key="normal" title="Refresh" backgroundImage="ButtonRoundBordersBackground">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="loadPollList:" destination="6wq-1Y-TiB" eventType="touchUpInside" id="TZ2-Pi-MC4"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                        <constraints>
-                                            <constraint firstItem="IDg-Yz-tIq" firstAttribute="top" secondItem="Pca-Ch-LI9" secondAttribute="bottom" constant="8" id="8Um-kp-cXk"/>
-                                            <constraint firstAttribute="trailing" secondItem="Pca-Ch-LI9" secondAttribute="trailing" id="GGq-ZD-IOY"/>
-                                            <constraint firstItem="Pca-Ch-LI9" firstAttribute="leading" secondItem="7wD-R2-s6K" secondAttribute="leading" id="N8j-h9-66k"/>
-                                            <constraint firstAttribute="centerX" secondItem="IDg-Yz-tIq" secondAttribute="centerX" id="Rbn-sW-IAs"/>
-                                            <constraint firstItem="Pca-Ch-LI9" firstAttribute="top" secondItem="7wD-R2-s6K" secondAttribute="top" id="ZlX-fL-Ylp"/>
-                                            <constraint firstAttribute="bottom" secondItem="IDg-Yz-tIq" secondAttribute="bottom" id="iyX-rs-UfV"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="centerY" secondItem="7wD-R2-s6K" secondAttribute="centerY" id="HDU-z9-LQS"/>
-                                    <constraint firstAttribute="centerX" secondItem="7wD-R2-s6K" secondAttribute="centerX" id="NwP-d1-N64"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="3bW-d0-UfL" firstAttribute="top" secondItem="EtK-fa-XtU" secondAttribute="bottom" id="34M-DU-YTM"/>
                             <constraint firstAttribute="trailing" secondItem="EtK-fa-XtU" secondAttribute="trailing" id="47u-FS-YP1"/>
-                            <constraint firstAttribute="bottom" secondItem="rdg-hq-Mrj" secondAttribute="bottom" id="Br3-rG-Vbh"/>
                             <constraint firstItem="3bW-d0-UfL" firstAttribute="top" secondItem="GPX-GA-SAX" secondAttribute="bottom" constant="4" id="J7L-V4-r0m"/>
-                            <constraint firstAttribute="trailing" secondItem="rdg-hq-Mrj" secondAttribute="trailing" id="KiJ-5l-e2T"/>
-                            <constraint firstItem="rdg-hq-Mrj" firstAttribute="top" secondItem="0mu-nJ-pcc" secondAttribute="top" id="Mvz-CP-Qir"/>
-                            <constraint firstItem="rdg-hq-Mrj" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" id="NmT-33-mqh"/>
                             <constraint firstItem="4XI-L8-6Pr" firstAttribute="leading" secondItem="0mu-nJ-pcc" secondAttribute="leading" constant="-5" id="gqj-lz-256"/>
                             <constraint firstAttribute="trailing" secondItem="GPX-GA-SAX" secondAttribute="trailing" constant="-5" id="gtx-Kx-8sL"/>
                             <constraint firstItem="EtK-fa-XtU" firstAttribute="top" secondItem="xur-zt-maA" secondAttribute="bottom" id="il4-wn-Z6w"/>
@@ -508,10 +458,56 @@
                         <outlet property="nameLabel" destination="dmJ-d0-zRi" id="9wt-b4-CcR"/>
                         <outlet property="refreshMessage" destination="Pca-Ch-LI9" id="8o8-Nd-8wR"/>
                         <outlet property="rightVoteButton" destination="GPX-GA-SAX" id="bC1-wq-sV9"/>
-                        <segue destination="NmP-QA-Rro" kind="modal" identifier="Present Filters" id="PPL-30-sPx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vvg-GW-0gy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="rdg-hq-Mrj" userLabel="Refresh Interface">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7wD-R2-s6K">
+                            <rect key="frame" x="60" y="204" width="200" height="73"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Refresh Message" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="Pca-Ch-LI9">
+                                    <rect key="frame" x="0.0" y="0.0" width="200" height="21"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="200" id="YJJ-mc-nQh"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IDg-Yz-tIq" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                    <rect key="frame" x="49" y="29" width="102" height="44"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="znJ-sP-lK4"/>
+                                    </constraints>
+                                    <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
+                                    <state key="normal" title="Refresh" backgroundImage="ButtonRoundBordersBackground">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="loadPollList:" destination="6wq-1Y-TiB" eventType="touchUpInside" id="TZ2-Pi-MC4"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="IDg-Yz-tIq" firstAttribute="top" secondItem="Pca-Ch-LI9" secondAttribute="bottom" constant="8" id="8Um-kp-cXk"/>
+                                <constraint firstAttribute="trailing" secondItem="Pca-Ch-LI9" secondAttribute="trailing" id="GGq-ZD-IOY"/>
+                                <constraint firstItem="Pca-Ch-LI9" firstAttribute="leading" secondItem="7wD-R2-s6K" secondAttribute="leading" id="N8j-h9-66k"/>
+                                <constraint firstAttribute="centerX" secondItem="IDg-Yz-tIq" secondAttribute="centerX" id="Rbn-sW-IAs"/>
+                                <constraint firstItem="Pca-Ch-LI9" firstAttribute="top" secondItem="7wD-R2-s6K" secondAttribute="top" id="ZlX-fL-Ylp"/>
+                                <constraint firstAttribute="bottom" secondItem="IDg-Yz-tIq" secondAttribute="bottom" id="iyX-rs-UfV"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="centerY" secondItem="7wD-R2-s6K" secondAttribute="centerY" id="HDU-z9-LQS"/>
+                        <constraint firstAttribute="centerX" secondItem="7wD-R2-s6K" secondAttribute="centerX" id="NwP-d1-N64"/>
+                    </constraints>
+                </view>
             </objects>
             <point key="canvasLocation" x="661" y="-277"/>
         </scene>
@@ -825,6 +821,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="OJC-JN-eaN" kind="modal" identifier="Edit Profile" id="1nh-dS-Usc"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wVC-D2-I0P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1391,7 +1390,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xq6-l7-NYw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="357" y="2256"/>
+            <point key="canvasLocation" x="504" y="2137"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sT9-WB-ml1">
@@ -1407,7 +1406,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gRT-Sz-dcX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="357" y="1577"/>
+            <point key="canvasLocation" x="504" y="1458"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="CJf-es-BZO">
@@ -1563,7 +1562,7 @@
                     </connections>
                 </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1929" y="39.5"/>
+            <point key="canvasLocation" x="1804" y="108.5"/>
         </scene>
         <!--Photo Controller-->
         <scene sceneID="oDJ-hZ-wtb">
@@ -1676,7 +1675,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AbR-wv-pbr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2226" y="39.5"/>
+            <point key="canvasLocation" x="2101" y="108.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="cdr-w8-bRH">
@@ -1693,7 +1692,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Df-8L-FFt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2082" y="594"/>
+            <point key="canvasLocation" x="1644" y="658"/>
         </scene>
         <!--Poll: Gallery-->
         <scene sceneID="TKG-G3-PVx">
@@ -1753,7 +1752,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DaN-zL-qWs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2464" y="594"/>
+            <point key="canvasLocation" x="2021" y="658"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pAc-yH-lCJ">
@@ -1771,68 +1770,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ox9-Wq-caD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-38" y="1577"/>
-        </scene>
-        <!--Vote: Filter-->
-        <scene sceneID="8pV-PS-1c9">
-            <objects>
-                <tableViewController title="Vote: Filter" id="ZvM-Z9-Q2b" customClass="VoteFilterController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="sdL-Dz-b7M">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <sections>
-                            <tableViewSection id="DpF-Lb-87c">
-                                <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="Pbi-sX-WMF" style="IBUITableViewCellStyleDefault" id="dUX-aT-gYJ">
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dUX-aT-gYJ" id="qFe-sE-7vT">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Filters come here" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Pbi-sX-WMF">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                        </sections>
-                        <connections>
-                            <outlet property="dataSource" destination="ZvM-Z9-Q2b" id="Ylw-Vs-qNF"/>
-                            <outlet property="delegate" destination="ZvM-Z9-Q2b" id="0Qz-Rr-Znk"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Filter" id="9a4-Zq-fGJ">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="9SZ-yl-mLq">
-                            <connections>
-                                <action selector="cancel:" destination="ZvM-Z9-Q2b" id="Jdx-YP-zCj"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1Wu-Lp-NBE" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1416" y="-617"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Xev-r9-StA">
-            <objects>
-                <navigationController id="NmP-QA-Rro" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bCA-kX-4QJ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="ZvM-Z9-Q2b" kind="relationship" relationship="rootViewController" id="Hwp-QP-iF3"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kzL-RY-wvX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1038" y="-617"/>
+            <point key="canvasLocation" x="109" y="1458"/>
         </scene>
         <!--Vote-->
         <scene sceneID="w3X-gR-82r">

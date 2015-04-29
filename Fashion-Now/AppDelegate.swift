@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window!.tintColor = UIColor.fn_tint()
 
         // Register subclasses
-        // This is because overriding class function "load()" doesn’t work on Swift 1.2+
         ParseInstallation.registerSubclass()
         ParsePhoto.registerSubclass()
         ParsePoll.registerSubclass()
@@ -32,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ParseCrashReporting.enable()
         
         // Parse configuration
-        #if DEBUGisonthetable
+        #if DEBUGisonthetable // FIXME: Revert to DEBUG when finish testing push
         Parse.setApplicationId("AIQ4OyhhFVequZa6eXLCDdEpxu9qE0JyFkkfczWw", clientKey: "4dMOa5Ts1cvKVcnlIv2E4wYudyN7iJoH0gQDxpVy")
         #else
         Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
@@ -52,6 +51,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tracker = GAI.sharedInstance().trackerWithTrackingId("UA-62043366-1")
         tracker.set("&uid", value: ParseUser.current().objectId)
 
+        // Observe login change and update installation
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
+
         // Push notifications
         if application.respondsToSelector("registerUserNotificationSettings:") {
             // Register for Push Notitications, if running iOS 8 and later
@@ -63,9 +65,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             application.registerForRemoteNotificationTypes(.Alert | .Badge | .Sound)
         }
 
-        // Observe login change and update installation
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
-
         // Clean image cache
         SDImageCache.sharedImageCache().cleanDiskWithCompletionBlock(nil)
 
@@ -73,12 +72,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-        if FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation) {
-            return true
+
+        if url.scheme == "fashionnowapp" {
+
+            if url.host == "poll" {
+                ParsePollList.firstPollId = url.lastPathComponent
+                return true
+            }
         }
 
-        // TODO: Open specific poll
-        return false
+        // Facebook
+        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
@@ -162,22 +166,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
 
-        NSLog("Push notification: \(userInfo)")
-
-        if userInfo["aps"]?["alert"] is String {
-            PFPush.handlePush(userInfo)
-        }
+        // Handling push notification
+        ParsePollList.firstPollId = userInfo["poll"] as? String
 
         if application.applicationState == .Inactive {
-            // The application was just brought from the background to the foreground,
-            // so we consider the app as having been "opened by a push notification."
+            // The application was just brought from the background to the foreground, so we consider the app as having been "opened by a push notification."
             PFAnalytics.trackAppOpenedWithRemoteNotificationPayloadInBackground(userInfo, block: nil)
         }
-
-        // TODO: Open specific poll
     }
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         self.application(application, didReceiveRemoteNotification: userInfo)
+        completionHandler(userInfo["poll"] != nil ? .NewData : .NoData)
     }
 }

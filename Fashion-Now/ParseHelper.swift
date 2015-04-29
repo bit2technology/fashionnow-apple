@@ -365,6 +365,12 @@ private let updateLimitTime: NSTimeInterval = -5 // Needs to be negative
 
 class ParsePollList: Printable, DebugPrintable {
 
+    static var firstPollId: String? {
+        didSet {
+            NSLog("firstPollDidSet: \(firstPollId)")
+        }
+    }
+
     // It there is more than one type of not vote, algorithm must change
     /// Type of poll list
     enum Type {
@@ -438,6 +444,8 @@ class ParsePollList: Printable, DebugPrintable {
 
     /// Updates (or downloads for the first time) the poll list. It returns true in the completion handler if there is new polls added to the list.
     func update(type: UpdateType = .Newer, completionHandler: PFBooleanResultBlock) {
+
+        NSLog("update: \(ParsePollList.firstPollId)")
 
         if downloading {
 

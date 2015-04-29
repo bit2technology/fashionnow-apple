@@ -7,7 +7,7 @@ Parse.Cloud.define("sendPush", function (request, response) {
     // Change notification style if there is a caption
     if (request.params.caption) {
         locKey = "P003";
-        locArgs += request.params.caption;
+        locArgs.push(request.params.caption);
     }
     
     query.containedIn("userId", request.params.to);
@@ -21,7 +21,7 @@ Parse.Cloud.define("sendPush", function (request, response) {
                 "loc-args": locArgs
             },
             badge: "Increment",
-            poll: request.params.pollId
+            poll: request.params.poll
         }
     }, {
         success: function () {

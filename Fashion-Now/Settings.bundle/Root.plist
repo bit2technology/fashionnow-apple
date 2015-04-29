@@ -6,19 +6,11 @@
 	<array>
 		<dict>
 			<key>DefaultValue</key>
-			<string>1.0.1 (1990)</string>
+			<string>1.0.1 (2012)</string>
 			<key>Key</key>
 			<string>version_string</string>
 			<key>Title</key>
 			<string>Version</string>
-			<key>Type</key>
-			<string>PSTitleValueSpecifier</string>
-		</dict>
-		<dict>
-			<key>Key</key>
-			<string>build_string</string>
-			<key>Title</key>
-			<string>Build</string>
 			<key>Type</key>
 			<string>PSTitleValueSpecifier</string>
 		</dict>
