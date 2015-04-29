@@ -201,11 +201,8 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     }
 
     private func handle(#error: NSError?, location: String?) {
-        if let errorToHandle = error {
-            FNAnalytics.logError(errorToHandle, location: location ?? "Vote: Error Handler")
-            setRefreshMessage(text: errorToHandle.localizedDescription)
-        } else {
-            setRefreshMessage(text: FNLocalizedUnknownErrorDescription)
+        if FNAnalytics.logError(error, location: location ?? "Vote: Error Handler") {
+            setRefreshMessage(text: error!.localizedDescription)
         }
         loadingInterface.stopAnimating()
     }
@@ -329,6 +326,15 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
             if let error = error {
                 FNAnalytics.logError(error, location: "Vote: Save")
             }
+        }
+
+        // FIXME: Test
+        var params = ["from": pollController.poll.createdBy!.displayName, "to": ["t6EvTaxkz3"], "poll": pollController.poll.objectId!] as [NSObject : AnyObject]
+        if pollController.poll.caption?.fn_count > 0 {
+            params["caption"] = pollController.poll.caption
+        }
+        PFCloud.callFunctionInBackground("sendPush", withParameters: params) { (result, error) -> Void in
+            NSLog("sendPush result:\(result) error:\(error)")
         }
     }
 

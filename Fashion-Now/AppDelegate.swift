@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ParseCrashReporting.enable()
         
         // Parse configuration
-        #if DEBUG
+        #if DEBUGisonthetable
         Parse.setApplicationId("AIQ4OyhhFVequZa6eXLCDdEpxu9qE0JyFkkfczWw", clientKey: "4dMOa5Ts1cvKVcnlIv2E4wYudyN7iJoH0gQDxpVy")
         #else
         Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
@@ -162,16 +162,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
 
-        // FIXME: Error with JSON notification
-        NSLog("handlePush?")
-        PFPush.handlePush(userInfo)
-        NSLog("pushHandled")
+        NSLog("Push notification: \(userInfo)")
+
+        if userInfo["aps"]?["alert"] is String {
+            PFPush.handlePush(userInfo)
+        }
+
         if application.applicationState == .Inactive {
             // The application was just brought from the background to the foreground,
             // so we consider the app as having been "opened by a push notification."
-            NSLog("trackPush?")
             PFAnalytics.trackAppOpenedWithRemoteNotificationPayloadInBackground(userInfo, block: nil)
-            NSLog("pushTracked")
         }
 
         // TODO: Open specific poll

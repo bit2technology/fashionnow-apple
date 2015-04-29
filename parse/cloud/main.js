@@ -2,7 +2,7 @@ Parse.Cloud.define("sendPush", function (request, response) {
     "use strict";
     var query = new Parse.Query(Parse.Installation),
         locKey = "P002",
-        locArgs = [request.user.name || request.user.username];
+        locArgs = [request.params.from];
     
     // Change notification style if there is a caption
     if (request.params.caption) {
@@ -10,7 +10,7 @@ Parse.Cloud.define("sendPush", function (request, response) {
         locArgs += request.params.caption;
     }
     
-    query.containedIn("userId", request.params.userIds);
+    query.containedIn("userId", request.params.to);
 
     Parse.Push.send({
         where: query,
@@ -20,10 +20,11 @@ Parse.Cloud.define("sendPush", function (request, response) {
                 "loc-key": locKey,
                 "loc-args": locArgs
             },
-            badge: "Increment"
+            badge: "Increment",
+            poll: request.params.pollId
         }
     }, {
-        succes: function () {
+        success: function () {
             // Push successfull
             response.success("Push sent");
         },
@@ -63,7 +64,7 @@ Parse.Cloud.afterSave("Poll", function (request) {
                 badge: "Increment"
             }
         }, {
-            succes: function () {
+            success: function () {
                 // Push successfull
                 console.log("Push sent");
             },
