@@ -20,7 +20,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
     private var polls = ParsePollList(type: .VotePublic)
 
-    private var currentPoll: ParsePoll?
+    private weak var currentPoll: ParsePoll?
 
     private weak var pollController: PollController!
 
@@ -32,38 +32,24 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
     // Vote buttons
     @IBOutlet weak var leftVoteButton, rightVoteButton: UIButton!
-    private var voteButtons: [UIButton] {
-        return [leftVoteButton, rightVoteButton]
+    private func setVoteButtonsHidden(hidden: Bool, animated: Bool) {
+        UIView.animateWithDuration(animated ? transitionDuration : 0) { () -> Void in
+            for voteButton in [self.leftVoteButton, self.rightVoteButton] {
+                voteButton.alpha = (hidden ? 0.2 : 1)
+            }
+        }
     }
     // Press actions
     @IBAction func voteButtonWillBePressed(sender: UIButton) {
-        setCleanInterface(false, animated: true)
+        setVoteButtonsHidden(false, animated: true)
     }
     @IBAction func voteButtonPressed(sender: UIButton) {
-        pollController.animateHighlight(index: find(voteButtons, sender)! + 1, source: .Extern)
-    }
-
-    // Clean interface
-    private var cleanInterface: Bool = false {
-        didSet {
-            for voteButton in voteButtons {
-                voteButton.alpha = (cleanInterface ? 0.2 : 1)
-            }
-        }
-    }
-    private func setCleanInterface(newValue: Bool, animated: Bool) {
-        if newValue != cleanInterface {
-            UIView.animateWithDuration(animated ? transitionDuration : 0) { () -> Void in
-                self.cleanInterface = newValue
-            }
-        }
+        pollController.animateHighlight(index: find([leftVoteButton, rightVoteButton], sender)! + 1, source: .Extern)
     }
 
     // Message interface with a button to refresh
     @IBOutlet weak var refreshMessage: UILabel!
-    private var refreshMessageContainer: UIView {
-        return refreshMessage.superview!.superview!
-    }
+    @IBOutlet weak var refreshMessageContainer: UIView!
     private func setRefreshMessage(text: String? = nil, hidden: Bool = false) {
         refreshMessage.text = text
         refreshMessageContainer.hidden = hidden
@@ -228,10 +214,6 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         pollController.interactDelegate = self
         pollController.loadDelegate = self
 
-        for voteButton in voteButtons {
-            voteButton.tintColor = UIColor.fn_tint(alpha: 0.5)
-        }
-
         // Initializes poll list and adjusts interface
         loadPollList(nil)
 
@@ -316,7 +298,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     }
 
     func pollInteracted(pollController: PollController) {
-        setCleanInterface(true, animated: true)
+        setVoteButtonsHidden(true, animated: true)
     }
 
     func pollWillHighlight(pollController: PollController, index: Int, source: PollController.HighlightSource) {
