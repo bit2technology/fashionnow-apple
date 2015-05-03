@@ -360,25 +360,42 @@ public class ParsePoll: PFObject, PFSubclassing {
 
 // MARK: - Poll List class
 
-private let pollLimit = 24
-private let updateLimitTime: NSTimeInterval = -5 // Needs to be negative
+private let ParsePollListQueryLimit = 24
+private let ParsePollListUpdateLimitTime: NSTimeInterval = -5 // Needs to be negative
 
 class ParsePollList: Printable, DebugPrintable {
 
-    static var firstPollId: String? {
-        didSet {
-            NSLog("firstPollDidSet: \(firstPollId)")
+    struct Parameters {
+
+        /// Type of poll list
+        enum Type {
+            /// Polls uploaded by the current user
+            case Mine
+            /// Public polls from everyone, except the ones voted by the current user
+            case Vote
+        }
+
+        enum CreatedBy {
+            case Friends
+            case FriendsOfFriends
+            case Anyone
+        }
+
+        // Type of list
+        var type: Type
+        // Type of author if type of poll is Vote.
+        var createdBy: CreatedBy
+
+        var location: PFGeoPoint?
+        var maxDistance: Double?
+
+        init(type: Type = .Vote, createdBy: CreatedBy = .Anyone) {
+            self.type = type
+            self.createdBy = createdBy
         }
     }
 
-    // It there is more than one type of not vote, algorithm must change
-    /// Type of poll list
-    enum Type {
-        /// Polls uploaded by the current user
-        case Mine
-        /// Public polls from everyone, except the ones voted by the current user
-        case VotePublic
-    }
+    let parameters: Parameters
 
     // If list is currently downloading content
     private(set) var downloading = false
@@ -386,22 +403,19 @@ class ParsePollList: Printable, DebugPrintable {
     /// Minimum time to update again, in seconds
     private var polls = [ParsePoll]()
     private var pollsAreRemote = false
-    // Type of list
-    let type: Type
 
     /// Return new query by type of list
     var query: PFQuery {
         let currentUser = ParseUser.current()
         let pollQuery = PFQuery(className: ParsePoll.parseClassName())
             .whereKey(ParsePollHiddenKey, notEqualTo: true)
-            .includeKey(ParsePollCreatedByKey)
             .includeKey(ParsePollPhotosKey)
             .orderByDescending(ParseObjectCreatedAtKey)
-        pollQuery.limit = pollLimit
-        switch type {
+        pollQuery.limit = ParsePollListQueryLimit
+        switch parameters.type {
         case .Mine:
             return pollQuery.whereKey(ParsePollCreatedByKey, equalTo: currentUser)
-        case .VotePublic:
+        case .Vote:
             if currentUser.objectId?.fn_count > 0 {
                 let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
                     .orderByDescending(ParseVotePollCreatedAtKey)
@@ -410,12 +424,12 @@ class ParsePollList: Printable, DebugPrintable {
                 pollQuery.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)
                     .whereKey(ParsePollCreatedByKey, notEqualTo: currentUser)
             }
-            return pollQuery
+            return pollQuery.includeKey(ParsePollCreatedByKey)
         }
     }
 
-    init(type: Type) {
-        self.type = type
+    init(parameters: Parameters = Parameters()) {
+        self.parameters = parameters
     }
 
     /// Type of update request
@@ -445,14 +459,12 @@ class ParsePollList: Printable, DebugPrintable {
     /// Updates (or downloads for the first time) the poll list. It returns true in the completion handler if there is new polls added to the list.
     func update(type: UpdateType = .Newer, completionHandler: PFBooleanResultBlock) {
 
-        NSLog("update: \(ParsePollList.firstPollId)")
-
         if downloading {
 
             // Already downloading. Just return error.
             completionHandler(false, NSError(fn_code: .Busy))
             
-        } else if lastUpdate?.timeIntervalSinceNow > updateLimitTime {
+        } else if lastUpdate?.timeIntervalSinceNow > ParsePollListUpdateLimitTime {
 
             // Tried to update too early. Just return error.
             completionHandler(false, NSError(fn_code: .RequestTooOften))

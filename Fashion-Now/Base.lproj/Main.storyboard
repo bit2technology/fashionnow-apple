@@ -447,7 +447,7 @@
                                 <constraint firstAttribute="bottom" secondItem="AvG-QN-hJT" secondAttribute="bottom" id="znM-iO-12R"/>
                             </constraints>
                         </view>
-                        <barButtonItem key="rightBarButtonItem" image="BarButtonGear" id="7cP-ys-3w6">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" image="BarButtonGear" id="7cP-ys-3w6">
                             <connections>
                                 <action selector="gearButtonPressed:" destination="6wq-1Y-TiB" id="C6H-MF-zjm"/>
                             </connections>

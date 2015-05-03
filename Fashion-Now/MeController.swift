@@ -11,10 +11,12 @@ private let linkFacebookButtonTitle = NSLocalizedString("MeController.gearButton
 private let unlinkFacebookButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.unlinkFacebookButtonTitle", value: "Disconnect of Facebook", comment: "Shown when user taps the gear button")
 private let inviteButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.inviteButtonTitle", value: "Invite Friends", comment: "Shown when user taps the gear button")
 
+private let mineParameters = ParsePollList.Parameters(type: .Mine)
+
 class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInviteDialogDelegate {
 
     /// Main list of polls to show
-    private var myPolls = ParsePollList(type: .Mine)
+    private var myPolls = ParsePollList(parameters: mineParameters)
     /// List of posted polls before update
     private var postedPolls = [ParsePoll]()
     /// Get currect poll
@@ -117,7 +119,9 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
             })
 
         case inviteButtonTitle:
-            FBSDKAppInviteDialog.showWithContent(FBSDKAppInviteContent(appLinkURL: NSURL(string: "http://www.fashionnowapp.com")), delegate: self)
+            let inviteContent = FBSDKAppInviteContent()
+            inviteContent.appLinkURL = NSURL(string: "http://www.fashionnowapp.com")
+            FBSDKAppInviteDialog.showWithContent(inviteContent, delegate: self)
 
         case linkFacebookButtonTitle:
             let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
@@ -167,7 +171,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
     func loginChanged(notification: NSNotification) {
 
         // Clean caches. Also load polls if new user is not anonymous
-        myPolls = ParsePollList(type: .Mine)
+        myPolls = ParsePollList(parameters: mineParameters)
         collectionView!.reloadData()
         if ParseUser.current().isLogged {
             footer?.activityIndicator?.startAnimating()
@@ -367,23 +371,6 @@ class MePollHeader: UICollectionReusableView {
         if avatarUrl != currentUserUrl {
             avatarUrl = currentUserUrl
             avatarImageView.setImageWithURL(currentUserUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
-        }
-
-        ParsePollList(type: .Mine).query.countObjectsInBackgroundWithBlock { (count, error) -> Void in
-            if !FNAnalytics.logError(error, location: "Me: Count polls") {
-                // TODO: Improve
-                self.pollsButton.setTitle("\(count)\nPolls", forState: .Normal)
-            }
-        }
-
-        let votesQuery = PFQuery(className: ParseVote.parseClassName())
-        votesQuery.whereKey(ParseVoteByKey, equalTo: currentUser)
-        votesQuery.whereKey(ParseVoteVoteKey, greaterThan: 0)
-        votesQuery.countObjectsInBackgroundWithBlock { (count, error) -> Void in
-            if !FNAnalytics.logError(error, location: "Me: Count votes") {
-                // TODO: Improve
-                self.votesButton.setTitle("\(count)\nVotes", forState: .Normal)
-            }
         }
 
         FBSDKGraphRequest(graphPath: "me/friends?fields=id&limit=\(Int.max)", parameters: nil).startWithCompletionHandler { (requestConnection, result, error) -> Void in

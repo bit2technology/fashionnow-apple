@@ -11,34 +11,32 @@ PODS:
   - EAIntroView (2.7.3):
     - EARestrictedScrollView (~> 0.1.0)
   - EARestrictedScrollView (0.1.0)
-  - Facebook-iOS-SDK (4.0.1):
-    - Bolts (~> 1.0)
-    - Facebook-iOS-SDK/CoreKit (= 4.0.1)
-    - Facebook-iOS-SDK/LoginKit (= 4.0.1)
-    - Facebook-iOS-SDK/ShareKit (= 4.0.1)
-  - Facebook-iOS-SDK/CoreKit (4.0.1):
-    - Bolts (~> 1.0)
-    - Facebook-iOS-SDK/CoreKit/no-arc (= 4.0.1)
-  - Facebook-iOS-SDK/CoreKit/no-arc (4.0.1):
-    - Bolts (~> 1.0)
-  - Facebook-iOS-SDK/LoginKit (4.0.1):
-    - Bolts (~> 1.0)
-    - Facebook-iOS-SDK/CoreKit
-  - Facebook-iOS-SDK/ShareKit (4.0.1):
-    - Bolts (~> 1.0)
-    - Facebook-iOS-SDK/CoreKit
+  - FBSDKCoreKit (4.1.0):
+    - Bolts (~> 1.1)
+    - FBSDKCoreKit/arc (= 4.1.0)
+    - FBSDKCoreKit/no-arc (= 4.1.0)
+  - FBSDKCoreKit/arc (4.1.0):
+    - Bolts (~> 1.1)
+  - FBSDKCoreKit/no-arc (4.1.0):
+    - Bolts (~> 1.1)
+    - FBSDKCoreKit/arc
+  - FBSDKLoginKit (4.1.0):
+    - FBSDKCoreKit
+  - FBSDKShareKit (4.1.0):
+    - FBSDKCoreKit
   - GoogleAnalytics-iOS-SDK (3.10):
     - GoogleAnalytics-iOS-SDK/Core (= 3.10)
   - GoogleAnalytics-iOS-SDK/Core (3.10)
   - HexColors (2.2.1)
-  - Parse (1.7.2):
-    - Bolts (~> 1.1)
-  - ParseCrashReporting (1.7.2):
-    - Bolts (~> 1.1)
+  - Parse (1.7.2.1):
+    - Bolts/Tasks (>= 1.1.5)
+  - ParseCrashReporting (1.7.2.1):
+    - Bolts/Tasks (>= 1.1.5)
     - Parse (~> 1.7.2)
-  - ParseFacebookUtilsV4 (1.7.2):
-    - Bolts (~> 1.1)
-    - Facebook-iOS-SDK/LoginKit (~> 4.0)
+  - ParseFacebookUtilsV4 (1.7.2.1):
+    - Bolts/Tasks (>= 1.1.5)
+    - FBSDKCoreKit (~> 4.0)
+    - FBSDKLoginKit (~> 4.0)
     - Parse (~> 1.7.2)
   - Reachability (3.2)
   - SDWebImage (3.7.2):
@@ -48,6 +46,7 @@ PODS:
     - HexColors
   - UIActivityIndicator-for-SDWebImage (1.2):
     - SDWebImage (~> 3.7)
+  - UIImageEffects (0.0.1)
 
 DEPENDENCIES:
   - ActionSheetPicker-3.0
@@ -55,7 +54,9 @@ DEPENDENCIES:
   - Bolts
   - DateTools
   - EAIntroView
-  - Facebook-iOS-SDK
+  - FBSDKCoreKit
+  - FBSDKLoginKit
+  - FBSDKShareKit
   - GoogleAnalytics-iOS-SDK
   - Parse
   - ParseCrashReporting
@@ -64,6 +65,7 @@ DEPENDENCIES:
   - SDWebImage
   - TSMessages
   - UIActivityIndicator-for-SDWebImage
+  - UIImageEffects
 
 SPEC CHECKSUMS:
   ActionSheetPicker-3.0: f8da36f51ba109882a7cfa5979a4856b4e26fa37
@@ -72,15 +74,18 @@ SPEC CHECKSUMS:
   DateTools: b93a2c2017747329c6077c7d7e8a75106e23d0d7
   EAIntroView: bedde44388280d71c9798ce36c82720901596355
   EARestrictedScrollView: 5ab3eadd9ea55282cc72df0daecb09803059e3a0
-  Facebook-iOS-SDK: 6d05532c97e9c542f8d87f94b7f6ee217493d00b
+  FBSDKCoreKit: 469ed167195f860dbd2b4c4bbaa33d2e90598db9
+  FBSDKLoginKit: ff6224762732e3698f30942e4544321b8c7a23e6
+  FBSDKShareKit: 8002faf0c564ff3625eadd16e506b0b0fbf3adef
   GoogleAnalytics-iOS-SDK: 4f98a376c1d61e6ac4ca47951655820314856eef
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
-  Parse: e1959adb9fe2fcd4736dac20b3ac691d47a4f06c
-  ParseCrashReporting: 794a166ff1ce4d7c671ffb7fd86f381b806bddb7
-  ParseFacebookUtilsV4: 79d6f3c54da18651c8208e0f785a54988a2d9a1c
+  Parse: 8213b05b52768b34b87e1e41fd9efc88a9933f3f
+  ParseCrashReporting: 61afccb3eb470e564db34ba81fd44ea77f0e3e07
+  ParseFacebookUtilsV4: b9a876da5d17278b5026c4207774a9c06cf8891d
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   TSMessages: 2a52642128d7ab15b46930c810b9c9403a2b58f3
   UIActivityIndicator-for-SDWebImage: 7bf7ebbf0ed1747dedc0d6e949c4603a6d0f9e0c
+  UIImageEffects: 37b99fa461e4965f332ca82e92f2c22a1075ee84
 
-COCOAPODS: 0.36.4
+COCOAPODS: 0.37.0

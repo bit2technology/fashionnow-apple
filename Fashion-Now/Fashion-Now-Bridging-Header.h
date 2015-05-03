@@ -18,4 +18,5 @@
 #import <ParseFacebookUtilsV4/PFFacebookUtils.h>
 #import <Reachability/Reachability.h>
 #import <TSMessages/TSMessage.h>
+#import <UIImageEffects/UIImage+ImageEffects.h>
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>

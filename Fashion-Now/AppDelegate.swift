@@ -76,7 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if url.scheme == "fashionnowapp" {
 
             if url.host == "poll" {
-                ParsePollList.firstPollId = url.lastPathComponent
+                VotePollController.firstPollId = url.lastPathComponent
                 return true
             }
         }
@@ -167,7 +167,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
 
         // Handling push notification
-        ParsePollList.firstPollId = userInfo["poll"] as? String
+        VotePollController.firstPollId = userInfo["poll"] as? String
 
         if application.applicationState == .Inactive {
             // The application was just brought from the background to the foreground, so we consider the app as having been "opened by a push notification."
