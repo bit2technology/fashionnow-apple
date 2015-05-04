@@ -443,14 +443,33 @@ class ParsePollList: Printable, DebugPrintable {
     /// Return next poll (generally to vote) and optionally, remove it from the list
     func nextPoll(#remove: Bool) -> ParsePoll? {
 
-        if polls.count > 0 {
-            let nextPoll = polls[0]
-            if remove {
-                polls.removeAtIndex(0)
-            }
-            return nextPoll
+        if let firstPollId = polls.first?.objectId {
+            return poll(firstPollId, remove: remove)
         }
         return nil
+    }
+
+    /// Return poll for given Id (generally when user tapped a notification to vote) and optionally, remove it from the list
+    func poll(id: String, remove: Bool) -> ParsePoll? {
+
+        var pollForId: ParsePoll?
+        var idxForId: Int?
+
+        // Find
+        for (idx, poll) in enumerate(polls) {
+            if poll.objectId == id {
+                pollForId = poll
+                idxForId = idx
+                break
+            }
+        }
+
+        // Remove
+        if remove, let idxToRemove = idxForId {
+            polls.removeAtIndex(idxToRemove)
+        }
+
+        return pollForId
     }
 
     /// Cache the completion handler from update method and use in the finish method

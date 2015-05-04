@@ -73,13 +73,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
 
-        if url.scheme == "fashionnowapp" {
-
-            if url.host == "poll" {
-                VotePollController.firstPollId = url.lastPathComponent
-                return true
-            }
-        }
+        // TODO: Analyse if poll is from current user
+//        if url.scheme == "fashionnowapp" {
+//
+//            if url.host == "poll" {
+//                VotePollController.firstPollId = url.lastPathComponent
+//                return true
+//            }
+//        }
 
         // Facebook
         return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
@@ -166,10 +167,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
 
-        // Handling push notification
+        // Handling push notification for vote
         VotePollController.firstPollId = userInfo["poll"] as? String
+        NSNotificationCenter.defaultCenter().postNotificationName(VoteNotificationTappedNotificationName, object: self, userInfo: userInfo)
 
-        if application.applicationState == .Inactive {
+        if application.applicationState != .Active {
             // The application was just brought from the background to the foreground, so we consider the app as having been "opened by a push notification."
             PFAnalytics.trackAppOpenedWithRemoteNotificationPayloadInBackground(userInfo, block: nil)
         }

@@ -8,6 +8,8 @@
 
 import UIKit
 
+let VoteNotificationTappedNotificationName = "VoteNotificationTappedNotification"
+
 private let transitionDuration: NSTimeInterval = 0.25
 
 // Action Sheet buttons
@@ -20,9 +22,12 @@ private let asLoginButtonTitle = NSLocalizedString("VotePollController.gearButto
 private let alReportMessage = NSLocalizedString("VotePollController.gearButton.reportAlert.message", value: "Tell us why you want to report this poll", comment: "Shown when user reports a poll")
 private let alReportButtonTitle = NSLocalizedString("VotePollController.gearButton.reportAlert.reportButtonTitle", value: "Report", comment: "Shown when user reports a poll")
 
+// Push notification
+private let pushAlertAction = NSLocalizedString("VotePollController.pushAlert.viewButtonTitle", value: "View", comment: "Shown when vote push notification received while app is open")
+
 // TODO: Translate
-private let rmNoMorePolls = "no more polls"
-private let rmLoadFail = "load fail"
+private let rmNoMorePolls = NSLocalizedString("VotePollController.refreshMessage.noMorePolls", value: "No more polls to vote", comment: "Shown when there is no poll to show")
+private let rmLoadFail = NSLocalizedString("VotePollController.refreshMessage.pollLoadFail", value: "Ops… Something went wrong. Please, try again.", comment: "Shown when there is no poll to show")
 
 class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDelegate, EAIntroDelegate, UIActionSheetDelegate, UIAlertViewDelegate {
 
@@ -84,7 +89,12 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
     private func showNextPoll() -> Bool {
 
-        currentPoll = polls.nextPoll(remove: true)
+        if let firstPollToShow = VotePollController.firstPollId {
+            currentPoll = polls.poll(firstPollToShow, remove: true) ?? polls.nextPoll(remove: true)
+            VotePollController.firstPollId = nil
+        } else {
+            currentPoll = polls.nextPoll(remove: true)
+        }
 
         if let pollToShow = currentPoll {
 
@@ -92,7 +102,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
             if let avatarUrl = pollToShow.createdBy?.avatarURL(size: 33) {
                 avatarView.setImageWithURL(avatarUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), usingActivityIndicatorStyle: .White)
             } else {
-                avatarView.image = nil
+                avatarView.image = UIColor.fn_placeholder().fn_image()
             }
             // Name
             let createdBy = pollToShow.createdBy
@@ -103,8 +113,8 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
             navigationItem.rightBarButtonItem?.enabled = true
 
             return true
-        }
-        else {
+
+        } else {
             avatarView.image = nil
             nameLabel.text = nil
             dateLabel.text = nil
@@ -127,13 +137,14 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
             self.avatarView.image = nil
             self.nameLabel.text = nil
             self.dateLabel.text = nil
+            self.navigationItem.rightBarButtonItem?.enabled = false
 
             // Reload polls
             self.polls = ParsePollList()
             self.polls.update(completionHandler: { (success, error) -> Void in
                 UIView.transitionWithView(self.navigationController!.view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
                     if FNAnalytics.logError(error, location: "Vote: Load List") {
-                        self.setRefreshMessage(text: error!.localizedDescription)
+                        self.setRefreshMessage(text: error!.domain == FNErrorDomain && error!.code == FNErrorCode.NothingNew.rawValue ? rmNoMorePolls : rmLoadFail)
                         self.loadingInterface.stopAnimating()
                     } else {
                         self.showNextPoll()
@@ -141,6 +152,54 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
                 }, completion: nil)
             })
         }, completion: nil)
+    }
+
+    func notificationReceived(sender: NSNotification) {
+
+        if UIApplication.sharedApplication().applicationState == .Active {
+            let alert = sender.userInfo?["aps"]?["alert"] as? [String:AnyObject]
+            if let title = alert?["title-loc-key"] as? String, let format = alert?["loc-key"] as? String, let args = alert?["loc-args"] as? [String] {
+
+                // Title
+                let locTitle = NSLocalizedString(title, comment: "")
+
+                // Message
+                let locFormat = NSLocalizedString(format, comment: "")
+                var cArgs = [CVarArgType]()
+                for arg in args {
+                    cArgs.append(Unmanaged<AnyObject>.passUnretained(arg).toOpaque())
+                }
+                let cVaList = getVaList(cArgs)
+                let locMessage = NSString(format: locFormat, arguments: cVaList) as String
+
+                // Show notification
+                if NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1 {
+
+                    // iOS 8 and above
+                    let alert = UIAlertController(title: locTitle, message: locMessage, preferredStyle: .Alert)
+                    let defaultHandler: ((UIAlertAction!) -> Void) = { (action) -> Void in
+                        self.notificationAlertAction(action.title)
+                    }
+                    alert.addAction(UIAlertAction(title: FNLocalizedCancelButtonTitle, style: .Cancel, handler: nil))
+                    alert.addAction(UIAlertAction(title: pushAlertAction, style: .Default, handler: defaultHandler))
+                    fn_tabBarController.presentViewController(alert, animated: true, completion: nil)
+
+                } else {
+
+                    // iOS 7
+                    UIAlertView(title: alReportButtonTitle, message: alReportMessage, delegate: self, cancelButtonTitle: FNLocalizedCancelButtonTitle, otherButtonTitles: pushAlertAction).show()
+                }
+            }
+        } else {
+            loadPollList(nil)
+        }
+    }
+
+    private func notificationAlertAction(buttonTitle: String) {
+        if buttonTitle == pushAlertAction {
+            loadPollList(fn_tabBarController.selectedIndex == 0 ? UIButton() : nil) // Pretend user tapped the refresh button to animate (if vote controller is presented)
+            fn_tabBarController.selectedIndex = 0
+        }
     }
 
     // MARK: Gear button
@@ -151,17 +210,17 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         let defaultHandler: ((UIAlertAction!) -> Void) = { (action) -> Void in
             self.actionSheetAction(action.title)
         }
-        var actions = [UIAlertAction]()
+        var actions = [[String:String]]()
         if currentPoll != nil {
-            actions.append(UIAlertAction(title: asReportButtonTitle, style: .Destructive, handler: defaultHandler))
-            actions.append(UIAlertAction(title: asSkipButtonTitle, style: .Default, handler: defaultHandler))
+            actions.append(["title": asReportButtonTitle, "style": "destructive"])
+            actions.append(["title": asSkipButtonTitle])
         }
         // TODO: Add filters
         //actionsheet.addAction(UIAlertAction(title: filtersButtonTitle, style: .Default, handler: defaultHandler))
         if !ParseUser.current().isLogged {
-            actions.append(UIAlertAction(title: asLoginButtonTitle, style: .Default, handler: defaultHandler))
+            actions.append(["title": asLoginButtonTitle])
         }
-        actions.append(UIAlertAction(title: FNLocalizedCancelButtonTitle, style: .Cancel, handler: defaultHandler))
+        actions.append(["title": FNLocalizedCancelButtonTitle, "style": "cancel"])
 
         // Presentation
         if NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1 {
@@ -169,7 +228,15 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
             // iOS 8 and above
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
             for action in actions {
-                actionSheet.addAction(action)
+                var style = UIAlertActionStyle.Default
+                if let styleStr = action["style"] {
+                    if styleStr == "destructive" {
+                        style = .Destructive
+                    } else if styleStr == "cancel" {
+                        style = .Cancel
+                    }
+                }
+                actionSheet.addAction(UIAlertAction(title: action["title"]!, style: style, handler: defaultHandler))
             }
             actionSheet.popoverPresentationController?.barButtonItem = sender
             presentViewController(actionSheet, animated: true, completion: nil)
@@ -179,11 +246,13 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
             // iOS 7
             let actionSheet = UIActionSheet()
             for action in actions {
-                let idx = actionSheet.addButtonWithTitle(action.title)
-                if action.style == .Destructive {
-                    actionSheet.destructiveButtonIndex = idx
-                } else if action.style == .Cancel {
-                    actionSheet.cancelButtonIndex = idx
+                let idx = actionSheet.addButtonWithTitle(action["title"]!)
+                if let styleStr = action["style"] {
+                    if styleStr == "destructive" {
+                        actionSheet.destructiveButtonIndex = idx
+                    } else if styleStr == "cancel" {
+                        actionSheet.cancelButtonIndex = idx
+                    }
                 }
             }
             actionSheet.delegate = self
@@ -210,7 +279,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
                 // iOS 8 and above
                 let alert = UIAlertController(title: asReportButtonTitle, message: alReportMessage, preferredStyle: .Alert)
                 let defaultHandler: ((UIAlertAction!) -> Void) = { (action) -> Void in
-                    self.alertAction(action.title, comment: (alert.textFields?.first as? UITextField)?.text)
+                    self.reportAlertAction(action.title, comment: (alert.textFields?.first as? UITextField)?.text)
                 }
                 alert.addAction(UIAlertAction(title: FNLocalizedCancelButtonTitle, style: .Cancel, handler: defaultHandler))
                 alert.addAction(UIAlertAction(title: alReportButtonTitle, style: .Destructive, handler: defaultHandler))
@@ -231,10 +300,14 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     }
 
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-        alertAction(alertView.buttonTitleAtIndex(buttonIndex), comment: alertView.textFieldAtIndex(0)?.text)
+        if alertView.title == asReportButtonTitle {
+            reportAlertAction(alertView.buttonTitleAtIndex(buttonIndex), comment: alertView.textFieldAtIndex(0)?.text)
+        } else {
+            notificationAlertAction(alertView.buttonTitleAtIndex(buttonIndex))
+        }
     }
 
-    private func alertAction(buttonTitle: String, comment: String?) {
+    private func reportAlertAction(buttonTitle: String, comment: String?) {
         switch buttonTitle {
         case alReportButtonTitle:
             // TODO: Report
@@ -281,7 +354,9 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         // Initializes poll list and adjusts interface
         loadPollList(nil)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadPollList:", name: LoginChangedNotificationName, object: nil)
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: "loadPollList:", name: LoginChangedNotificationName, object: nil)
+        notificationCenter.addObserver(self, selector: "notificationReceived:", name: VoteNotificationTappedNotificationName, object: nil)
     }
 
     private var tutoPresented = false
