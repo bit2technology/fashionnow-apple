@@ -706,10 +706,14 @@ class ParseReport: PFObject, PFSubclassing {
         return "Report"
     }
 
-    convenience init(user: ParseUser) {
+    convenience init(user: ParseUser = ParseUser.current(), pollId: String, comment: String?) {
         self.init()
-        ACL = PFACL(user: user)
+        let acl = PFACL()
+        acl.setPublicReadAccess(true)
+        ACL = acl
         self.user = user
+        self.pollId = pollId
+        self.comment = comment
     }
 
     var comment: String? {

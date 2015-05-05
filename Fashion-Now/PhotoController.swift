@@ -14,6 +14,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         didSet {
 
             // Clean
+            bgImageView.image = nil
             imageView.image = nil
 
             // Editability
@@ -32,7 +33,13 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
                 imageView.sd_setImageWithURL(NSURL(string: urlString), completed: { (image, error, cacheType, url) -> Void in
                     if image != nil {
                         self.imageView.fn_setAspectRatio(image: image)
-                        self.delegate?.photoLoaded(self)
+                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+                            let blurredImage = image.scaleByFactor(0.1).gaussianBlurWithBias(3)
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                self.bgImageView.image = blurredImage
+                                self.delegate?.photoLoaded(self)
+                            })
+                        })
                     } else {
                         self.delegate?.photoLoadFailed(self, error: error)
                     }
@@ -45,7 +52,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
 
     weak var delegate: PhotoControllerDelegate?
 
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var bgImageView, imageView: UIImageView!
     /// Show or hide image container
     private func imageContainerHidden(hidden: Bool) {
         imageView.superview!.hidden = hidden
@@ -86,7 +93,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
     private func setPhotoImage(image: UIImage) {
 
         // Set photo properties
-        let imageData = image.fn_compressed()
+        let imageData = image.fn_dataFit()
         photo.image = PFFile(fn_imageData: imageData)
         photo.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             FNAnalytics.logError(error, location: "Photo: Save")
@@ -168,7 +175,7 @@ protocol PhotoControllerDelegate: class {
 }
 
 /// View that adjusts background by tint color
-class PhotoBackgroundView: UIView {
+class FNPhotoBackgroundView: UIView {
     override func tintColorDidChange() {
         super.tintColorDidChange()
         backgroundColor = tintColor

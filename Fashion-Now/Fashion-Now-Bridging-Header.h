@@ -12,11 +12,11 @@
 #import <GoogleAnalytics-iOS-SDK/GAI.h>
 #import <GoogleAnalytics-iOS-SDK/GAIDictionaryBuilder.h>
 #import <GoogleAnalytics-iOS-SDK/GAIFields.h>
+#import <NYXImagesKit/NYXImagesKit.h>
 #import <Parse/Parse.h>
 #import <Parse/PFObject+Subclass.h>
 #import <ParseCrashReporting/ParseCrashReporting.h>
 #import <ParseFacebookUtilsV4/PFFacebookUtils.h>
 #import <Reachability/Reachability.h>
 #import <TSMessages/TSMessage.h>
-#import <UIImageEffects/UIImage+ImageEffects.h>
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>

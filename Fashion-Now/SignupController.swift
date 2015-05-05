@@ -241,7 +241,7 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
             }
             // Set photo properties
             if self.avatarChanged {
-                let imageData = self.avatarImageView.image!.fn_compressed(maxSize: 256, compressionQuality: 0.8)
+                let imageData = self.avatarImageView.image!.fn_dataFill(quality: 0.8)
                 currentUser.avatarImage = PFFile(fn_imageData: imageData)
             }
 
@@ -267,7 +267,8 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
         let currentUser = ParseUser.current()
 
         // Adjust layout
-        avatarImageView.image = UIColor.fn_placeholder().fn_image()
+        let placeholderImage = UIImage(fn_color: UIColor.fn_placeholder())
+        avatarImageView.image = placeholderImage
 
         // Fill values
         gender = currentUser.gender
@@ -292,7 +293,7 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
         emailField.text = currentUser.email
         // Avatar
         if let unwrappedAvatarUrl = currentUser.avatarURL(size: 84) {
-            avatarImageView.setImageWithURL(unwrappedAvatarUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
+            avatarImageView.setImageWithURL(unwrappedAvatarUrl, placeholderImage: placeholderImage, completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         }
 
         // Make some changes if user has already configured account

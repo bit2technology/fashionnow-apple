@@ -1614,18 +1614,21 @@
                                     <constraint firstAttribute="bottom" secondItem="uMi-wS-xwZ" secondAttribute="bottom" id="eJf-PC-5py"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H8b-Ws-oM2" userLabel="Image Conainer" customClass="PhotoBackgroundView" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="-160" y="0.0" width="480" height="367"/>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H8b-Ws-oM2" userLabel="Image Conainer" customClass="FNPhotoBackgroundView" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="-120" y="0.0" width="400" height="367"/>
                                 <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KiO-BQ-HtZ" userLabel="Background Image View">
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="367"/>
+                                    </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yhO-Ld-1tg">
-                                        <rect key="frame" x="137" y="0.0" width="206" height="367"/>
+                                        <rect key="frame" x="97" y="0.0" width="206" height="367"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="yhO-Ld-1tg" secondAttribute="height" multiplier="9:16" placeholder="YES" id="ZdJ-tu-jru"/>
                                         </constraints>
                                     </imageView>
                                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bty-dr-ys9" userLabel="Delete Button Align">
-                                        <rect key="frame" x="160" y="323" width="160" height="44"/>
+                                        <rect key="frame" x="120" y="323" width="160" height="44"/>
                                         <subviews>
                                             <button opaque="NO" alpha="0.75000000000000022" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YYI-4A-sio" userLabel="Delete Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
@@ -1646,11 +1649,15 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="KiO-BQ-HtZ" secondAttribute="trailing" id="81q-ct-nYV"/>
+                                    <constraint firstItem="KiO-BQ-HtZ" firstAttribute="leading" secondItem="H8b-Ws-oM2" secondAttribute="leading" id="AKb-Hc-WBX"/>
+                                    <constraint firstAttribute="bottom" secondItem="KiO-BQ-HtZ" secondAttribute="bottom" id="Av7-Co-FKN"/>
                                     <constraint firstAttribute="centerX" secondItem="yhO-Ld-1tg" secondAttribute="centerX" id="IwN-V6-SM8"/>
                                     <constraint firstItem="yhO-Ld-1tg" firstAttribute="top" secondItem="H8b-Ws-oM2" secondAttribute="top" id="YfS-wH-E0a"/>
                                     <constraint firstAttribute="bottom" secondItem="bty-dr-ys9" secondAttribute="bottom" id="dtr-IZ-Tzc"/>
+                                    <constraint firstItem="KiO-BQ-HtZ" firstAttribute="top" secondItem="H8b-Ws-oM2" secondAttribute="top" id="iMs-gQ-JhW"/>
                                     <constraint firstAttribute="bottom" secondItem="yhO-Ld-1tg" secondAttribute="bottom" id="maz-NH-143"/>
                                     <constraint firstAttribute="centerX" secondItem="bty-dr-ys9" secondAttribute="centerX" id="zJb-5g-iLc"/>
                                 </constraints>
@@ -1658,7 +1665,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="H8b-Ws-oM2" firstAttribute="width" secondItem="5Xe-GT-hcA" secondAttribute="width" multiplier="3" id="02M-1d-9kn"/>
+                            <constraint firstItem="H8b-Ws-oM2" firstAttribute="width" secondItem="5Xe-GT-hcA" secondAttribute="width" multiplier="2.5" id="02M-1d-9kn"/>
                             <constraint firstAttribute="centerX" secondItem="b6v-RN-CyL" secondAttribute="centerX" id="FfH-Q8-MeY"/>
                             <constraint firstAttribute="width" secondItem="bty-dr-ys9" secondAttribute="width" id="TTu-QP-LSk"/>
                             <constraint firstItem="H8b-Ws-oM2" firstAttribute="top" secondItem="5Xe-GT-hcA" secondAttribute="top" id="UyP-7d-YCi"/>
@@ -1669,6 +1676,7 @@
                     </view>
                     <toolbarItems/>
                     <connections>
+                        <outlet property="bgImageView" destination="KiO-BQ-HtZ" id="5me-Z2-sWa"/>
                         <outlet property="cameraButton" destination="FBu-Eh-kK4" id="YFa-VO-0p1"/>
                         <outlet property="deleteButton" destination="YYI-4A-sio" id="P8K-H0-smO"/>
                         <outlet property="deleteButtonCenterX" destination="m31-6A-8o2" id="0fr-FY-TMy"/>

@@ -102,55 +102,6 @@ extension UIColor {
     class func fn_random(alpha: CGFloat = 1) -> UIColor{
         return UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: alpha)
     }
-
-    /// :returns: An image with this color and the specified size
-    func fn_image(size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
-
-        UIGraphicsBeginImageContext(size);
-        let context = UIGraphicsGetCurrentContext();
-
-        CGContextSetFillColorWithColor(context, CGColor);
-        CGContextFillRect(context, CGRect(origin: CGPointZero, size: size));
-
-        let image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        return image
-    }
-}
-
-extension UIImage {
-
-    /// :returns: Compressed JPEG Data, opaque and with scale 1
-    func fn_compressed(maxSize: CGFloat = 1024, compressionQuality: CGFloat = 0.5) -> NSData {
-
-        let resizeScale = maxSize / max(size.width, size.height)
-
-        var img: UIImage?
-        if resizeScale < 1 {
-            let resizeRect = CGRect(x: 0, y: 0, width: floor(size.width * resizeScale), height: floor(size.height * resizeScale))
-            UIGraphicsBeginImageContextWithOptions(resizeRect.size, true, 1)
-            drawInRect(resizeRect)
-            img = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-        }
-        return UIImageJPEGRepresentation(img ?? self, compressionQuality)
-    }
-
-    /// :returns: Resized image if necessary, opaque and with screen scale
-    func fn_resized(maxHeight: CGFloat) -> UIImage {
-
-        let resizeScale = maxHeight / size.height
-
-        if resizeScale < 1 {
-            let resizeRect = CGRect(x: 0, y: 0, width: floor(size.width * resizeScale), height: floor(size.height * resizeScale))
-            UIGraphicsBeginImageContextWithOptions(resizeRect.size, true, UIScreen.mainScreen().scale)
-            drawInRect(resizeRect)
-            let img = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            return img
-        }
-        return self
-    }
 }
 
 extension String {
@@ -234,27 +185,6 @@ extension UIButton {
         }
         set {
             titleLabel?.textAlignment = newValue ? .Center : .Left
-        }
-    }
-}
-
-extension UIImageView {
-    /// Adjusts the image view aspect ratio constraint to the size of the image
-    func fn_setAspectRatio(image newImage: UIImage?, needsLayout: Bool = true) {
-
-        if let correctImage = newImage ?? image {
-            // Remove old aspect ratio
-            if NSLayoutConstraint.respondsToSelector("deactivateConstraints:") {
-                NSLayoutConstraint.deactivateConstraints(constraints())
-            } else {
-                removeConstraints(constraints())
-            }
-
-            // Add new
-            addConstraint(NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Height, multiplier: correctImage.size.width / correctImage.size.height, constant: 0))
-            if needsLayout {
-                setNeedsLayout()
-            }
         }
     }
 }

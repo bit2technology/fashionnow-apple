@@ -263,7 +263,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
 
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
 
-                        scaledImage = image.fn_resized(itemSize.height)
+                        scaledImage = image.scaleByFactor(Float(itemSize.height / image.size.height))
 
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             self.scaledImages[urlString] = scaledImage
@@ -370,7 +370,7 @@ class MePollHeader: UICollectionReusableView {
         let currentUserUrl = currentUser.avatarURL(size: 84)
         if avatarUrl != currentUserUrl {
             avatarUrl = currentUserUrl
-            avatarImageView.setImageWithURL(currentUserUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
+            avatarImageView.setImageWithURL(currentUserUrl, placeholderImage: UIImage(fn_color: UIColor.fn_placeholder()), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         }
 
         FBSDKGraphRequest(graphPath: "me/friends?fields=id&limit=\(Int.max)", parameters: nil).startWithCompletionHandler { (requestConnection, result, error) -> Void in
@@ -390,7 +390,7 @@ class MePollHeader: UICollectionReusableView {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        avatarImageView.image = UIColor.fn_placeholder().fn_image()
+        avatarImageView.image = UIImage(fn_color: UIColor.fn_placeholder())
     }
 }
 

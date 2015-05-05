@@ -25,7 +25,7 @@ private let alReportButtonTitle = NSLocalizedString("VotePollController.gearButt
 // Push notification
 private let pushAlertAction = NSLocalizedString("VotePollController.pushAlert.viewButtonTitle", value: "View", comment: "Shown when vote push notification received while app is open")
 
-// TODO: Translate
+// Refresh message
 private let rmNoMorePolls = NSLocalizedString("VotePollController.refreshMessage.noMorePolls", value: "No more polls to vote", comment: "Shown when there is no poll to show")
 private let rmLoadFail = NSLocalizedString("VotePollController.refreshMessage.pollLoadFail", value: "Ops… Something went wrong. Please, try again.", comment: "Shown when there is no poll to show")
 
@@ -99,10 +99,11 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         if let pollToShow = currentPoll {
 
             // Avatar
+            let placeholderImage = UIImage(fn_color: UIColor.fn_placeholder())
             if let avatarUrl = pollToShow.createdBy?.avatarURL(size: 33) {
-                avatarView.setImageWithURL(avatarUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), usingActivityIndicatorStyle: .White)
+                avatarView.setImageWithURL(avatarUrl, placeholderImage: placeholderImage, usingActivityIndicatorStyle: .White)
             } else {
-                avatarView.image = UIColor.fn_placeholder().fn_image()
+                avatarView.image = placeholderImage
             }
             // Name
             let createdBy = pollToShow.createdBy
@@ -308,7 +309,9 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     private func reportAlertAction(buttonTitle: String, comment: String?) {
         switch buttonTitle {
         case alReportButtonTitle:
-            // TODO: Report
+            PFObject.saveAllInBackground([currentPoll!, ParseReport(pollId: currentPoll!.objectId!, comment: comment)], block: { (succeeded, error) -> Void in
+
+            })
             pollController.animateHighlight(index: 0, source: .Extern)
         default:
             break
