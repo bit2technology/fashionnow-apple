@@ -211,10 +211,8 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
             self.actionSheetAction(action.title)
         }
         var actions = [[String:String]]()
-        if currentPoll != nil {
-            actions.append(["title": asReportButtonTitle, "style": "destructive"])
-            actions.append(["title": asSkipButtonTitle])
-        }
+        actions.append(["title": asReportButtonTitle, "style": "destructive"])
+        actions.append(["title": asSkipButtonTitle])
         // TODO: Add filters
         //actionsheet.addAction(UIAlertAction(title: filtersButtonTitle, style: .Default, handler: defaultHandler))
         if !ParseUser.current().isLogged {
@@ -425,13 +423,13 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     // MARK: PollControllerDelegate
 
     func pollLoaded(pollController: PollController) {
-        UIView.transitionWithView(navigationController!.view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
+        UIView.transitionWithView(view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
             self.loadingInterface.stopAnimating()
         }, completion: nil)
     }
 
     func pollLoadFailed(pollController: PollController, error: NSError) {
-        UIView.transitionWithView(navigationController!.view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
+        UIView.transitionWithView(view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
             if FNAnalytics.logError(error, location: "Vote: Poll Load Fail") {
                 self.setRefreshMessage(text: rmLoadFail)
                 self.loadingInterface.stopAnimating()
@@ -459,15 +457,15 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
             }
         }
 
-        // FIXME: Test
-        var params = ["from": pollController.poll.createdBy!.displayName, "to": ["t6EvTaxkz3"], "poll": pollController.poll.objectId!] as [NSObject : AnyObject]
-        let caption = pollController.poll.caption?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-        if caption?.fn_count > 0 {
-            params["caption"] = caption
-        }
-        PFCloud.callFunctionInBackground("sendPush", withParameters: params) { (result, error) -> Void in
-            //FNAnalytics.logError(error, location: "Vote: Send Push")
-        }
+//        // FIXME: Test
+//        var params = ["from": pollController.poll.createdBy!.displayName, "to": ["t6EvTaxkz3"], "poll": pollController.poll.objectId!] as [NSObject : AnyObject]
+//        let caption = pollController.poll.caption?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+//        if caption?.fn_count > 0 {
+//            params["caption"] = caption
+//        }
+//        PFCloud.callFunctionInBackground("sendPush", withParameters: params) { (result, error) -> Void in
+//            //FNAnalytics.logError(error, location: "Vote: Send Push")
+//        }
     }
 
     func pollDidHighlight(pollController: PollController) {
