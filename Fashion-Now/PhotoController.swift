@@ -34,7 +34,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
                     if image != nil {
                         self.imageView.fn_setAspectRatio(image: image)
                         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-                            let blurredImage = image.scaleToFitSize(CGSize(width: 128, height: 128)).applyBlurWithRadius(1, tintColor: nil, saturationDeltaFactor: 1)
+                            let blurredImage = image.fn_blur()
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                 self.bgImageView.image = blurredImage
                                 self.delegate?.photoLoaded(self)
@@ -93,7 +93,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
     private func setPhotoImage(image: UIImage) {
 
         // Set photo properties
-        let imageData = image.fn_dataFit()
+        let imageData = image.scaleToFitSize(CGSize(width: 1024, height: 1024)).fn_data()
         photo.image = PFFile(fn_imageData: imageData)
         photo.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             FNAnalytics.logError(error, location: "Photo: Save")

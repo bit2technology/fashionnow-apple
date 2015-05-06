@@ -19,7 +19,6 @@
 		4B82B4861AF9A41F00F63883 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B82B4881AF9A41F00F63883 /* InfoPlist.strings */; };
 		4B82B48B1AF9A42000F63883 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B82B48D1AF9A42000F63883 /* InfoPlist.strings */; };
 		4B9443591AB08B6D007DBAFD /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9443581AB08B6D007DBAFD /* AppHelper.swift */; };
-		4BA913AD1AF90DB600BA6504 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA913AC1AF90DB600BA6504 /* ImageHelper.swift */; };
 		4BAAAF8E1A14C5FB00AAFAFB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */; };
 		4BC4CF0B1A01164F0000A231 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4BC4CF0A1A01164F0000A231 /* .gitignore */; };
 		4BD255461AC45F7A004BF005 /* VoteFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD255451AC45F7A004BF005 /* VoteFilterController.swift */; };
@@ -60,7 +59,6 @@
 		4B82B4871AF9A41F00F63883 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4B82B48C1AF9A42000F63883 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4B9443581AB08B6D007DBAFD /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppHelper.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		4BA913AC1AF90DB600BA6504 /* ImageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		4BAAAF8F1A14C5FB00AAFAFB /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4BB1FD3F1AF0FDF800918052 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		4BB1FD401AF0FDF800918052 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -110,7 +108,6 @@
 			isa = PBXGroup;
 			children = (
 				4B9443581AB08B6D007DBAFD /* AppHelper.swift */,
-				4BA913AC1AF90DB600BA6504 /* ImageHelper.swift */,
 				4BDB6D141A221033003D56C1 /* FacebookHelper.swift */,
 				4BEB9E171A01AA9A00A71764 /* ParseHelper.swift */,
 			);
@@ -402,7 +399,6 @@
 				4BEB9E201A01ACA200A71764 /* VotePollController.swift in Sources */,
 				4BDB6D151A221033003D56C1 /* FacebookHelper.swift in Sources */,
 				4B7C3DEB1A1EB610004A4D37 /* MeController.swift in Sources */,
-				4BA913AD1AF90DB600BA6504 /* ImageHelper.swift in Sources */,
 				4BEB9E1C1A01ABF800A71764 /* PollController.swift in Sources */,
 				4B9443591AB08B6D007DBAFD /* AppHelper.swift in Sources */,
 				4BEB9E1E1A01AC8500A71764 /* PostPollController.swift in Sources */,

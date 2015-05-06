@@ -102,6 +102,18 @@ extension UIColor {
     class func fn_random(alpha: CGFloat = 1) -> UIColor{
         return UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: alpha)
     }
+
+    /// :returns: An image with this color, size 1x1 and scale 1
+    func fn_image() -> UIImage! {
+        let size = CGSize(width: 1, height: 1)
+        UIGraphicsBeginImageContextWithOptions(size, true, 1)
+        let context = UIGraphicsGetCurrentContext();
+        CGContextSetFillColorWithColor(context, CGColor);
+        CGContextFillRect(context, CGRect(origin: CGPointZero, size: size));
+        let image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return image
+    }
 }
 
 extension String {
@@ -169,6 +181,7 @@ extension UIView {
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: style)
         activityIndicator.color = color
         activityIndicator.backgroundColor = background
+        activityIndicator.hidesWhenStopped = false
         activityIndicator.startAnimating()
         activityIndicator.frame = bounds
         activityIndicator.autoresizingMask = .FlexibleWidth | .FlexibleHeight
@@ -210,6 +223,39 @@ extension UINavigationController {
     }
     public override func prefersStatusBarHidden() -> Bool {
         return topViewController.prefersStatusBarHidden()
+    }
+}
+
+extension UIImage {
+    
+    /// :returns: Compressed JPEG Data to fit square of this size and opaque
+    func fn_data(quality: CGFloat = 0.5) -> NSData {
+        return UIImageJPEGRepresentation(self, quality)
+    }
+
+    func fn_blur() -> UIImage! {
+        return scaleToFitSize(CGSize(width: 128, height: 128)).applyBlurWithRadius(1, tintColor: nil, saturationDeltaFactor: 1, maskImage: nil)
+    }
+}
+
+extension UIImageView {
+    /// Adjusts the image view aspect ratio constraint to the size of the image
+    func fn_setAspectRatio(image newImage: UIImage?, needsLayout: Bool = true) {
+
+        if let correctImage = newImage ?? image {
+            // Remove old aspect ratio
+            if NSLayoutConstraint.respondsToSelector("deactivateConstraints:") {
+                NSLayoutConstraint.deactivateConstraints(constraints())
+            } else {
+                removeConstraints(constraints())
+            }
+
+            // Add new
+            addConstraint(NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Height, multiplier: correctImage.size.width / correctImage.size.height, constant: 0))
+            if needsLayout {
+                setNeedsLayout()
+            }
+        }
     }
 }
 

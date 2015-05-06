@@ -58,9 +58,7 @@ class FriendsListTableController: FNTableController, PostPollControllerDelegate 
         poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             activityIndicator.removeFromSuperview()
 
-            if let error = error {
-                FNAnalytics.logError(error, location: "Friends List: Save Poll")
-            }
+            FNAnalytics.logError(error, location: "Friends List: Save Poll")
 
             if succeeded {
 

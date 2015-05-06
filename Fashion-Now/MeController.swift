@@ -370,7 +370,7 @@ class MePollHeader: UICollectionReusableView {
         let currentUserUrl = currentUser.avatarURL(size: 84)
         if avatarUrl != currentUserUrl {
             avatarUrl = currentUserUrl
-            avatarImageView.setImageWithURL(currentUserUrl, placeholderImage: UIImage(fn_color: UIColor.fn_placeholder()), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
+            avatarImageView.setImageWithURL(currentUserUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         }
 
         FBSDKGraphRequest(graphPath: "me/friends?fields=id&limit=\(Int.max)", parameters: nil).startWithCompletionHandler { (requestConnection, result, error) -> Void in
@@ -390,7 +390,7 @@ class MePollHeader: UICollectionReusableView {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        avatarImageView.image = UIImage(fn_color: UIColor.fn_placeholder())
+        avatarImageView.image = UIColor.fn_placeholder().fn_image()
     }
 }
 

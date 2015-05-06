@@ -64,7 +64,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     private func setVoteButtonsHidden(hidden: Bool, animated: Bool) {
         UIView.animateWithDuration(animated ? transitionDuration : 0) { () -> Void in
             for voteButton in [self.leftVoteButton, self.rightVoteButton] {
-                voteButton.alpha = (hidden ? 0.2 : 1)
+                voteButton.alpha = (hidden ? 0.5 : 1)
             }
         }
     }
@@ -79,10 +79,6 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     // Message interface with a button to refresh
     @IBOutlet weak var refreshMessage: UILabel!
     @IBOutlet weak var refreshMessageContainer: UIView!
-    private func setRefreshMessage(text: String? = nil, hidden: Bool = false) {
-        refreshMessage.text = text
-        refreshMessageContainer.hidden = hidden
-    }
 
     // Loading interface
     private weak var loadingInterface: UIActivityIndicatorView!
@@ -90,16 +86,16 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     private func showNextPoll() -> Bool {
 
         if let firstPollToShow = VotePollController.firstPollId {
-            currentPoll = polls.poll(firstPollToShow, remove: true) ?? polls.nextPoll(remove: true)
+            currentPoll = polls.remove(id: firstPollToShow) ?? polls.removeNext()
             VotePollController.firstPollId = nil
         } else {
-            currentPoll = polls.nextPoll(remove: true)
+            currentPoll = polls.removeNext()
         }
 
         if let pollToShow = currentPoll {
 
             // Avatar
-            let placeholderImage = UIImage(fn_color: UIColor.fn_placeholder())
+            let placeholderImage = UIColor.fn_placeholder().fn_image()
             if let avatarUrl = pollToShow.createdBy?.avatarURL(size: 33) {
                 avatarView.setImageWithURL(avatarUrl, placeholderImage: placeholderImage, usingActivityIndicatorStyle: .White)
             } else {
@@ -123,33 +119,46 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
             nameLabel.text = nil
             dateLabel.text = nil
             navigationItem.rightBarButtonItem?.enabled = false
-            setRefreshMessage(text: rmNoMorePolls)
-            loadingInterface.stopAnimating()
+            refreshMessage.text = rmNoMorePolls
+            refreshMessageContainer.hidden = false
+            loadingInterface.hidden = true
             return false
         }
     }
 
-    @IBAction func loadPollList(sender: AnyObject?) {
+    @IBAction func refreshButtonPressed(sender: UIButton) {
+        loadPollList(false, animated: true)
+    }
 
-        let duration = sender is UIButton ? transitionDuration : 0
+    func loginDidChange(sender: NSNotification) {
+        loadPollList(true, animated: false)
+    }
 
-        UIView.transitionWithView(self.navigationController!.view, duration: duration, options: .TransitionCrossDissolve, animations: { () -> Void in
+    private func loadPollList(clear: Bool, animated: Bool) {
+
+        UIView.transitionWithView(self.navigationController!.view, duration: animated ? transitionDuration : 0, options: .TransitionCrossDissolve, animations: { () -> Void in
 
             // Reset interface
-            self.setRefreshMessage(hidden: true)
-            self.loadingInterface.startAnimating()
+            self.refreshMessageContainer.hidden = true
+            self.loadingInterface.hidden = false
             self.avatarView.image = nil
             self.nameLabel.text = nil
             self.dateLabel.text = nil
             self.navigationItem.rightBarButtonItem?.enabled = false
 
             // Reload polls
-            self.polls = ParsePollList()
+            if clear {
+                self.polls = ParsePollList()
+            }
             self.polls.update(completionHandler: { (success, error) -> Void in
                 UIView.transitionWithView(self.navigationController!.view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
                     if FNAnalytics.logError(error, location: "Vote: Load List") {
-                        self.setRefreshMessage(text: error!.domain == FNErrorDomain && error!.code == FNErrorCode.NothingNew.rawValue ? rmNoMorePolls : rmLoadFail)
-                        self.loadingInterface.stopAnimating()
+                        // If error is RequestTooOften, do not change the message
+                        if error!.domain != FNErrorDomain || error!.code != FNErrorCode.RequestTooOften.rawValue {
+                            self.refreshMessage.text = error!.domain == FNErrorDomain && error!.code == FNErrorCode.NothingNew.rawValue ? rmNoMorePolls : rmLoadFail
+                        }
+                        self.refreshMessageContainer.hidden = false
+                        self.loadingInterface.hidden = true
                     } else {
                         self.showNextPoll()
                     }
@@ -195,13 +204,14 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
                 }
             }
         } else {
-            loadPollList(nil)
+            loadPollList(true, animated: false)
+            fn_tabBarController.selectedIndex = 0
         }
     }
 
     private func notificationAlertAction(buttonTitle: String) {
         if buttonTitle == pushAlertAction {
-            loadPollList(fn_tabBarController.selectedIndex == 0 ? UIButton() : nil) // Pretend user tapped the refresh button to animate (if vote controller is presented)
+            loadPollList(true, animated: fn_tabBarController.selectedIndex == 0)
             fn_tabBarController.selectedIndex = 0
         }
     }
@@ -312,8 +322,8 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     private func reportAlertAction(buttonTitle: String, comment: String?) {
         switch buttonTitle {
         case alReportButtonTitle:
-            PFObject.saveAllInBackground([currentPoll!, ParseReport(pollId: currentPoll!.objectId!, comment: comment)], block: { (succeeded, error) -> Void in
-
+            ParseReport.sendReport(currentPoll!, comment: comment, block: { (succeeded, error) -> Void in
+                // TODO: !!!!!!
             })
             pollController.animateHighlight(index: 0, source: .Extern)
         default:
@@ -356,10 +366,10 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         pollController.loadDelegate = self
 
         // Initializes poll list and adjusts interface
-        loadPollList(nil)
+        loadPollList(false, animated: false)
 
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "loadPollList:", name: LoginChangedNotificationName, object: nil)
+        notificationCenter.addObserver(self, selector: "loginDidChange:", name: LoginChangedNotificationName, object: nil)
         notificationCenter.addObserver(self, selector: "notificationReceived:", name: VoteNotificationTappedNotificationName, object: nil)
 
 //        if !tutoPresented {
@@ -425,15 +435,23 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
     func pollLoaded(pollController: PollController) {
         UIView.transitionWithView(view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
-            self.loadingInterface.stopAnimating()
-        }, completion: nil)
+            self.loadingInterface.hidden = true
+        }, completion: { (finished) -> Void in
+            for gesture in [self.pollController.tap, self.pollController.doubleTap, self.pollController.drager] {
+                gesture.enabled = true
+            }
+            for button in [self.leftVoteButton, self.rightVoteButton] {
+                button.userInteractionEnabled = true
+            }
+        })
     }
 
     func pollLoadFailed(pollController: PollController, error: NSError) {
         UIView.transitionWithView(view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
             if FNAnalytics.logError(error, location: "Vote: Poll Load Fail") {
-                self.setRefreshMessage(text: rmLoadFail)
-                self.loadingInterface.stopAnimating()
+                self.refreshMessage.text = rmLoadFail
+                self.refreshMessageContainer.hidden = false
+                self.loadingInterface.hidden = true
             }
         }, completion: nil)
     }
@@ -452,16 +470,21 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         }
         FNAnalytics.logVote(index, method: voteMethod)
 
-        ParseVote.sendVote(vote: index, poll: pollController.poll) { (succeeded, error) -> Void in
-            if let error = error {
-                FNAnalytics.logError(error, location: "Vote: Save")
-            }
+        ParseVote.sendVote(vote: index, poll: currentPoll!) { (succeeded, error) -> Void in
+            FNAnalytics.logError(error, location: "Vote: Save")
+        }
+
+        for gesture in [pollController.tap, pollController.doubleTap, pollController.drager] {
+            gesture.enabled = false
+        }
+        for button in [leftVoteButton, rightVoteButton] {
+            button.userInteractionEnabled = false
         }
     }
 
     func pollDidHighlight(pollController: PollController) {
         UIView.transitionWithView(navigationController!.view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
-            self.loadingInterface.startAnimating()
+            self.loadingInterface.hidden = false
             self.showNextPoll()
         }, completion: nil)
     }

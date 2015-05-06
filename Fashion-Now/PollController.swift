@@ -74,11 +74,13 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
     @IBOutlet weak var tap: UITapGestureRecognizer!
     @IBAction func didTap(sender: UITapGestureRecognizer) {
-        let navController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Gallery Navigation Controller") as! UINavigationController
-        let gallery = navController.topViewController as! GalleryController
-        gallery.images = [leftPhotoController.imageView.image!, rightPhotoController.imageView.image!]
-        gallery.initialImageIndex = indexForTouch(sender.locationInView(view)) - 1
-        presentViewController(navController, animated: true, completion: nil)
+        if let leftImage = leftPhotoController.imageView.image, let rightImage = rightPhotoController.imageView.image {
+            let navController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Gallery Navigation Controller") as! UINavigationController
+            let gallery = navController.topViewController as! GalleryController
+            gallery.images = [leftImage, rightImage]
+            gallery.initialImageIndex = indexForTouch(sender.locationInView(view)) - 1
+            presentViewController(navController, animated: true, completion: nil)
+        }
     }
 
     @IBOutlet weak var doubleTap: UITapGestureRecognizer!

@@ -92,11 +92,9 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
                         // Unsuccessful login
                         loadingView.removeFromSuperview()
 
-                        if let error = error {
+                        if FNAnalytics.logError(error, location: "Login: Password") {
 
-                            FNAnalytics.logError(error, location: "Login: Password")
-
-                            if error.code == PFErrorCode.ErrorObjectNotFound.rawValue {
+                            if error!.domain == PFParseErrorDomain && error!.code == PFErrorCode.ErrorObjectNotFound.rawValue {
                                 FNToast.show(title: NSLocalizedString("LoginController.loginErrorDescription.userNotFound", value: "Username or password incorrect", comment: "Message for when user does not exist or wrong password"), type: .Error)
                             }
                         } else {
@@ -153,9 +151,9 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
 
                     ParseUser.requestPasswordResetForEmailInBackground(email!) { (succeeded, error) -> Void in
 
-                        if let error = error {
-                            FNAnalytics.logError(error, location: "Login: Reset Password")
-                            if error.domain == PFParseErrorDomain && error.code == PFErrorCode.ErrorUserWithEmailNotFound.rawValue {
+                        if FNAnalytics.logError(error, location: "Login: Reset Password") {
+
+                            if error!.domain == PFParseErrorDomain && error!.code == PFErrorCode.ErrorUserWithEmailNotFound.rawValue {
                                 FNToast.show(title: NSLocalizedString("LoginController.resetPassword.errorDescription.emailNotFound", value: "There is no user registered with this email", comment: "Message for when there is no user with the email providen error"), type: .Error)
                             } else {
                                 FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)

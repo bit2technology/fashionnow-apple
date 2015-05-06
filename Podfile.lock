@@ -47,6 +47,7 @@ PODS:
     - HexColors
   - UIActivityIndicator-for-SDWebImage (1.2):
     - SDWebImage (~> 3.7)
+  - UIImageEffects (0.0.1)
 
 DEPENDENCIES:
   - ActionSheetPicker-3.0
@@ -66,6 +67,7 @@ DEPENDENCIES:
   - SDWebImage
   - TSMessages
   - UIActivityIndicator-for-SDWebImage
+  - UIImageEffects
 
 SPEC CHECKSUMS:
   ActionSheetPicker-3.0: f8da36f51ba109882a7cfa5979a4856b4e26fa37
@@ -87,5 +89,6 @@ SPEC CHECKSUMS:
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   TSMessages: 2a52642128d7ab15b46930c810b9c9403a2b58f3
   UIActivityIndicator-for-SDWebImage: 7bf7ebbf0ed1747dedc0d6e949c4603a6d0f9e0c
+  UIImageEffects: 37b99fa461e4965f332ca82e92f2c22a1075ee84
 
 COCOAPODS: 0.37.0

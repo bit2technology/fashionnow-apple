@@ -60,8 +60,7 @@ class PostPollController: FNViewController, PollEditionDelegate, UITextFieldDele
                 friendsQuery.whereKey(ParseUserFacebookIdKey, containedIn: friendsFacebookIds)
                 friendsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
 
-                    if let error = error {
-                        FNAnalytics.logError(error, location: "Post: Cache Friends Query")
+                    if FNAnalytics.logError(error, location: "Post: Cache Friends Query") {
                         self.delegate?.postPollControllerDidFailDownloadFriendsList(error)
                         return
                     }

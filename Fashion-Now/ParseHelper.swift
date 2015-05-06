@@ -184,8 +184,8 @@ class ParseUser: PFUser, PFSubclassing {
         if emailVerified {
             return true
         }
-        // TODO: Verify other ways
-        return false
+        // TODO: What if the user deleted the Facebook account?
+        return isLoggedFacebook
     }
 
     var isLogged: Bool {
@@ -197,9 +197,9 @@ class ParseUser: PFUser, PFSubclassing {
     }
 
     var isValid: Bool {
-        if PFAnonymousUtils.isLinkedWithUser(self) {
+        if !isLogged {
             return true
-        } else if PFFacebookUtils.isLinkedWithUser(self) {
+        } else if isLoggedFacebook {
             completeInfoFacebook({ (succeeded, error) -> Void in
                 FNAnalytics.logError(error, location: "User is valid: Facebook info download")
             })
@@ -468,24 +468,20 @@ class ParsePollList: Printable, DebugPrintable {
         case Older
     }
 
-    /// Return next poll (generally to vote) and optionally, remove it from the list
-    func nextPoll(#remove: Bool) -> ParsePoll? {
+    /// Remove next unrepeated poll and return it
+    func removeNext() -> ParsePoll? {
 
-        var nextPoll: ParsePoll?
-        var nextPollIdx: Int?
-
-        if let firstPoll = polls.first {
-            nextPoll = firstPoll
-            nextPollIdx = 0
-        } else {
+        if polls.count <= 0 {
             return nil
         }
+
+        var nextPollIdx: Int?
 
         // Find
         for (idx, poll) in enumerate(polls) {
             if let userId = poll.createdBy?.objectId where find(lastUserIds, userId) == nil {
-                nextPoll = poll
                 nextPollIdx = idx
+                // Add userId to list and remove excess
                 lastUserIds.insert(userId, atIndex: 0)
                 if lastUserIds.count > 5 {
                     lastUserIds.removeRange(5..<lastUserIds.count)
@@ -494,52 +490,62 @@ class ParsePollList: Printable, DebugPrintable {
             }
         }
 
-        // Remove
-        if remove, let idxToRemove = nextPollIdx {
-            polls.removeAtIndex(idxToRemove)
+        // Preload more if necessary
+        if polls.count % 10 == 0 || nextPollIdx == nil {
+            update(type: .Older, completionHandler: { (succeeded, error) -> Void in
+                FNAnalytics.logError(error, location: "Poll List: Preload List")
+            })
         }
 
-        return nextPoll
+        // Remove and return
+        return polls.removeAtIndex(nextPollIdx ?? 0)
     }
 
-    /// Return poll for given Id (generally when user tapped a notification to vote) and optionally, remove it from the list
-    func poll(id: String, remove: Bool) -> ParsePoll? {
+    /// Remove poll by object
+    func removePoll(poll: ParsePoll) -> Int? {
+        if let index = find(polls, poll) {
+            polls.removeAtIndex(index)
+            return index
+        }
+        return nil
+    }
 
-        var pollForId: ParsePoll?
+    /// Remove poll for given Id and return it
+    func remove(#id: String) -> ParsePoll? {
+
         var pollForIdIdx: Int?
 
         // Find
         for (idx, poll) in enumerate(polls) {
             if poll.objectId == id {
-                pollForId = poll
                 pollForIdIdx = idx
                 break
             }
         }
 
         // Remove
-        if remove, let idxToRemove = pollForIdIdx {
-            polls.removeAtIndex(idxToRemove)
+        if let idxToRemove = pollForIdIdx {
+            return polls.removeAtIndex(idxToRemove)
         }
 
-        return pollForId
+        return nil
     }
 
     /// Cache the completion handler from update method and use in the finish method
     private var completionHandler: PFBooleanResultBlock?
 
     /// Updates (or downloads for the first time) the poll list. It returns true in the completion handler if there is new polls added to the list.
-    func update(type: UpdateType = .Newer, completionHandler: PFBooleanResultBlock) {
+    func update(type: UpdateType = .Newer, completionHandler: PFBooleanResultBlock?) {
 
         if downloading {
 
             // Already downloading. Just return error.
-            completionHandler(false, NSError(fn_code: .Busy))
+            completionHandler?(false, NSError(fn_code: .Busy))
             
         } else if lastUpdate?.timeIntervalSinceNow > ParsePollListUpdateLimitTime {
 
             // Tried to update too early. Just return error.
-            completionHandler(false, NSError(fn_code: .RequestTooOften))
+            completionHandler?(false, NSError(fn_code: .RequestTooOften))
 
         } else if Reachability.reachabilityForInternetConnection().isReachable() {
 
@@ -562,6 +568,7 @@ class ParsePollList: Printable, DebugPrintable {
 
             // Start download
             downloading = true
+            lastUpdate = NSDate()
             self.completionHandler = completionHandler
             pollQuery.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
 
@@ -596,7 +603,7 @@ class ParsePollList: Printable, DebugPrintable {
         } else if polls.count > 0 {
 
             // Offline but polls list is not empty. Just return error.
-            completionHandler(false, NSError(fn_code: .ConnectionLost))
+            completionHandler?(false, NSError(fn_code: .ConnectionLost))
 
         } else {
 
@@ -613,9 +620,9 @@ class ParsePollList: Printable, DebugPrintable {
 
                 if let cachedPolls = objects as? [ParsePoll] where cachedPolls.count > 0 {
                     self.polls = cachedPolls
-                    completionHandler(true, error)
+                    completionHandler?(true, error)
                 } else {
-                    completionHandler(false, error ?? NSError(fn_code: .NoCache))
+                    completionHandler?(false, error ?? NSError(fn_code: .NoCache))
                 }
             })
         }
@@ -624,18 +631,8 @@ class ParsePollList: Printable, DebugPrintable {
     /// Helper method to update
     private func finishDownload(success: Bool, error: NSError!) {
         downloading = false
-        lastUpdate = NSDate()
         completionHandler?(success, error)
         completionHandler = nil
-    }
-
-    /// Remove poll by object
-    func removePoll(poll: ParsePoll) -> Int? {
-        if let index = find(polls, poll) {
-            polls.removeAtIndex(index)
-            return index
-        }
-        return nil
     }
 
     // MARK: Array simulation
@@ -673,17 +670,22 @@ class ParseVote: PFObject, PFSubclassing {
     }
 
     class func sendVote(vote voteNumber: Int, poll: ParsePoll, block: PFBooleanResultBlock?) {
+        let currentUser = ParseUser.current()
         let vote = ParseVote()
         vote.pollId = poll.objectId
         vote.version = 2
         vote.vote = voteNumber
-        vote.voteBy = ParseUser.current()
+        vote.voteBy = currentUser
         // Poll redundancy
         vote.pollCreatedAt = poll.createdAt
         vote.pollCreatedById = poll.createdBy?.objectId
+        var objectsToSave = [vote] as [PFObject]
         // Vote redundancy in Poll
-        poll.incrementVoteCount(voteNumber)
-        saveAllInBackground([vote, poll], block: block)
+        if poll.version > 1 {
+            poll.incrementVoteCount(voteNumber)
+            objectsToSave.append(poll)
+        }
+        saveAllInBackground(objectsToSave, block: block)
     }
 
     var pollId: String? {
@@ -759,14 +761,22 @@ class ParseReport: PFObject, PFSubclassing {
         return "Report"
     }
 
-    convenience init(user: ParseUser = ParseUser.current(), pollId: String, comment: String?) {
-        self.init()
+    class func sendReport(poll: ParsePoll, comment: String?, block: PFBooleanResultBlock?) {
+        let report = self.init()
         let acl = PFACL()
         acl.setPublicReadAccess(true)
-        ACL = acl
-        self.user = user
-        self.pollId = pollId
-        self.comment = comment
+        report.ACL = acl
+        report.user = ParseUser.current()
+        report.pollId = poll.objectId
+        report.comment = comment
+        var objectsToSave = [report] as [PFObject]
+        // Report redundancy in Poll
+        if poll.version > 1 {
+            poll.reported = true
+            objectsToSave.append(poll)
+        }
+        // Save all
+        PFObject.saveAllInBackground(objectsToSave, block: block)
     }
 
     var comment: String? {

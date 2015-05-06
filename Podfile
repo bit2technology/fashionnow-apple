@@ -31,7 +31,7 @@ pod 'SDWebImage'
 pod 'TSMessages'
 #pod 'TutorialKit'
 pod 'UIActivityIndicator-for-SDWebImage'
-#pod 'UIImageEffects'
+pod 'UIImageEffects'
 #pod 'UIPhotoGallery'
 
 pre_install do |installer|

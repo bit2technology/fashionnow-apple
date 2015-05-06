@@ -365,7 +365,7 @@
                                     <segue destination="hpa-fw-Ay5" kind="embed" identifier="Poll Controller" id="apZ-Yv-541"/>
                                 </connections>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4XI-L8-6Pr" userLabel="Left Vote" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4XI-L8-6Pr" userLabel="Left Vote" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                 <rect key="frame" x="-5" y="383" width="71" height="44"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <color key="tintColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="0.5" colorSpace="calibratedRGB"/>
@@ -378,7 +378,7 @@
                                     <action selector="voteButtonWillBePressed:" destination="6wq-1Y-TiB" eventType="touchDown" id="7ST-U4-lHB"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GPX-GA-SAX" userLabel="Right Vote" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GPX-GA-SAX" userLabel="Right Vote" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                 <rect key="frame" x="254" y="383" width="71" height="44"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <color key="tintColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="0.5" colorSpace="calibratedRGB"/>
@@ -490,7 +490,7 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <action selector="loadPollList:" destination="6wq-1Y-TiB" eventType="touchUpInside" id="TZ2-Pi-MC4"/>
+                                        <action selector="refreshButtonPressed:" destination="6wq-1Y-TiB" eventType="touchUpInside" id="zmn-Jk-PvC"/>
                                     </connections>
                                 </button>
                             </subviews>

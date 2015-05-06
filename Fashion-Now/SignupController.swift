@@ -241,7 +241,7 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
             }
             // Set photo properties
             if self.avatarChanged {
-                let imageData = self.avatarImageView.image!.fn_dataFill(quality: 0.8)
+                let imageData = self.avatarImageView.image!.scaleToCoverSize(CGSize(width: 256, height: 256)).fn_data(quality: 0.8)
                 currentUser.avatarImage = PFFile(fn_imageData: imageData)
             }
 
@@ -267,7 +267,7 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
         let currentUser = ParseUser.current()
 
         // Adjust layout
-        let placeholderImage = UIImage(fn_color: UIColor.fn_placeholder())
+        let placeholderImage = UIColor.fn_placeholder().fn_image()
         avatarImageView.image = placeholderImage
 
         // Fill values

@@ -168,9 +168,7 @@ class ResultPollController: FNViewController, UIActionSheetDelegate, PollLoadDel
                 poll.deleteInBackgroundWithBlock({ (success, error) -> Void in
                     activityIndicator.removeFromSuperview()
 
-                    if let error = error {
-                        FNAnalytics.logError(error, location: "Result: Delete Poll")
-                    }
+                    FNAnalytics.logError(error, location: "Result: Delete Poll")
 
                     if success {
                         NSNotificationCenter.defaultCenter().postNotificationName(FNPollDeletedNotificationName, object: self, userInfo: ["poll": self.poll])
