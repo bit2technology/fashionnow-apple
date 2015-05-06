@@ -1615,20 +1615,20 @@
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H8b-Ws-oM2" userLabel="Image Conainer" customClass="FNPhotoBackgroundView" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="-120" y="0.0" width="400" height="367"/>
+                                <rect key="frame" x="-100" y="0.0" width="360" height="367"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KiO-BQ-HtZ" userLabel="Background Image View">
-                                        <rect key="frame" x="0.0" y="0.0" width="400" height="367"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="360" height="367"/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yhO-Ld-1tg">
-                                        <rect key="frame" x="97" y="0.0" width="206" height="367"/>
+                                        <rect key="frame" x="77" y="0.0" width="206" height="367"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="yhO-Ld-1tg" secondAttribute="height" multiplier="9:16" placeholder="YES" id="ZdJ-tu-jru"/>
                                         </constraints>
                                     </imageView>
                                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bty-dr-ys9" userLabel="Delete Button Align">
-                                        <rect key="frame" x="120" y="323" width="160" height="44"/>
+                                        <rect key="frame" x="100" y="323" width="160" height="44"/>
                                         <subviews>
                                             <button opaque="NO" alpha="0.75000000000000022" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YYI-4A-sio" userLabel="Delete Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
@@ -1665,7 +1665,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="H8b-Ws-oM2" firstAttribute="width" secondItem="5Xe-GT-hcA" secondAttribute="width" multiplier="2.5" id="02M-1d-9kn"/>
+                            <constraint firstItem="H8b-Ws-oM2" firstAttribute="width" secondItem="5Xe-GT-hcA" secondAttribute="width" multiplier="2.25" id="02M-1d-9kn"/>
                             <constraint firstAttribute="centerX" secondItem="b6v-RN-CyL" secondAttribute="centerX" id="FfH-Q8-MeY"/>
                             <constraint firstAttribute="width" secondItem="bty-dr-ys9" secondAttribute="width" id="TTu-QP-LSk"/>
                             <constraint firstItem="H8b-Ws-oM2" firstAttribute="top" secondItem="5Xe-GT-hcA" secondAttribute="top" id="UyP-7d-YCi"/>

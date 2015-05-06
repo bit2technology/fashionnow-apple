@@ -16,6 +16,8 @@
 		4B749E8D1A30916F00E9B128 /* ResultPollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B749E8C1A30916F00E9B128 /* ResultPollController.swift */; };
 		4B7B3FFF1A35C0F30063CB90 /* LoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7B3FFE1A35C0F30063CB90 /* LoginHelper.swift */; };
 		4B7C3DEB1A1EB610004A4D37 /* MeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C3DEA1A1EB610004A4D37 /* MeController.swift */; };
+		4B82B4861AF9A41F00F63883 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B82B4881AF9A41F00F63883 /* InfoPlist.strings */; };
+		4B82B48B1AF9A42000F63883 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B82B48D1AF9A42000F63883 /* InfoPlist.strings */; };
 		4B9443591AB08B6D007DBAFD /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9443581AB08B6D007DBAFD /* AppHelper.swift */; };
 		4BA913AD1AF90DB600BA6504 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA913AC1AF90DB600BA6504 /* ImageHelper.swift */; };
 		4BAAAF8E1A14C5FB00AAFAFB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */; };
@@ -55,6 +57,8 @@
 		4B7B3FFE1A35C0F30063CB90 /* LoginHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHelper.swift; sourceTree = "<group>"; };
 		4B7C2CA01A13A06E00FB25B8 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = pt; path = pt.lproj/Main.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
 		4B7C3DEA1A1EB610004A4D37 /* MeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeController.swift; sourceTree = "<group>"; };
+		4B82B4871AF9A41F00F63883 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4B82B48C1AF9A42000F63883 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4B9443581AB08B6D007DBAFD /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppHelper.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4BA913AC1AF90DB600BA6504 /* ImageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		4BAAAF8F1A14C5FB00AAFAFB /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -170,6 +174,7 @@
 		4BF1D0581A00F1EB00818658 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4B82B48D1AF9A42000F63883 /* InfoPlist.strings */,
 				4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */,
 				4BC4CF0A1A01164F0000A231 /* .gitignore */,
 				4BF1D0801A010DD400818658 /* Fashion-Now-Bridging-Header.h */,
@@ -192,6 +197,7 @@
 		4BF1D0711A00F1EB00818658 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4B82B4881AF9A41F00F63883 /* InfoPlist.strings */,
 				4BF1D0721A00F1EB00818658 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -306,6 +312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BC4CF0B1A01164F0000A231 /* .gitignore in Resources */,
+				4B82B48B1AF9A42000F63883 /* InfoPlist.strings in Resources */,
 				4BAAAF8E1A14C5FB00AAFAFB /* Localizable.strings in Resources */,
 				4BF1D0631A00F1EB00818658 /* Main.storyboard in Resources */,
 				4BF1D0651A00F1EB00818658 /* Images.xcassets in Resources */,
@@ -317,6 +324,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B82B4861AF9A41F00F63883 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,6 +436,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		4B82B4881AF9A41F00F63883 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4B82B4871AF9A41F00F63883 /* pt */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		4B82B48D1AF9A42000F63883 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4B82B48C1AF9A42000F63883 /* pt */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

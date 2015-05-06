@@ -106,10 +106,13 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
                 avatarView.image = placeholderImage
             }
             // Name
-            let createdBy = pollToShow.createdBy
-            nameLabel.text = createdBy?.displayName
+            nameLabel.text = pollToShow.createdBy?.displayName
             // Date
-            dateLabel.text = pollToShow.createdAt!.timeAgoSinceNow()
+            if let createdAt = pollToShow.createdAt where createdAt.hoursFrom(NSDate()) > -24 {
+                dateLabel.text = createdAt.timeAgoSinceNow()
+            } else {
+                dateLabel.text = NSLocalizedString("VotePollController.createdAt.moreThanOneDayAgo", value: "More than one day ago", comment: "Shown when current poll was created more than 24h ago")
+            }
 
             navigationItem.rightBarButtonItem?.enabled = true
 
@@ -358,11 +361,6 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: "loadPollList:", name: LoginChangedNotificationName, object: nil)
         notificationCenter.addObserver(self, selector: "notificationReceived:", name: VoteNotificationTappedNotificationName, object: nil)
-    }
-
-    private var tutoPresented = false
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
 
 //        if !tutoPresented {
 //            let page1 = EAIntroPage()
@@ -459,16 +457,6 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
                 FNAnalytics.logError(error, location: "Vote: Save")
             }
         }
-
-//        // FIXME: Test
-//        var params = ["from": pollController.poll.createdBy!.displayName, "to": ["t6EvTaxkz3"], "poll": pollController.poll.objectId!] as [NSObject : AnyObject]
-//        let caption = pollController.poll.caption?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-//        if caption?.fn_count > 0 {
-//            params["caption"] = caption
-//        }
-//        PFCloud.callFunctionInBackground("sendPush", withParameters: params) { (result, error) -> Void in
-//            //FNAnalytics.logError(error, location: "Vote: Send Push")
-//        }
     }
 
     func pollDidHighlight(pollController: PollController) {

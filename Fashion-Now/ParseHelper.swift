@@ -262,6 +262,10 @@ let ParsePollHiddenKey = "hidden"
 let ParsePollPhotosKey = "photos"
 let ParsePollUserIdsKey = "userIds"
 let ParsePollVersionKey = "version"
+// Vote redundancy
+let ParsePollVote1CountKey = "vote1Count"
+let ParsePollVote2CountKey = "vote2Count"
+let ParsePollVoteTotalCountKey = "voteTotalCount"
 
 public class ParsePoll: PFObject, PFSubclassing {
 
@@ -273,7 +277,7 @@ public class ParsePoll: PFObject, PFSubclassing {
         self.init()
         ACL = PFACL(user: user)
         createdBy = user
-        version = 1
+        version = 2
     }
 
     var caption: String? {
@@ -321,15 +325,6 @@ public class ParsePoll: PFObject, PFSubclassing {
         }
     }
 
-    var userIds: [String]? {
-        get {
-            return self[ParsePollUserIdsKey] as? [String]
-        }
-        set {
-            self[ParsePollUserIdsKey] = newValue ?? NSNull()
-        }
-    }
-
     var version: Int? {
         get {
             return self[ParsePollVersionKey] as? Int
@@ -339,10 +334,42 @@ public class ParsePoll: PFObject, PFSubclassing {
         }
     }
 
+    // MARK: Vote redundancy
+
+    var vote1Count: Int? {
+        return self[ParsePollVote1CountKey] as? Int
+    }
+
+    var vote2Count: Int? {
+        return self[ParsePollVote2CountKey] as? Int
+    }
+
+    var voteTotalCount: Int? {
+        return self[ParsePollVoteTotalCountKey] as? Int
+    }
+
     // MARK: Helper methods
 
-    func incrementVoteCount(vote: Int?) {
-        // TODO: !!!!!!!!
+    func incrementVoteCount(vote: Int) {
+        switch vote {
+        case 1:
+            incrementKey(ParsePollVote1CountKey)
+        case 2:
+            incrementKey(ParsePollVote2CountKey)
+        default:
+            return
+        }
+        incrementKey(ParsePollVoteTotalCountKey)
+    }
+
+    var reported: Bool {
+        get {
+            return flag == 1
+        }
+        set {
+            flag = newValue ? 1 : 0
+            hidden = hidden ? true : newValue
+        }
     }
 
     var isValid: Bool {
@@ -403,6 +430,7 @@ class ParsePollList: Printable, DebugPrintable {
     /// Minimum time to update again, in seconds
     private var polls = [ParsePoll]()
     private var pollsAreRemote = false
+    private var lastUserIds = [String]()
 
     /// Return new query by type of list
     var query: PFQuery {
@@ -443,29 +471,54 @@ class ParsePollList: Printable, DebugPrintable {
     /// Return next poll (generally to vote) and optionally, remove it from the list
     func nextPoll(#remove: Bool) -> ParsePoll? {
 
-        if let firstPollId = polls.first?.objectId {
-            return poll(firstPollId, remove: remove)
+        var nextPoll: ParsePoll?
+        var nextPollIdx: Int?
+
+        if let firstPoll = polls.first {
+            nextPoll = firstPoll
+            nextPollIdx = 0
+        } else {
+            return nil
         }
-        return nil
+
+        // Find
+        for (idx, poll) in enumerate(polls) {
+            if let userId = poll.createdBy?.objectId where find(lastUserIds, userId) == nil {
+                nextPoll = poll
+                nextPollIdx = idx
+                lastUserIds.insert(userId, atIndex: 0)
+                if lastUserIds.count > 5 {
+                    lastUserIds.removeRange(5..<lastUserIds.count)
+                }
+                break
+            }
+        }
+
+        // Remove
+        if remove, let idxToRemove = nextPollIdx {
+            polls.removeAtIndex(idxToRemove)
+        }
+
+        return nextPoll
     }
 
     /// Return poll for given Id (generally when user tapped a notification to vote) and optionally, remove it from the list
     func poll(id: String, remove: Bool) -> ParsePoll? {
 
         var pollForId: ParsePoll?
-        var idxForId: Int?
+        var pollForIdIdx: Int?
 
         // Find
         for (idx, poll) in enumerate(polls) {
             if poll.objectId == id {
                 pollForId = poll
-                idxForId = idx
+                pollForIdIdx = idx
                 break
             }
         }
 
         // Remove
-        if remove, let idxToRemove = idxForId {
+        if remove, let idxToRemove = pollForIdIdx {
             polls.removeAtIndex(idxToRemove)
         }
 

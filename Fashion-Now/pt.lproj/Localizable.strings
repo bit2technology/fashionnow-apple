@@ -1,5 +1,11 @@
+/* Default for entire app */
+"Default.appName" = "Fashion Now";
+
 /* Default Cancel button title for entire app */
 "Default.buttonTitle.cancel" = "Cancelar";
+
+/* Default OK button title for entire app */
+"Default.buttonTitle.ok" = "OK";
 
 /* Default for entire app */
 "Default.errorDescription.offline" = "Você está offline. Tente de novo depois.";
@@ -59,7 +65,25 @@
 "LoginController.resetPassword.successMessage" = "Instruções para resetar senha enviadas para seu e-mail";
 
 /* Shown when user taps the gear button */
+"MeController.gearButton.actionSheet.inviteButtonTitle" = "Convidar Amigos";
+
+/* Shown when user taps the gear button */
+"MeController.gearButton.actionSheet.linkFacebookButtonTitle" = "Conectar ao Facebook";
+
+/* Shown when user taps the gear button */
 "MeController.gearButton.actionSheet.logOutButtonTitle" = "Logout";
+
+/* Shown when user taps the gear button */
+"MeController.gearButton.actionSheet.unlinkFacebookButtonTitle" = "Desconectar do Facebook";
+
+/* Push title for when a friend posts a poll */
+"P001" = "Nova Enquete";
+
+/* Push message for when a friend posts a poll without caption */
+"P002" = "%1$@ precisa de ajuda";
+
+/* Push message for when a friend posts a poll with caption */
+"P003" = "%1$@ precisa de ajuda: \"%1$@\"";
 
 /* Shown when user is about to delete a poll */
 "ResultPollController.deleteSheet.destructiveButtonTitle" = "Deletar";
@@ -77,7 +101,7 @@
 "SignupController.genders.male" = "Homem";
 
 /* Gender labels */
-"SignupController.genders.other" = "Outros";
+"SignupController.genders.other" = "Outro";
 
 /* Gender labels */
 "SignupController.picker.none" = "Nenhum";
@@ -106,14 +130,14 @@
 /* Error message for Sign Up or Edit Profile */
 "SignupController.saveErrorDescription.usernameTaken" = "Nome de usuário já existe";
 
+/* Shown when current poll was created more than 24h ago */
+"VotePollController.createdAt.moreThanOneDayAgo" = "Mais de um dia atrás";
+
 /* Shown when user taps the gear button */
 "VotePollController.gearButton.actionSheet.filtersButtonTitle" = "Aplicar Filtros";
 
 /* Shown when user taps the gear button */
 "VotePollController.gearButton.actionSheet.loginButtonTitle" = "Login";
-
-/* Shown when user taps the gear button */
-"VotePollController.gearButton.actionSheet.refreshButtonTitle" = "Atualizar";
 
 /* Shown when user taps the gear button */
 "VotePollController.gearButton.actionSheet.reportButtonTitle" = "Denunciar Enqute";
@@ -127,6 +151,12 @@
 /* Shown when user reports a poll */
 "VotePollController.gearButton.reportAlert.reportButtonTitle" = "Denunciar";
 
-/* Shown when user reports a poll */
-"VotePollController.gearButton.reportAlert.title" = "Denunciar Enquete";
+/* Shown when vote push notification received while app is open */
+"VotePollController.pushAlert.viewButtonTitle" = "Ver";
+
+/* Shown when there is no poll to show */
+"VotePollController.refreshMessage.noMorePolls" = "Sem mais enquetes para votar";
+
+/* Shown when there is no poll to show */
+"VotePollController.refreshMessage.pollLoadFail" = "Ops… Alguma coisa deu errado. Por favor, tente de novo.";
 

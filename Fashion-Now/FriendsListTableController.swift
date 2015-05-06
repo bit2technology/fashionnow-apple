@@ -43,7 +43,6 @@ class FriendsListTableController: FNTableController, PostPollControllerDelegate 
             }
         }
         poll.ACL = pollACL
-        poll.userIds = userIds
 
         // Save locally, send poll to server and notify app
 
@@ -64,6 +63,16 @@ class FriendsListTableController: FNTableController, PostPollControllerDelegate 
             }
 
             if succeeded {
+
+                var params = ["from": ParseUser.current().displayName, "to": userIds, "poll": self.poll.objectId!] as [NSObject:AnyObject]
+                if let caption = self.poll.caption?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where caption.fn_count > 0 {
+                    params["caption"] = caption
+                }
+                PFCloud.callFunctionInBackground("sendPush", withParameters: params) { (result, error) -> Void in
+                    FNAnalytics.logError(error, location: "Friends List: Send Push")
+                }
+
+
                 FNToast.show(title: NSLocalizedString("FriendsListTableController.send.succeeded", value: "Poll sent", comment: "Shown when user sends the poll"), type: .Success)
                 NSNotificationCenter.defaultCenter().postNotificationName(FNPollPostedNotificationName, object: self, userInfo: ["poll": self.poll])
                 self.postPollController.clean()

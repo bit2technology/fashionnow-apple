@@ -4,6 +4,9 @@
 /* Class = "UILabel"; text = "Name"; ObjectID = "0TE-HJ-F3a"; */
 "0TE-HJ-F3a.text" = "Nome";
 
+/* Class = "UILabel"; text = "E-mail"; ObjectID = "1po-qc-85I"; */
+"1po-qc-85I.text" = "E-mail";
+
 /* Class = "UITabBarItem"; title = "Create"; ObjectID = "2O1-Ra-Pjk"; */
 "2O1-Ra-Pjk.title" = "Criar";
 
@@ -19,17 +22,14 @@
 /* Class = "UINavigationItem"; title = "Sign Up"; ObjectID = "9LK-rm-73H"; */
 "9LK-rm-73H.title" = "Registrar";
 
-/* Class = "UINavigationItem"; title = "Filter"; ObjectID = "9a4-Zq-fGJ"; */
-"9a4-Zq-fGJ.title" = "Filtrar";
-
 /* Class = "UILabel"; text = "Birthday"; ObjectID = "9u8-J9-agp"; */
 "9u8-J9-agp.text" = "Data de nascimento";
 
 /* Class = "UINavigationItem"; title = "Who can see?"; ObjectID = "BCe-DD-8Y6"; */
 "BCe-DD-8Y6.title" = "Quem pode ver?";
 
-/* Class = "UIButton"; normalTitle = "Edit profile"; ObjectID = "Cjt-nK-Mnt"; */
-"Cjt-nK-Mnt.normalTitle" = "Editar perfil";
+/* Class = "UILabel"; text = "Password"; ObjectID = "BeX-qs-v4G"; */
+"BeX-qs-v4G.text" = "Senha";
 
 /* Class = "UILabel"; text = "Optional"; ObjectID = "F80-og-72K"; */
 "F80-og-72K.text" = "Opcional";
@@ -40,11 +40,17 @@
 /* Class = "UIButton"; normalTitle = "Vote"; ObjectID = "GPX-GA-SAX"; */
 "GPX-GA-SAX.normalTitle" = "Votar";
 
+/* Class = "UIButton"; normalTitle = "Refresh"; ObjectID = "IDg-Yz-tIq"; */
+"IDg-Yz-tIq.normalTitle" = "Atualizar";
+
 /* Class = "UIButton"; normalTitle = "Friends"; ObjectID = "ImK-lm-ETH"; */
 "ImK-lm-ETH.normalTitle" = "Amigos";
 
 /* Class = "UITextField"; placeholder = "Add caption"; ObjectID = "KUx-Xw-6OB"; */
 "KUx-Xw-6OB.placeholder" = "Qual a sua dúvida?";
+
+/* Class = "UILabel"; text = "Location"; ObjectID = "Kyv-ax-HEQ"; */
+"Kyv-ax-HEQ.text" = "Localização";
 
 /* Class = "UITableViewSection"; headerTitle = "Overview"; ObjectID = "MRE-Ba-kQK"; */
 "MRE-Ba-kQK.headerTitle" = "Pessoal";
@@ -52,8 +58,8 @@
 /* Class = "UITextField"; placeholder = "Username"; ObjectID = "Ost-XS-Gaw"; */
 "Ost-XS-Gaw.placeholder" = "Nome de usuário";
 
-/* Class = "UILabel"; text = "No more polls to vote"; ObjectID = "Pca-Ch-LI9"; */
-"Pca-Ch-LI9.text" = "Sem mais enquetes para votar";
+/* Class = "UILabel"; text = "Refresh Message"; ObjectID = "Pca-Ch-LI9"; */
+"Pca-Ch-LI9.text" = "Mensagem de Atualização";
 
 /* Class = "UIBarButtonItem"; title = "Send"; ObjectID = "Qal-Vg-8Fh"; */
 "Qal-Vg-8Fh.title" = "Enviar";
@@ -75,6 +81,9 @@
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "Vz6-oX-I3M"; */
 "Vz6-oX-I3M.text" = "Etiqueta";
+
+/* Class = "UINavigationItem"; title = "Sign Up"; ObjectID = "YcN-5G-q7t"; */
+"YcN-5G-q7t.title" = "Registrar";
 
 /* Class = "UIButton"; normalTitle = "Votes"; ObjectID = "Z04-eP-86W"; */
 "Z04-eP-86W.normalTitle" = "Votos";
@@ -100,14 +109,20 @@
 /* Class = "UIButton"; normalTitle = "Log in"; ObjectID = "exf-D7-gGy"; */
 "exf-D7-gGy.normalTitle" = "Login";
 
-/* Class = "UILabel"; text = "Tap the gear to refresh"; ObjectID = "fsi-Hj-o8b"; */
-"fsi-Hj-o8b.text" = "Toque na engrenagem para recarregar";
+/* Class = "UILabel"; text = "Username"; ObjectID = "hsG-UT-V8C"; */
+"hsG-UT-V8C.text" = "Nome de usuário";
+
+/* Class = "UILabel"; text = "E-mail"; ObjectID = "kvn-L4-rA6"; */
+"kvn-L4-rA6.text" = "E-mail";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "lnp-IN-Yzw"; */
 "lnp-IN-Yzw.text" = "Nome";
 
 /* Class = "UILabel"; text = "Results"; ObjectID = "mT1-7P-I06"; */
 "mT1-7P-I06.text" = "Resultados";
+
+/* Class = "UILabel"; text = "Confirm password"; ObjectID = "mvl-si-aCX"; */
+"mvl-si-aCX.text" = "Confirmar senha";
 
 /* Class = "UILabel"; text = "We won’t publish anything without your permission"; ObjectID = "nE2-fN-c10"; */
 "nE2-fN-c10.text" = "Não publicaremos nada sem sua permissão";
@@ -132,6 +147,9 @@
 
 /* Class = "UILabel"; text = "Password"; ObjectID = "ub0-D8-tJg"; */
 "ub0-D8-tJg.text" = "Senha";
+
+/* Class = "UITableViewSection"; headerTitle = "Avatar"; ObjectID = "xQ2-XG-UaR"; */
+"xQ2-XG-UaR.headerTitle" = "Avatar";
 
 /* Class = "UITabBarItem"; title = "Profile"; ObjectID = "yIu-tG-KRu"; */
 "yIu-tG-KRu.title" = "Perfil";

@@ -34,7 +34,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
                     if image != nil {
                         self.imageView.fn_setAspectRatio(image: image)
                         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-                            let blurredImage = image.scaleByFactor(0.1).gaussianBlurWithBias(3)
+                            let blurredImage = image.scaleToFitSize(CGSize(width: 128, height: 128)).applyBlurWithRadius(1, tintColor: nil, saturationDeltaFactor: 1)
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                 self.bgImageView.image = blurredImage
                                 self.delegate?.photoLoaded(self)
