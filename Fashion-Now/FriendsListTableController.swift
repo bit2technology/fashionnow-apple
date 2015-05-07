@@ -6,9 +6,56 @@
 //  Copyright (c) 2015 Bit2 Software. All rights reserved.
 //
 
-import UIKit
+// TODO: Cache
+//private var downloadingFriendsList = false
+//func cacheFriendsList() {
+//
+//    if downloadingFriendsList {
+//        // Already downloading. Just do nothing.
+//        return
+//    }
+//
+//    downloadingFriendsList = true
+//    FBSDKGraphRequest(graphPath: "me/friends?limit=1000", parameters: nil).startWithCompletionHandler({ (requestConnection, object, error) -> Void in
+//        self.downloadingFriendsList = false
+//
+//        if error != nil {
+//            FNAnalytics.logError(error, location: "Post: Cache Friends Facebook Request")
+//            self.delegate?.postPollControllerDidFailDownloadFriendsList(error)
+//            return
+//        }
+//
+//        // Get list of IDs from friends
+//        var friendsFacebookIds = [String]()
+//        if let friendsFacebook = object["data"] as? [[String:String]] {
+//
+//            for friendFacebook in friendsFacebook {
+//                friendsFacebookIds.append(friendFacebook["id"]!)
+//            }
+//
+//            // Get parse users from Facebook friends
+//            let friendsQuery = PFQuery(className: ParseUser.parseClassName())
+//            friendsQuery.whereKey(ParseUserFacebookIdKey, containedIn: friendsFacebookIds)
+//            friendsQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+//
+//                if FNAnalytics.logError(error, location: "Post: Cache Friends Query") {
+//                    self.delegate?.postPollControllerDidFailDownloadFriendsList(error)
+//                    return
+//                }
+//
+//                self.cachedFriendsList = (objects as? [ParseUser]) ?? []
+//                self.cachedFriendsList!.sort({$0.name < $1.name})
+//                self.delegate?.postPollControllerDidFinishDownloadFriendsList(self.cachedFriendsList!)
+//            }
+//        } else {
+//            let noDataError = NSError(fn_code: .NoData)
+//            FNAnalytics.logError(noDataError, location: "Post: Cache Friends Facebook Request")
+//            self.delegate?.postPollControllerDidFailDownloadFriendsList(noDataError)
+//        }
+//    })
+//}
 
-class FriendsListTableController: FNTableController, PostPollControllerDelegate {
+class FriendsListTableController: FNTableController {
 
     // Model
     private var error: NSError?
@@ -215,7 +262,7 @@ class FriendsListTableController: FNTableController, PostPollControllerDelegate 
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
 
-        postPollController.delegate = self
+//        postPollController.delegate = self
     }
 
     func loginChanged(sender: NSNotification) {
@@ -228,7 +275,7 @@ class FriendsListTableController: FNTableController, PostPollControllerDelegate 
 
     @IBAction func refreshControlDidChangeValue(sender: UIRefreshControl) {
         error = nil
-        postPollController.cacheFriendsList()
+//        postPollController.cacheFriendsList()
     }
 
     func postPollControllerDidFinishDownloadFriendsList(friendsList: [ParseUser]) {

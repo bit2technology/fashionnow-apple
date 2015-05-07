@@ -533,11 +533,58 @@
                                     <segue destination="hpa-fw-Ay5" kind="embed" identifier="Poll Controller" id="IZA-Rh-gPV"/>
                                 </connections>
                             </containerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gnh-Bt-aNh" userLabel="Refresh Interface">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dFC-ld-3mN">
+                                        <rect key="frame" x="60" y="194" width="200" height="93"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You haven’t verified your e-mail yet" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="fVS-eA-Kmh">
+                                                <rect key="frame" x="0.0" y="0.0" width="200" height="41"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="200" id="2pv-Ze-kBZ"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hnv-ds-ohc" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                                <rect key="frame" x="3" y="49" width="194" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="yPp-LR-37u"/>
+                                                </constraints>
+                                                <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
+                                                <state key="normal" title="Resend verification" backgroundImage="ButtonRoundBordersBackground">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="hnv-ds-ohc" firstAttribute="top" secondItem="fVS-eA-Kmh" secondAttribute="bottom" constant="8" id="0ea-KT-OOk"/>
+                                            <constraint firstAttribute="trailing" secondItem="fVS-eA-Kmh" secondAttribute="trailing" id="36v-O0-Fkc"/>
+                                            <constraint firstAttribute="bottom" secondItem="hnv-ds-ohc" secondAttribute="bottom" id="Z6o-6C-M2V"/>
+                                            <constraint firstItem="fVS-eA-Kmh" firstAttribute="top" secondItem="dFC-ld-3mN" secondAttribute="top" id="iqk-eE-oNz"/>
+                                            <constraint firstItem="fVS-eA-Kmh" firstAttribute="leading" secondItem="dFC-ld-3mN" secondAttribute="leading" id="mwY-aK-Gqp"/>
+                                            <constraint firstAttribute="centerX" secondItem="hnv-ds-ohc" secondAttribute="centerX" id="z5m-6b-AhL"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerX" secondItem="dFC-ld-3mN" secondAttribute="centerX" id="M05-Ak-LlM"/>
+                                    <constraint firstAttribute="centerY" secondItem="dFC-ld-3mN" secondAttribute="centerY" id="efh-vg-mDF"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="jhk-qh-N5O" secondAttribute="trailing" id="4Fb-Mb-DRN"/>
+                            <constraint firstAttribute="trailing" secondItem="Gnh-Bt-aNh" secondAttribute="trailing" id="AaI-qT-C6P"/>
                             <constraint firstItem="jhk-qh-N5O" firstAttribute="top" secondItem="Iyt-Jh-hZw" secondAttribute="bottom" id="ZUK-Fn-dbf"/>
+                            <constraint firstItem="Gnh-Bt-aNh" firstAttribute="leading" secondItem="dLv-IX-e0T" secondAttribute="leading" id="bck-B4-dQ6"/>
+                            <constraint firstAttribute="bottom" secondItem="Gnh-Bt-aNh" secondAttribute="bottom" id="f3s-FK-wc1"/>
+                            <constraint firstItem="Gnh-Bt-aNh" firstAttribute="top" secondItem="dLv-IX-e0T" secondAttribute="top" id="qWE-eL-GjH"/>
                             <constraint firstItem="jhk-qh-N5O" firstAttribute="leading" secondItem="dLv-IX-e0T" secondAttribute="leading" id="xqv-v4-l2i"/>
                             <constraint firstItem="JXH-OA-dU0" firstAttribute="top" secondItem="jhk-qh-N5O" secondAttribute="bottom" id="zRi-ga-B3Q"/>
                         </constraints>
@@ -545,7 +592,7 @@
                     <navigationItem key="navigationItem" id="5pw-bJ-DDv">
                         <nil key="title"/>
                         <barButtonItem key="backBarButtonItem" title="Photos" id="p8Z-hd-6ug"/>
-                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add caption" minimumFontSize="17" id="KUx-Xw-6OB">
+                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="What’s your doubt?" minimumFontSize="17" id="KUx-Xw-6OB">
                             <rect key="frame" x="8" y="7" width="267" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1720,21 +1767,38 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0OX-TS-fzF" userLabel="Main Scroll">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <subviews>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c9u-kS-PsS" userLabel="Left Scroll">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="u63-Uh-faF" userLabel="Left Background">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AS5-cS-cSf" userLabel="Right Background">
+                                        <rect key="frame" x="320" y="0.0" width="320" height="480"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                    <scrollView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c9u-kS-PsS" userLabel="Left Scroll">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                     </scrollView>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q43-yc-A5G" userLabel="Right Scroll">
+                                    <scrollView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q43-yc-A5G" userLabel="Right Scroll">
                                         <rect key="frame" x="320" y="0.0" width="320" height="480"/>
                                     </scrollView>
                                 </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="q43-yc-A5G" firstAttribute="top" secondItem="AS5-cS-cSf" secondAttribute="top" id="2b7-uB-ujM"/>
+                                    <constraint firstItem="c9u-kS-PsS" firstAttribute="bottom" secondItem="u63-Uh-faF" secondAttribute="bottom" id="3Je-tz-gdZ"/>
                                     <constraint firstAttribute="bottom" secondItem="c9u-kS-PsS" secondAttribute="bottom" id="414-MU-fRF"/>
                                     <constraint firstAttribute="trailing" secondItem="q43-yc-A5G" secondAttribute="trailing" id="4AU-sr-rsi"/>
                                     <constraint firstItem="q43-yc-A5G" firstAttribute="top" secondItem="0OX-TS-fzF" secondAttribute="top" id="5kf-VK-oaC"/>
+                                    <constraint firstItem="c9u-kS-PsS" firstAttribute="leading" secondItem="u63-Uh-faF" secondAttribute="leading" id="6IQ-re-bgL"/>
+                                    <constraint firstItem="c9u-kS-PsS" firstAttribute="top" secondItem="u63-Uh-faF" secondAttribute="top" id="EtY-eL-dXt"/>
                                     <constraint firstItem="c9u-kS-PsS" firstAttribute="leading" secondItem="0OX-TS-fzF" secondAttribute="leading" id="ItT-CZ-EN2"/>
+                                    <constraint firstItem="c9u-kS-PsS" firstAttribute="trailing" secondItem="u63-Uh-faF" secondAttribute="trailing" id="MZv-0T-cie"/>
+                                    <constraint firstItem="q43-yc-A5G" firstAttribute="leading" secondItem="AS5-cS-cSf" secondAttribute="leading" id="Moo-qI-OOJ"/>
                                     <constraint firstItem="q43-yc-A5G" firstAttribute="leading" secondItem="c9u-kS-PsS" secondAttribute="trailing" id="T9o-Ur-zgW"/>
                                     <constraint firstAttribute="bottom" secondItem="q43-yc-A5G" secondAttribute="bottom" id="TWc-dg-8QC"/>
                                     <constraint firstItem="c9u-kS-PsS" firstAttribute="top" secondItem="0OX-TS-fzF" secondAttribute="top" id="XZu-rB-kjx"/>
+                                    <constraint firstItem="q43-yc-A5G" firstAttribute="trailing" secondItem="AS5-cS-cSf" secondAttribute="trailing" id="dZs-h4-Uli"/>
+                                    <constraint firstItem="q43-yc-A5G" firstAttribute="bottom" secondItem="AS5-cS-cSf" secondAttribute="bottom" id="mzl-uM-kff"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
@@ -1758,7 +1822,11 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="leftBg" destination="u63-Uh-faF" id="Zao-Sp-y0B"/>
+                        <outlet property="leftScroll" destination="c9u-kS-PsS" id="ahj-Ih-RJU"/>
                         <outlet property="mainScroll" destination="0OX-TS-fzF" id="yba-3P-ybS"/>
+                        <outlet property="rightBg" destination="AS5-cS-cSf" id="qRl-DU-z0a"/>
+                        <outlet property="rightScroll" destination="q43-yc-A5G" id="FEL-gQ-3sd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DaN-zL-qWs" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1842,7 +1910,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="apZ-Yv-541"/>
+        <segue reference="IZA-Rh-gPV"/>
         <segue reference="uM3-tb-eTB"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="1" colorSpace="calibratedRGB"/>

@@ -186,6 +186,7 @@ extension UIView {
         activityIndicator.frame = bounds
         activityIndicator.autoresizingMask = .FlexibleWidth | .FlexibleHeight
         activityIndicator.opaque = true
+        activityIndicator.userInteractionEnabled = true
         addSubview(activityIndicator)
         return activityIndicator
     }

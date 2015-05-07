@@ -12,8 +12,9 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
 
     var initialImageIndex: Int?
     var images: [UIImage]!
-    var scrollViews: [UIScrollView] {
-        return mainScroll.subviews as! [UIScrollView]
+    var bgImages: [UIImage]?
+    var scrollViews: [UIScrollView!] {
+        return [leftScroll, rightScroll]
     }
     private var barsHidden = false
 
@@ -21,7 +22,8 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
-    @IBOutlet weak var mainScroll: UIScrollView!
+    @IBOutlet weak var mainScroll, leftScroll, rightScroll: UIScrollView!
+    @IBOutlet weak var leftBg, rightBg: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +39,12 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
             let verticalScale = scrollView.bounds.height / scrollView.contentSize.height
             scrollView.minimumZoomScale = min(horizontalScale, verticalScale)
             scrollView.zoomScale = scrollView.minimumZoomScale
+        }
+
+        if let blurredImgs = bgImages {
+            for (idx, bgView) in enumerate([leftBg, rightBg]) {
+                bgView.image = blurredImgs[idx]
+            }
         }
     }
 
