@@ -86,7 +86,7 @@ Parse.Cloud.beforeSave("Vote", function (request, response) {
     
     if (!request.object.get("pollCreatedBy")) {
         
-        Parse.Query("Poll").include("createdBy").select(["createdBy"]).get(request.object.get("pollId"), {
+        new Parse.Query("Poll").include("createdBy").select(["createdBy"]).get(request.object.get("pollId"), {
             success: function (poll) {
                 request.object.set("pollCreatedBy", poll.get("createdBy").id);
                 request.object.set("pollCreatedAt", poll.createdAt);
