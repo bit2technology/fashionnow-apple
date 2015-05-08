@@ -64,13 +64,9 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     private func setVoteButtonsHidden(hidden: Bool, animated: Bool) {
         UIView.animateWithDuration(animated ? transitionDuration : 0) { () -> Void in
             for voteButton in [self.leftVoteButton, self.rightVoteButton] {
-                voteButton.alpha = (hidden ? 0.5 : 1)
+                voteButton.alpha = (hidden ? 0 : 1)
             }
         }
-    }
-    // Press actions
-    @IBAction func voteButtonWillBePressed(sender: UIButton) {
-        setVoteButtonsHidden(false, animated: true)
     }
     @IBAction func voteButtonPressed(sender: UIButton) {
         pollController.animateHighlight(index: find([leftVoteButton, rightVoteButton], sender)! + 1, source: .Extern)
@@ -435,6 +431,9 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
     func pollLoaded(pollController: PollController) {
         UIView.transitionWithView(view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
+            for btn in [self.leftVoteButton, self.rightVoteButton] {
+                btn.alpha = 1
+            }
             self.loadingInterface.hidden = true
         }, completion: { (finished) -> Void in
             for gesture in [self.pollController.tap, self.pollController.doubleTap, self.pollController.drager] {
@@ -456,8 +455,12 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         }, completion: nil)
     }
 
-    func pollInteracted(pollController: PollController) {
+    func pollInteractionBegan(pollController: PollController) {
         setVoteButtonsHidden(true, animated: true)
+    }
+
+    func pollInteractionEnded(pollController: PollController) {
+        setVoteButtonsHidden(false, animated: true)
     }
 
     func pollWillHighlight(pollController: PollController, index: Int, source: PollController.HighlightSource) {

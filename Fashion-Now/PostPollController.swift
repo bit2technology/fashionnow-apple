@@ -11,8 +11,9 @@ import UIKit
 class PostPollController: FNViewController, PollEditionDelegate, UITextFieldDelegate {
 
     // Interface elements (strong ones are for remove/insert)
-    private var textField: UITextField!
-    private var sendButtonItem: UIBarButtonItem!
+    private var textField: UITextField {
+        return navigationItem.titleView as! UITextField
+    }
     private weak var pollController: PollController!
 
     // Interface for when user is not verified
@@ -20,6 +21,12 @@ class PostPollController: FNViewController, PollEditionDelegate, UITextFieldDele
     @IBAction func resendVerification(sender: UIButton) {
     }
     @IBAction func alreadyVerified(sender: UIButton) {
+        // TODO: Use universal transition duration
+        UIView.transitionWithView(view, duration: 0.25, options: .TransitionCrossDissolve, animations: { () -> Void in
+            self.refreshInterface.removeFromSuperview()
+            self.textField.enabled = true
+            self.pollEdited(self.pollController) // To set rightBarButtonItem
+        }, completion: nil)
     }
 
     @IBAction func pollControllerTapped(sender: UITapGestureRecognizer) {
@@ -27,7 +34,7 @@ class PostPollController: FNViewController, PollEditionDelegate, UITextFieldDele
     }
 
     func clean() {
-        sendButtonItem.enabled = false
+        navigationItem.rightBarButtonItem!.enabled = false
         textField.text = nil
         pollController.poll = ParsePoll(user: ParseUser.current())
     }
@@ -61,10 +68,8 @@ class PostPollController: FNViewController, PollEditionDelegate, UITextFieldDele
         navigationController?.tabBarItem.selectedImage = UIImage(named: "TabBarIconPostSelected")
 
         // Interface adjustments
-        textField = navigationItem.titleView as! UITextField
         textField.delegate = self
         textField.frame.size.width = view.bounds.size.width
-        sendButtonItem = navigationItem.rightBarButtonItem
         pollController.editDelegate = self
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "clean", name: LoginChangedNotificationName, object: nil)
@@ -76,11 +81,8 @@ class PostPollController: FNViewController, PollEditionDelegate, UITextFieldDele
         // Show refresh interface if user cannot post
         if !ParseUser.current().canPostPoll && find(view.subviews as! [UIView], refreshInterface) == nil {
             view.addSubview(refreshInterface)
-            navigationItem.titleView = nil
-            navigationItem.rightBarButtonItem = nil
-        } else {
-            navigationItem.titleView = textField
-            navigationItem.rightBarButtonItem = sendButtonItem
+            textField.enabled = false
+            navigationItem.rightBarButtonItem!.enabled = false
         }
     }
 
@@ -91,7 +93,7 @@ class PostPollController: FNViewController, PollEditionDelegate, UITextFieldDele
     // MARK: PollControllerDelegate
     
     func pollEdited(pollController: PollController) {
-        sendButtonItem.enabled = pollController.poll.isValid
+        navigationItem.rightBarButtonItem!.enabled = pollController.poll.isValid
     }
 
     // MARK: UITextFieldDelegate

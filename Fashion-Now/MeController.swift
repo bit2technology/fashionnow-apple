@@ -352,16 +352,7 @@ class MePollHeader: UICollectionReusableView {
     @IBOutlet weak var avatarImageView: UIImageView!
     var avatarUrl: NSURL?
 
-    @IBOutlet weak var pollsButton: UIButton!
-    @IBOutlet weak var votesButton: UIButton!
     @IBOutlet weak var friendsButton: UIButton!
-    @IBOutlet weak var locationLabel: UILabel!
-
-    @IBAction func pollsButtonPressed(sender: UIButton) {
-        if meController?.collectionView(meController!.collectionView!, numberOfItemsInSection: 0) > 3 {
-            meController!.collectionView!.setContentOffset(CGPoint(x: 0, y: frame.height - 64), animated: true)
-        }
-    }
 
     func updateContent() -> Self {
         let currentUser = ParseUser.current()
@@ -380,9 +371,6 @@ class MePollHeader: UICollectionReusableView {
                 self.friendsButton.setTitle("\(count ?? 0)\nFriends", forState: .Normal)
             }
         }
-
-        // Location
-        locationLabel.text = currentUser.location
 
         return self
     }

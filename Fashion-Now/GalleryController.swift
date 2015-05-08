@@ -10,44 +10,46 @@ import UIKit
 
 class GalleryController: FNViewController, UIScrollViewDelegate {
 
-    var initialImageIndex: Int?
+    weak var pollController: PollController!
+    var initialImgIdx: Int?
+    private var currentImgIdx = 0
     var images: [UIImage]!
-    var bgImages: [UIImage]?
-    var scrollViews: [UIScrollView!] {
-        return [leftScroll, rightScroll]
-    }
+    var blurImages: [UIImage]?
     private var barsHidden = false
-
-    @IBAction func doneButtonPressed(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
+    private var imgsAdjusted = false
 
     @IBOutlet weak var mainScroll, leftScroll, rightScroll: UIScrollView!
     @IBOutlet weak var leftBg, rightBg: UIImageView!
 
+    @IBAction func done(sender: UIBarButtonItem) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    @IBAction func vote(sender: AnyObject) {
+        pollController.animateHighlight(index: currentImgIdx++, withEaseInAnimation: false, source: .Extern)
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "viewTapped:"))
+        // Add gesture recognizers
+        let doubleTap = UITapGestureRecognizer(target: self, action: "vote:")
+        doubleTap.numberOfTapsRequired = 2
+        view.addGestureRecognizer(doubleTap)
+        let tap = UITapGestureRecognizer(target: self, action: "hideBars:")
+        tap.requireGestureRecognizerToFail(doubleTap)
+        view.addGestureRecognizer(tap)
 
-        for (index, scrollView) in enumerate(scrollViews) {
-            let imageView = UIImageView(image: images[index])
-            scrollView.addSubview(imageView)
-            scrollView.contentSize = imageView.frame.size
-            let horizontalScale = scrollView.bounds.width / scrollView.contentSize.width
-            let verticalScale = scrollView.bounds.height / scrollView.contentSize.height
-            scrollView.minimumZoomScale = min(horizontalScale, verticalScale)
-            scrollView.zoomScale = scrollView.minimumZoomScale
-        }
-
-        if let blurredImgs = bgImages {
+        // set blurred backgrounds
+        if let bgImgs = blurImages {
             for (idx, bgView) in enumerate([leftBg, rightBg]) {
-                bgView.image = blurredImgs[idx]
+                bgView.image = bgImgs[idx]
             }
         }
     }
 
-    func viewTapped(sender: UITapGestureRecognizer) {
+    func hideBars(sender: UITapGestureRecognizer) {
         barsHidden = !barsHidden
         UIView.animateWithDuration(NSTimeInterval(UINavigationControllerHideShowBarDuration), animations: { () -> Void in
             self.setNeedsStatusBarAppearanceUpdate()
@@ -69,8 +71,24 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
         super.viewWillAppear(animated)
 
         view.layoutIfNeeded()
-        for scrollView in scrollViews {
-            centerSubview(scrollView: scrollView)
+
+        if !imgsAdjusted {
+            imgsAdjusted = true
+
+            // Add image views
+            for (idx, scrollView) in enumerate([leftScroll, rightScroll]) {
+                let imgView = UIImageView(image: images[idx])
+                scrollView.addSubview(imgView)
+                scrollView.contentSize = imgView.frame.size
+                let horizontalScale = scrollView.bounds.width / scrollView.contentSize.width
+                let verticalScale = scrollView.bounds.height / scrollView.contentSize.height
+                scrollView.minimumZoomScale = min(horizontalScale, verticalScale)
+                scrollView.zoomScale = scrollView.minimumZoomScale
+            }
+
+            for scrollView in [leftScroll, rightScroll] {
+                centerSubview(scrollView: scrollView)
+            }
         }
     }
 
@@ -85,14 +103,16 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        if let unwrappedInitialImageIndex = initialImageIndex {
-            mainScroll.contentOffset = CGPoint(x: CGFloat(unwrappedInitialImageIndex) * view.bounds.width, y: 0)
-            initialImageIndex = nil
+        if let imgIdx = initialImgIdx {
+            mainScroll.contentOffset = CGPoint(x: CGFloat(imgIdx) * view.bounds.width, y: 0)
+            currentImgIdx = imgIdx
+            initialImgIdx = nil
         }
     }
 
     // MARK: - UIScrollViewDelegate
 
+    // Main
     func scrollViewDidScroll(scrollView: UIScrollView) {
 
         if scrollView != mainScroll {
@@ -100,8 +120,10 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
         }
 
         rightBg.alpha = scrollView.contentOffset.x / leftScroll.frame.width
+        currentImgIdx = rightBg.alpha > 0.5 ? 1 : 0
     }
 
+    // Subs
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
 
         if scrollView == mainScroll {

@@ -79,7 +79,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
     @IBOutlet weak var doubleTap: UITapGestureRecognizer!
     @IBAction func didDoubleTap(sender: UITapGestureRecognizer) {
-        interactDelegate?.pollInteracted(self)
+        interactDelegate?.pollInteractionBegan(self)
         animateHighlight(index: indexForTouch(sender.locationInView(view)), source: .DoubleTap)
     }
 
@@ -103,7 +103,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
         case .Began:
             verticalMoviment = abs(sender.translationInView(view).y) > abs(sender.translationInView(view).x)
             view.shouldRasterize = verticalMoviment
-            interactDelegate?.pollInteracted(self)
+            interactDelegate?.pollInteractionBegan(self)
         case .Changed:
             if verticalMoviment {
                 adjustVerticalLayout(verticalRate, animationTimingFunction: nil, callCompleteDelegate: false)
@@ -146,6 +146,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
             }
             verticalMoviment = false
             view.shouldRasterize = true
+            interactDelegate?.pollInteractionEnded(self)
         case .Possible:
             return
         }
@@ -305,11 +306,12 @@ class PollController: UIViewController, PhotoControllerDelegate {
             case "Present Gallery":
                 if let leftImage = leftPhotoController.imageView.image, let rightImage = rightPhotoController.imageView.image {
                     let gallery = (segue.destinationViewController as! UINavigationController).topViewController as! GalleryController
+                    gallery.pollController = self
                     gallery.images = [leftImage, rightImage]
                     if let leftBgImg = leftPhotoController.bgImageView.image, let rightBgImg = rightPhotoController.bgImageView.image {
-                        gallery.bgImages = [leftBgImg, rightBgImg]
+                        gallery.blurImages = [leftBgImg, rightBgImg]
                     }
-                    gallery.initialImageIndex = indexForTouch((sender as! UITapGestureRecognizer).locationInView(view)) - 1
+                    gallery.initialImgIdx = indexForTouch((sender as! UITapGestureRecognizer).locationInView(view)) - 1
                 }
             default:
                 return
@@ -343,7 +345,8 @@ protocol PollEditionDelegate: class {
     func pollEdited(pollController: PollController)
 }
 protocol PollInteractionDelegate: class {
-    func pollInteracted(pollController: PollController)
+    func pollInteractionBegan(pollController: PollController)
+    func pollInteractionEnded(pollController: PollController)
     func pollWillHighlight(pollController: PollController, index: Int, source: PollController.HighlightSource)
     func pollDidHighlight(pollController: PollController)
 }
