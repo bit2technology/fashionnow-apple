@@ -1,3 +1,6 @@
+/* global Parse */
+/* global Parse */
+
 Parse.Cloud.define("sendPush", function (request, response) {
     "use strict";
     var query = new Parse.Query(Parse.Installation),
@@ -26,11 +29,11 @@ Parse.Cloud.define("sendPush", function (request, response) {
     }, {
         success: function () {
             // Push successfull
-            response.success("Push sent");
+            response.success("sendPush successful");
         },
         error: function (error) {
             // Handle error
-            response.error("Error: " + error);
+            response.error("sendPush error: " + error);
         }
     });
 });
@@ -52,7 +55,9 @@ Parse.Cloud.beforeSave(Parse.User, function (request, response) {
 Parse.Cloud.afterSave("Poll", function (request) {
     "use strict";
     
-    if ((request.object.get("version") <= 1) && !request.object.get("hidden")) {
+    console.log("Poll afterSave");
+    
+    if (!(request.object.get("version") > 1)) {
         
         var query = new Parse.Query(Parse.Installation);
         query.containedIn("userId", request.object.get("userIds"));
@@ -66,11 +71,11 @@ Parse.Cloud.afterSave("Poll", function (request) {
         }, {
             success: function () {
                 // Push successfull
-                console.log("Push sent");
+                console.log("Poll afterSave successful");
             },
             error: function (error) {
                 // Handle error
-                console.error("Error send push");
+                console.error("Poll afterSave error: " + error);
             }
         });
     }
@@ -81,7 +86,7 @@ Parse.Cloud.beforeSave("Vote", function (request, response) {
     
     if (!request.object.get("pollCreatedBy")) {
         
-        var query = new Parse.Query("Poll").include("createdBy").select(["createdBy"]).get(request.object.get("pollId"), {
+        Parse.Query("Poll").include("createdBy").select(["createdBy"]).get(request.object.get("pollId"), {
             success: function (poll) {
                 request.object.set("pollCreatedBy", poll.get("createdBy").id);
                 request.object.set("pollCreatedAt", poll.createdAt);
