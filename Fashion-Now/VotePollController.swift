@@ -186,7 +186,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
                 let locMessage = NSString(format: locFormat, arguments: cVaList) as String
 
                 // Show notification
-                if NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1 {
+                if NSClassFromString("UIAlertController") != nil {
 
                     // iOS 8 and above
                     let alert = UIAlertController(title: locTitle, message: locMessage, preferredStyle: .Alert)
@@ -235,7 +235,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         actions.append(["title": FNLocalizedCancelButtonTitle, "style": "cancel"])
 
         // Presentation
-        if NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1 {
+        if NSClassFromString("UIAlertController") != nil {
 
             // iOS 8 and above
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
@@ -286,7 +286,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
             (tabBarController as! TabBarController).presentLoginController()
 
         case asReportButtonTitle:
-            if NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1 {
+            if NSClassFromString("UIAlertController") != nil {
 
                 // iOS 8 and above
                 let alert = UIAlertController(title: asReportButtonTitle, message: alReportMessage, preferredStyle: .Alert)

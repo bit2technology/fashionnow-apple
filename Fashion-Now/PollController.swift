@@ -74,16 +74,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
     @IBOutlet weak var tap: UITapGestureRecognizer!
     @IBAction func didTap(sender: UITapGestureRecognizer) {
-        if let leftImage = leftPhotoController.imageView.image, let rightImage = rightPhotoController.imageView.image {
-            let navController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Gallery Navigation Controller") as! UINavigationController
-            let gallery = navController.topViewController as! GalleryController
-            gallery.images = [leftImage, rightImage]
-            if let leftBgImg = leftPhotoController.bgImageView.image, let rightBgImg = rightPhotoController.bgImageView.image {
-                gallery.bgImages = [leftBgImg, rightBgImg]
-            }
-            gallery.initialImageIndex = indexForTouch(sender.locationInView(view)) - 1
-            presentViewController(navController, animated: true, completion: nil)
-        }
+        performSegueWithIdentifier("Present Gallery", sender: sender)
     }
 
     @IBOutlet weak var doubleTap: UITapGestureRecognizer!
@@ -311,6 +302,15 @@ class PollController: UIViewController, PhotoControllerDelegate {
                 leftPhotoController = segue.destinationViewController as! PhotoController
             case "Right Photo Controller":
                 rightPhotoController = segue.destinationViewController as! PhotoController
+            case "Present Gallery":
+                if let leftImage = leftPhotoController.imageView.image, let rightImage = rightPhotoController.imageView.image {
+                    let gallery = (segue.destinationViewController as! UINavigationController).topViewController as! GalleryController
+                    gallery.images = [leftImage, rightImage]
+                    if let leftBgImg = leftPhotoController.bgImageView.image, let rightBgImg = rightPhotoController.bgImageView.image {
+                        gallery.bgImages = [leftBgImg, rightBgImg]
+                    }
+                    gallery.initialImageIndex = indexForTouch((sender as! UITapGestureRecognizer).locationInView(view)) - 1
+                }
             default:
                 return
             }

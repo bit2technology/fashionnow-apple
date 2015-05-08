@@ -31,7 +31,6 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "viewTapped:"))
 
         for (index, scrollView) in enumerate(scrollViews) {
-            scrollView.delegate = self
             let imageView = UIImageView(image: images[index])
             scrollView.addSubview(imageView)
             scrollView.contentSize = imageView.frame.size
@@ -52,7 +51,11 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
         barsHidden = !barsHidden
         UIView.animateWithDuration(NSTimeInterval(UINavigationControllerHideShowBarDuration), animations: { () -> Void in
             self.setNeedsStatusBarAppearanceUpdate()
-            self.navigationController!.navigationBar.alpha = self.barsHidden ? 0 : 1
+            let navController = self.navigationController!
+            navController.setToolbarHidden(self.barsHidden, animated: true)
+            let alpha: CGFloat = self.barsHidden ? 0 : 1
+            navController.navigationBar.alpha = alpha
+            navController.toolbar.alpha = alpha
         })
     }
 
@@ -88,11 +91,32 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
         }
     }
 
+    // MARK: - UIScrollViewDelegate
+
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+
+        if scrollView != mainScroll {
+            return
+        }
+
+        rightBg.alpha = scrollView.contentOffset.x / leftScroll.frame.width
+    }
+
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+
+        if scrollView == mainScroll {
+            return nil
+        }
+
         return (scrollView.subviews.first as! UIView)
     }
 
     func scrollViewDidZoom(scrollView: UIScrollView) {
+
+        if scrollView == mainScroll {
+            return
+        }
+
         centerSubview(scrollView: scrollView)
     }
 }
