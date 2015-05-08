@@ -323,7 +323,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         switch buttonTitle {
         case alReportButtonTitle:
             ParseReport.sendReport(currentPoll!, comment: comment, block: { (succeeded, error) -> Void in
-                // TODO: !!!!!!
+                FNAnalytics.logError(error, location: "Vote: Report Poll")
             })
             pollController.animateHighlight(index: 0, source: .Extern)
         default:
