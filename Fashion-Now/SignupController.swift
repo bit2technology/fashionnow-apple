@@ -188,26 +188,30 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
 
             /// Present error alert.
             func presentError(error: NSError) {
-                activityIndicatorView.removeFromSuperview()
-                FNAnalytics.logError(error, location: "Signup: Save")
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
 
-                // Error handling
-                switch error.code {
+                    activityIndicatorView.removeFromSuperview()
+                    FNAnalytics.logError(error, location: "Signup: Save")
 
-                case PFErrorCode.ErrorConnectionFailed.rawValue:
-                    FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
+                    // Error handling
+                    switch error.code {
 
-                case PFErrorCode.ErrorUsernameTaken.rawValue:
-                    self.usernameLabel.textColor = UIColor.fn_error()
-                    FNToast.show(title: NSLocalizedString("SignupController.saveErrorDescription.usernameTaken", value: "Username already exists", comment: "Error message for Sign Up or Edit Profile"), type: .Error)
+                    case PFErrorCode.ErrorConnectionFailed.rawValue:
+                        FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
 
-                case PFErrorCode.ErrorUserEmailTaken.rawValue:
-                    self.emailLabel.textColor = UIColor.fn_error()
-                    FNToast.show(title: NSLocalizedString("SignupController.saveErrorDescription.emailTaken", value: "Another user is using this e-mail", comment: "Error message for Sign Up or Edit Profile"), type: .Error)
+                    case PFErrorCode.ErrorUsernameTaken.rawValue:
+                        self.usernameLabel.textColor = UIColor.fn_error()
+                        FNToast.show(title: NSLocalizedString("SignupController.saveErrorDescription.usernameTaken", value: "Username already exists", comment: "Error message for Sign Up or Edit Profile"), type: .Error)
 
-                default:
-                    FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
-                }
+                    case PFErrorCode.ErrorUserEmailTaken.rawValue:
+                        self.emailLabel.textColor = UIColor.fn_error()
+                        FNToast.show(title: NSLocalizedString("SignupController.saveErrorDescription.emailTaken", value: "Another user is using this e-mail", comment: "Error message for Sign Up or Edit Profile"), type: .Error)
+                        
+                    default:
+                        FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
+                    }
+
+                })
             }
 
             // If user is not saved yet, save it
@@ -282,7 +286,7 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
         }
 
         // Change navigation items
-        navigationItem.title = NSLocalizedString("SIGNUP_REVIEW_TITLE", value: "Edit Profile", comment: "User logged in with a Facebook account and must review his/her information.")
+        navigationItem.title = NSLocalizedString("SignupController.title.review", value: "Edit Profile", comment: "User logged in with a Facebook account and must review his/her information.")
 
         // Fill fields with Parse or Facebook information
         // Name

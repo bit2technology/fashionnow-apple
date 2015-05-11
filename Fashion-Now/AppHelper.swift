@@ -35,6 +35,14 @@ func fn_applyPollMask(left: UIView, right: UIView) {
     right.layer.mask = rightMask
 }
 
+func fn_isOffline() -> Bool {
+    if !Reachability.reachabilityForInternetConnection().isReachable() {
+        FNToast.show(title: NSLocalizedString("AppHelper.isOfflineAlert.title", value: "You Are Offline", comment: "Shown when user is offline"), message: NSLocalizedString("AppHelper.isOfflineAlert.message", value: "Connect your device and try again", comment: "Shown when user is offline"), type: .Error)
+        return true
+    }
+    return false
+}
+
 private func fn_pushStrings() {
     NSLocalizedString("P001", value: "New Poll", comment: "Push title for when a friend posts a poll")
     NSLocalizedString("P002", value: "%1$@ needs help", comment: "Push message for when a friend posts a poll without caption")
@@ -42,13 +50,6 @@ private func fn_pushStrings() {
 }
 
 // MARK: - Extensions
-
-extension Reachability {
-    /// Helper to test internet reachability
-    class func fn_reachable() -> Bool {
-        return reachabilityForInternetConnection().isReachable()
-    }
-}
 
 extension UIColor {
 
@@ -189,6 +190,15 @@ extension UIView {
         activityIndicator.userInteractionEnabled = true
         addSubview(activityIndicator)
         return activityIndicator
+    }
+
+    func fn_transition(animated: Bool, changes: () -> Void, completion: ((Bool) -> Void)? = nil) {
+        if animated {
+            UIView.transitionWithView(self, duration: 0.25, options: .TransitionCrossDissolve, animations: changes, completion: completion)
+        } else {
+            changes()
+            completion?(true)
+        }
     }
 }
 
@@ -360,7 +370,7 @@ class FNTableController: UITableViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        TSMessage.setDefaultViewController(self)
+        TSMessage.setDefaultViewController(navigationController)
         appearDate = NSDate()
         let tracker = GAI.sharedInstance().defaultTracker
         tracker.set(kGAIScreenName, value: title)

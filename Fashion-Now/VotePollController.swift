@@ -10,8 +10,6 @@ import UIKit
 
 let VoteNotificationTappedNotificationName = "VoteNotificationTappedNotification"
 
-private let transitionDuration: NSTimeInterval = 0.25
-
 // Action Sheet buttons
 private let asReportButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.reportButtonTitle", value: "Report Poll", comment: "Shown when user taps the gear button")
 private let asSkipButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.skipButtonTitle", value: "Skip Poll", comment: "Shown when user taps the gear button")
@@ -62,11 +60,11 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     // Vote buttons
     @IBOutlet weak var leftVoteButton, rightVoteButton: UIButton!
     private func setVoteButtonsHidden(hidden: Bool, animated: Bool) {
-        UIView.animateWithDuration(animated ? transitionDuration : 0) { () -> Void in
+        view.fn_transition(animated, changes: { () -> Void in
             for voteButton in [self.leftVoteButton, self.rightVoteButton] {
                 voteButton.alpha = (hidden ? 0 : 1)
             }
-        }
+        })
     }
     @IBAction func voteButtonPressed(sender: UIButton) {
         pollController.animateHighlight(index: find([leftVoteButton, rightVoteButton], sender)! + 1, source: .Extern)
@@ -132,7 +130,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
     private func loadPollList(clear: Bool, animated: Bool) {
 
-        UIView.transitionWithView(self.navigationController!.view, duration: animated ? transitionDuration : 0, options: .TransitionCrossDissolve, animations: { () -> Void in
+        navigationController!.view.fn_transition(animated, changes: { () -> Void in
 
             // Reset interface
             self.refreshMessageContainer.hidden = true
@@ -147,7 +145,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
                 self.polls = ParsePollList()
             }
             self.polls.update(completionHandler: { (success, error) -> Void in
-                UIView.transitionWithView(self.navigationController!.view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
+                self.navigationController!.view.fn_transition(true, changes: { () -> Void in
                     if FNAnalytics.logError(error, location: "Vote: Load List") {
                         // If error is RequestTooOften, do not change the message
                         if error!.domain != FNErrorDomain || error!.code != FNErrorCode.RequestTooOften.rawValue {
@@ -158,9 +156,9 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
                     } else {
                         self.showNextPoll()
                     }
-                }, completion: nil)
+                })
             })
-        }, completion: nil)
+        })
     }
 
     func notificationReceived(sender: NSNotification) {
@@ -430,7 +428,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     // MARK: PollControllerDelegate
 
     func pollLoaded(pollController: PollController) {
-        UIView.transitionWithView(view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
+        view.fn_transition(true, changes: { () -> Void in
             for btn in [self.leftVoteButton, self.rightVoteButton] {
                 btn.alpha = 1
             }
@@ -446,13 +444,13 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     }
 
     func pollLoadFailed(pollController: PollController, error: NSError) {
-        UIView.transitionWithView(view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
+        view.fn_transition(true, changes: { () -> Void in
             if FNAnalytics.logError(error, location: "Vote: Poll Load Fail") {
                 self.refreshMessage.text = rmLoadFail
                 self.refreshMessageContainer.hidden = false
                 self.loadingInterface.hidden = true
             }
-        }, completion: nil)
+        })
     }
 
     func pollInteractionBegan(pollController: PollController) {
@@ -486,9 +484,9 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     }
 
     func pollDidHighlight(pollController: PollController) {
-        UIView.transitionWithView(navigationController!.view, duration: transitionDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
+        navigationController!.view.fn_transition(true, changes: { () -> Void in
             self.loadingInterface.hidden = false
             self.showNextPoll()
-        }, completion: nil)
+        })
     }
 }

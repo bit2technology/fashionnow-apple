@@ -179,7 +179,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gA1-ed-9m9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="109" y="2027"/>
+            <point key="canvasLocation" x="-99" y="2133"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="xBD-Y7-y6W">
@@ -334,7 +334,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sxm-SZ-9GR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="109" y="2595"/>
+            <point key="canvasLocation" x="-99" y="2701"/>
         </scene>
         <!--Vote: Main-->
         <scene sceneID="VVH-fN-2gA">
@@ -551,14 +551,15 @@
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                         </textField>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" image="ButtonNext" id="UMb-Kl-08K">
+                        <barButtonItem key="rightBarButtonItem" image="ButtonNext" id="UMb-Kl-08K">
                             <inset key="imageInsets" minX="0.0" minY="3" maxX="0.0" maxY="0.0"/>
                             <connections>
-                                <segue destination="Awm-rd-6j1" kind="push" identifier="Friends List" id="xyo-It-ypo"/>
+                                <segue destination="Awm-rd-6j1" kind="push" identifier="Send Poll" id="xyo-It-ypo"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="noEmailInterface" destination="Vk5-5y-S2I" id="Rb8-pD-BN2"/>
                         <outlet property="refreshInterface" destination="Gnh-Bt-aNh" id="hnS-qD-TOU"/>
                     </connections>
                 </viewController>
@@ -624,6 +625,53 @@
                     <constraints>
                         <constraint firstAttribute="centerX" secondItem="dFC-ld-3mN" secondAttribute="centerX" id="M05-Ak-LlM"/>
                         <constraint firstAttribute="centerY" secondItem="dFC-ld-3mN" secondAttribute="centerY" id="efh-vg-mDF"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" id="Vk5-5y-S2I" userLabel="No Email Interface">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kVb-TQ-ojR">
+                            <rect key="frame" x="60" y="194" width="200" height="93"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You haven’t informed your e-mail" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="orf-n6-AUs">
+                                    <rect key="frame" x="0.0" y="0.0" width="200" height="41"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="200" id="Vbu-Fy-Xsy"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hIa-t9-CvM" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                    <rect key="frame" x="29" y="49" width="142" height="44"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="8ZU-HH-C89"/>
+                                    </constraints>
+                                    <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
+                                    <state key="normal" title="Edit account" backgroundImage="ButtonRoundBordersBackground">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <segue destination="OJC-JN-eaN" kind="modal" id="SWL-sX-BuZ"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="hIa-t9-CvM" firstAttribute="top" secondItem="orf-n6-AUs" secondAttribute="bottom" constant="8" id="2xt-Rj-6Sv"/>
+                                <constraint firstAttribute="trailing" secondItem="orf-n6-AUs" secondAttribute="trailing" id="9jl-cJ-Lj4"/>
+                                <constraint firstItem="orf-n6-AUs" firstAttribute="top" secondItem="kVb-TQ-ojR" secondAttribute="top" id="9v5-1h-5N3"/>
+                                <constraint firstAttribute="bottom" secondItem="hIa-t9-CvM" secondAttribute="bottom" id="GTW-0Q-Doh"/>
+                                <constraint firstAttribute="centerX" secondItem="hIa-t9-CvM" secondAttribute="centerX" id="pUb-Cx-T8d"/>
+                                <constraint firstItem="orf-n6-AUs" firstAttribute="leading" secondItem="kVb-TQ-ojR" secondAttribute="leading" id="tJr-Xq-u4w"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="centerX" secondItem="kVb-TQ-ojR" secondAttribute="centerX" id="DM3-tp-O6q"/>
+                        <constraint firstAttribute="centerY" secondItem="kVb-TQ-ojR" secondAttribute="centerY" id="Pw1-yG-XVp"/>
                     </constraints>
                 </view>
                 <tapGestureRecognizer id="mPy-Qe-4g0" userLabel="Poll Controller Tapped">
@@ -777,6 +825,9 @@
                                             <state key="normal" title="Edit profile">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
+                                            <connections>
+                                                <segue destination="OJC-JN-eaN" kind="modal" id="Xhx-XT-wVu"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -849,9 +900,6 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <segue destination="OJC-JN-eaN" kind="modal" identifier="Edit Profile" id="1nh-dS-Usc"/>
-                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wVC-D2-I0P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -986,16 +1034,16 @@
             </objects>
             <point key="canvasLocation" x="1038" y="776"/>
         </scene>
-        <!--Post: Options-->
+        <!--Post: Friends-->
         <scene sceneID="5qp-bD-6TV">
             <objects>
-                <tableViewController title="Post: Options" id="Awm-rd-6j1" customClass="FriendsListTableController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Post: Friends" id="Awm-rd-6j1" customClass="PostFriendsController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="56" sectionHeaderHeight="22" sectionFooterHeight="22" id="2ON-kr-Jyp">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Friends List Table Cell" id="yAe-oU-6dk" customClass="FriendListTableCell" customModule="Fashion_Now" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Friends List Table Cell" id="yAe-oU-6dk" customClass="PostFriendsCell" customModule="Fashion_Now" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yAe-oU-6dk" id="doK-aW-cqO">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -1418,7 +1466,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xq6-l7-NYw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="504" y="2137"/>
+            <point key="canvasLocation" x="296" y="2243"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sT9-WB-ml1">
@@ -1434,7 +1482,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gRT-Sz-dcX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="504" y="1458"/>
+            <point key="canvasLocation" x="296" y="1564"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="CJf-es-BZO">
@@ -1849,7 +1897,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ox9-Wq-caD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="109" y="1458"/>
+            <point key="canvasLocation" x="-99" y="1564"/>
         </scene>
         <!--Vote-->
         <scene sceneID="w3X-gR-82r">
@@ -1910,8 +1958,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="apZ-Yv-541"/>
         <segue reference="uM3-tb-eTB"/>
+        <segue reference="IZA-Rh-gPV"/>
+        <segue reference="SWL-sX-BuZ"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="1" colorSpace="calibratedRGB"/>
 </document>

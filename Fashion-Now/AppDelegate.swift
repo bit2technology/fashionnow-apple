@@ -68,6 +68,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Clean image cache
         SDImageCache.sharedImageCache().cleanDiskWithCompletionBlock(nil)
 
+        // Start friends cache
+        ParseFriendsList.shared.update()
+
         return true
     }
     

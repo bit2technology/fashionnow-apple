@@ -8,25 +8,69 @@
 
 import UIKit
 
-class PostPollController: FNViewController, PollEditionDelegate, UITextFieldDelegate {
+class PostPollController: FNViewController, UIAlertViewDelegate, UITextFieldDelegate {
 
-    // Interface elements (strong ones are for remove/insert)
+    // Interface elements
     private var textField: UITextField {
         return navigationItem.titleView as! UITextField
     }
     private weak var pollController: PollController!
 
+    // Interface for when user has no email
+    @IBOutlet weak var noEmailInterface: UIView!
+
     // Interface for when user is not verified
-    @IBOutlet var refreshInterface: UIView!
+    @IBOutlet weak var refreshInterface: UIView!
     @IBAction func resendVerification(sender: UIButton) {
+
+        if fn_isOffline() {
+            return
+        }
+
+        let currentUser = ParseUser.current()
+        let email = currentUser.email
+        // TODO: Backup
+        currentUser.email = nil
+        currentUser.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+            currentUser.email = email
+            currentUser.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
+                // TODO: Localize
+                if FNAnalytics.logError(error, location: "Post: Resend Verification Email") {
+                    FNToast.show(title: "Email not sent", message: error!.localizedDescription, type: .Error)
+                } else {
+                    FNToast.show(title: "Email sent", message: "Check your inbox")
+                }
+            })
+        }
     }
     @IBAction func alreadyVerified(sender: UIButton) {
-        // TODO: Use universal transition duration
-        UIView.transitionWithView(view, duration: 0.25, options: .TransitionCrossDissolve, animations: { () -> Void in
-            self.refreshInterface.removeFromSuperview()
-            self.textField.enabled = true
-            self.pollEdited(self.pollController) // To set rightBarButtonItem
-        }, completion: nil)
+
+        if fn_isOffline() {
+            return
+        }
+
+        let activityIndicator = refreshInterface.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+        ParseUser.current().fetchInBackgroundWithBlock({ (user, error) -> Void in
+            activityIndicator.removeFromSuperview()
+
+            if FNAnalytics.logError(error, location: "Post: Verify Email Fetch") {
+                // TODO: Localize
+                FNToast.show(title: "Error", message: error!.localizedDescription, type: .Error)
+
+            } else if (user as! ParseUser).emailVerified {
+                // User has verified the email
+                self.view.fn_transition(true, changes: { () -> Void in
+                    self.refreshInterface.removeFromSuperview()
+                    self.textField.enabled = true
+                    self.navigationItem.rightBarButtonItem!.enabled = true
+                })
+
+            } else {
+                // User hasn't verified the email
+                // TODO: Localize
+                FNToast.show(title: "You didn't vefied your email", type: .Error)
+            }
+        })
     }
 
     @IBAction func pollControllerTapped(sender: UITapGestureRecognizer) {
@@ -45,8 +89,50 @@ class PostPollController: FNViewController, PollEditionDelegate, UITextFieldDele
         return true
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+        textField.resignFirstResponder()
 
+        if let identifier = identifier {
+
+            switch identifier {
+
+            case "Send Poll":
+                let poll = pollController.poll
+                if poll.isValid {
+                    if poll.caption?.fn_count > 0 {
+                        return true
+                    } else {
+                        let title = NSLocalizedString("PostController.noCaptionAlert.title", value: "No Description", comment: "Shown when user tries to send a invalid without caption")
+                        let message = NSLocalizedString("PostController.noCaptionAlert.message", value: "Do you want to go further without a description?", comment: "Shown when user tries to send a invalid without caption")
+                        let cancel = NSLocalizedString("PostController.noCaptionAlert.cancel", value: "Go back", comment: "Shown when user tries to send a invalid without caption")
+                        let next = NSLocalizedString("PostController.noCaptionAlert.next", value: "Go further", comment: "Shown when user tries to send a invalid without caption")
+
+                        if NSClassFromString("UIAlertController") != nil {
+                            let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+                            alert.addAction(UIAlertAction(title: cancel, style: .Cancel, handler: nil))
+                            alert.addAction(UIAlertAction(title: next, style: .Default, handler: { (action) -> Void in
+                                self.performSegueWithIdentifier(identifier, sender: nil)
+                            }))
+                            presentViewController(alert, animated: true, completion: nil)
+                        } else {
+                            UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: cancel, otherButtonTitles: next).show()
+                        }
+
+                        return false
+                    }
+                } else {
+                    FNToast.show(title: NSLocalizedString("PostController.invalidPollAlert.title", value: "Invalid Poll", comment: "Shown when user tries to send a invalid poll"), message: NSLocalizedString("PostController.invalidPollAlert.message", value: "You need to choose 2 photos", comment: "Shown when user tries to send a invalid poll"), type: .Error)
+                    return false
+                }
+
+            default:
+                break
+            }
+        }
+        return true
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let identifier = segue.identifier {
 
             switch identifier {
@@ -70,7 +156,6 @@ class PostPollController: FNViewController, PollEditionDelegate, UITextFieldDele
         // Interface adjustments
         textField.delegate = self
         textField.frame.size.width = view.bounds.size.width
-        pollController.editDelegate = self
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "clean", name: LoginChangedNotificationName, object: nil)
     }
@@ -78,11 +163,38 @@ class PostPollController: FNViewController, PollEditionDelegate, UITextFieldDele
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
+        let currentUser = ParseUser.current()
+        let showRefreshInterface = !currentUser.canPostPoll
+        let showNoEmailInterface = showRefreshInterface && currentUser.email?.isEmail() != true
+
         // Show refresh interface if user cannot post
-        if !ParseUser.current().canPostPoll && find(view.subviews as! [UIView], refreshInterface) == nil {
-            view.addSubview(refreshInterface)
+        if showRefreshInterface {
+            if find(view.subviews as! [UIView], refreshInterface) == nil {
+                refreshInterface.frame = view.bounds
+                refreshInterface.autoresizingMask = .FlexibleHeight | .FlexibleWidth
+                view.addSubview(refreshInterface)
+            }
+        } else {
+            refreshInterface.removeFromSuperview()
+        }
+
+        // Show no email interface if needed
+        if showNoEmailInterface {
+            if find(view.subviews as! [UIView], noEmailInterface) == nil {
+                noEmailInterface.frame = view.bounds
+                noEmailInterface.autoresizingMask = .FlexibleHeight | .FlexibleWidth
+                view.addSubview(noEmailInterface)
+            }
+        } else {
+            noEmailInterface.removeFromSuperview()
+        }
+
+        if showNoEmailInterface || showRefreshInterface {
             textField.enabled = false
             navigationItem.rightBarButtonItem!.enabled = false
+        } else {
+            textField.enabled = true
+            navigationItem.rightBarButtonItem!.enabled = true
         }
     }
 
@@ -90,10 +202,12 @@ class PostPollController: FNViewController, PollEditionDelegate, UITextFieldDele
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
-    // MARK: PollControllerDelegate
-    
-    func pollEdited(pollController: PollController) {
-        navigationItem.rightBarButtonItem!.enabled = pollController.poll.isValid
+    // MARK: UIAlertViewDelegate
+
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex != alertView.cancelButtonIndex {
+            performSegueWithIdentifier("Send Poll", sender: nil)
+        }
     }
 
     // MARK: UITextFieldDelegate

@@ -34,7 +34,7 @@ class ResultPollController: FNViewController, UIActionSheetDelegate, PollLoadDel
     private var showAsAbsoluteCount = NSUserDefaults.standardUserDefaults().boolForKey(showAsAbsoluteCountKey)
     private func setLabelsText() {
 
-        UIView.transitionWithView(leftPercentLabel.superview!.superview!, duration: 0.2, options: .TransitionCrossDissolve, animations: { () -> Void in
+        leftPercentLabel.superview!.superview!.fn_transition(true, changes: { () -> Void in
 
             if self.showAsAbsoluteCount {
                 self.leftPercentLabel.text = "\(self.leftCount)"
@@ -47,8 +47,7 @@ class ResultPollController: FNViewController, UIActionSheetDelegate, PollLoadDel
                 self.leftPercentLabel.text = numberFormatter.stringFromNumber(CGFloat(self.leftCount) / totalVoteCount)
                 self.rightPercentLabel.text = numberFormatter.stringFromNumber(CGFloat(self.rightCount) / totalVoteCount)
             }
-
-        }, completion: nil)
+        })
     }
 
     @IBAction func toggleShowAsAbsolute(sender: UITapGestureRecognizer) {

@@ -209,6 +209,107 @@ class ParseUser: PFUser, PFSubclassing {
     }
 }
 
+// MARK: - Friends List class
+
+private let sharedFriendsList = ParseFriendsList()
+private let sharedFriendsListPinName = "Friends Cache"
+
+class ParseFriendsList {
+
+    static let FinishLoadingNotification = "ParseFriendsListFinishLoadingNotification"
+
+    /// Shared instance
+    class var shared: ParseFriendsList {
+        return sharedFriendsList
+    }
+
+    private var downloading = false
+    private var list = [ParseUser]()
+
+    private var query: PFQuery {
+        // Get parse users from Facebook friends
+        let friendsQuery = PFQuery(className: ParseUser.parseClassName())
+            .orderByAscending(ParseUserNameKey)
+        friendsQuery.limit = ParseQueryLimit
+        return friendsQuery
+    }
+
+    init() {
+        query.fromPinWithName(sharedFriendsListPinName).findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+            if !FNAnalytics.logError(error, location: "ParseFriendsList: Local Query") {
+                self.list = objects as! [ParseUser]
+                self.list.sort({$0.displayName < $1.displayName})
+                NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self)
+            }
+            self.update()
+        })
+    }
+
+    func update() {
+
+        if downloading {
+            // Already downloading. Just do nothing.
+            return
+        }
+
+        downloading = true
+        FBSDKGraphRequest(graphPath: "me/friends?fields=id&limit=\(UInt.max)", parameters: nil).startWithCompletionHandler({ (requestConnection, object, error) -> Void in
+            self.downloading = false
+
+            if FNAnalytics.logError(error, location: "ParseFriendsList: Facebook Request") {
+                NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self)
+                return
+            }
+
+            // Get list of IDs from friends
+            var friendsFacebookIds = [String]()
+            if let friendsFacebook = object["data"] as? [[String:String]] {
+
+                for friendFacebook in friendsFacebook {
+                    friendsFacebookIds.append(friendFacebook["id"]!)
+                }
+
+
+                self.query.whereKey(ParseUserFacebookIdKey, containedIn: friendsFacebookIds).findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+
+                    if FNAnalytics.logError(error, location: "ParseFriendsList: Remote Query") {
+                        NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self)
+                        return
+                    }
+
+                    PFObject.unpinAllObjectsInBackgroundWithName(sharedFriendsListPinName, block: { (succeeded, error) -> Void in
+                        if !FNAnalytics.logError(error, location: "ParseFriendsList: Unpin") {
+                            PFObject.pinAllInBackground(objects, withName: sharedFriendsListPinName, block: { (succeeded, error) -> Void in
+                                if !FNAnalytics.logError(error, location: "ParseFriendsList: Pin") {
+                                    self.list = objects as! [ParseUser]
+                                    self.list.sort({$0.displayName < $1.displayName})
+                                    return
+                                }
+                                NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self)
+                            })
+                        }
+                        NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self)
+                    })
+                }
+            } else {
+                let noDataError = NSError(fn_code: .NoData)
+                FNAnalytics.logError(noDataError, location: "ParseFriendsList: Facebook Request")
+                NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self)
+            }
+        })
+    }
+
+    // MARK: Array simulation
+
+    var count: Int {
+        return list.count
+    }
+
+    subscript(index: Int) -> ParseUser? {
+        return index < list.count ? list[index] : nil
+    }
+}
+
 // MARK: - Photo class
 
 let ParsePhotoImageKey = "image"

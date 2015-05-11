@@ -19,49 +19,48 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
 
     @IBAction func facebookButtonPressed(sender: UIButton) {
 
-        // Check internet connection
-        if Reachability.fn_reachable() {
-            let loadingView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+        if fn_isOffline() {
+            return
+        }
 
-            let previousUserId = ParseUser.current().objectId
+        let loadingView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
 
-            // Login
-            PFFacebookUtils.facebookLoginManager().loginBehavior = .SystemAccount
-            PFFacebookUtils.logInInBackgroundWithReadPermissions(FNFacebookReadPermissions) { (user, error) -> Void in
+        let previousUserId = ParseUser.current().objectId
 
-                if let parseUser = user as? ParseUser {
+        // Login
+        PFFacebookUtils.facebookLoginManager().loginBehavior = .SystemAccount
+        PFFacebookUtils.logInInBackgroundWithReadPermissions(FNFacebookReadPermissions) { (user, error) -> Void in
 
-                    // Successful login
-                    NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
-                    if previousUserId == nil || previousUserId == parseUser.objectId {
-                        // This is a sign up (first login with Facebook)
-                        FNAnalytics.logRegistration("Facebook")
-                    }
+            if let parseUser = user as? ParseUser {
 
-                    // Download info from Facebook and return
-                    parseUser.completeInfoFacebook({ (succeeded, error) -> Void in
+                // Successful login
+                NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
+                if previousUserId == nil || previousUserId == parseUser.objectId {
+                    // This is a sign up (first login with Facebook)
+                    FNAnalytics.logRegistration("Facebook")
+                }
 
-                        if succeeded {
-                            self.dismissLoginModalController()
-                        } else {
-                            // Unsuccessful Facebook info completion
-                            FNAnalytics.logError(error, location: "Login: Facebook Info")
-                            FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
-                        }
-                    })
+                // Download info from Facebook and return
+                parseUser.completeInfoFacebook({ (succeeded, error) -> Void in
 
-                } else {
-
-                    // Unsuccessful login
-                    loadingView.removeFromSuperview()
-                    FNAnalytics.logError(error ?? NSError(fn_code: .UserCanceled), location: "Login: Facebook")
-                    if error != nil {
+                    if succeeded {
+                        self.dismissLoginModalController()
+                    } else {
+                        // Unsuccessful Facebook info completion
+                        FNAnalytics.logError(error, location: "Login: Facebook Info")
                         FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
                     }
+                })
+
+            } else {
+
+                // Unsuccessful login
+                loadingView.removeFromSuperview()
+                FNAnalytics.logError(error ?? NSError(fn_code: .UserCanceled), location: "Login: Facebook")
+                if error != nil {
+                    FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
                 }
             }
-        } else {
-            FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
         }
     }
 
@@ -73,38 +72,38 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
         // Check vality of fields
         if usernameField.text.fn_count > 0 && passwordField.text.fn_count > 0 {
 
-            // Check internet connection
-            if Reachability.fn_reachable() {
-                let loadingView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+            if fn_isOffline() {
+                return
+            }
 
-                ParseUser.logInWithUsernameInBackground(usernameField.text, password: passwordField.text) { (user, error) -> Void in
+            let loadingView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
 
-                    if let parseUser = user as? ParseUser {
+            ParseUser.logInWithUsernameInBackground(usernameField.text, password: passwordField.text) { (user, error) -> Void in
 
-                        // Successful login
-                        NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
+                if let parseUser = user as? ParseUser {
 
-                        // Go back to primary controller
-                        self.dismissLoginModalController()
+                    // Successful login
+                    NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
 
-                    } else {
+                    // Go back to primary controller
+                    self.dismissLoginModalController()
 
-                        // Unsuccessful login
-                        loadingView.removeFromSuperview()
+                } else {
 
-                        if FNAnalytics.logError(error, location: "Login: Password") {
+                    // Unsuccessful login
+                    loadingView.removeFromSuperview()
 
-                            if error!.domain == PFParseErrorDomain && error!.code == PFErrorCode.ErrorObjectNotFound.rawValue {
-                                FNToast.show(title: NSLocalizedString("LoginController.loginErrorDescription.userNotFound", value: "Username or password incorrect", comment: "Message for when user does not exist or wrong password"), type: .Error)
-                            }
-                        } else {
-                            FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
+                    if FNAnalytics.logError(error, location: "Login: Password") {
+
+                        if error!.domain == PFParseErrorDomain && error!.code == PFErrorCode.ErrorObjectNotFound.rawValue {
+                            FNToast.show(title: NSLocalizedString("LoginController.loginErrorDescription.userNotFound", value: "Username or password incorrect", comment: "Message for when user does not exist or wrong password"), type: .Error)
                         }
+                    } else {
+                        FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
                     }
                 }
-            } else {
-                FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
             }
+
         } else {
             FNToast.show(title: NSLocalizedString("LoginController.loginErrorDescription.incomplete", value: "Username or password missing", comment: "Message for when user does not fill the fields"), type: .Error)
         }
@@ -146,27 +145,24 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
 
             if email?.fn_count > 0 && email!.isEmail() {
 
-                // Check internet connection
-                if Reachability.fn_reachable() {
+                if fn_isOffline() {
+                    return
+                }
 
-                    ParseUser.requestPasswordResetForEmailInBackground(email!) { (succeeded, error) -> Void in
+                ParseUser.requestPasswordResetForEmailInBackground(email!) { (succeeded, error) -> Void in
 
-                        if FNAnalytics.logError(error, location: "Login: Reset Password") {
+                    if FNAnalytics.logError(error, location: "Login: Reset Password") {
 
-                            if error!.domain == PFParseErrorDomain && error!.code == PFErrorCode.ErrorUserWithEmailNotFound.rawValue {
-                                FNToast.show(title: NSLocalizedString("LoginController.resetPassword.errorDescription.emailNotFound", value: "There is no user registered with this email", comment: "Message for when there is no user with the email providen error"), type: .Error)
-                            } else {
-                                FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
-                            }
-
+                        if error!.domain == PFParseErrorDomain && error!.code == PFErrorCode.ErrorUserWithEmailNotFound.rawValue {
+                            FNToast.show(title: NSLocalizedString("LoginController.resetPassword.errorDescription.emailNotFound", value: "There is no user registered with this email", comment: "Message for when there is no user with the email providen error"), type: .Error)
                         } else {
-                            // Success
-                            FNToast.show(title: NSLocalizedString("LoginController.resetPassword.successMessage", value: "Password reset instructions sent to your email", comment: "Message for when the email reset was successful"), type: .Success)
+                            FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Error)
                         }
-                    }
 
-                } else {
-                    FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
+                    } else {
+                        // Success
+                        FNToast.show(title: NSLocalizedString("LoginController.resetPassword.successMessage", value: "Password reset instructions sent to your email", comment: "Message for when the email reset was successful"), type: .Success)
+                    }
                 }
 
             } else {

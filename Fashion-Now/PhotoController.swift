@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-private let animationDuration: NSTimeInterval = 0.25
-
 class PhotoController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     var photo: ParsePhoto = ParsePhoto(user: ParseUser.current()) {
@@ -82,9 +80,9 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         photo.image = nil
 
         // Delete in view
-        UIView.transitionWithView(view, duration: animationDuration, options: .TransitionCrossDissolve, animations: { () -> Void in
+        view.fn_transition(true, changes: { () -> Void in
             self.photo = ParsePhoto(user: ParseUser.current())
-        }, completion: nil)
+        })
 
         // Call delegate
         delegate?.photoEdited(self)
