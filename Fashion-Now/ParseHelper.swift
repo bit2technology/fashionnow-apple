@@ -243,9 +243,17 @@ class ParseFriendsList {
             }
             self.update()
         })
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "update", name: LoginChangedNotificationName, object: nil)
     }
 
-    func update() {
+    @objc func update() {
+        update(true)
+    }
+
+    func update(showError: Bool) {
+
+        // TODO: Show error
 
         if downloading {
             // Already downloading. Just do nothing.

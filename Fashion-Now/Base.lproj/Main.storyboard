@@ -554,7 +554,7 @@
                         <barButtonItem key="rightBarButtonItem" image="ButtonNext" id="UMb-Kl-08K">
                             <inset key="imageInsets" minX="0.0" minY="3" maxX="0.0" maxY="0.0"/>
                             <connections>
-                                <segue destination="Awm-rd-6j1" kind="push" identifier="Send Poll" id="xyo-It-ypo"/>
+                                <segue destination="Awm-rd-6j1" kind="push" identifier="Next Step" id="xyo-It-ypo"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1122,7 +1122,7 @@
                             <outlet property="delegate" destination="Awm-rd-6j1" id="zyI-mX-JmK"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Who can see?" id="BCe-DD-8Y6">
+                    <navigationItem key="navigationItem" title="Who Can See It?" id="BCe-DD-8Y6">
                         <barButtonItem key="rightBarButtonItem" title="Send" style="done" id="Qal-Vg-8Fh">
                             <connections>
                                 <action selector="sendButtonPressed:" destination="Awm-rd-6j1" id="LSa-HY-uKa"/>
@@ -1609,7 +1609,6 @@
                         <outlet property="publicIndicator" destination="PZq-MC-hyg" id="0mZ-FG-siZ"/>
                         <outlet property="rightPhotoView" destination="TYB-j4-um4" id="jhq-Wr-tpH"/>
                         <outlet property="tap" destination="qhL-uy-211" id="lOk-r6-yNe"/>
-                        <segue destination="2Zj-tv-2wS" kind="modal" identifier="Present Gallery" id="Fpz-kc-ORj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t7F-ab-SSQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1625,7 +1624,7 @@
                 </tapGestureRecognizer>
                 <tapGestureRecognizer enabled="NO" id="qhL-uy-211" userLabel="Tap">
                     <connections>
-                        <action selector="didTap:" destination="hpa-fw-Ay5" id="ddX-wK-2xk"/>
+                        <segue destination="2Zj-tv-2wS" kind="modal" identifier="Present Gallery" id="B8p-hF-Uos"/>
                     </connections>
                 </tapGestureRecognizer>
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.0" id="V8o-Ky-8nG" userLabel="Caption Long Press">
@@ -1958,8 +1957,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="uM3-tb-eTB"/>
         <segue reference="IZA-Rh-gPV"/>
+        <segue reference="uM3-tb-eTB"/>
         <segue reference="SWL-sX-BuZ"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="1" colorSpace="calibratedRGB"/>

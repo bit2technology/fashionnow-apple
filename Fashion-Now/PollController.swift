@@ -73,9 +73,6 @@ class PollController: UIViewController, PhotoControllerDelegate {
     }
 
     @IBOutlet weak var tap: UITapGestureRecognizer!
-    @IBAction func didTap(sender: UITapGestureRecognizer) {
-        performSegueWithIdentifier("Present Gallery", sender: sender)
-    }
 
     @IBOutlet weak var doubleTap: UITapGestureRecognizer!
     @IBAction func didDoubleTap(sender: UITapGestureRecognizer) {

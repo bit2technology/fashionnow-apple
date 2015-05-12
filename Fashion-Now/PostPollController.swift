@@ -78,6 +78,7 @@ class PostPollController: FNViewController, UIAlertViewDelegate, UITextFieldDele
     }
 
     func clean() {
+        navigationController!.popToRootViewControllerAnimated(true)
         navigationItem.rightBarButtonItem!.enabled = false
         textField.text = nil
         pollController.poll = ParsePoll(user: ParseUser.current())
@@ -96,16 +97,20 @@ class PostPollController: FNViewController, UIAlertViewDelegate, UITextFieldDele
 
             switch identifier {
 
-            case "Send Poll":
+            case "Next Step":
+                if fn_isOffline() {
+                    return false
+                }
                 let poll = pollController.poll
                 if poll.isValid {
-                    if poll.caption?.fn_count > 0 {
+                    if textField.text.fn_count > 0 {
+                        poll.caption = textField.text
                         return true
                     } else {
                         let title = NSLocalizedString("PostController.noCaptionAlert.title", value: "No Description", comment: "Shown when user tries to send a invalid without caption")
                         let message = NSLocalizedString("PostController.noCaptionAlert.message", value: "Do you want to go further without a description?", comment: "Shown when user tries to send a invalid without caption")
-                        let cancel = NSLocalizedString("PostController.noCaptionAlert.cancel", value: "Go back", comment: "Shown when user tries to send a invalid without caption")
-                        let next = NSLocalizedString("PostController.noCaptionAlert.next", value: "Go further", comment: "Shown when user tries to send a invalid without caption")
+                        let cancel = NSLocalizedString("PostController.noCaptionAlert.cancel", value: "Go Back", comment: "Shown when user tries to send a invalid without caption")
+                        let next = NSLocalizedString("PostController.noCaptionAlert.next", value: "Go Further", comment: "Shown when user tries to send a invalid without caption")
 
                         if NSClassFromString("UIAlertController") != nil {
                             let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
@@ -121,7 +126,7 @@ class PostPollController: FNViewController, UIAlertViewDelegate, UITextFieldDele
                         return false
                     }
                 } else {
-                    FNToast.show(title: NSLocalizedString("PostController.invalidPollAlert.title", value: "Invalid Poll", comment: "Shown when user tries to send a invalid poll"), message: NSLocalizedString("PostController.invalidPollAlert.message", value: "You need to choose 2 photos", comment: "Shown when user tries to send a invalid poll"), type: .Error)
+                    FNToast.show(title: NSLocalizedString("PostController.invalidPollAlert.title", value: "Invalid Poll", comment: "Shown when user tries to send a invalid poll"), message: NSLocalizedString("PostController.invalidPollAlert.message", value: "Choose two photos", comment: "Shown when user tries to send a invalid poll"), type: .Error)
                     return false
                 }
 
@@ -139,6 +144,9 @@ class PostPollController: FNViewController, UIAlertViewDelegate, UITextFieldDele
 
             case "Poll Controller":
                 pollController = segue.destinationViewController as! PollController
+
+            case "Next Step":
+                (segue.destinationViewController  as! PostFriendsController).poll = pollController.poll
 
             default:
                 return
@@ -158,6 +166,7 @@ class PostPollController: FNViewController, UIAlertViewDelegate, UITextFieldDele
         textField.frame.size.width = view.bounds.size.width
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "clean", name: LoginChangedNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "clean", name: FNPollPostedNotificationName, object: nil)
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -206,7 +215,7 @@ class PostPollController: FNViewController, UIAlertViewDelegate, UITextFieldDele
 
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex != alertView.cancelButtonIndex {
-            performSegueWithIdentifier("Send Poll", sender: nil)
+            performSegueWithIdentifier("Next Step", sender: nil)
         }
     }
 
