@@ -191,7 +191,6 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
 
                     activityIndicatorView.removeFromSuperview()
-                    FNAnalytics.logError(error, location: "Signup: Save")
 
                     // Error handling
                     switch error.code {
@@ -217,17 +216,15 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
             // If user is not saved yet, save it
             if currentUser.isDirty() {
                 currentUser.save(&error)
-                if let unwrappedError = error {
-                    presentError(unwrappedError)
+                if FNAnalytics.logError(error, location: "SignupController: User Before Save") {
+                    presentError(error!)
                     return
                 }
             }
 
-            // Get new instance of current user
-            let currentUserQuery = PFQuery(className: ParseUser.parseClassName())
-            if let unwrappedNewCurrentUser = currentUserQuery.getObjectWithId(currentUser.objectId!, error: &error) as? ParseUser {
-                currentUser = unwrappedNewCurrentUser
-            } else {
+            currentUser = ParseUser(withoutDataWithObjectId: currentUser.objectId)
+            currentUser.fetch(&error)
+            if FNAnalytics.logError(error, location: "SignupController: User Fetch") {
                 presentError(error!)
                 return
             }
@@ -251,8 +248,8 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
 
             // Save attempt
             currentUser.save(&error)
-            if let unwrappedError = error {
-                presentError(unwrappedError)
+            if FNAnalytics.logError(error, location: "SignupController: User Save") {
+                presentError(error!)
                 return
             }
 

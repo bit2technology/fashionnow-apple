@@ -366,29 +366,33 @@
                                 </connections>
                             </containerView>
                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4XI-L8-6Pr" userLabel="Left Vote" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="-5" y="383" width="71" height="44"/>
+                                <rect key="frame" x="-5" y="383" width="81" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="JQX-C6-2L0"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <color key="tintColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="0.5" colorSpace="calibratedRGB"/>
-                                <inset key="contentEdgeInsets" minX="20" minY="11" maxX="15" maxY="11"/>
+                                <inset key="contentEdgeInsets" minX="25" minY="0.0" maxX="20" maxY="0.0"/>
                                 <state key="normal" title="Vote" backgroundImage="ButtonRoundBordersBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="voteButtonPressed:" destination="6wq-1Y-TiB" eventType="touchUpInside" id="FYi-qG-WyV"/>
-                                    <action selector="voteButtonWillBePressed:" destination="6wq-1Y-TiB" eventType="touchDown" id="7ST-U4-lHB"/>
                                 </connections>
                             </button>
                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GPX-GA-SAX" userLabel="Right Vote" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                <rect key="frame" x="254" y="383" width="71" height="44"/>
+                                <rect key="frame" x="244" y="383" width="81" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="fKD-dj-Ij3"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <color key="tintColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="0.5" colorSpace="calibratedRGB"/>
-                                <inset key="contentEdgeInsets" minX="15" minY="11" maxX="20" maxY="11"/>
+                                <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="25" maxY="0.0"/>
                                 <state key="normal" title="Vote" backgroundImage="ButtonRoundBordersBackground">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="voteButtonPressed:" destination="6wq-1Y-TiB" eventType="touchUpInside" id="usS-Ri-iXT"/>
-                                    <action selector="voteButtonWillBePressed:" destination="6wq-1Y-TiB" eventType="touchDown" id="m09-Mf-dRt"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -859,11 +863,6 @@
                             <rect key="frame" x="0.0" y="338" width="320" height="64"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <activityIndicatorView contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="PIn-Cv-XHb">
-                                    <rect key="frame" x="142" y="14" width="37" height="37"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                </activityIndicatorView>
                                 <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="thF-Md-Kue">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -871,20 +870,44 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <action selector="loadButtonPressed:" destination="Rbz-At-Uf5" eventType="touchUpInside" id="O0N-JK-aOn"/>
+                                        <action selector="loadPolls:" destination="cEa-Or-vWC" eventType="touchUpInside" id="fK7-Gg-gpZ"/>
                                     </connections>
                                 </button>
+                                <button hidden="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aDT-PS-W63" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                    <rect key="frame" x="55" y="10" width="210" height="44"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="KRo-zI-I6I"/>
+                                    </constraints>
+                                    <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
+                                    <state key="normal" title="Create Your First Poll" backgroundImage="ButtonRoundBordersBackground">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="creteFirstPoll:" destination="cEa-Or-vWC" eventType="touchUpInside" id="Zmo-HL-CKs"/>
+                                    </connections>
+                                </button>
+                                <activityIndicatorView contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="PIn-Cv-XHb">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </activityIndicatorView>
                             </subviews>
                             <constraints>
+                                <constraint firstItem="PIn-Cv-XHb" firstAttribute="leading" secondItem="Rbz-At-Uf5" secondAttribute="leading" id="6eO-v3-dq6"/>
+                                <constraint firstAttribute="centerX" secondItem="aDT-PS-W63" secondAttribute="centerX" id="E3x-ki-J6x"/>
+                                <constraint firstAttribute="trailing" secondItem="PIn-Cv-XHb" secondAttribute="trailing" id="G7A-vq-rcH"/>
+                                <constraint firstItem="PIn-Cv-XHb" firstAttribute="top" secondItem="Rbz-At-Uf5" secondAttribute="top" id="GZy-8k-ApP"/>
+                                <constraint firstAttribute="centerY" secondItem="aDT-PS-W63" secondAttribute="centerY" id="VQX-uZ-skZ"/>
                                 <constraint firstItem="thF-Md-Kue" firstAttribute="top" secondItem="Rbz-At-Uf5" secondAttribute="top" id="axz-6E-XT3"/>
-                                <constraint firstAttribute="centerY" secondItem="PIn-Cv-XHb" secondAttribute="centerY" id="dwk-J5-JHf"/>
+                                <constraint firstAttribute="bottom" secondItem="PIn-Cv-XHb" secondAttribute="bottom" id="bJb-KX-tLr"/>
                                 <constraint firstAttribute="trailing" secondItem="thF-Md-Kue" secondAttribute="trailing" id="eYL-hf-QI2"/>
-                                <constraint firstAttribute="centerX" secondItem="PIn-Cv-XHb" secondAttribute="centerX" id="gyz-Ua-G34"/>
                                 <constraint firstItem="thF-Md-Kue" firstAttribute="leading" secondItem="Rbz-At-Uf5" secondAttribute="leading" id="rpW-Vp-ulI"/>
                                 <constraint firstAttribute="bottom" secondItem="thF-Md-Kue" secondAttribute="bottom" id="sqp-q6-W1n"/>
                             </constraints>
                             <connections>
                                 <outlet property="activityIndicator" destination="PIn-Cv-XHb" id="JMG-Mu-2Po"/>
+                                <outlet property="createBtn" destination="aDT-PS-W63" id="zyB-24-gUK"/>
                                 <outlet property="loadButton" destination="thF-Md-Kue" id="xZj-rx-KlB"/>
                             </connections>
                         </collectionReusableView>
@@ -1080,40 +1103,6 @@
                                 <connections>
                                     <outlet property="avatarView" destination="f33-Le-fsl" id="c5p-rE-pzL"/>
                                     <outlet property="nameLabel" destination="0TE-HJ-F3a" id="5lj-YB-Lcs"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Loading Cell" rowHeight="44" id="QtU-8y-oVs" customClass="FriendsLoadingCell" customModule="Fashion_Now" customModuleProvider="target">
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QtU-8y-oVs" id="uwA-oS-pcb">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vz6-oX-I3M">
-                                            <rect key="frame" x="8" y="0.0" width="304" height="43"/>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <activityIndicatorView contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="hAZ-x0-7EU">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                        </activityIndicatorView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="hAZ-x0-7EU" secondAttribute="bottom" id="ATH-kv-xg9"/>
-                                        <constraint firstItem="Vz6-oX-I3M" firstAttribute="top" secondItem="uwA-oS-pcb" secondAttribute="top" id="QZ6-lg-rTz"/>
-                                        <constraint firstItem="Vz6-oX-I3M" firstAttribute="leading" secondItem="uwA-oS-pcb" secondAttribute="leading" constant="8" id="Voe-28-3CY"/>
-                                        <constraint firstItem="hAZ-x0-7EU" firstAttribute="top" secondItem="uwA-oS-pcb" secondAttribute="top" id="d6E-FZ-fEW"/>
-                                        <constraint firstAttribute="bottom" secondItem="Vz6-oX-I3M" secondAttribute="bottom" id="qQi-s8-5Ha"/>
-                                        <constraint firstAttribute="trailing" secondItem="Vz6-oX-I3M" secondAttribute="trailing" constant="8" id="rpV-67-R6w"/>
-                                        <constraint firstItem="hAZ-x0-7EU" firstAttribute="leading" secondItem="uwA-oS-pcb" secondAttribute="leading" id="tBl-2R-BPS"/>
-                                        <constraint firstAttribute="trailing" secondItem="hAZ-x0-7EU" secondAttribute="trailing" id="y8t-ED-8cA"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="activityIndicator" destination="hAZ-x0-7EU" id="prf-vp-s6j"/>
-                                    <outlet property="messageLabel" destination="Vz6-oX-I3M" id="IuZ-2P-3KU"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1957,9 +1946,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="IZA-Rh-gPV"/>
+        <segue reference="Xhx-XT-wVu"/>
+        <segue reference="apZ-Yv-541"/>
         <segue reference="uM3-tb-eTB"/>
-        <segue reference="SWL-sX-BuZ"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="1" colorSpace="calibratedRGB"/>
 </document>

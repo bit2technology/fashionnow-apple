@@ -78,8 +78,14 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
         header?.updateContent()
     }
 
+    @IBAction func loadPolls(sender: UIButton) {
+        footer?.activityIndicator.hidden = false
+        loadPolls()
+    }
+
     // Tries to update poll list
     private func loadPolls(type: ParsePollList.UpdateType = .Newer, showError: Bool = true) {
+
         myPolls.update(type: type, completionHandler: { (succeeded, error) -> Void in
 
             // If there is new polls, clean list of posted polls (since they will be in the update) and refresh content
@@ -92,9 +98,20 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
                 FNToast.show(title: FNLocalizedOfflineErrorDescription, type: .Error)
             }
 
+            self.updateFooterButton()
             self.refreshControl.endRefreshing()
-            self.footer?.prepare(updating: false)
+            self.footer?.activityIndicator.hidden = true
         })
+    }
+
+    private func updateFooterButton() {
+        let hasPoll = collectionView!.numberOfItemsInSection(0) > 0
+        footer?.loadButton.hidden = !hasPoll
+        footer?.createBtn.hidden = hasPoll
+    }
+
+    @IBAction func creteFirstPoll(sender: UIButton) {
+        fn_tabBarController.selectedIndex = 1
     }
 
     @IBAction func gearButtonPressed(sender: UIBarButtonItem) {
@@ -183,6 +200,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
         if let removedPoll = notification.userInfo?["poll"] as? ParsePoll, let index = myPolls.removePoll(removedPoll) {
             removedPoll.unpinInBackgroundWithBlock(nil)
             collectionView!.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
+            updateFooterButton()
         }
     }
 
@@ -190,6 +208,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
         if let postedPoll = notification.userInfo?["poll"] as? ParsePoll {
             postedPolls.insert(postedPoll, atIndex: 0)
             collectionView!.insertItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
+            updateFooterButton()
         }
     }
 
@@ -211,9 +230,8 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
 
         // Footer
         let footer = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Loading Footer", forIndexPath: indexPath) as! MePollFooter
-        footer.controller = self
         self.footer = footer
-        return footer.prepare(updating: myPolls.downloading)
+        return footer
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -263,7 +281,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
 
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
 
-                        scaledImage = image.scaleByFactor(Float(itemSize.height / image.size.height))
+                        scaledImage = image.scaleByFactor(Float(itemSize.height / image.size.height * UIScreen.mainScreen().scale))
 
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             self.scaledImages[urlString] = scaledImage
@@ -364,13 +382,7 @@ class MePollHeader: UICollectionReusableView {
             avatarImageView.setImageWithURL(currentUserUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         }
 
-        FBSDKGraphRequest(graphPath: "me/friends?fields=id&limit=\(Int.max)", parameters: nil).startWithCompletionHandler { (requestConnection, result, error) -> Void in
-            if !FNAnalytics.logError(error, location: "Me: Count friends") {
-                // TODO: Improve
-                let count = result?["data"]?.count
-                self.friendsButton.setTitle("\(count ?? 0)\nFriends", forState: .Normal)
-            }
-        }
+        friendsButton.setTitle("\(ParseFriendsList.shared.count)\nFriends", forState: .Normal)
 
         return self
     }
@@ -383,27 +395,8 @@ class MePollHeader: UICollectionReusableView {
 }
 
 class MePollFooter: UICollectionReusableView {
-
-    // Delegate
-    weak var controller: MeController?
-
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var loadButton: UIButton!
-
-    func prepare(#updating: Bool) -> Self {
-        if updating {
-            activityIndicator.startAnimating()
-            loadButton.hidden = true
-        } else {
-            activityIndicator.stopAnimating()
-            loadButton.hidden = false
-        }
-        return self
-    }
-
-    @IBAction func loadButtonPressed(sender: UIButton) {
-        prepare(updating: true)
-        controller?.loadPolls(type: .Older)
-    }
+    @IBOutlet weak var createBtn: UIButton!
 }
 
