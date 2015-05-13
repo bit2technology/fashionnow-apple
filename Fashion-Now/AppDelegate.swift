@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ParseReport.registerSubclass()
         ParseUser.registerSubclass()
         ParseVote.registerSubclass()
+        ParseBlock.registerSubclass()
 
         // Parse pre configuration
         Parse.enableLocalDatastore()

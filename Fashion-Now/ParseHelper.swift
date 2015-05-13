@@ -554,12 +554,19 @@ class ParsePollList: Printable, DebugPrintable {
             return pollQuery.whereKey(ParsePollCreatedByKey, equalTo: currentUser)
         case .Vote:
             if currentUser.objectId?.fn_count > 0 {
+                // Remove already voted polls
                 let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
                     .orderByDescending(ParseVotePollCreatedAtKey)
                     .whereKey(ParseVoteByKey, equalTo: currentUser)
                 votesByMeQuery.limit = ParseQueryLimit
                 pollQuery.whereKey(ParseObjectIdKey, doesNotMatchKey: ParseVotePollIdKey, inQuery: votesByMeQuery)
                     .whereKey(ParsePollCreatedByKey, notEqualTo: currentUser)
+                // Remove blocked users
+                let blockedUsersQuery = PFQuery(className: ParseBlock.parseClassName())
+                    .orderByDescending(ParseVotePollCreatedAtKey)
+                    .whereKey(ParseBlockUserKey, equalTo: currentUser)
+                blockedUsersQuery.limit = ParseQueryLimit
+                pollQuery.whereKey(ParsePollCreatedByKey, doesNotMatchKey: ParseBlockedKey, inQuery: blockedUsersQuery)
             }
             return pollQuery.includeKey(ParsePollCreatedByKey)
         }
@@ -912,6 +919,46 @@ class ParseReport: PFObject, PFSubclassing {
         }
         set {
             self[ParseReportUserKey] = newValue ?? NSNull()
+        }
+    }
+}
+
+// MARK: - Block class
+
+let ParseBlockUserKey = "user"
+let ParseBlockedKey = "blocked"
+
+class ParseBlock: PFObject, PFSubclassing {
+
+    class func parseClassName() -> String {
+        return "Block"
+    }
+
+    class func block(user: ParseUser, block: PFBooleanResultBlock?) {
+        let blockObj = self.init()
+        let currentUser = ParseUser.current()
+        blockObj.ACL = PFACL(user: currentUser)
+        blockObj.user = currentUser
+        blockObj.blocked = user
+        // Save
+        blockObj.saveInBackgroundWithBlock(block)
+    }
+
+    var blocked: ParseUser? {
+        get {
+            return self[ParseBlockedKey] as? ParseUser
+        }
+        set {
+            self[ParseBlockedKey] = newValue ?? NSNull()
+        }
+    }
+
+    var user: ParseUser? {
+        get {
+            return self[ParseBlockUserKey] as? ParseUser
+        }
+        set {
+            self[ParseBlockUserKey] = newValue ?? NSNull()
         }
     }
 }

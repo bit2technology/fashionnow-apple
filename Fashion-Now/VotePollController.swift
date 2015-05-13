@@ -11,6 +11,7 @@ import UIKit
 let VoteNotificationTappedNotificationName = "VoteNotificationTappedNotification"
 
 // Action Sheet buttons
+private let asBlockButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.blockButtonTitle", value: "Block User", comment: "Shown when user taps the gear button")
 private let asReportButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.reportButtonTitle", value: "Report Poll", comment: "Shown when user taps the gear button")
 private let asSkipButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.skipButtonTitle", value: "Skip Poll", comment: "Shown when user taps the gear button")
 private let asFiltersButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.filtersButtonTitle", value: "Apply Filters", comment: "Shown when user taps the gear button")
@@ -19,6 +20,10 @@ private let asLoginButtonTitle = NSLocalizedString("VotePollController.gearButto
 // Report alert strings
 private let alReportMessage = NSLocalizedString("VotePollController.gearButton.reportAlert.message", value: "Tell us why you want to report this poll", comment: "Shown when user reports a poll")
 private let alReportButtonTitle = NSLocalizedString("VotePollController.gearButton.reportAlert.reportButtonTitle", value: "Report", comment: "Shown when user reports a poll")
+
+// Block alert strings
+private let blAlertMessage = NSLocalizedString("VotePollController.gearButton.blockAlert.message", value: "Are you sure you want to block %@? You won’t see any poll from this user.", comment: "Shown when user blocks a user")
+private let blBlockButtonTitle = NSLocalizedString("VotePollController.gearButton.blockAlert.blockButtonTitle", value: "Block", comment: "Shown when user blocks a user")
 
 // Push notification
 private let pushAlertAction = NSLocalizedString("VotePollController.pushAlert.viewButtonTitle", value: "View", comment: "Shown when vote push notification received while app is open")
@@ -219,7 +224,8 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
             self.actionSheetAction(action.title)
         }
         var actions = [[String:String]]()
-        actions.append(["title": asReportButtonTitle, "style": "destructive"])
+        actions.append(["title": asBlockButtonTitle, "style": "destructive"])
+        actions.append(["title": asReportButtonTitle])
         actions.append(["title": asSkipButtonTitle])
         // TODO: Add filters
         //actionsheet.addAction(UIAlertAction(title: filtersButtonTitle, style: .Default, handler: defaultHandler))
@@ -300,15 +306,40 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
                 alertView.show()
             }
 
+        case asBlockButtonTitle:
+            if NSClassFromString("UIAlertController") != nil {
+
+                // iOS 8 and above
+                let messageWithArgument = NSString(format: blAlertMessage, currentPoll!.createdBy!.displayName) as String
+                let alert = UIAlertController(title: asBlockButtonTitle, message: messageWithArgument, preferredStyle: .Alert)
+                let defaultHandler: ((UIAlertAction!) -> Void) = { (action) -> Void in
+                    self.blockAlertAction(action.title)
+                }
+                alert.addAction(UIAlertAction(title: FNLocalizedCancelButtonTitle, style: .Cancel, handler: defaultHandler))
+                alert.addAction(UIAlertAction(title: blBlockButtonTitle, style: .Destructive, handler: defaultHandler))
+                presentViewController(alert, animated: true, completion: nil)
+
+            } else {
+
+                // iOS 7
+                UIAlertView(title: asBlockButtonTitle, message: blAlertMessage, delegate: self, cancelButtonTitle: FNLocalizedCancelButtonTitle, otherButtonTitles: blBlockButtonTitle).show()
+            }
+
         default:
             break
         }
     }
 
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-        if alertView.title == asReportButtonTitle {
+        switch alertView.title {
+
+        case asReportButtonTitle:
             reportAlertAction(alertView.buttonTitleAtIndex(buttonIndex), comment: alertView.textFieldAtIndex(0)?.text)
-        } else {
+
+        case asBlockButtonTitle:
+            blockAlertAction(alertView.buttonTitleAtIndex(buttonIndex))
+
+        default:
             notificationAlertAction(alertView.buttonTitleAtIndex(buttonIndex))
         }
     }
@@ -320,6 +351,27 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
                 FNAnalytics.logError(error, location: "Vote: Report Poll")
             })
             pollController.animateHighlight(index: 0, source: .Extern)
+        default:
+            break
+        }
+    }
+
+    private func blockAlertAction(buttonTitle: String) {
+        switch buttonTitle {
+        case blBlockButtonTitle:
+            navigationController!.view.fn_transition(true, changes: { () -> Void in
+                self.loadingInterface.hidden = false
+                self.avatarView.image = nil
+                self.nameLabel.text = nil
+                self.dateLabel.text = nil
+                self.navigationItem.rightBarButtonItem?.enabled = false
+            }, completion: { (finished) -> Void in
+                ParseBlock.block(self.currentPoll!.createdBy!, block: { (succeeded, error) -> Void in
+                    FNAnalytics.logError(error, location: "Vote: Block User")
+                    self.loadPollList(true, animated: true)
+                })
+            })
+
         default:
             break
         }
