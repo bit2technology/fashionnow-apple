@@ -371,6 +371,11 @@ class MePollHeader: UICollectionReusableView {
     var avatarUrl: NSURL?
 
     @IBOutlet weak var friendsButton: UIButton!
+    func updateFriendsButton(sender: NSNotification?) {
+        //let title = (sender?.userInfo?["error"] == nil ? "\(ParseFriendsList.shared.count)\n" : "") + "Friends"
+        let title = "\(ParseFriendsList.shared.count)\nFriends"
+        friendsButton.setTitle(title, forState: .Normal)
+    }
 
     func updateContent() -> Self {
         let currentUser = ParseUser.current()
@@ -382,7 +387,7 @@ class MePollHeader: UICollectionReusableView {
             avatarImageView.setImageWithURL(currentUserUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         }
 
-        friendsButton.setTitle("\(ParseFriendsList.shared.count)\nFriends", forState: .Normal)
+        updateFriendsButton(nil)
 
         return self
     }
@@ -391,6 +396,8 @@ class MePollHeader: UICollectionReusableView {
         super.awakeFromNib()
 
         avatarImageView.image = UIColor.fn_placeholder().fn_image()
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateFriendsButton:", name: ParseFriendsList.FinishLoadingNotification, object: nil)
     }
 }
 

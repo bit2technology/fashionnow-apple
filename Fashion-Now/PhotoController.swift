@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-class PhotoController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class PhotoController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, FastttCameraDelegate {
 
     var photo: ParsePhoto = ParsePhoto(user: ParseUser.current()) {
         didSet {
@@ -88,43 +88,41 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         delegate?.photoEdited(self)
     }
 
-    private func setPhotoImage(image: UIImage) {
+    private func setPhotoImage(image: UIImage, source: String) {
 
         // Set photo properties
-        let imageData = image.scaleToFitSize(CGSize(width: 1024, height: 1024)).fn_data()
-        photo.image = PFFile(fn_imageData: imageData)
+        photo.image = PFFile(fn_imageData: image.fn_data())
         photo.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             FNAnalytics.logError(error, location: "Photo: Save")
         }
-        imageView.image = UIImage(data: imageData)
+        imageView.image = image
         imageContainerHidden(false)
         imageView.fn_setAspectRatio(image: nil)
 
         // Call delegate
         delegate?.photoEdited(self)
+
+        // Analytics
+        FNAnalytics.logPhoto(source)
     }
 
     @IBAction func imageButtonPressed(sender: UIButton) {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.sourceType = .PhotoLibrary
+        presentViewController(picker, animated: true, completion: nil)
+    }
 
-        var source: UIImagePickerControllerSourceType!
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        switch segue.identifier! {
 
-        switch sender {
-        // Present camera
-        case cameraButton:
-            source = .Camera
-        // Present albuns
-        case libraryButton:
-            source = .PhotoLibrary
-        // Unknown source, do nothing
+        case "Present Camera":
+            let fastttCam = (segue.destinationViewController as! CameraController).fasttttCam
+            fastttCam.delegate = self
+            fastttCam.maxScaledDimension = 1024
+
         default:
-            return
-        }
-
-        if source != nil {
-            let picker = UIImagePickerController()
-            picker.delegate = self
-            picker.sourceType = source
-            presentViewController(picker, animated: true, completion: nil)
+            break
         }
     }
 
@@ -140,28 +138,21 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
 
         // Get and apply edited or original image
         var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as! UIImage
-        setPhotoImage(image)
+        setPhotoImage(image.scaleToFitSize(CGSize(width: 1024, height: 1024)), source: "Library")
         picker.dismissViewControllerAnimated(true, completion: nil)
+    }
 
-        // Track image source
-        let source: String
-        if picker.sourceType == .Camera {
+    // MARK: FastttCameraDelegate
 
-            if picker.cameraDevice == .Rear {
-                source = "Camera Rear"
-            } else {
-                source = "Camera Front"
-            }
+    func cameraController(cameraController: FastttCameraInterface!, didFinishCapturingImage capturedImage: FastttCapturedImage!) {
+        ALAssetsLibrary().saveImage(capturedImage.fullImage, toAlbum: FNLocalizedAppName, completion: nil, failure: { (error) -> Void in
+            FNAnalytics.logError(error, location: "Photo: Add To Camera Roll")
+        })
+    }
 
-            // Save to Album if source is camera
-            ALAssetsLibrary().saveImage(image, toAlbum: FNLocalizedAppName, completion: nil, failure: { (error) -> Void in
-                FNAnalytics.logError(error, location: "Photo: Add To Camera Roll")
-            })
-
-        } else {
-            source = "Library"
-        }
-        FNAnalytics.logPhoto(source)
+    func cameraController(cameraController: FastttCameraInterface!, didFinishNormalizingCapturedImage capturedImage: FastttCapturedImage!) {
+        setPhotoImage(capturedImage.scaledImage, source: cameraController.cameraDevice == .Rear ? "Camera Rear" : "Camera Front")
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }
 

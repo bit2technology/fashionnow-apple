@@ -126,7 +126,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     }
 
     @IBAction func refreshButtonPressed(sender: UIButton) {
-        loadPollList(false, animated: true)
+        loadPollList(refreshMessage.text != rmNoMorePolls, animated: true)
     }
 
     func loginDidChange(sender: NSNotification) {

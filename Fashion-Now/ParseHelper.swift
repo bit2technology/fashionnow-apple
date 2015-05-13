@@ -241,14 +241,18 @@ class ParseFriendsList {
                 self.list.sort({$0.displayName < $1.displayName})
                 NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self)
             }
-            self.update()
+            self.update(false)
         })
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "update", name: LoginChangedNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
     }
 
-    @objc func update() {
-        update(true)
+    @objc func loginChanged(sender: NSNotification) {
+        PFObject.unpinAllInBackground(list, withName: sharedFriendsListPinName) { (succeeded, error) -> Void in
+            FNAnalytics.logError(error, location: "ParseFriendsList: Unpin (loginChanged)")
+            self.list.removeAll(keepCapacity: true)
+            self.update(true)
+        }
     }
 
     func update(showError: Bool) {
@@ -265,7 +269,7 @@ class ParseFriendsList {
             self.downloading = false
 
             if FNAnalytics.logError(error, location: "ParseFriendsList: Facebook Request") {
-                NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self)
+                NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self, userInfo: ["error": error])
                 return
             }
 
@@ -281,22 +285,24 @@ class ParseFriendsList {
                 self.query.whereKey(ParseUserFacebookIdKey, containedIn: friendsFacebookIds).findObjectsInBackgroundWithBlock { (objects, error) -> Void in
 
                     if FNAnalytics.logError(error, location: "ParseFriendsList: Remote Query") {
-                        NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self)
+                        NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self, userInfo: ["error": error!])
                         return
                     }
 
                     PFObject.unpinAllObjectsInBackgroundWithName(sharedFriendsListPinName, block: { (succeeded, error) -> Void in
-                        if !FNAnalytics.logError(error, location: "ParseFriendsList: Unpin") {
-                            PFObject.pinAllInBackground(objects, withName: sharedFriendsListPinName, block: { (succeeded, error) -> Void in
-                                if !FNAnalytics.logError(error, location: "ParseFriendsList: Pin") {
-                                    self.list = objects as! [ParseUser]
-                                    self.list.sort({$0.displayName < $1.displayName})
-                                    return
-                                }
-                                NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self)
-                            })
+
+                        if FNAnalytics.logError(error, location: "ParseFriendsList: Unpin (update)") {
+                            NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self, userInfo: ["error": error!])
+                            return
                         }
-                        NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self)
+
+                        PFObject.pinAllInBackground(objects, withName: sharedFriendsListPinName, block: { (succeeded, error) -> Void in
+
+                            FNAnalytics.logError(error, location: "ParseFriendsList: Pin")
+                            self.list = objects as! [ParseUser]
+                            self.list.sort({$0.displayName < $1.displayName})
+                            NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self)
+                        })
                     })
                 }
             } else {

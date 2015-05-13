@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="6QH-p8-eFG">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="6QH-p8-eFG">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -811,10 +811,11 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ImK-lm-ETH">
+                                        <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ImK-lm-ETH">
                                             <rect key="frame" x="96" y="0.0" width="204" height="44"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <state key="normal" title="Friends">
+                                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <userDefinedRuntimeAttributes>
@@ -1651,7 +1652,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="imageButtonPressed:" destination="rPD-KC-83S" eventType="touchUpInside" id="HH1-oc-pKd"/>
+                                            <segue destination="jzN-Z8-jwF" kind="modal" identifier="Present Camera" id="sXQ-6Y-iHJ"/>
                                         </connections>
                                     </button>
                                     <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uMi-wS-xwZ" userLabel="Library Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
@@ -1869,6 +1870,69 @@
             </objects>
             <point key="canvasLocation" x="2021" y="658"/>
         </scene>
+        <!--Camera-->
+        <scene sceneID="l1g-1T-gIP">
+            <objects>
+                <viewController title="Camera" id="jzN-Z8-jwF" customClass="CameraController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="PQp-Av-DJn"/>
+                        <viewControllerLayoutGuide type="bottom" id="IRi-Gf-Vbp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="V54-W7-foX">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8MH-AJ-k8H">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <connections>
+                                    <segue destination="9zg-vi-6uZ" kind="embed" identifier="Camera Wrapper" id="Y1X-ZA-iHA"/>
+                                </connections>
+                            </containerView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jeX-hF-UDG" userLabel="Right Vote" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="4" y="4" width="68" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="1Fv-Rn-QM1"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="giC-XT-2lD"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="tintColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                <state key="normal" title="Cancel" backgroundImage="ButtonRoundBordersBackground">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancel:" destination="jzN-Z8-jwF" eventType="touchUpInside" id="efq-3M-yIA"/>
+                                    <action selector="voteButtonPressed:" destination="6wq-1Y-TiB" eventType="touchUpInside" id="ccl-9W-AIR"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QUe-9Y-W7j" userLabel="Camera Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="128" y="408" width="64" height="64"/>
+                                <color key="tintColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                                <state key="normal" image="ButtonCamera" backgroundImage="ButtonCircleBackground">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="takePicture:" destination="jzN-Z8-jwF" eventType="touchUpInside" id="tFR-lc-iMc"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="8MH-AJ-k8H" secondAttribute="trailing" id="CU1-Lo-7OR"/>
+                            <constraint firstItem="jeX-hF-UDG" firstAttribute="top" secondItem="PQp-Av-DJn" secondAttribute="bottom" constant="4" id="DN7-AS-0tE"/>
+                            <constraint firstAttribute="bottom" secondItem="8MH-AJ-k8H" secondAttribute="bottom" id="N12-Mb-B9O"/>
+                            <constraint firstItem="jeX-hF-UDG" firstAttribute="leading" secondItem="V54-W7-foX" secondAttribute="leading" constant="4" id="UyK-ed-I3p"/>
+                            <constraint firstAttribute="centerX" secondItem="QUe-9Y-W7j" secondAttribute="centerX" id="d76-m9-Ooc"/>
+                            <constraint firstItem="8MH-AJ-k8H" firstAttribute="top" secondItem="V54-W7-foX" secondAttribute="top" id="ht7-yV-w3i"/>
+                            <constraint firstItem="8MH-AJ-k8H" firstAttribute="leading" secondItem="V54-W7-foX" secondAttribute="leading" id="wIS-PZ-LYx"/>
+                            <constraint firstAttribute="bottom" secondItem="QUe-9Y-W7j" secondAttribute="bottom" constant="8" id="xZ9-P4-zHa"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Q69-BY-DlT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1948" y="1289"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="pAc-yH-lCJ">
             <objects>
@@ -1925,6 +1989,25 @@
             </objects>
             <point key="canvasLocation" x="286" y="250"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="BJu-Gj-weB">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="9zg-vi-6uZ" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="QCC-Jg-jC5"/>
+                        <viewControllerLayoutGuide type="bottom" id="bLd-S0-as8"/>
+                    </layoutGuides>
+                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="LiI-6e-46w">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <toolbarItems/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nem-V0-tXi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2330" y="1289"/>
+        </scene>
     </scenes>
     <resources>
         <image name="BarButtonGear" width="23" height="23"/>
@@ -1947,7 +2030,7 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="Xhx-XT-wVu"/>
-        <segue reference="apZ-Yv-541"/>
+        <segue reference="IZA-Rh-gPV"/>
         <segue reference="uM3-tb-eTB"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="1" colorSpace="calibratedRGB"/>
