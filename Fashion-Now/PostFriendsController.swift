@@ -73,7 +73,7 @@ class PostFriendsController: FNTableController, UIAlertViewDelegate {
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
                 alert.addAction(UIAlertAction(title: cancel, style: .Cancel, handler: nil))
                 alert.addAction(UIAlertAction(title: send, style: .Default, handler: { (action) -> Void in
-                    self.savePoll()
+                    self.savePoll(true)
                 }))
                 presentViewController(alert, animated: true, completion: nil)
             } else {
@@ -83,16 +83,16 @@ class PostFriendsController: FNTableController, UIAlertViewDelegate {
             return
         }
 
-        savePoll()
+        savePoll(false)
     }
 
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex != alertView.cancelButtonIndex {
-            savePoll()
+            savePoll(true)
         }
     }
 
-    private func savePoll() {
+    private func savePoll(forcePublic: Bool) {
 
         if fn_isOffline() {
             return
@@ -103,7 +103,7 @@ class PostFriendsController: FNTableController, UIAlertViewDelegate {
         let pollACL = PFACL(user: ParseUser.current())
         var userIds = [String]()
 
-        if publicPoll {
+        if forcePublic || publicPoll {
             for row in allFriends {
                 userIds.append(friendsList[row]!.objectId!)
             }

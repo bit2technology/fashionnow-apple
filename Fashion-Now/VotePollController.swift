@@ -65,7 +65,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     // Vote buttons
     @IBOutlet weak var leftVoteButton, rightVoteButton: UIButton!
     private func setVoteButtonsHidden(hidden: Bool, animated: Bool) {
-        view.fn_transition(animated, changes: { () -> Void in
+        UIView.animateWithDuration(FNTransitionDuration, animations: { () -> Void in
             for voteButton in [self.leftVoteButton, self.rightVoteButton] {
                 voteButton.alpha = (hidden ? 0 : 1)
             }

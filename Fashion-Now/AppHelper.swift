@@ -194,7 +194,7 @@ extension UIView {
 
     func fn_transition(animated: Bool, changes: () -> Void, completion: ((Bool) -> Void)? = nil) {
         if animated {
-            UIView.transitionWithView(self, duration: 0.25, options: .TransitionCrossDissolve, animations: changes, completion: completion)
+            UIView.transitionWithView(self, duration: FNTransitionDuration, options: FNTransitionOptions, animations: changes, completion: completion)
         } else {
             changes()
             completion?(true)
@@ -449,3 +449,6 @@ let FNLocalizedOKButtonTitle = NSLocalizedString("Default.buttonTitle.ok", value
 
 /// Returns "Cancel" for English and its variants for other languages
 let FNLocalizedCancelButtonTitle = NSLocalizedString("Default.buttonTitle.cancel", value: "Cancel" , comment: "Default Cancel button title for entire app")
+
+let FNTransitionDuration: NSTimeInterval = 0.25
+let FNTransitionOptions: UIViewAnimationOptions = .TransitionCrossDissolve
