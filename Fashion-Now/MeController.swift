@@ -9,11 +9,21 @@
 private let logOutButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.logOutButtonTitle", value: "Log Out", comment: "Shown when user taps the gear button")
 private let linkFacebookButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.linkFacebookButtonTitle", value: "Connect to Facebook", comment: "Shown when user taps the gear button")
 private let unlinkFacebookButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.unlinkFacebookButtonTitle", value: "Disconnect of Facebook", comment: "Shown when user taps the gear button")
-private let inviteButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.inviteButtonTitle", value: "Invite Friends", comment: "Shown when user taps the gear button")
+
+
+
+
+// FIXIME: !!!!!!
+private let showUsersMap = "Experimental: Devices Map"
+
+
+
+
+
 
 private let mineParameters = ParsePollList.Parameters(type: .Mine)
 
-class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInviteDialogDelegate {
+class MeController: FNCollectionController, UIActionSheetDelegate {
 
     /// Main list of polls to show
     private var myPolls = ParsePollList(parameters: mineParameters)
@@ -115,16 +125,65 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
     }
 
     @IBAction func gearButtonPressed(sender: UIBarButtonItem) {
-        let actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        actionSheet.addButtonWithTitle(inviteButtonTitle)
-        actionSheet.addButtonWithTitle(ParseUser.current().isLoggedFacebook ? unlinkFacebookButtonTitle : linkFacebookButtonTitle)
-        actionSheet.addButtonWithTitle(logOutButtonTitle)
-        actionSheet.cancelButtonIndex = actionSheet.addButtonWithTitle(FNLocalizedCancelButtonTitle)
-        actionSheet.showFromBarButtonItem(sender, animated: true)
+        let currentUser = ParseUser.current()
+
+        // Buttons
+        let defaultHandler: ((UIAlertAction!) -> Void) = { (action) -> Void in
+            self.actionSheetAction(action.title)
+        }
+        var actions = [[String:String]]()
+        actions.append(["title": logOutButtonTitle, "style": "destructive"])
+        // FIXME: Link/Unlink Facebook
+//        actions.append(["title": currentUser.isLoggedFacebook ? unlinkFacebookButtonTitle : linkFacebookButtonTitle])
+        if find(PFConfig.currentConfig()["admins"] as? [String] ?? [], currentUser.objectId!) != nil {
+            actions.append(["title": showUsersMap])
+        }
+        actions.append(["title": FNLocalizedCancelButtonTitle, "style": "cancel"])
+
+        // Presentation
+        if NSClassFromString("UIAlertController") != nil {
+
+            // iOS 8 and above
+            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+            for action in actions {
+                var style = UIAlertActionStyle.Default
+                if let styleStr = action["style"] {
+                    if styleStr == "destructive" {
+                        style = .Destructive
+                    } else if styleStr == "cancel" {
+                        style = .Cancel
+                    }
+                }
+                actionSheet.addAction(UIAlertAction(title: action["title"]!, style: style, handler: defaultHandler))
+            }
+            actionSheet.popoverPresentationController?.barButtonItem = sender
+            presentViewController(actionSheet, animated: true, completion: nil)
+
+        } else {
+
+            // iOS 7
+            let actionSheet = UIActionSheet()
+            for action in actions {
+                let idx = actionSheet.addButtonWithTitle(action["title"]!)
+                if let styleStr = action["style"] {
+                    if styleStr == "destructive" {
+                        actionSheet.destructiveButtonIndex = idx
+                    } else if styleStr == "cancel" {
+                        actionSheet.cancelButtonIndex = idx
+                    }
+                }
+            }
+            actionSheet.delegate = self
+            actionSheet.showFromBarButtonItem(sender, animated: true)
+        }
     }
 
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        switch actionSheet.buttonTitleAtIndex(buttonIndex) {
+        actionSheetAction(actionSheet.buttonTitleAtIndex(buttonIndex))
+    }
+
+    private func actionSheetAction(buttonTitle: String) {
+        switch buttonTitle {
 
         case logOutButtonTitle:
             let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
@@ -134,11 +193,6 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
                 NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
                 self.fn_tabBarController.selectedIndex = 0
             })
-
-        case inviteButtonTitle:
-            let inviteContent = FBSDKAppInviteContent()
-            inviteContent.appLinkURL = NSURL(string: "http://www.fashionnowapp.com")
-            FBSDKAppInviteDialog.showWithContent(inviteContent, delegate: self)
 
         case linkFacebookButtonTitle:
             let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
@@ -156,15 +210,12 @@ class MeController: FNCollectionController, UIActionSheetDelegate, FBSDKAppInvit
                 FNAnalytics.logError(error, location: "Me: Unlink Facebook")
             })
 
+        case showUsersMap:
+            performSegueWithIdentifier("Users Map", sender: nil)
+            
         default:
             break
         }
-    }
-    func appInviteDialog(appInviteDialog: FBSDKAppInviteDialog!, didCompleteWithResults results: [NSObject : AnyObject]!) {
-        NSLog("invite complete \(results)")
-    }
-    func appInviteDialog(appInviteDialog: FBSDKAppInviteDialog!, didFailWithError error: NSError!) {
-        NSLog("invite fail \(error)")
     }
 
     override func needsLogin() -> Bool {

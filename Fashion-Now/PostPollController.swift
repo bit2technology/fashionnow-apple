@@ -27,20 +27,12 @@ class PostPollController: FNViewController, UIAlertViewDelegate, UITextFieldDele
             return
         }
 
-        let currentUser = ParseUser.current()
-        let email = currentUser.email
-        // TODO: Backup
-        currentUser.email = nil
-        currentUser.saveInBackgroundWithBlock { (succeeded, error) -> Void in
-            currentUser.email = email
-            currentUser.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
-                // TODO: Localize
-                if FNAnalytics.logError(error, location: "Post: Resend Verification Email") {
-                    FNToast.show(title: "Email not sent", message: error!.localizedDescription, type: .Error)
-                } else {
-                    FNToast.show(title: "Email sent", message: "Check your inbox")
-                }
-            })
+        PFCloud.callFunctionInBackground("resendVerification", withParameters: nil) { (result, error) -> Void in
+            if FNAnalytics.logError(error, location: "Post: Resend Verification Email") {
+                FNToast.show(title: NSLocalizedString("PostPollController.resendVerification.errorTitle", value: "Email not sent", comment: "Trying to resend a verification email"), message: NSLocalizedString("PostPollController.resendVerification.errorMessage", value: "Please, try again later.", comment: "Trying to resend a verification email"), type: .Error)
+            } else {
+                FNToast.show(title: NSLocalizedString("PostPollController.resendVerification.confirmTitle", value: "Email sent", comment: "Trying to resend a verification email"), message: NSLocalizedString("PostPollController.resendVerification.confirmTitle", value: "Check your inbox", comment: "Trying to resend a verification email"))
+            }
         }
     }
     @IBAction func alreadyVerified(sender: UIButton) {
@@ -54,8 +46,7 @@ class PostPollController: FNViewController, UIAlertViewDelegate, UITextFieldDele
             activityIndicator.removeFromSuperview()
 
             if FNAnalytics.logError(error, location: "Post: Verify Email Fetch") {
-                // TODO: Localize
-                FNToast.show(title: "Error", message: error!.localizedDescription, type: .Error)
+                FNToast.show(title: NSLocalizedString("PostPollController.alreadyVerified.errorTitle", value: "An error occurred", comment: "Trying to verify email"), message: NSLocalizedString("PostPollController.alreadyVerified.errorMessage", value: "Please, try again later.", comment: "Trying to verify email"), type: .Error)
 
             } else if (user as! ParseUser).emailVerified {
                 // User has verified the email

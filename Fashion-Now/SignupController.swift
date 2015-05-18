@@ -9,7 +9,7 @@
 private let pickerNoneLabel = NSLocalizedString("SignupController.picker.none", value: "None", comment: "Gender labels")
 private let genderValues = ["male", "female", "other"]
 private let genderLabels = [NSLocalizedString("SignupController.genders.male", value: "Male", comment: "Gender labels"), NSLocalizedString("SignupController.genders.female", value: "Female", comment: "Gender labels"), NSLocalizedString("SignupController.genders.other", value: "Other", comment: "Gender labels")]
-let labelPlaceholderText = "Optional" // FIXME: Translate
+let labelPlaceholderText = NSLocalizedString("SignupController.label.optional", value: "Optional", comment: "Optional field")
 
 class SignupController: FNTableController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate {
 
@@ -176,7 +176,15 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
 
         // Show alert if one or more fields are not valid
         if !allFieldsValid {
-            UIAlertView(title: NSLocalizedString("SignupController.reviewAlert.title", value: "Review information" , comment: "Title of alert of missing/wrong information"), message: "\n".join(verifyMessages), delegate: nil, cancelButtonTitle: FNLocalizedOKButtonTitle).show()
+            let title = NSLocalizedString("SignupController.reviewAlert.title", value: "Review information" , comment: "Title of alert of missing/wrong information")
+            let message = "\n".join(verifyMessages)
+            if NSClassFromString("UIAlertController") != nil {
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+                alert.addAction(UIAlertAction(title: FNLocalizedOKButtonTitle, style: .Default, handler: nil))
+                presentViewController(alert, animated: true, completion: nil)
+            } else {
+                UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: FNLocalizedOKButtonTitle).show()
+            }
             return
         }
 
@@ -184,7 +192,6 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
         let activityIndicatorView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
             var error: NSError?
-            var currentUser = ParseUser.current()
 
             /// Present error alert.
             func presentError(error: NSError) {
@@ -213,20 +220,16 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
                 })
             }
 
-            // If user is not saved yet, save it
-            if currentUser.isDirty() {
-                currentUser.save(&error)
-                if FNAnalytics.logError(error, location: "SignupController: User Before Save") {
+            let currentUser: ParseUser
+            if let userId = ParseUser.current().objectId {
+                currentUser = ParseUser(withoutDataWithObjectId: ParseUser.current().objectId)
+                currentUser.fetch(&error)
+                if FNAnalytics.logError(error, location: "SignupController: User Fetch") {
                     presentError(error!)
                     return
                 }
-            }
-
-            currentUser = ParseUser(withoutDataWithObjectId: currentUser.objectId)
-            currentUser.fetch(&error)
-            if FNAnalytics.logError(error, location: "SignupController: User Fetch") {
-                presentError(error!)
-                return
+            } else {
+                currentUser = ParseUser.current()
             }
 
             // Update Parse user info
@@ -298,10 +301,10 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
         }
 
         // Make some changes if user has already configured account
-        if currentUser.isValid {
+        if currentUser.isLogged {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelButtonPressed:")
             usernameField.text = currentUser.username
-            passwordField.text = "passwo" // Placeholder
+            passwordField.text = currentUser.hasPassword ? "passwo" : nil // Placeholder
         }
     }
 

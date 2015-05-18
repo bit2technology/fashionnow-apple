@@ -72,6 +72,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Start friends cache
         ParseFriendsList.shared.update(false)
 
+        // Update configuration
+        PFConfig.getConfigInBackgroundWithBlock { (config, error) -> Void in
+            FNAnalytics.logError(error, location: "AppDelegate: Get Config")
+        }
+
         return true
     }
     

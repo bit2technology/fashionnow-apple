@@ -5,6 +5,9 @@
 #import <ActionSheetPicker-3.0/ActionSheetPicker.h>
 #import <ALAssetsLibrary-CustomPhotoAlbum/ALAssetsLibrary+CustomPhotoAlbum.h>
 #import <DateTools/DateTools.h>
+#import <CCHMapClusterController/CCHMapClusterController.h>
+#import <CCHMapClusterController/CCHMapClusterControllerDelegate.h>
+#import <CCHMapClusterController/CCHMapClusterAnnotation.h>
 #import <EAIntroView/EAIntroView.h>
 #import <FastttCamera/FastttCamera.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>

@@ -297,12 +297,6 @@ class FNAnalytics {
         GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Photo Saved", action: "Source", label: nil, value: nil).setAll(params).build() as [NSObject:AnyObject])
     }
 
-    class func logScreen(identifier: String, time: NSTimeInterval) {
-        let params = ["Name": identifier]
-        FBSDKAppEvents.logEvent("Screen Viewed", valueToSum: time, parameters: params)
-        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Screen Viewd", action: "Name", label: nil, value: nil).setAll(params).build() as [NSObject:AnyObject])
-    }
-
     class func logVote(vote: Int, method: String) {
         let params = ["Vote": "\(vote)", "Method": method]
         FBSDKAppEvents.logEvent("Poll Voted", parameters: params)
@@ -347,58 +341,34 @@ class FNToast {
 
 class FNViewController: UIViewController {
 
-    private var appearDate = NSDate()
-
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         TSMessage.setDefaultViewController(self)
-        appearDate = NSDate()
         let tracker = GAI.sharedInstance().defaultTracker
         tracker.set(kGAIScreenName, value: title)
         tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
-    }
-
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        FNAnalytics.logScreen(title!, time: -appearDate.timeIntervalSinceNow)
     }
 }
 
 class FNTableController: UITableViewController {
 
-    private var appearDate = NSDate()
-
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         TSMessage.setDefaultViewController(navigationController)
-        appearDate = NSDate()
         let tracker = GAI.sharedInstance().defaultTracker
         tracker.set(kGAIScreenName, value: title)
         tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
-    }
-
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        FNAnalytics.logScreen(title!, time: -appearDate.timeIntervalSinceNow)
     }
 }
 
 class FNCollectionController: UICollectionViewController {
 
-    private var appearDate = NSDate()
-
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         TSMessage.setDefaultViewController(self)
-        appearDate = NSDate()
         let tracker = GAI.sharedInstance().defaultTracker
         tracker.set(kGAIScreenName, value: title)
         tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
-    }
-
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        FNAnalytics.logScreen(title!, time: -appearDate.timeIntervalSinceNow)
     }
 }
 

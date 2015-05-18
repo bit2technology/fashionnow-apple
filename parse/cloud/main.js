@@ -13,7 +13,8 @@ Parse.Cloud.define("sendPush", function (request, response) {
         locArgs.push(request.params.caption);
     }
     
-    query.containedIn("userId", request.params.to);
+    query.containedIn("userId", request.params.to)
+         .notEqualTo("appVersion", "1785");
 
     Parse.Push.send({
         where: query,
@@ -38,6 +39,80 @@ Parse.Cloud.define("sendPush", function (request, response) {
     });
 });
 
+Parse.Cloud.define("resendVerification", function (request, response) {
+    "use strict";
+    
+    if (!request.user) {
+        response.error("resendVerification error: no user");
+    }
+    
+    var emailBkp = request.user.get("email");
+    request.user.save("email", null, {
+        success: function () {
+            // First save successful
+            request.user.save("email", emailBkp, {
+                success: function () {
+                    // Second save successful
+                    response.success("resendVerification successful");
+                },
+                error: function (error) {
+                    // Handle error
+                    response.error("resendVerification 2 error: " + error);
+                }
+            });
+        },
+        error: function (error) {
+            // Handle error
+            response.error("resendVerification 1 error: " + error);
+        }
+    });
+});
+
+Parse.Cloud.define("deviceLocations", function (request, response) {
+    "use strict";
+    
+    var query = new Parse.Query(Parse.Installation)
+        .select("location")
+        .exists("location")
+        .limit(1000);
+    
+    query.find({
+        useMasterKey: true,
+        success: function (results) {
+            // Second save successful
+            response.success(results);
+        },
+        error: function (error) {
+            // Handle error
+            response.error("deviceLocations error: " + error);
+        }
+    });
+    
+    
+    
+//    var error: NSError?
+//            var locations = [UserAnnotation]()
+//            
+//
+//            while error == nil {
+//                if let results = query.findObjects(&error) as? [ParseInstallation] {
+//                    if results.count == 0 {
+//                        break
+//                    }
+//                    jump += results.count
+//
+//                    for result in results {
+//                        if let location = result.location {
+//                            locations.append(UserAnnotation(latitude: location.latitude, longitude: location.longitude))
+//                        }
+//                    }
+//
+//                } else {
+//                    break
+//                }
+//            }
+});
+
 Parse.Cloud.beforeSave(Parse.User, function (request, response) {
     "use strict";
     
@@ -54,8 +129,6 @@ Parse.Cloud.beforeSave(Parse.User, function (request, response) {
 
 Parse.Cloud.afterSave("Poll", function (request) {
     "use strict";
-    
-    console.log("Poll afterSave");
     
     if (!(request.object.get("version") > 1)) {
         
