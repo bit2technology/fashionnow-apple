@@ -29,8 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Parse pre configuration
         Parse.enableLocalDatastore()
-        ParseCrashReporting.enable()
-        
+//        ParseCrashReporting.enable() // FIXME: Enable crash report
+
         // Parse configuration
         #if DEBUG
         Parse.setApplicationId("AIQ4OyhhFVequZa6eXLCDdEpxu9qE0JyFkkfczWw", clientKey: "4dMOa5Ts1cvKVcnlIv2E4wYudyN7iJoH0gQDxpVy")

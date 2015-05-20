@@ -280,7 +280,7 @@ class SignupController: FNTableController, UITextFieldDelegate, UINavigationCont
 
 
         // If user is anonymous, show standard (empty) controller
-        if PFAnonymousUtils.isLinkedWithUser(currentUser) {
+        if !currentUser.isLogged {
             registrationMethod = "Email"
             return
         }

@@ -35,9 +35,9 @@ func fn_applyPollMask(left: UIView, right: UIView) {
     right.layer.mask = rightMask
 }
 
-func fn_isOffline() -> Bool {
+func fn_isOffline(notificationPosition: TSMessageNotificationPosition = .Top) -> Bool {
     if !Reachability.reachabilityForInternetConnection().isReachable() {
-        FNToast.show(title: NSLocalizedString("AppHelper.isOfflineAlert.title", value: "You Are Offline", comment: "Shown when user is offline"), message: NSLocalizedString("AppHelper.isOfflineAlert.message", value: "Connect your device and try again", comment: "Shown when user is offline"), type: .Error)
+        FNToast.show(title: NSLocalizedString("AppHelper.isOfflineAlert.title", value: "You Are Offline", comment: "Shown when user is offline"), message: NSLocalizedString("AppHelper.isOfflineAlert.message", value: "Connect your device and try again", comment: "Shown when user is offline"), type: .Warning, position: notificationPosition)
         return true
     }
     return false
@@ -334,8 +334,8 @@ class FNTemplateImageView: UIImageView {
 
 /// Helper for TSMessage
 class FNToast {
-    class func show(#title: String, message: String? = nil, type: TSMessageNotificationType = .Message) {
-        TSMessage.showNotificationWithTitle(title, subtitle: message, type: type)
+    class func show(#title: String, message: String? = nil, type: TSMessageNotificationType = .Message, position: TSMessageNotificationPosition = .Top) {
+        TSMessage.showNotificationInViewController(TSMessage.defaultViewController(), title: title, subtitle: message, image: nil, type: type, duration: 0, callback: nil, buttonTitle: nil, buttonCallback: nil, atPosition: position, canBeDismissedByUser: true)
     }
 }
 
