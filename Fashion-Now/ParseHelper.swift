@@ -61,6 +61,8 @@ private let dateFormat = "yyyy-MM-dd"
 
 class ParseUser: PFUser, PFSubclassing {
 
+    var unsavedPassword = false
+
     class func current() -> Self {
         return currentUser()!
     }

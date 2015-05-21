@@ -35,9 +35,11 @@ func fn_applyPollMask(left: UIView, right: UIView) {
     right.layer.mask = rightMask
 }
 
-func fn_isOffline(notificationPosition: TSMessageNotificationPosition = .Top) -> Bool {
+func fn_isOffline(notificationPosition: TSMessageNotificationPosition? = .Top) -> Bool {
     if !Reachability.reachabilityForInternetConnection().isReachable() {
-        FNToast.show(title: NSLocalizedString("AppHelper.isOfflineAlert.title", value: "You Are Offline", comment: "Shown when user is offline"), message: NSLocalizedString("AppHelper.isOfflineAlert.message", value: "Connect your device and try again", comment: "Shown when user is offline"), type: .Warning, position: notificationPosition)
+        if let position = notificationPosition {
+            FNToast.show(title: NSLocalizedString("AppHelper.isOfflineAlert.title", value: "You Are Offline", comment: "Shown when user is offline"), message: NSLocalizedString("AppHelper.isOfflineAlert.message", value: "Connect your device and try again", comment: "Shown when user is offline"), type: .Warning, position: position)
+        }
         return true
     }
     return false

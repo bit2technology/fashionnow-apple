@@ -28,21 +28,21 @@ PODS:
     - FBSDKCoreKit
   - FBSDKShareKit (4.1.0):
     - FBSDKCoreKit
-  - GoogleAnalytics-iOS-SDK (3.11):
-    - GoogleAnalytics-iOS-SDK/Core (= 3.11)
-  - GoogleAnalytics-iOS-SDK/Core (3.11)
+  - GoogleAnalytics-iOS-SDK (3.12):
+    - GoogleAnalytics-iOS-SDK/Core (= 3.12)
+  - GoogleAnalytics-iOS-SDK/Core (3.12)
   - HexColors (2.2.1)
   - NYXImagesKit (2.3)
-  - Parse (1.7.3):
+  - Parse (1.7.4):
     - Bolts/Tasks (>= 1.1.5)
-  - ParseCrashReporting (1.7.3):
+  - ParseCrashReporting (1.7.4):
     - Bolts/Tasks (>= 1.1.5)
-    - Parse (~> 1.7.3)
-  - ParseFacebookUtilsV4 (1.7.3):
+    - Parse (~> 1.7.4)
+  - ParseFacebookUtilsV4 (1.7.4):
     - Bolts/Tasks (>= 1.1.5)
     - FBSDKCoreKit (~> 4.0)
     - FBSDKLoginKit (~> 4.0)
-    - Parse (~> 1.7.3)
+    - Parse (~> 1.7.4)
   - Reachability (3.2)
   - SDWebImage (3.7.2):
     - SDWebImage/Core (= 3.7.2)
@@ -87,12 +87,12 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: 469ed167195f860dbd2b4c4bbaa33d2e90598db9
   FBSDKLoginKit: ff6224762732e3698f30942e4544321b8c7a23e6
   FBSDKShareKit: 8002faf0c564ff3625eadd16e506b0b0fbf3adef
-  GoogleAnalytics-iOS-SDK: fb15cc7e3d01d06d531653f37443fda90274d53d
+  GoogleAnalytics-iOS-SDK: 0a3327a993b8ed2b8fe1c6c4a8dcf5b76d2237a8
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
   NYXImagesKit: 8163e3335a40eaa173ca5bbbf81fafb57d3947eb
-  Parse: 0992f9d23cf47c32d646467d8badb814926c800a
-  ParseCrashReporting: 7cc21e6088a15c14d6afd1256ffee3f4d27197db
-  ParseFacebookUtilsV4: 05bd96219a6a83a7fb1f7c419c2e058d88124ba2
+  Parse: 6ca512c6e860b66739c95151b2f76ac4712b7842
+  ParseCrashReporting: 0cff3a2720d6e977fff1bdd64e6d3ea94528e170
+  ParseFacebookUtilsV4: 481ea7b00f8f62440c314ac7f80eada228bf7488
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   TSMessages: 2a52642128d7ab15b46930c810b9c9403a2b58f3

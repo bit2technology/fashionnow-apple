@@ -15,6 +15,7 @@ private let unlinkFacebookButtonTitle = NSLocalizedString("MeController.gearButt
 
 // FIXIME: !!!!!!
 private let showUsersMap = "Experimental: Devices Map"
+private let asEditAccount = "Edit Account"
 
 
 
@@ -132,7 +133,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
             self.actionSheetAction(action.title)
         }
         var actions = [[String:String]]()
-        actions.append(["title": logOutButtonTitle, "style": "destructive"])
+        actions += [["title": logOutButtonTitle, "style": "destructive"], ["title": asEditAccount]]
         // FIXME: Link/Unlink Facebook
 //        actions.append(["title": currentUser.isLoggedFacebook ? unlinkFacebookButtonTitle : linkFacebookButtonTitle])
         if find(PFConfig.currentConfig()["admins"] as? [String] ?? [], currentUser.objectId!) != nil {
@@ -209,6 +210,9 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
                 self.header?.updateContent()
                 FNAnalytics.logError(error, location: "Me: Unlink Facebook")
             })
+
+        case asEditAccount:
+            performSegueWithIdentifier("Edit Account", sender: nil)
 
         case showUsersMap:
             performSegueWithIdentifier("Users Map", sender: nil)

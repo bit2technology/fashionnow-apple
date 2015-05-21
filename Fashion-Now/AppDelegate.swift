@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Parse pre configuration
         Parse.enableLocalDatastore()
-//        ParseCrashReporting.enable() // FIXME: Enable crash report
+        ParseCrashReporting.enable()
 
         // Parse configuration
         #if DEBUG

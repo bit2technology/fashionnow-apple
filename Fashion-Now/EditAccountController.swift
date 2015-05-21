@@ -23,6 +23,8 @@ class EditAccountController: FNTableController, UITextFieldDelegate {
     @IBAction func submit(sender: UIBarButtonItem?) {
         view.endEditing(true)
 
+        let currentUser = ParseUser.current()
+
         func showError(message: String) {
             FNToast.show(title: NSLocalizedString("EditAccountController.reviewAlert.title", value: "Review information" , comment: "Title of alert of missing/wrong information"), message: message, type: .Warning, position: .Bottom)
         }
@@ -40,28 +42,28 @@ class EditAccountController: FNTableController, UITextFieldDelegate {
         // Email
         if emailField.fn_text == nil || !emailField.text.isEmail() {
             emailLabel.textColor = UIColor.fn_error()
-            showError(NSLocalizedString("EditAccountController.saveErrorDescription.emailNotValid", value: "You must provide a valid e-mail", comment: "Error message for Sign Up or Edit Profile"))
+            showError(NSLocalizedString("EditAccountController.saveErrorDescription.emailNotValid", value: "You must provide a valid e-mail.", comment: "Error message for Sign Up or Edit Profile"))
             return
         }
 
         // Username
-        if usernameField.fn_text == nil { // TODO: Limit username creation
+        if !(usernameField.text.fn_count >= 6) {
             usernameLabel.textColor = UIColor.fn_error()
-            showError(NSLocalizedString("EditAccountController.saveErrorDescription.usernameMissing", value: "You must provide a username with only alphanumeric characters", comment: "Error message for Sign Up or Edit Profile"))
+            showError(NSLocalizedString("EditAccountController.saveErrorDescription.usernameMissing", value: "Your username must have at least 6 characters.", comment: "Error message for Sign Up or Edit Profile"))
             return
         }
 
-        if isSignup {
+        if isSignup || passwordChanged || currentUser.unsavedPassword {
             // Password
             if !(passwordField.text.fn_count >= 6) {
                 passwordLabel.textColor = UIColor.fn_error()
-                showError(NSLocalizedString("EditAccountController.saveErrorDescription.passwordTooShort", value: "Your password must have at least 6 characters", comment: "Error message for Sign Up or Edit Profile"))
+                showError(NSLocalizedString("EditAccountController.saveErrorDescription.passwordTooShort", value: "Your password must have at least 6 characters.", comment: "Error message for Sign Up or Edit Profile"))
                 return
             }
             // Confirm
             if (passwordField.text != confirmField.text) {
                 confirmLabel.textColor = UIColor.fn_error()
-                showError(NSLocalizedString("EditAccountController.saveErrorDescription.passwordTooShort", value: "The password confirmation is different", comment: "Error message for Sign Up or Edit Profile"))
+                showError(NSLocalizedString("EditAccountController.saveErrorDescription.passwordTooShort", value: "The password confirmation is different.", comment: "Error message for Sign Up or Edit Profile"))
                 return
             }
         }
@@ -84,11 +86,11 @@ class EditAccountController: FNTableController, UITextFieldDelegate {
 
                     case PFErrorCode.ErrorUsernameTaken.rawValue:
                         self.usernameLabel.textColor = UIColor.fn_error()
-                        showError(NSLocalizedString("EditAccountController.saveErrorDescription.usernameTaken", value: "Username already exists", comment: "Error message for Sign Up or Edit Profile"))
+                        showError(NSLocalizedString("EditAccountController.saveErrorDescription.usernameTaken", value: "Another user is already using this username.", comment: "Error message for Sign Up or Edit Profile"))
 
                     case PFErrorCode.ErrorUserEmailTaken.rawValue:
                         self.emailLabel.textColor = UIColor.fn_error()
-                        showError(NSLocalizedString("EditAccountController.saveErrorDescription.emailTaken", value: "Another user is using this e-mail", comment: "Error message for Sign Up or Edit Profile"))
+                        showError(NSLocalizedString("EditAccountController.saveErrorDescription.emailTaken", value: "Another user is already using this e-mail.", comment: "Error message for Sign Up or Edit Profile"))
 
                     default:
                         FNToast.show(title: FNLocalizedUnknownErrorDescription, type: .Warning, position: .Bottom)
@@ -97,23 +99,11 @@ class EditAccountController: FNTableController, UITextFieldDelegate {
                 })
             }
 
-            // If necessary, create copy of current user
-            let currentUser: ParseUser
-            if self.passwordChanged, let userId = ParseUser.current().objectId {
-                currentUser = ParseUser(withoutDataWithObjectId: userId)
-                currentUser.fetch(&error)
-                if FNAnalytics.logError(error, location: "EditAccountController: User Fetch") {
-                    handleError(error!)
-                    return
-                }
-            } else {
-                currentUser = ParseUser.current()
-            }
-
             // Update Parse user info
             currentUser.email = self.emailField.text
             currentUser.username = self.usernameField.text
             if self.passwordChanged {
+                currentUser.unsavedPassword = true
                 currentUser.password = self.passwordField.text
                 currentUser.hasPassword = true
             }
@@ -124,6 +114,7 @@ class EditAccountController: FNTableController, UITextFieldDelegate {
                 handleError(error!)
                 return
             }
+            currentUser.unsavedPassword = false
 
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if self.isSignup {
@@ -147,7 +138,7 @@ class EditAccountController: FNTableController, UITextFieldDelegate {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancel:")
             emailField.text = currentUser.email
             usernameField.text = currentUser.username
-            if currentUser.hasPassword {
+            if currentUser.hasPassword && !currentUser.unsavedPassword {
                 for field in [passwordField, confirmField] {
                     field.text = "passwo" // Placeholder
                 }
@@ -167,8 +158,11 @@ class EditAccountController: FNTableController, UITextFieldDelegate {
     func textFieldDidBeginEditing(textField: UITextField) {
         TSMessage.dismissActiveNotification()
 
-        if textField == passwordField || textField == confirmField {
+        if !passwordChanged && (textField == passwordField || textField == confirmField) {
             passwordChanged = true
+            for field in [passwordField, confirmField] {
+                field.text = nil
+            }
         }
     }
 

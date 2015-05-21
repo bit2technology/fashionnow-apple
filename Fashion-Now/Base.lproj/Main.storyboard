@@ -188,7 +188,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="bhl-RM-JSP">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
                             <tableViewSection id="b8D-ab-Pm1">
                                 <cells>
@@ -356,7 +356,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Zm-bN-0on" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1131" y="2342"/>
+            <point key="canvasLocation" x="2032" y="1960"/>
         </scene>
         <!--Vote: Main-->
         <scene sceneID="VVH-fN-2gA">
@@ -633,7 +633,7 @@
                                     </connections>
                                 </button>
                             </subviews>
-                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="fVS-eA-Kmh" secondAttribute="trailing" id="36v-O0-Fkc"/>
                                 <constraint firstAttribute="centerX" secondItem="Vkx-mG-7eq" secondAttribute="centerX" id="Fu1-ar-XIb"/>
@@ -647,7 +647,7 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="centerX" secondItem="dFC-ld-3mN" secondAttribute="centerX" id="M05-Ak-LlM"/>
                         <constraint firstAttribute="centerY" secondItem="dFC-ld-3mN" secondAttribute="centerY" id="efh-vg-mDF"/>
@@ -669,21 +669,21 @@
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hIa-t9-CvM" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
-                                    <rect key="frame" x="29" y="49" width="142" height="44"/>
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hIa-t9-CvM" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                    <rect key="frame" x="29" y="49" width="143" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="8ZU-HH-C89"/>
                                     </constraints>
                                     <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
-                                    <state key="normal" title="Edit account" backgroundImage="ButtonRoundBordersBackground">
+                                    <state key="normal" title="Edit Account" backgroundImage="ButtonRoundBordersBackground">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <segue destination="OJC-JN-eaN" kind="modal" id="SWL-sX-BuZ"/>
+                                        <segue destination="uBV-1E-PNQ" kind="modal" id="Aqg-dd-jfU"/>
                                     </connections>
                                 </button>
                             </subviews>
-                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstItem="hIa-t9-CvM" firstAttribute="top" secondItem="orf-n6-AUs" secondAttribute="bottom" constant="8" id="2xt-Rj-6Sv"/>
                                 <constraint firstAttribute="trailing" secondItem="orf-n6-AUs" secondAttribute="trailing" id="9jl-cJ-Lj4"/>
@@ -694,7 +694,7 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="centerX" secondItem="kVb-TQ-ojR" secondAttribute="centerX" id="DM3-tp-O6q"/>
                         <constraint firstAttribute="centerY" secondItem="kVb-TQ-ojR" secondAttribute="centerY" id="Pw1-yG-XVp"/>
@@ -837,7 +837,7 @@
                                             <rect key="frame" x="96" y="0.0" width="204" height="44"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <state key="normal" title="Friends">
-                                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <userDefinedRuntimeAttributes>
@@ -908,7 +908,6 @@
                                     </state>
                                     <connections>
                                         <action selector="creteFirstPoll:" destination="cEa-Or-vWC" eventType="touchUpInside" id="Zmo-HL-CKs"/>
-                                        <segue destination="uBV-1E-PNQ" kind="modal" id="JAB-kn-Tdb"/>
                                     </connections>
                                 </button>
                                 <activityIndicatorView contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="PIn-Cv-XHb">
@@ -949,6 +948,7 @@
                     </navigationItem>
                     <connections>
                         <segue destination="8Bz-Dg-aah" kind="modal" identifier="Users Map" id="tw6-ED-liI"/>
+                        <segue destination="uBV-1E-PNQ" kind="modal" identifier="Edit Account" id="0or-XS-PHn"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wVC-D2-I0P" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1138,7 +1138,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pRe-3D-79x" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1273" y="1564"/>
+            <point key="canvasLocation" x="1061" y="1700"/>
         </scene>
         <!--Post: Friends-->
         <scene sceneID="5qp-bD-6TV">
@@ -1554,7 +1554,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HHk-Mc-YKC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="743" y="2342"/>
+            <point key="canvasLocation" x="1644" y="1960"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sT9-WB-ml1">
@@ -2122,7 +2122,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G11-ih-IQb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="896" y="1564"/>
+            <point key="canvasLocation" x="684" y="1700"/>
         </scene>
     </scenes>
     <resources>
@@ -2145,10 +2145,10 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Xhx-XT-wVu"/>
-        <segue reference="IZA-Rh-gPV"/>
         <segue reference="uM3-tb-eTB"/>
-        <segue reference="iBu-gn-e01"/>
+        <segue reference="IZA-Rh-gPV"/>
+        <segue reference="0or-XS-PHn"/>
+        <segue reference="QiP-s0-H0Y"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="1" colorSpace="calibratedRGB"/>
 </document>
