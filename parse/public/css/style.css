@@ -963,6 +963,7 @@
 
 	.storebadge {
 		height: 80px;
+		margin: 0 8px;
 	}
 	
 	.embed-container {
