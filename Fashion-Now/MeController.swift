@@ -134,7 +134,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
         }
         var actions = [[String:String]]()
         actions += [["title": logOutButtonTitle, "style": "destructive"], ["title": asEditAccount]]
-        // FIXME: Link/Unlink Facebook
+        // TODO: Link/Unlink Facebook
 //        actions.append(["title": currentUser.isLoggedFacebook ? unlinkFacebookButtonTitle : linkFacebookButtonTitle])
         if find(PFConfig.currentConfig()["admins"] as? [String] ?? [], currentUser.objectId!) != nil {
             actions.append(["title": showUsersMap])

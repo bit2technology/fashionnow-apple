@@ -269,7 +269,6 @@ class PostFriendsController: FNTableController, UIAlertViewDelegate {
             selectAllBtn?.setTitle(checkedFriendsRow.count < friendsList.count ? selectAllBtnTitle : deselectAllBtnTitle, forState: .Normal)
 
         case sectionInvite:
-            // TODO: Choose invite method
             let activityController = UIActivityViewController(activityItems: [NSLocalizedString("PostFriendsController.invite.caption", value: "Help me to choose my outfit with this app!", comment: "Default caption for when users are inviting friends"), NSURL(string: "http://www.fashionnowapp.com")!], applicationActivities: nil)
             presentViewController(activityController, animated: true, completion: nil)
 

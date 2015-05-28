@@ -96,9 +96,8 @@ extension UIColor {
     }
 
     /// rgb(187, 186, 194)
-    class func fn_placeholder(alpha: CGFloat = 1) -> UIColor { // TODO: Calculate
-        return UIColor(red: 187/255.0, green: 186/255.0, blue: 194/255.0, alpha: alpha)
-//        return UIColor(red: 0.82745098039215686274509803921568627450980392156863, green: 0.82745098039215686274509803921568627450980392156863, blue: 0.82745098039215686274509803921568627450980392156863, alpha: alpha) 211
+    class func fn_placeholder(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(red: 0.73333333333333333333333333333333333333333333333333, green: 0.72941176470588235294117647058823529411764705882353, blue: 0.76078431372549019607843137254901960784313725490196, alpha: alpha)
     }
 
     /// :returns: Random color

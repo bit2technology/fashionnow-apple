@@ -8,9 +8,6 @@
 
 class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelegate {
 
-    // FIXME: Bug Report!!!!
-    private var fbToken: FBSDKAccessToken!
-
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
 
@@ -33,8 +30,6 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
         // Login
         PFFacebookUtils.facebookLoginManager().loginBehavior = .SystemAccount
         PFFacebookUtils.logInInBackgroundWithReadPermissions(FNFacebookReadPermissions) { (user, error) -> Void in
-
-            FBSDKAccessToken.setCurrentAccessToken(self.fbToken)
 
             if let parseUser = user as? ParseUser {
 
@@ -67,23 +62,6 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
                 }
             }
         }
-    }
-
-    // FIXME: fbToken
-
-    func accessToken(sender: NSNotification) {
-        if let newToken = sender.userInfo?[FBSDKAccessTokenChangeNewKey] as? FBSDKAccessToken {
-            fbToken = newToken
-        }
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "accessToken:", name: FBSDKAccessTokenDidChangeNotification, object: nil)
-    }
-
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     // MARK: Login with password

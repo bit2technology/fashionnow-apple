@@ -58,8 +58,7 @@ class PostPollController: FNViewController, UIAlertViewDelegate, UITextFieldDele
 
             } else {
                 // User hasn't verified the email
-                // TODO: Localize
-                FNToast.show(title: "You didn't vefied your email", type: .Error)
+                FNToast.show(title: NSLocalizedString("PostPollController.emailMissing.errorTitle", value: "You didn't vefied your email", comment: "Trying to send poll without email"), type: .Error)
             }
         })
     }
