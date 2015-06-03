@@ -66,12 +66,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             application.registerForRemoteNotificationTypes(.Alert | .Badge | .Sound)
         }
 
-        // Clean image cache
-        SDImageCache.sharedImageCache().cleanDiskWithCompletionBlock(nil)
-
-        // Start friends cache
-        ParseFriendsList.shared.update(false)
-
         // Update configuration
         PFConfig.getConfigInBackgroundWithBlock { (config, error) -> Void in
             FNAnalytics.logError(error, location: "AppDelegate: Get Config")
@@ -126,6 +120,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }).resume()
         }
+
+        // Start friends cache
+        ParseFriendsList.shared.update(false)
+
+        // Clean image cache
+        SDImageCache.sharedImageCache().cleanDiskWithCompletionBlock(nil)
     }
 
     func applicationDidReceiveMemoryWarning(application: UIApplication) {
