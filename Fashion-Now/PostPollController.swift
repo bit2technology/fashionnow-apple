@@ -197,6 +197,14 @@ class PostPollController: FNViewController, UIAlertViewDelegate, UITextFieldDele
         }
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let alertPost = fn_alertController(UIImage(named: "TutorialPost.jpg")!)
+        alertPost.addAction(SDCAlertAction(title: FNLocalizedGotItButtonTitle, style: .Recommended, handler: nil))
+        alertPost.presentWithCompletion(nil)
+    }
+
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }

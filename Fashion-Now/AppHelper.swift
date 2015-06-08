@@ -8,6 +8,17 @@
 
 // MARK: - Functions
 
+/// Returns a SDCAlertController with only an UIImageView covering the entire area. For better visualization, the image must have a width of 822 pixels or more.
+func fn_alertController(image: UIImage) -> SDCAlertController {
+    let alertController = SDCAlertController(title: nil, message: nil, preferredStyle: .Alert)
+    let imgView = UIImageView(image: image)
+    imgView.setTranslatesAutoresizingMaskIntoConstraints(false)
+    alertController.contentView.addSubview(imgView)
+    alertController.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-(-2)-[img]-(-2)-|", options: .allZeros, metrics: nil, views: ["img": imgView]))
+    alertController.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(-46)-[img(height@999,<=max)]|", options: .allZeros, metrics: ["height": Int(image.size.height * 270 / image.size.width), "max": Int(UIScreen.mainScreen().bounds.height - 40)], views: ["img": imgView]))
+    return alertController
+}
+
 /// Apply tilted separator
 func fn_applyPollMask(left: UIView, right: UIView) {
 
@@ -417,6 +428,9 @@ let FNLocalizedUnknownErrorDescription = NSLocalizedString("Default.errorDescrip
 
 /// Returns "OK" for English and its variants for other languages
 let FNLocalizedOKButtonTitle = NSLocalizedString("Default.buttonTitle.ok", value: "OK" , comment: "Default OK button title for entire app")
+
+/// Returns "Got It" (OK for tutorials) for English and its variants for other languages
+let FNLocalizedGotItButtonTitle = NSLocalizedString("Default.buttonTitle.gotIt", value: "Got It" , comment: "Default Got It (OK for tutorials) button title for entire app")
 
 /// Returns "Cancel" for English and its variants for other languages
 let FNLocalizedCancelButtonTitle = NSLocalizedString("Default.buttonTitle.cancel", value: "Cancel" , comment: "Default Cancel button title for entire app")

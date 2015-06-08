@@ -22,6 +22,9 @@
 		4B82B48B1AF9A42000F63883 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B82B48D1AF9A42000F63883 /* InfoPlist.strings */; };
 		4B9443591AB08B6D007DBAFD /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9443581AB08B6D007DBAFD /* AppHelper.swift */; };
 		4BAAAF8E1A14C5FB00AAFAFB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */; };
+		4BAE1EF31B250961002E80B9 /* TutorialWelcome.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE1EF51B250961002E80B9 /* TutorialWelcome.jpg */; };
+		4BAE1EF71B250973002E80B9 /* TutorialVote.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE1EF91B250973002E80B9 /* TutorialVote.jpg */; };
+		4BAE1EFD1B2509BB002E80B9 /* TutorialPost.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE1EFF1B2509BB002E80B9 /* TutorialPost.jpg */; };
 		4BC4CF0B1A01164F0000A231 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4BC4CF0A1A01164F0000A231 /* .gitignore */; };
 		4BD255461AC45F7A004BF005 /* VoteFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD255451AC45F7A004BF005 /* VoteFilterController.swift */; };
 		4BDB6D151A221033003D56C1 /* FacebookHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDB6D141A221033003D56C1 /* FacebookHelper.swift */; };
@@ -66,8 +69,12 @@
 		4B82B48C1AF9A42000F63883 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4B9443581AB08B6D007DBAFD /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppHelper.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4BAAAF8F1A14C5FB00AAFAFB /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
-		4BB1FD3F1AF0FDF800918052 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
-		4BB1FD401AF0FDF800918052 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4BAE1EF41B250961002E80B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Base; path = Base.lproj/TutorialWelcome.jpg; sourceTree = "<group>"; };
+		4BAE1EF61B25096B002E80B9 /* pt */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = pt; path = pt.lproj/TutorialWelcome.jpg; sourceTree = "<group>"; };
+		4BAE1EF81B250973002E80B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Base; path = Base.lproj/TutorialVote.jpg; sourceTree = "<group>"; };
+		4BAE1EFA1B250983002E80B9 /* pt */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = pt; path = pt.lproj/TutorialVote.jpg; sourceTree = "<group>"; };
+		4BAE1EFE1B2509BB002E80B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Base; path = Base.lproj/TutorialPost.jpg; sourceTree = "<group>"; };
+		4BAE1F001B2509BD002E80B9 /* pt */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = pt; path = pt.lproj/TutorialPost.jpg; sourceTree = "<group>"; };
 		4BBCD9AD1AE1F0D10002928F /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4BC4CF0A1A01164F0000A231 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
 		4BD255451AC45F7A004BF005 /* VoteFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteFilterController.swift; sourceTree = "<group>"; };
@@ -134,6 +141,16 @@
 			name = "Login and Signup";
 			sourceTree = "<group>";
 		};
+		4BAE1EF21B25093C002E80B9 /* Tutorials */ = {
+			isa = PBXGroup;
+			children = (
+				4BAE1EF51B250961002E80B9 /* TutorialWelcome.jpg */,
+				4BAE1EF91B250973002E80B9 /* TutorialVote.jpg */,
+				4BAE1EFF1B2509BB002E80B9 /* TutorialPost.jpg */,
+			);
+			name = Tutorials;
+			sourceTree = "<group>";
+		};
 		4BF1D04C1A00F1EB00818658 = {
 			isa = PBXGroup;
 			children = (
@@ -183,6 +200,7 @@
 		4BF1D0581A00F1EB00818658 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4BAE1EF21B25093C002E80B9 /* Tutorials */,
 				4B82B48D1AF9A42000F63883 /* InfoPlist.strings */,
 				4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */,
 				4BC4CF0A1A01164F0000A231 /* .gitignore */,
@@ -306,7 +324,7 @@
 			knownRegions = (
 				en,
 				Base,
-				fr,
+				pt,
 			);
 			mainGroup = 4BF1D04C1A00F1EB00818658;
 			productRefGroup = 4BF1D0561A00F1EB00818658 /* Products */;
@@ -325,8 +343,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BC4CF0B1A01164F0000A231 /* .gitignore in Resources */,
+				4BAE1EF71B250973002E80B9 /* TutorialVote.jpg in Resources */,
 				4B82B48B1AF9A42000F63883 /* InfoPlist.strings in Resources */,
 				4BAAAF8E1A14C5FB00AAFAFB /* Localizable.strings in Resources */,
+				4BAE1EF31B250961002E80B9 /* TutorialWelcome.jpg in Resources */,
+				4BAE1EFD1B2509BB002E80B9 /* TutorialPost.jpg in Resources */,
 				4BF1D0631A00F1EB00818658 /* Main.storyboard in Resources */,
 				4BF1D0651A00F1EB00818658 /* Images.xcassets in Resources */,
 				4BE767DE1A239F6B00CCAA65 /* Settings.bundle in Resources */,
@@ -472,9 +493,35 @@
 			children = (
 				4BAAAF8F1A14C5FB00AAFAFB /* pt */,
 				4BBCD9AD1AE1F0D10002928F /* Base */,
-				4BB1FD401AF0FDF800918052 /* fr */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		4BAE1EF51B250961002E80B9 /* TutorialWelcome.jpg */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4BAE1EF41B250961002E80B9 /* Base */,
+				4BAE1EF61B25096B002E80B9 /* pt */,
+			);
+			name = TutorialWelcome.jpg;
+			sourceTree = "<group>";
+		};
+		4BAE1EF91B250973002E80B9 /* TutorialVote.jpg */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4BAE1EF81B250973002E80B9 /* Base */,
+				4BAE1EFA1B250983002E80B9 /* pt */,
+			);
+			name = TutorialVote.jpg;
+			sourceTree = "<group>";
+		};
+		4BAE1EFF1B2509BB002E80B9 /* TutorialPost.jpg */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4BAE1EFE1B2509BB002E80B9 /* Base */,
+				4BAE1F001B2509BD002E80B9 /* pt */,
+			);
+			name = TutorialPost.jpg;
 			sourceTree = "<group>";
 		};
 		4BF1D0611A00F1EB00818658 /* Main.storyboard */ = {
@@ -482,7 +529,6 @@
 			children = (
 				4BF1D0621A00F1EB00818658 /* Base */,
 				4B7C2CA01A13A06E00FB25B8 /* pt */,
-				4BB1FD3F1AF0FDF800918052 /* fr */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

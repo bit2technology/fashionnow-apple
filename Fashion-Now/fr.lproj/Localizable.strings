@@ -1,9 +1,0 @@
-/* Push title for when a friend posts a poll */
-"P001" = "Nouveau Sondage";
-
-/* Push message for when a friend posts a poll without caption */
-"P002" = "%1$@ a besoin d’aide";
-
-/* Push message for when a friend posts a poll with caption */
-"P003" = "%1$@ a besoin d’aide : « %2$@ »";
-

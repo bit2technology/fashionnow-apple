@@ -22,6 +22,9 @@
 #import <ParseCrashReporting/ParseCrashReporting.h>
 #import <ParseFacebookUtilsV4/PFFacebookUtils.h>
 #import <Reachability/Reachability.h>
+#import <SDCAlertView/SDCAlertController.h>
+#import <SDCAlertView/SDCAlertController.h>
+#import <SDCAutoLayout/UIView+SDCAutoLayout.h>
 #import <TSMessages/TSMessage.h>
 #import <UIImageEffects/UIImage+ImageEffects.h>
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>

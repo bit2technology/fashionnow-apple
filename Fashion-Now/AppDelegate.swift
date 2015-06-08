@@ -33,7 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Parse configuration
         #if DEBUG
-        Parse.setApplicationId("AIQ4OyhhFVequZa6eXLCDdEpxu9qE0JyFkkfczWw", clientKey: "4dMOa5Ts1cvKVcnlIv2E4wYudyN7iJoH0gQDxpVy")
+            Parse.setApplicationId("AIQ4OyhhFVequZa6eXLCDdEpxu9qE0JyFkkfczWw", clientKey: "4dMOa5Ts1cvKVcnlIv2E4wYudyN7iJoH0gQDxpVy")
+            GAI.sharedInstance().optOut = true
         #else
         Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
         #endif
@@ -54,17 +55,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Observe login change and update installation
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
-
-        // Push notifications
-        if application.respondsToSelector("registerUserNotificationSettings:") {
-            // Register for Push Notitications, if running iOS 8 and later
-            let settings = UIUserNotificationSettings(forTypes:.Alert | .Badge | .Sound, categories: nil)
-            application.registerUserNotificationSettings(settings)
-            application.registerForRemoteNotifications()
-        } else {
-            // Register for Push Notifications before iOS 8
-            application.registerForRemoteNotificationTypes(.Alert | .Badge | .Sound)
-        }
 
         // Update configuration
         PFConfig.getConfigInBackgroundWithBlock { (config, error) -> Void in

@@ -215,6 +215,19 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         }
     }
 
+    private func registerPushNotification() {
+        let application = UIApplication.sharedApplication()
+        if application.respondsToSelector("registerUserNotificationSettings:") {
+            // Register for Push Notitications, if running iOS 8 and later
+            let settings = UIUserNotificationSettings(forTypes:.Alert | .Badge | .Sound, categories: nil)
+            application.registerUserNotificationSettings(settings)
+            application.registerForRemoteNotifications()
+        } else {
+            // Register for Push Notifications before iOS 8
+            application.registerForRemoteNotificationTypes(.Alert | .Badge | .Sound)
+        }
+    }
+
     // MARK: Gear button
 
     @IBAction func gearButtonPressed(sender: UIBarButtonItem) {
@@ -454,6 +467,31 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 //                self.setNeedsStatusBarAppearanceUpdate()
 //            })
 //        }
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let alertWelcome = fn_alertController(UIImage(named: "TutorialWelcome.jpg")!)
+        let alertVote = fn_alertController(UIImage(named: "TutorialVote.jpg")!)
+        let alertAnalytics = SDCAlertController(title: "Send statistics", message: "Would you like to send statistics to improve the app?", preferredStyle: .Alert)
+
+        alertWelcome.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.tutorial.welcome.enter", value: "Enter", comment: "Dismiss welcome alert button title"), style: .Recommended, handler: { (action) -> Void in
+            alertVote.presentWithCompletion(nil)
+        }))
+        alertVote.addAction(SDCAlertAction(title: FNLocalizedGotItButtonTitle, style: .Recommended, handler: { (action) -> Void in
+            alertAnalytics.presentWithCompletion(nil)
+        }))
+        alertAnalytics.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.tutorial.analytics.no", value: "No, Thanks", comment: "Shown when user taps the gear button"), style: .Default, handler: { (action) -> Void in
+            GAI.sharedInstance().optOut = true
+            self.registerPushNotification()
+        }))
+        alertAnalytics.addAction(SDCAlertAction(title:FNLocalizedOKButtonTitle, style: .Recommended, handler: { (action) -> Void in
+            GAI.sharedInstance().optOut = false
+            self.registerPushNotification()
+        }))
+
+        alertWelcome.presentWithCompletion(nil)
     }
 
     override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
