@@ -17,22 +17,11 @@ private let asSkipButtonTitle = NSLocalizedString("VotePollController.gearButton
 private let asFiltersButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.filtersButtonTitle", value: "Apply Filters", comment: "Shown when user taps the gear button")
 private let asLoginButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.loginButtonTitle", value: "Log In", comment: "Shown when user taps the gear button")
 
-// Report alert strings
-private let alReportMessage = NSLocalizedString("VotePollController.gearButton.reportAlert.message", value: "Tell us why you want to report this poll", comment: "Shown when user reports a poll")
-private let alReportButtonTitle = NSLocalizedString("VotePollController.gearButton.reportAlert.reportButtonTitle", value: "Report", comment: "Shown when user reports a poll")
-
-// Block alert strings
-private let blAlertMessage = NSLocalizedString("VotePollController.gearButton.blockAlert.message", value: "Are you sure you want to block %@? You won’t see any poll from this user.", comment: "Shown when user blocks a user")
-private let blBlockButtonTitle = NSLocalizedString("VotePollController.gearButton.blockAlert.blockButtonTitle", value: "Block", comment: "Shown when user blocks a user")
-
-// Push notification
-private let pushAlertAction = NSLocalizedString("VotePollController.pushAlert.viewButtonTitle", value: "View", comment: "Shown when vote push notification received while app is open")
-
 // Refresh message
 private let rmNoMorePolls = NSLocalizedString("VotePollController.refreshMessage.noMorePolls", value: "No more polls to vote", comment: "Shown when there is no poll to show")
 private let rmLoadFail = NSLocalizedString("VotePollController.refreshMessage.pollLoadFail", value: "Ops… Something went wrong. Please, try again.", comment: "Shown when there is no poll to show")
 
-class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDelegate, EAIntroDelegate, UIActionSheetDelegate, UIAlertViewDelegate {
+class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDelegate, EAIntroDelegate, UIActionSheetDelegate {
 
     /// This is the firs poll to be shown. Used to open from Notification or URL.
     static var firstPollId: String?
@@ -185,32 +174,16 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
                 let locMessage = NSString(format: locFormat, arguments: cVaList) as String
 
                 // Show notification
-                if NSClassFromString("UIAlertController") != nil {
-
-                    // iOS 8 and above
-                    let alert = UIAlertController(title: locTitle, message: locMessage, preferredStyle: .Alert)
-                    let defaultHandler: ((UIAlertAction!) -> Void) = { (action) -> Void in
-                        self.notificationAlertAction(action.title)
-                    }
-                    alert.addAction(UIAlertAction(title: FNLocalizedCancelButtonTitle, style: .Cancel, handler: nil))
-                    alert.addAction(UIAlertAction(title: pushAlertAction, style: .Default, handler: defaultHandler))
-                    fn_tabBarController.presentViewController(alert, animated: true, completion: nil)
-
-                } else {
-
-                    // iOS 7
-                    UIAlertView(title: alReportButtonTitle, message: alReportMessage, delegate: self, cancelButtonTitle: FNLocalizedCancelButtonTitle, otherButtonTitles: pushAlertAction).show()
-                }
+                let alert = SDCAlertController(title: locTitle, message: locMessage, preferredStyle: .Alert)
+                alert.addAction(SDCAlertAction(title: FNLocalizedCancelButtonTitle, style: .Cancel, handler: nil))
+                alert.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.pushAlert.viewButtonTitle", value: "View", comment: "Shown when vote push notification received while app is open"), style: .Default, handler: { (action) -> Void in
+                    self.loadPollList(true, animated: self.fn_tabBarController.selectedIndex == 0)
+                    self.fn_tabBarController.selectedIndex = 0
+                }))
+                alert.presentWithCompletion(nil)
             }
         } else {
             loadPollList(true, animated: false)
-            fn_tabBarController.selectedIndex = 0
-        }
-    }
-
-    private func notificationAlertAction(buttonTitle: String) {
-        if buttonTitle == pushAlertAction {
-            loadPollList(true, animated: fn_tabBarController.selectedIndex == 0)
             fn_tabBarController.selectedIndex = 0
         }
     }
@@ -241,7 +214,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         actions.append(["title": asReportButtonTitle])
         actions.append(["title": asSkipButtonTitle])
         // TODO: Add filters
-        //actionsheet.addAction(UIAlertAction(title: filtersButtonTitle, style: .Default, handler: defaultHandler))
+        //actions.append(["title": filtersButtonTitle])
         if !ParseUser.current().isLogged {
             actions.append(["title": asLoginButtonTitle])
         }
@@ -299,91 +272,36 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
             (tabBarController as! TabBarController).presentLoginController()
 
         case asReportButtonTitle:
-            if NSClassFromString("UIAlertController") != nil {
-
-                // iOS 8 and above
-                let alert = UIAlertController(title: asReportButtonTitle, message: alReportMessage, preferredStyle: .Alert)
-                let defaultHandler: ((UIAlertAction!) -> Void) = { (action) -> Void in
-                    self.reportAlertAction(action.title, comment: (alert.textFields?.first as? UITextField)?.text)
-                }
-                alert.addAction(UIAlertAction(title: FNLocalizedCancelButtonTitle, style: .Cancel, handler: defaultHandler))
-                alert.addAction(UIAlertAction(title: alReportButtonTitle, style: .Destructive, handler: defaultHandler))
-                alert.addTextFieldWithConfigurationHandler(nil)
-                presentViewController(alert, animated: true, completion: nil)
-
-            } else {
-
-                // iOS 7
-                let alertView = UIAlertView(title: alReportButtonTitle, message: alReportMessage, delegate: self, cancelButtonTitle: FNLocalizedCancelButtonTitle, otherButtonTitles: alReportButtonTitle)
-                alertView.alertViewStyle = .PlainTextInput
-                alertView.show()
-            }
-
-        case asBlockButtonTitle:
-            if NSClassFromString("UIAlertController") != nil {
-
-                // iOS 8 and above
-                let messageWithArgument = NSString(format: blAlertMessage, currentPoll!.createdBy!.displayName) as String
-                let alert = UIAlertController(title: asBlockButtonTitle, message: messageWithArgument, preferredStyle: .Alert)
-                let defaultHandler: ((UIAlertAction!) -> Void) = { (action) -> Void in
-                    self.blockAlertAction(action.title)
-                }
-                alert.addAction(UIAlertAction(title: FNLocalizedCancelButtonTitle, style: .Cancel, handler: defaultHandler))
-                alert.addAction(UIAlertAction(title: blBlockButtonTitle, style: .Destructive, handler: defaultHandler))
-                presentViewController(alert, animated: true, completion: nil)
-
-            } else {
-
-                // iOS 7
-                UIAlertView(title: asBlockButtonTitle, message: blAlertMessage, delegate: self, cancelButtonTitle: FNLocalizedCancelButtonTitle, otherButtonTitles: blBlockButtonTitle).show()
-            }
-
-        default:
-            break
-        }
-    }
-
-    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-        switch alertView.title {
-
-        case asReportButtonTitle:
-            reportAlertAction(alertView.buttonTitleAtIndex(buttonIndex), comment: alertView.textFieldAtIndex(0)?.text)
-
-        case asBlockButtonTitle:
-            blockAlertAction(alertView.buttonTitleAtIndex(buttonIndex))
-
-        default:
-            notificationAlertAction(alertView.buttonTitleAtIndex(buttonIndex))
-        }
-    }
-
-    private func reportAlertAction(buttonTitle: String, comment: String?) {
-        switch buttonTitle {
-        case alReportButtonTitle:
-            ParseReport.sendReport(currentPoll!, comment: comment, block: { (succeeded, error) -> Void in
-                FNAnalytics.logError(error, location: "Vote: Report Poll")
-            })
-            pollController.animateHighlight(index: 0, source: .Extern)
-        default:
-            break
-        }
-    }
-
-    private func blockAlertAction(buttonTitle: String) {
-        switch buttonTitle {
-        case blBlockButtonTitle:
-            navigationController!.view.fn_transition(true, changes: { () -> Void in
-                self.loadingInterface.hidden = false
-                self.avatarView.image = nil
-                self.nameLabel.text = nil
-                self.dateLabel.text = nil
-                self.navigationItem.rightBarButtonItem?.enabled = false
-            }, completion: { (finished) -> Void in
-                ParseBlock.block(self.currentPoll!.createdBy!, block: { (succeeded, error) -> Void in
-                    FNAnalytics.logError(error, location: "Vote: Block User")
-                    self.loadPollList(true, animated: true)
+            let alert = SDCAlertController(title: asReportButtonTitle, message: NSLocalizedString("VotePollController.gearButton.reportAlert.message", value: "Tell us why you want to report this poll", comment: "Shown when user reports a poll"), preferredStyle: .Alert)
+            alert.addTextFieldWithConfigurationHandler(nil)
+            alert.addAction(SDCAlertAction(title: FNLocalizedCancelButtonTitle, style: .Cancel, handler: nil))
+            alert.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.gearButton.reportAlert.reportButtonTitle", value: "Report", comment: "Shown when user reports a poll"), style: .Default, handler: { (action) -> Void in
+                ParseReport.sendReport(self.currentPoll!, comment: alert.textFieldAtIndex(0)?.text, block: { (succeeded, error) -> Void in
+                    FNAnalytics.logError(error, location: "Vote: Report Poll")
                 })
-            })
+                self.pollController.animateHighlight(index: 0, source: .Extern)
+            }))
+            alert.presentWithCompletion(nil)
+
+        case asBlockButtonTitle:
+            let messageWithArgument = NSString(format: NSLocalizedString("VotePollController.gearButton.blockAlert.message", value: "Are you sure you want to block %@? You won’t see any poll from this user.", comment: "Shown when user blocks a user"), currentPoll!.createdBy!.displayName) as String
+            let alert = SDCAlertController(title: asBlockButtonTitle, message: messageWithArgument, preferredStyle: .Alert)
+            alert.addAction(SDCAlertAction(title: FNLocalizedCancelButtonTitle, style: .Cancel, handler: nil))
+            alert.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.gearButton.blockAlert.blockButtonTitle", value: "Block", comment: "Shown when user blocks a user"), style: .Default, handler: { (action) -> Void in
+                self.navigationController!.view.fn_transition(true, changes: { () -> Void in
+                    self.loadingInterface.hidden = false
+                    self.avatarView.image = nil
+                    self.nameLabel.text = nil
+                    self.dateLabel.text = nil
+                    self.navigationItem.rightBarButtonItem?.enabled = false
+                }, completion: { (finished) -> Void in
+                    ParseBlock.block(self.currentPoll!.createdBy!, block: { (succeeded, error) -> Void in
+                        FNAnalytics.logError(error, location: "Vote: Block User")
+                        self.loadPollList(true, animated: true)
+                    })
+                })
+            }))
+            alert.presentWithCompletion(nil)
 
         default:
             break
@@ -474,7 +392,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
         let alertWelcome = fn_alertController(UIImage(named: "TutorialWelcome.jpg")!)
         let alertVote = fn_alertController(UIImage(named: "TutorialVote.jpg")!)
-        let alertAnalytics = SDCAlertController(title: "Send statistics", message: "Would you like to send statistics to improve the app?", preferredStyle: .Alert)
+        let alertAnalytics = SDCAlertController(title: NSLocalizedString("VotePollController.tutorial.analytics.title", value: "Send Usage Data?", comment: "Alert asking to user for usage statistics"), message: NSLocalizedString("VotePollController.tutorial.analytics.message", value: "Send usage data in order to help to improve Fashion Now. These informations won’t be used to identify or contact you.", comment: "Alert asking to user for usage statistics"), preferredStyle: .Alert)
 
         alertWelcome.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.tutorial.welcome.enter", value: "Enter", comment: "Dismiss welcome alert button title"), style: .Recommended, handler: { (action) -> Void in
             alertVote.presentWithCompletion(nil)
@@ -482,11 +400,11 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         alertVote.addAction(SDCAlertAction(title: FNLocalizedGotItButtonTitle, style: .Recommended, handler: { (action) -> Void in
             alertAnalytics.presentWithCompletion(nil)
         }))
-        alertAnalytics.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.tutorial.analytics.no", value: "No, Thanks", comment: "Shown when user taps the gear button"), style: .Default, handler: { (action) -> Void in
+        alertAnalytics.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.tutorial.analytics.no", value: "No, Thanks", comment: "Alert asking to user for usage statistics"), style: .Cancel, handler: { (action) -> Void in
             GAI.sharedInstance().optOut = true
             self.registerPushNotification()
         }))
-        alertAnalytics.addAction(SDCAlertAction(title:FNLocalizedOKButtonTitle, style: .Recommended, handler: { (action) -> Void in
+        alertAnalytics.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.tutorial.analytics.yes", value: "Send", comment: "Alert asking to user for usage statistics"), style: .Default, handler: { (action) -> Void in
             GAI.sharedInstance().optOut = false
             self.registerPushNotification()
         }))

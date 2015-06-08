@@ -12,7 +12,7 @@ private let headerTitles = [NSLocalizedString("PostFriendsController.headers.gen
 private let selectAllBtnTitle = NSLocalizedString("PostFriendsController.headers.selectAllButtonTitle", value: "Select All", comment: "Table view section header button to select all rows in that section")
 private let deselectAllBtnTitle = NSLocalizedString("PostFriendsController.headers.deselectAllButtonTitle", value: "Deselect All", comment: "Table view section header button to select all rows in that section")
 
-class PostFriendsController: FNTableController, UIAlertViewDelegate {
+class PostFriendsController: FNTableController {
 
     // Sections
     var sectionPublicPoll: Int {
@@ -64,32 +64,16 @@ class PostFriendsController: FNTableController, UIAlertViewDelegate {
     @IBAction func sendButtonPressed(sender: UIBarButtonItem) {
 
         if !(publicPoll || checkedFriendsRow.count > 0) {
-            let title = NSLocalizedString("PostFriendsController.send.invalidPollAlert.title", value: "Who Can See It?", comment: "Shown when user tries to send a poll to no one")
-            let message = NSLocalizedString("PostFriendsController.send.invalidPollAlert.message", value: "You haven’t selected any friends… Would you like that everyone in the world could help you choosing?", comment: "Shown when user tries to send a poll to no one")
-            let cancel = NSLocalizedString("PostFriendsController.send.invalidPollAlert.cancel", value: "Choose Friends", comment: "Shown when user tries to send a poll to no one")
-            let send = NSLocalizedString("PostFriendsController.send.invalidPollAlert.title", value: "Send Public Poll", comment: "Shown when user tries to send a poll to no one")
-
-            if NSClassFromString("UIAlertController") != nil {
-                let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-                alert.addAction(UIAlertAction(title: cancel, style: .Cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: send, style: .Default, handler: { (action) -> Void in
-                    self.savePoll(true)
-                }))
-                presentViewController(alert, animated: true, completion: nil)
-            } else {
-                UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: cancel, otherButtonTitles: send).show()
-            }
-
+            let alert = SDCAlertController(title: NSLocalizedString("PostFriendsController.send.invalidPollAlert.title", value: "Who Can See It?", comment: "Shown when user tries to send a poll to no one"), message: NSLocalizedString("PostFriendsController.send.invalidPollAlert.message", value: "You haven’t selected any friends… Would you like that everyone in the world could help you choosing?", comment: "Shown when user tries to send a poll to no one"), preferredStyle: .Alert)
+            alert.addAction(SDCAlertAction(title: NSLocalizedString("PostFriendsController.send.invalidPollAlert.cancel", value: "Choose Friends", comment: "Shown when user tries to send a poll to no one"), style: .Cancel, handler: nil))
+            alert.addAction(SDCAlertAction(title: NSLocalizedString("PostFriendsController.send.invalidPollAlert.send", value: "Send Public Poll", comment: "Shown when user tries to send a poll to no one"), style: .Default, handler: { (action) -> Void in
+                self.savePoll(true)
+            }))
+            alert.presentWithCompletion(nil)
             return
         }
 
         savePoll(false)
-    }
-
-    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-        if buttonIndex != alertView.cancelButtonIndex {
-            savePoll(true)
-        }
     }
 
     private func savePoll(forcePublic: Bool) {

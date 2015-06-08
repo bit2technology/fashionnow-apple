@@ -12,10 +12,11 @@
 func fn_alertController(image: UIImage) -> SDCAlertController {
     let alertController = SDCAlertController(title: nil, message: nil, preferredStyle: .Alert)
     let imgView = UIImageView(image: image)
+    let metrics = ["top": NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1 ? -46 : -2, "bottom": NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1 ? 0 : -19, "height": Int(image.size.height * 270 / image.size.width), "max": Int(UIScreen.mainScreen().bounds.height - 84)]
     imgView.setTranslatesAutoresizingMaskIntoConstraints(false)
     alertController.contentView.addSubview(imgView)
     alertController.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-(-2)-[img]-(-2)-|", options: .allZeros, metrics: nil, views: ["img": imgView]))
-    alertController.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(-46)-[img(height@999,<=max)]|", options: .allZeros, metrics: ["height": Int(image.size.height * 270 / image.size.width), "max": Int(UIScreen.mainScreen().bounds.height - 40)], views: ["img": imgView]))
+    alertController.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(top)-[img(height@999,<=max)]-(bottom)-|", options: .allZeros, metrics: metrics, views: ["img": imgView]))
     return alertController
 }
 

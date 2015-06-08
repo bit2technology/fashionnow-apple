@@ -139,13 +139,6 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
             return
         }
 
-        // Dismiss AppStore-like
-        if scrollView.zoomScale < 0.6 * scrollView.minimumZoomScale {
-            scrollView.pinchGestureRecognizer.enabled = false
-            dismissViewControllerAnimated(true, completion: nil)
-            return
-        }
-
         centerSubview(scrollView: scrollView)
     }
 }

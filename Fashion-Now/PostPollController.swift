@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PostPollController: FNViewController, UIAlertViewDelegate, UITextFieldDelegate {
+class PostPollController: FNViewController, UITextFieldDelegate {
 
     // Interface elements
     private var textField: UITextField {
@@ -97,22 +97,12 @@ class PostPollController: FNViewController, UIAlertViewDelegate, UITextFieldDele
                         poll.caption = textField.text
                         return true
                     } else {
-                        let title = NSLocalizedString("PostController.noCaptionAlert.title", value: "No Description", comment: "Shown when user tries to send a invalid without caption")
-                        let message = NSLocalizedString("PostController.noCaptionAlert.message", value: "Do you want to go further without a description?", comment: "Shown when user tries to send a invalid without caption")
-                        let cancel = NSLocalizedString("PostController.noCaptionAlert.cancel", value: "Go Back", comment: "Shown when user tries to send a invalid without caption")
-                        let next = NSLocalizedString("PostController.noCaptionAlert.next", value: "Go Further", comment: "Shown when user tries to send a invalid without caption")
-
-                        if NSClassFromString("UIAlertController") != nil {
-                            let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-                            alert.addAction(UIAlertAction(title: cancel, style: .Cancel, handler: nil))
-                            alert.addAction(UIAlertAction(title: next, style: .Default, handler: { (action) -> Void in
-                                self.performSegueWithIdentifier(identifier, sender: nil)
-                            }))
-                            presentViewController(alert, animated: true, completion: nil)
-                        } else {
-                            UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: cancel, otherButtonTitles: next).show()
-                        }
-
+                        let alert = SDCAlertController(title: NSLocalizedString("PostController.noCaptionAlert.title", value: "Poll Without Description", comment: "Shown when user tries to send a invalid without caption"), message: NSLocalizedString("PostController.noCaptionAlert.message", value: "Go further without a description?", comment: "Shown when user tries to send a invalid without caption"), preferredStyle: .Alert)
+                        alert.addAction(SDCAlertAction(title: NSLocalizedString("PostController.noCaptionAlert.cancel", value: "Go Back", comment: "Shown when user tries to send a invalid without caption"), style: .Cancel, handler: nil))
+                        alert.addAction(SDCAlertAction(title: NSLocalizedString("PostController.noCaptionAlert.next", value: "Go Further", comment: "Shown when user tries to send a invalid without caption"), style: .Default, handler: { (action) -> Void in
+                            self.performSegueWithIdentifier(identifier, sender: nil)
+                        }))
+                        alert.presentWithCompletion(nil)
                         return false
                     }
                 } else {
@@ -207,14 +197,6 @@ class PostPollController: FNViewController, UIAlertViewDelegate, UITextFieldDele
 
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-
-    // MARK: UIAlertViewDelegate
-
-    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-        if buttonIndex != alertView.cancelButtonIndex {
-            performSegueWithIdentifier("Next Step", sender: nil)
-        }
     }
 
     // MARK: UITextFieldDelegate

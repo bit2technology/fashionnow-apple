@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelegate {
+class LoginController: FNTableController, UITextFieldDelegate {
 
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
@@ -133,15 +133,14 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
 
     private func showResetAlertView(message: String? = nil) {
         view.endEditing(true)
-        let alertView = UIAlertView(title: NSLocalizedString("LoginController.resetPassword.alert.title", value: "Type your email", comment: "Alert title for when user requests a password reset"), message: message ?? NSLocalizedString("LoginController.resetPassword.alert.message", value: "We will send you a link to reset your password", comment: "Alert message for when user requests a password reset"), delegate: self, cancelButtonTitle: FNLocalizedCancelButtonTitle, otherButtonTitles: NSLocalizedString("LoginController.resetPassword.alert.resetButtonTitle", value: "Reset", comment: "Alert button for reset password"))
-        alertView.alertViewStyle = .PlainTextInput
-        alertView.textFieldAtIndex(0)?.keyboardType = .EmailAddress
-        alertView.show()
-    }
 
-    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-        if buttonIndex != alertView.cancelButtonIndex {
-            let email = alertView.textFieldAtIndex(0)?.text
+        let alert = SDCAlertController(title: NSLocalizedString("LoginController.resetPassword.alert.title", value: "Type your email", comment: "Alert title for when user requests a password reset"), message: message ?? NSLocalizedString("LoginController.resetPassword.alert.message", value: "We will send you a link to reset your password", comment: "Alert message for when user requests a password reset"), preferredStyle: .Alert)
+        alert.addTextFieldWithConfigurationHandler { (textField) -> Void in
+            textField.keyboardType = .EmailAddress
+        }
+        alert.addAction(SDCAlertAction(title: FNLocalizedCancelButtonTitle, style: .Default, handler: nil))
+        alert.addAction(SDCAlertAction(title: NSLocalizedString("LoginController.resetPassword.alert.resetButtonTitle", value: "Reset", comment: "Alert button for reset password"), style: .Recommended, handler: { (action) -> Void in
+            let email = alert.textFieldAtIndex(0)?.text
 
             if email?.fn_count > 0 && email!.isEmail() {
 
@@ -166,8 +165,9 @@ class LoginController: FNTableController, UIAlertViewDelegate, UITextFieldDelega
                 }
 
             } else {
-                showResetAlertView(message: NSLocalizedString("LoginController.resetPassword.errorDescription.emailNotValid", value: "Please, insert a valid email address", comment: "Alert title for when user types an invalid email address"))
+                self.showResetAlertView(message: NSLocalizedString("LoginController.resetPassword.errorDescription.emailNotValid", value: "Please, insert a valid email address", comment: "Alert title for when user types an invalid email address"))
             }
-        }
+        }))
+        alert.presentWithCompletion(nil)
     }
 }
