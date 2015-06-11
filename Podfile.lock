@@ -12,9 +12,9 @@ PODS:
   - EAIntroView (2.7.3):
     - EARestrictedScrollView (~> 0.1.0)
   - EARestrictedScrollView (0.1.0)
-  - FastttCamera (0.3.0):
-    - FastttCamera/Default (= 0.3.0)
-  - FastttCamera/Default (0.3.0)
+  - FastttCamera (0.3.1):
+    - FastttCamera/Default (= 0.3.1)
+  - FastttCamera/Default (0.3.1)
   - FBSDKCoreKit (4.2.0):
     - Bolts (~> 1.1)
     - FBSDKCoreKit/arc (= 4.2.0)
@@ -89,7 +89,7 @@ SPEC CHECKSUMS:
   DateTools: b93a2c2017747329c6077c7d7e8a75106e23d0d7
   EAIntroView: bedde44388280d71c9798ce36c82720901596355
   EARestrictedScrollView: 5ab3eadd9ea55282cc72df0daecb09803059e3a0
-  FastttCamera: 6c406118c275030aacddaa1a1a2a5f7032dc8c51
+  FastttCamera: dfcec6e490be93130123309fdecc7cf444081470
   FBSDKCoreKit: 84b3616a361801f190e43a9909caead7bb6087c7
   FBSDKLoginKit: 57e37106af12c9e264e473dcb75d7decdbb07fe4
   FBSDKShareKit: 931746fdf8fb95efd6e12310ec14b2b3295e2aec

@@ -10,6 +10,14 @@ import UIKit
 
 let VoteNotificationTappedNotificationName = "VoteNotificationTappedNotification"
 
+private let tutorialShownKey = "tutorialVote1"
+private var tutorialShown = NSUserDefaults.standardUserDefaults().boolForKey(tutorialShownKey) {
+    didSet {
+        NSUserDefaults.standardUserDefaults().setBool(tutorialShown, forKey: tutorialShownKey)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+}
+
 // Action Sheet buttons
 private let asBlockButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.blockButtonTitle", value: "Block User", comment: "Shown when user taps the gear button")
 private let asReportButtonTitle = NSLocalizedString("VotePollController.gearButton.actionSheet.reportButtonTitle", value: "Report Poll", comment: "Shown when user taps the gear button")
@@ -390,35 +398,40 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        let alertWelcome = fn_alertController(UIImage(named: "TutorialWelcome.jpg")!)
-        let alertVote = fn_alertController(UIImage(named: "TutorialVote.jpg")!)
-        let alertAnalytics = SDCAlertController(title: NSLocalizedString("VotePollController.tutorial.analytics.title", value: "Send Usage Data?", comment: "Alert asking to user for usage statistics"), message: NSLocalizedString("VotePollController.tutorial.analytics.message", value: "Send usage data in order to help to improve Fashion Now. These informations won’t be used to identify or contact you.", comment: "Alert asking to user for usage statistics"), preferredStyle: .Alert)
+        if !tutorialShown {
 
-        alertWelcome.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.tutorial.welcome.enter", value: "Enter", comment: "Dismiss welcome alert button title"), style: .Recommended, handler: { (action) -> Void in
-            alertVote.presentWithCompletion(nil)
-        }))
-        alertVote.addAction(SDCAlertAction(title: FNLocalizedGotItButtonTitle, style: .Recommended, handler: { (action) -> Void in
-            alertAnalytics.presentWithCompletion(nil)
-        }))
-        alertAnalytics.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.tutorial.analytics.no", value: "No, Thanks", comment: "Alert asking to user for usage statistics"), style: .Cancel, handler: { (action) -> Void in
-            GAI.sharedInstance().optOut = true
-            self.registerPushNotification()
-        }))
-        alertAnalytics.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.tutorial.analytics.yes", value: "Send", comment: "Alert asking to user for usage statistics"), style: .Default, handler: { (action) -> Void in
-            GAI.sharedInstance().optOut = false
-            self.registerPushNotification()
-        }))
+            let alertWelcome = fn_alertController(UIImage(named: "TutorialWelcome.jpg")!)
+            let alertVote = fn_alertController(UIImage(named: "TutorialVote.jpg")!)
+            let alertAnalytics = SDCAlertController(title: NSLocalizedString("VotePollController.tutorial.analytics.title", value: "Send Usage Data?", comment: "Alert asking to user for usage statistics"), message: NSLocalizedString("VotePollController.tutorial.analytics.message", value: "Send usage data in order to help to improve Fashion Now. These informations won’t be used to identify or contact you.", comment: "Alert asking to user for usage statistics"), preferredStyle: .Alert)
 
-        alertWelcome.presentWithCompletion(nil)
+            alertWelcome.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.tutorial.welcome.enter", value: "Enter", comment: "Dismiss welcome alert button title"), style: .Recommended, handler: { (action) -> Void in
+                alertVote.presentWithCompletion(nil)
+            }))
+            alertVote.addAction(SDCAlertAction(title: FNLocalizedGotItButtonTitle, style: .Recommended, handler: { (action) -> Void in
+                alertAnalytics.presentWithCompletion(nil)
+            }))
+            alertAnalytics.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.tutorial.analytics.no", value: "No, Thanks", comment: "Alert asking to user for usage statistics"), style: .Cancel, handler: { (action) -> Void in
+                GAI.sharedInstance().optOut = true
+                self.registerPushNotification()
+            }))
+            alertAnalytics.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.tutorial.analytics.yes", value: "Send", comment: "Alert asking to user for usage statistics"), style: .Default, handler: { (action) -> Void in
+                GAI.sharedInstance().optOut = false
+                self.registerPushNotification()
+            }))
+            
+            alertWelcome.presentWithCompletion(nil)
+
+            tutorialShown = true
+        }
     }
 
-    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
-        return .Fade
-    }
-
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return statusBarStyle
-    }
+//    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+//        return .Fade
+//    }
+//
+//    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+//        return statusBarStyle
+//    }
 
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
@@ -426,12 +439,12 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
     // MARK: EAIntroDelegate
 
-    func introDidFinish(introView: EAIntroView!) {
-        statusBarStyle = .Default
-        UIView.animateWithDuration(0.5, animations: { () -> Void in
-            self.setNeedsStatusBarAppearanceUpdate()
-        })
-    }
+//    func introDidFinish(introView: EAIntroView!) {
+//        statusBarStyle = .Default
+//        UIView.animateWithDuration(0.5, animations: { () -> Void in
+//            self.setNeedsStatusBarAppearanceUpdate()
+//        })
+//    }
 
     // MARK: PollControllerDelegate
 

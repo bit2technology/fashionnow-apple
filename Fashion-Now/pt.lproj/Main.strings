@@ -4,9 +4,6 @@
 /* Class = "UILabel"; text = "Name"; ObjectID = "0TE-HJ-F3a"; */
 "0TE-HJ-F3a.text" = "Nome";
 
-/* Class = "UILabel"; text = "E-mail"; ObjectID = "1po-qc-85I"; */
-"1po-qc-85I.text" = "E-mail";
-
 /* Class = "UITabBarItem"; title = "Create"; ObjectID = "2O1-Ra-Pjk"; */
 "2O1-Ra-Pjk.title" = "Criar";
 
@@ -19,17 +16,17 @@
 /* Class = "UINavigationItem"; title = "Gallery"; ObjectID = "8K3-ng-n0y"; */
 "8K3-ng-n0y.title" = "Galeria";
 
-/* Class = "UINavigationItem"; title = "Sign Up"; ObjectID = "9LK-rm-73H"; */
-"9LK-rm-73H.title" = "Registrar";
+/* Class = "UILabel"; text = "Confirm"; ObjectID = "9IV-gn-iTM"; */
+"9IV-gn-iTM.text" = "Confirmar";
+
+/* Class = "UINavigationItem"; title = "Edit Profile"; ObjectID = "9LK-rm-73H"; */
+"9LK-rm-73H.title" = "Editar Perfil";
 
 /* Class = "UILabel"; text = "Birthday"; ObjectID = "9u8-J9-agp"; */
 "9u8-J9-agp.text" = "Data de nascimento";
 
-/* Class = "UINavigationItem"; title = "Who can see?"; ObjectID = "BCe-DD-8Y6"; */
+/* Class = "UINavigationItem"; title = "Who Can See It?"; ObjectID = "BCe-DD-8Y6"; */
 "BCe-DD-8Y6.title" = "Quem pode ver?";
-
-/* Class = "UILabel"; text = "Password"; ObjectID = "BeX-qs-v4G"; */
-"BeX-qs-v4G.text" = "Senha";
 
 /* Class = "UILabel"; text = "Optional"; ObjectID = "F80-og-72K"; */
 "F80-og-72K.text" = "Opcional";
@@ -46,11 +43,11 @@
 /* Class = "UIButton"; normalTitle = "Friends"; ObjectID = "ImK-lm-ETH"; */
 "ImK-lm-ETH.normalTitle" = "Amigos";
 
-/* Class = "UITextField"; placeholder = "Add caption"; ObjectID = "KUx-Xw-6OB"; */
-"KUx-Xw-6OB.placeholder" = "Qual a sua dúvida?";
+/* Class = "UILabel"; text = "Username"; ObjectID = "K2o-Iq-oKl"; */
+"K2o-Iq-oKl.text" = "Nome de Usuário";
 
-/* Class = "UILabel"; text = "Location"; ObjectID = "Kyv-ax-HEQ"; */
-"Kyv-ax-HEQ.text" = "Localização";
+/* Class = "UITextField"; placeholder = "What’s your doubt?"; ObjectID = "KUx-Xw-6OB"; */
+"KUx-Xw-6OB.placeholder" = "Qual a sua dúvida?";
 
 /* Class = "UITableViewSection"; headerTitle = "Overview"; ObjectID = "MRE-Ba-kQK"; */
 "MRE-Ba-kQK.headerTitle" = "Pessoal";
@@ -79,20 +76,17 @@
 /* Class = "UILabel"; text = "Optional"; ObjectID = "UI9-MR-EjJ"; */
 "UI9-MR-EjJ.text" = "Opcional";
 
-/* Class = "UILabel"; text = "Label"; ObjectID = "Vz6-oX-I3M"; */
-"Vz6-oX-I3M.text" = "Etiqueta";
-
-/* Class = "UINavigationItem"; title = "Sign Up"; ObjectID = "YcN-5G-q7t"; */
-"YcN-5G-q7t.title" = "Registrar";
-
-/* Class = "UIButton"; normalTitle = "Votes"; ObjectID = "Z04-eP-86W"; */
-"Z04-eP-86W.normalTitle" = "Votos";
+/* Class = "UIButton"; normalTitle = "Resend verification"; ObjectID = "Vkx-mG-7eq"; */
+"Vkx-mG-7eq.normalTitle" = "Reenviar verificação";
 
 /* Class = "UILabel"; text = "Date"; ObjectID = "a0e-4P-C3U"; */
 "a0e-4P-C3U.text" = "Data";
 
-/* Class = "UITableViewSection"; headerTitle = "Credentials"; ObjectID = "cAD-Za-ZPA"; */
-"cAD-Za-ZPA.headerTitle" = "Credenciais";
+/* Class = "UIButton"; normalTitle = "Create Your First Poll"; ObjectID = "aDT-PS-W63"; */
+"aDT-PS-W63.normalTitle" = "Crie Sua Primeira Enquete";
+
+/* Class = "UIBarButtonItem"; title = "Vote"; ObjectID = "bQ7-lB-0oX"; */
+"bQ7-lB-0oX.title" = "Votar";
 
 /* Class = "UITabBarItem"; title = "Vote"; ObjectID = "cp0-V5-EKB"; */
 "cp0-V5-EKB.title" = "Votar";
@@ -109,11 +103,17 @@
 /* Class = "UIButton"; normalTitle = "Log in"; ObjectID = "exf-D7-gGy"; */
 "exf-D7-gGy.normalTitle" = "Login";
 
-/* Class = "UILabel"; text = "Username"; ObjectID = "hsG-UT-V8C"; */
-"hsG-UT-V8C.text" = "Nome de usuário";
+/* Class = "UILabel"; text = "You haven’t verified your e-mail yet"; ObjectID = "fVS-eA-Kmh"; */
+"fVS-eA-Kmh.text" = "Você ainda não verificou seu e-mail";
 
-/* Class = "UILabel"; text = "E-mail"; ObjectID = "kvn-L4-rA6"; */
-"kvn-L4-rA6.text" = "E-mail";
+/* Class = "UIButton"; normalTitle = "Edit Account"; ObjectID = "hIa-t9-CvM"; */
+"hIa-t9-CvM.normalTitle" = "Editar Conta";
+
+/* Class = "UIButton"; normalTitle = "I already verified"; ObjectID = "hnv-ds-ohc"; */
+"hnv-ds-ohc.normalTitle" = "Já verifiquei";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "jeX-hF-UDG"; */
+"jeX-hF-UDG.normalTitle" = "Cancelar";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "lnp-IN-Yzw"; */
 "lnp-IN-Yzw.text" = "Nome";
@@ -121,32 +121,32 @@
 /* Class = "UILabel"; text = "Results"; ObjectID = "mT1-7P-I06"; */
 "mT1-7P-I06.text" = "Resultados";
 
-/* Class = "UILabel"; text = "Confirm password"; ObjectID = "mvl-si-aCX"; */
-"mvl-si-aCX.text" = "Confirmar senha";
-
 /* Class = "UILabel"; text = "We won’t publish anything without your permission"; ObjectID = "nE2-fN-c10"; */
 "nE2-fN-c10.text" = "Não publicaremos nada sem sua permissão";
+
+/* Class = "UILabel"; text = "You haven’t informed your e-mail"; ObjectID = "orf-n6-AUs"; */
+"orf-n6-AUs.text" = "Você não informou seu e-mail";
 
 /* Class = "UIBarButtonItem"; title = "Photos"; ObjectID = "p8Z-hd-6ug"; */
 "p8Z-hd-6ug.title" = "Fotos";
 
-/* Class = "UILabel"; text = "Username"; ObjectID = "qr1-zd-zXB"; */
-"qr1-zd-zXB.text" = "Nome de usuário";
+/* Class = "UILabel"; text = "Password"; ObjectID = "rcJ-kZ-jnm"; */
+"rcJ-kZ-jnm.text" = "Senha";
+
+/* Class = "UINavigationItem"; title = "Edit Account"; ObjectID = "sev-S7-uTF"; */
+"sev-S7-uTF.title" = "Editar Conta";
 
 /* Class = "UIButton"; normalTitle = "Forgot my password"; ObjectID = "t9j-3y-y4y"; */
 "t9j-3y-y4y.normalTitle" = "Esqueci minha senha";
+
+/* Class = "UIButton"; normalTitle = "Edit profile"; ObjectID = "tFR-BG-zUt"; */
+"tFR-BG-zUt.normalTitle" = "Editar perfil";
 
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "tXu-ZQ-igo"; */
 "tXu-ZQ-igo.placeholder" = "Senha";
 
 /* Class = "UIButton"; normalTitle = "Load more"; ObjectID = "thF-Md-Kue"; */
 "thF-Md-Kue.normalTitle" = "Carregar mais";
-
-/* Class = "UIButton"; normalTitle = "Polls"; ObjectID = "uWD-48-SPj"; */
-"uWD-48-SPj.normalTitle" = "Enquetes";
-
-/* Class = "UILabel"; text = "Password"; ObjectID = "ub0-D8-tJg"; */
-"ub0-D8-tJg.text" = "Senha";
 
 /* Class = "UITableViewSection"; headerTitle = "Avatar"; ObjectID = "xQ2-XG-UaR"; */
 "xQ2-XG-UaR.headerTitle" = "Avatar";

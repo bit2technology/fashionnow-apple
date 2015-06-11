@@ -1,8 +1,17 @@
+/* Shown when user is offline */
+"AppHelper.isOfflineAlert.message" = "Conecte seu dispositivo e tente de novo";
+
+/* Shown when user is offline */
+"AppHelper.isOfflineAlert.title" = "Você Está Offline";
+
 /* Default for entire app */
 "Default.appName" = "Fashion Now";
 
 /* Default Cancel button title for entire app */
 "Default.buttonTitle.cancel" = "Cancelar";
+
+/* Default Got It (OK for tutorials) button title for entire app */
+"Default.buttonTitle.gotIt" = "Entendi";
 
 /* Default OK button title for entire app */
 "Default.buttonTitle.ok" = "OK";
@@ -13,32 +22,41 @@
 /* Default for entire app */
 "Default.errorDescription.unknown" = "Erro desconhecido. Tente de novo depois.";
 
-/* Table view section header */
-"FriendsListTableController.headers.friends" = "Amigos";
+/* Title of alert of missing/wrong information */
+"EditAccountController.reviewAlert.title" = "Revisar informação";
 
-/* Table view section header */
-"FriendsListTableController.headers.general" = "Geral";
+/* Error message for Sign Up or Edit Profile */
+"EditAccountController.saveErrorDescription.emailNotValid" = "Você deve informar um e-mail válido.";
 
-/* Table view section header button to select all rows in that section */
-"FriendsListTableController.headers.selectAllButtonTitle" = "Todos";
+/* Error message for Sign Up or Edit Profile */
+"EditAccountController.saveErrorDescription.emailTaken" = "Outro usuário já está usando este e-mail.";
 
-/* Default caption for when users are inviting friends */
-"FriendsListTableController.invite.caption" = "Me ajude a escolher meu look com esse app!";
+/* Error message for Sign Up or Edit Profile */
+"EditAccountController.saveErrorDescription.passwordTooShort" = "Sua senha deve ter pelo menos 6 caracteres.";
 
-/* Table view row title for invite friends to use the app */
-"FriendsListTableController.rowTitle.inviteFriens" = "Convidar Amigos";
+/* Error message for Sign Up or Edit Profile */
+"EditAccountController.saveErrorDescription.usernameMissing" = "Seu nome de usuário deve ter pelo menos 6 caracteres";
 
-/* Table view row title for when user has no friends */
-"FriendsListTableController.rowTitle.noFriends" = "Sem Amigos";
+/* Error message for Sign Up or Edit Profile */
+"EditAccountController.saveErrorDescription.usernameTaken" = "Outro usuário já está usando este nome de usuário.";
 
-/* Table view row title for make the poll public for all users */
-"FriendsListTableController.rowTitle.publicPoll" = "Enquete Pública";
+/* Title for when controller is in Sign Up mode (user is not logged) */
+"EditAccountController.signup.navTitle" = "Registrar";
 
-/* Shown when user sends the poll */
-"FriendsListTableController.send.fail" = "Impossível enviar";
+/* Gender labels */
+"EditProfileController.genders.female" = "Mulher";
 
-/* Shown when user sends the poll */
-"FriendsListTableController.send.succeeded" = "Enquete enviada";
+/* Gender labels */
+"EditProfileController.genders.male" = "Homem";
+
+/* Gender labels */
+"EditProfileController.genders.other" = "Outro";
+
+/* Optional field */
+"EditProfileController.label.optional" = "Opcional";
+
+/* Gender labels */
+"EditProfileController.picker.none" = "Nenhum";
 
 /* Message for when user does not fill the fields */
 "LoginController.loginErrorDescription.incomplete" = "Nome de usuário ou senha faltando";
@@ -65,9 +83,6 @@
 "LoginController.resetPassword.successMessage" = "Instruções para resetar senha enviadas para seu e-mail";
 
 /* Shown when user taps the gear button */
-"MeController.gearButton.actionSheet.inviteButtonTitle" = "Convidar Amigos";
-
-/* Shown when user taps the gear button */
 "MeController.gearButton.actionSheet.linkFacebookButtonTitle" = "Conectar ao Facebook";
 
 /* Shown when user taps the gear button */
@@ -85,53 +100,89 @@
 /* Push message for when a friend posts a poll with caption */
 "P003" = "%1$@ precisa de ajuda: \"%1$@\"";
 
+/* Shown when user tries to send a invalid poll */
+"PostController.invalidPollAlert.title" = "Enquete Inválida";
+
+/* Shown when user tries to send a invalid without caption */
+"PostController.noCaptionAlert.cancel" = "Voltar";
+
+/* Shown when user tries to send a invalid without caption */
+"PostController.noCaptionAlert.message" = "Continuar sem descrição?";
+
+/* Shown when user tries to send a invalid without caption */
+"PostController.noCaptionAlert.next" = "Continuar";
+
+/* Shown when user tries to send a invalid without caption */
+"PostController.noCaptionAlert.title" = "Enquete Sem Descrição";
+
+/* Table view section header button to select all rows in that section */
+"PostFriendsController.headers.deselectAllButtonTitle" = "Desselecionar Tudo";
+
+/* Table view section header */
+"PostFriendsController.headers.friends" = "Amigos";
+
+/* Table view section header */
+"PostFriendsController.headers.general" = "Geral";
+
+/* Table view section header button to select all rows in that section */
+"PostFriendsController.headers.selectAllButtonTitle" = "Selecionar Tudo";
+
+/* Default caption for when users are inviting friends */
+"PostFriendsController.invite.caption" = "Me ajude a escolher meu look com esse aplicativo!";
+
+/* Table view row title for invite friends to use the app */
+"PostFriendsController.rowTitle.inviteFriens" = "Convidar amigos";
+
+/* Table view row title for make the poll public for all users */
+"PostFriendsController.rowTitle.publicPoll" = "Todos os usuários";
+
+/* Shown when user sends the poll */
+"PostFriendsController.send.fail" = "Impossível de enviar";
+
+/* Shown when user tries to send a poll to no one */
+"PostFriendsController.send.invalidPollAlert.cancel" = "Escolher Amigos";
+
+/* Shown when user tries to send a poll to no one */
+"PostFriendsController.send.invalidPollAlert.message" = "Você não selecionou nenhum amigo… Gostaria que todos no mundo possam te ajudar a escolher?";
+
+/* Shown when user tries to send a poll to no one */
+"PostFriendsController.send.invalidPollAlert.send" = "Enviar Enquete Pública";
+
+/* Shown when user tries to send a poll to no one */
+"PostFriendsController.send.invalidPollAlert.title" = "Quem Pode Ver?";
+
+/* Shown when user sends the poll */
+"PostFriendsController.send.succeeded" = "Enquete enviada";
+
+/* Trying to verify email */
+"PostPollController.alreadyVerified.errorMessage" = "Por favor, tente novamente depois.";
+
+/* Trying to verify email */
+"PostPollController.alreadyVerified.errorTitle" = "Ocorreu um erro";
+
+/* Trying to send poll without email */
+"PostPollController.emailMissing.errorTitle" = "Você não verificou seu e-mail";
+
+/* Trying to resend a verification email */
+"PostPollController.resendVerification.confirmTitle" = "E-mail enviado";
+
+/* Trying to resend a verification email */
+"PostPollController.resendVerification.errorMessage" = "Por favor, tente novamente depois.";
+
+/* Trying to resend a verification email */
+"PostPollController.resendVerification.errorTitle" = "E-mail não enviado";
+
 /* Shown when user is about to delete a poll */
 "ResultPollController.deleteSheet.destructiveButtonTitle" = "Deletar";
 
 /* Shown when user is about to delete a poll */
 "ResultPollController.deleteSheet.title" = "Você realmente quer deletar essa enquete? Esta ação não pode ser desfeita";
 
-/* User logged in with a Facebook account and must review his/her information. */
-"SIGNUP_REVIEW_TITLE" = "Editar Perfil";
-
-/* Gender labels */
-"SignupController.genders.female" = "Mulher";
-
-/* Gender labels */
-"SignupController.genders.male" = "Homem";
-
-/* Gender labels */
-"SignupController.genders.other" = "Outro";
-
-/* Gender labels */
-"SignupController.picker.none" = "Nenhum";
-
-/* Title of alert of missing/wrong information */
-"SignupController.reviewAlert.title" = "Revisar informações";
-
-/* Error message for Sign Up or Edit Profile */
-"SignupController.saveErrorDescription.emailMissing" = "E-mail faltando";
-
-/* Error message for Sign Up or Edit Profile */
-"SignupController.saveErrorDescription.emailNotValid" = "E-mail inválido";
-
-/* Error message for Sign Up or Edit Profile */
-"SignupController.saveErrorDescription.emailTaken" = "Outro usuário já está usando este e-mail";
-
-/* Error message for Sign Up or Edit Profile */
-"SignupController.saveErrorDescription.passwordTooShort" = "Senha muito curta (6 caracteres min.)";
-
-/* Error message for Sign Up or Edit Profile */
-"SignupController.saveErrorDescription.userTooYoung" = "Você precisa ter pelo menos 4 anos";
-
-/* Error message for Sign Up or Edit Profile */
-"SignupController.saveErrorDescription.usernameMissing" = "Nome de usuário faltando";
-
-/* Error message for Sign Up or Edit Profile */
-"SignupController.saveErrorDescription.usernameTaken" = "Nome de usuário já existe";
-
 /* Shown when current poll was created more than 24h ago */
 "VotePollController.createdAt.moreThanOneDayAgo" = "Mais de um dia atrás";
+
+/* Shown when user taps the gear button */
+"VotePollController.gearButton.actionSheet.blockButtonTitle" = "Bloquear Usuário";
 
 /* Shown when user taps the gear button */
 "VotePollController.gearButton.actionSheet.filtersButtonTitle" = "Aplicar Filtros";
@@ -144,6 +195,12 @@
 
 /* Shown when user taps the gear button */
 "VotePollController.gearButton.actionSheet.skipButtonTitle" = "Pular Enquete";
+
+/* Shown when user blocks a user */
+"VotePollController.gearButton.blockAlert.blockButtonTitle" = "Bloquear";
+
+/* Shown when user blocks a user */
+"VotePollController.gearButton.blockAlert.message" = "Você tem certeza que deseja bloquar %@? Você não verá nenhuma enquete deste usuário.";
 
 /* Shown when user reports a poll */
 "VotePollController.gearButton.reportAlert.message" = "Diga-nos por que você quer denunciar esta enqute";
@@ -159,4 +216,19 @@
 
 /* Shown when there is no poll to show */
 "VotePollController.refreshMessage.pollLoadFail" = "Ops… Alguma coisa deu errado. Por favor, tente de novo.";
+
+/* Alert asking to user for usage statistics */
+"VotePollController.tutorial.analytics.message" = "Envie dados de uso para ajudar a melhorar o Fahion Now. Estas informações não serão usadas para identificar ou contactar você.";
+
+/* Alert asking to user for usage statistics */
+"VotePollController.tutorial.analytics.no" = "Não, Obrigado";
+
+/* Alert asking to user for usage statistics */
+"VotePollController.tutorial.analytics.title" = "Enviar Dados de Uso?";
+
+/* Alert asking to user for usage statistics */
+"VotePollController.tutorial.analytics.yes" = "Enviar";
+
+/* Dismiss welcome alert button title */
+"VotePollController.tutorial.welcome.enter" = "Entrar";
 

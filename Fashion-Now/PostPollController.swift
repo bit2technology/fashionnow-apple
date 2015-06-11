@@ -6,7 +6,14 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-import UIKit
+// Tutorial
+private let tutorialShownKey = "tutorialPost1"
+private var tutorialShown = NSUserDefaults.standardUserDefaults().boolForKey(tutorialShownKey) {
+    didSet {
+        NSUserDefaults.standardUserDefaults().setBool(tutorialShown, forKey: tutorialShownKey)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+}
 
 class PostPollController: FNViewController, UITextFieldDelegate {
 
@@ -190,9 +197,14 @@ class PostPollController: FNViewController, UITextFieldDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        let alertPost = fn_alertController(UIImage(named: "TutorialPost.jpg")!)
-        alertPost.addAction(SDCAlertAction(title: FNLocalizedGotItButtonTitle, style: .Recommended, handler: nil))
-        alertPost.presentWithCompletion(nil)
+        if !tutorialShown {
+
+            let alertPost = fn_alertController(UIImage(named: "TutorialPost.jpg")!)
+            alertPost.addAction(SDCAlertAction(title: FNLocalizedGotItButtonTitle, style: .Recommended, handler: nil))
+            alertPost.presentWithCompletion(nil)
+
+            tutorialShown = true
+        }
     }
 
     deinit {
