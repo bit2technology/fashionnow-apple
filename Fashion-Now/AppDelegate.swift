@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Parse.setApplicationId("AIQ4OyhhFVequZa6eXLCDdEpxu9qE0JyFkkfczWw", clientKey: "4dMOa5Ts1cvKVcnlIv2E4wYudyN7iJoH0gQDxpVy")
             GAI.sharedInstance().optOut = true
         #else
-        Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
+            Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
         #endif
         ParseUser.enableAutomaticUser()
         ParseUser.enableRevocableSessionInBackgroundWithBlock { (error) -> Void in
@@ -84,8 +84,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Facebook Analytics
         FBSDKAppEvents.activateApp()
 
+        // Get FN partners installed on this device
+        var partners = [String]()
+        for partner in PFConfig.currentConfig().partners ?? [] {
+            if application.canOpenURL(partner.urlIOS) {
+                partners.append(partner.name)
+            }
+        }
+
         // Erase badge number, set userID and update location
         let install = ParseInstallation.currentInstallation()
+        install.partners = partners
         install.badge = 0
         install.userId = ParseUser.current().objectId
         switch CLLocationManager.authorizationStatus() {

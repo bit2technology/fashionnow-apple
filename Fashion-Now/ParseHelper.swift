@@ -15,17 +15,53 @@ let ParseQueryLimit = 1000
 // MARK: - Config extension
 
 extension PFConfig {
-    var pollDateLimit: NSTimeInterval? {
-        return self["pollDateLimit"] as? NSTimeInterval
+
+    class Partner {
+        let name: String
+        let urlIOS: NSURL
+        init(dict: [String:String]) {
+            name = dict["name"]!
+            urlIOS = NSURL(string: dict["urlIOS"]!)!
+        }
     }
+
+    var admins: [String]? {
+        return self["admins"] as? [String]
+    }
+
+    var partners: [Partner]? {
+        if let allPartners = self["partners"] as? [[String:String]] {
+            var partnersArray = [Partner]()
+            for dict in allPartners {
+                partnersArray.append(Partner(dict: dict))
+            }
+            return partnersArray
+        } else {
+            return nil
+        }
+    }
+
+//    var pollDateLimit: NSTimeInterval? {
+//        return self["pollDateLimit"] as? NSTimeInterval
+//    }
 }
 
 // MARK: - Installation class
 
+let ParseInstallationPartnersKey = "partners"
 let ParseInstallationLocationKey = "location"
 let ParseInstallationUserIdKey = "userId"
 
 class ParseInstallation: PFInstallation, PFSubclassing {
+
+    var partners: [String]? {
+        get {
+            return self[ParseInstallationPartnersKey] as? [String]
+        }
+        set {
+            self[ParseInstallationPartnersKey] = newValue ?? NSNull()
+        }
+    }
 
     var location: PFGeoPoint? {
         get {
@@ -513,8 +549,8 @@ class ParsePollList: Printable, DebugPrintable {
 
         /// Type of poll list
         enum Type {
-            /// Polls uploaded by the current user
-            case Mine
+            /// Polls uploaded by the an user
+            case User(ParseUser?)
             /// Public polls from everyone, except the ones voted by the current user
             case Vote
         }
@@ -558,8 +594,8 @@ class ParsePollList: Printable, DebugPrintable {
             .orderByDescending(ParseObjectCreatedAtKey)
         pollQuery.limit = ParsePollListQueryLimit
         switch parameters.type {
-        case .Mine:
-            return pollQuery.whereKey(ParsePollCreatedByKey, equalTo: currentUser)
+        case .User(let user):
+            return pollQuery.whereKey(ParsePollCreatedByKey, equalTo: user ?? currentUser)
         case .Vote:
             if currentUser.objectId?.fn_count > 0 {
                 // Remove already voted polls

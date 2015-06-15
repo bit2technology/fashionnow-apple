@@ -29,7 +29,7 @@ private let asLoginButtonTitle = NSLocalizedString("VotePollController.gearButto
 private let rmNoMorePolls = NSLocalizedString("VotePollController.refreshMessage.noMorePolls", value: "No more polls to vote", comment: "Shown when there is no poll to show")
 private let rmLoadFail = NSLocalizedString("VotePollController.refreshMessage.pollLoadFail", value: "Ops… Something went wrong. Please, try again.", comment: "Shown when there is no poll to show")
 
-class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDelegate, EAIntroDelegate, UIActionSheetDelegate {
+class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDelegate, UIActionSheetDelegate {
 
     /// This is the firs poll to be shown. Used to open from Notification or URL.
     static var firstPollId: String?
@@ -317,6 +317,13 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     }
 
     // MARK: UIViewController
+
+    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+        if identifier == "Show Profile" && currentPoll?.createdBy == nil {
+            return false
+        }
+        return true
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
@@ -325,6 +332,9 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
                 
             case "Poll Controller":
                 pollController = segue.destinationViewController as! PollController
+            case "Show Profile":
+                let profileController = segue.destinationViewController as! ProfileController
+                profileController.user = currentPoll!.createdBy!
                 
             default:
                 return

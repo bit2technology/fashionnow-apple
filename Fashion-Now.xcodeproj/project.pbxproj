@@ -17,7 +17,7 @@
 		4B53B2F51B036F4E00CE08EB /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B53B2F41B036F4E00CE08EB /* CameraController.swift */; };
 		4B749E8D1A30916F00E9B128 /* ResultPollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B749E8C1A30916F00E9B128 /* ResultPollController.swift */; };
 		4B7B3FFF1A35C0F30063CB90 /* LoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7B3FFE1A35C0F30063CB90 /* LoginHelper.swift */; };
-		4B7C3DEB1A1EB610004A4D37 /* MeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C3DEA1A1EB610004A4D37 /* MeController.swift */; };
+		4B7C3DEB1A1EB610004A4D37 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C3DEA1A1EB610004A4D37 /* ProfileController.swift */; };
 		4B82B4861AF9A41F00F63883 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B82B4881AF9A41F00F63883 /* InfoPlist.strings */; };
 		4B82B48B1AF9A42000F63883 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B82B48D1AF9A42000F63883 /* InfoPlist.strings */; };
 		4B9443591AB08B6D007DBAFD /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9443581AB08B6D007DBAFD /* AppHelper.swift */; };
@@ -64,7 +64,7 @@
 		4B749E8C1A30916F00E9B128 /* ResultPollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ResultPollController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4B7B3FFE1A35C0F30063CB90 /* LoginHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHelper.swift; sourceTree = "<group>"; };
 		4B7C2CA01A13A06E00FB25B8 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = pt; path = pt.lproj/Main.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
-		4B7C3DEA1A1EB610004A4D37 /* MeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeController.swift; sourceTree = "<group>"; };
+		4B7C3DEA1A1EB610004A4D37 /* ProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		4B82B4871AF9A41F00F63883 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4B82B48C1AF9A42000F63883 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4B9443581AB08B6D007DBAFD /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppHelper.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -186,7 +186,7 @@
 				4BD255451AC45F7A004BF005 /* VoteFilterController.swift */,
 				4BEB9E1D1A01AC8500A71764 /* PostPollController.swift */,
 				4B458F911B013527002E035F /* PostFriendsController.swift */,
-				4B7C3DEA1A1EB610004A4D37 /* MeController.swift */,
+				4B7C3DEA1A1EB610004A4D37 /* ProfileController.swift */,
 				4BF47AE51B0A59AA000CE441 /* UsersMapController.swift */,
 				4B749E8C1A30916F00E9B128 /* ResultPollController.swift */,
 				4BF1D0611A00F1EB00818658 /* Main.storyboard */,
@@ -260,6 +260,7 @@
 				4BF1D0521A00F1EB00818658 /* Frameworks */,
 				4BF1D0531A00F1EB00818658 /* Resources */,
 				75813197C4A225B2AEDD361A /* Copy Pods Resources */,
+				4B5D53A61B2F0A28005572C7 /* Show Warnings */,
 				4BDB6D131A21FD6C003D56C1 /* Build Number Increment */,
 				4BD55F2D1A3AFFB00028F026 /* Send Symbol Files to Parse */,
 			);
@@ -380,6 +381,20 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		4B5D53A61B2F0A28005572C7 /* Show Warnings */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Show Warnings";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "TAGS=\"TODO:|FIXME:\"\necho \"searching ${SRCROOT} for ${TAGS}\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\"";
+		};
 		4BD55F2D1A3AFFB00028F026 /* Send Symbol Files to Parse */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -392,7 +407,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=/usr/local/bin:$PATH\ncd \"${PROJECT_DIR}/parse\"\nparse symbols \"Fashion Now\" --path=\"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"";
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    export PATH=/usr/local/bin:$PATH\n    cd \"${PROJECT_DIR}/parse\"\n    parse symbols \"Fashion Now\" --path=\"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"\nfi";
 		};
 		4BDB6D131A21FD6C003D56C1 /* Build Number Increment */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -438,7 +453,7 @@
 				4BF47AE61B0A59AA000CE441 /* UsersMapController.swift in Sources */,
 				4BDB6D151A221033003D56C1 /* FacebookHelper.swift in Sources */,
 				4B458F921B013527002E035F /* PostFriendsController.swift in Sources */,
-				4B7C3DEB1A1EB610004A4D37 /* MeController.swift in Sources */,
+				4B7C3DEB1A1EB610004A4D37 /* ProfileController.swift in Sources */,
 				4BEB9E1C1A01ABF800A71764 /* PollController.swift in Sources */,
 				4B9443591AB08B6D007DBAFD /* AppHelper.swift in Sources */,
 				4BEB9E1E1A01AC8500A71764 /* PostPollController.swift in Sources */,

@@ -6,15 +6,20 @@
 //  Copyright (c) 2015 Bit2 Software. All rights reserved.
 //
 
-import UIKit
-
-class CameraController: FNViewController {
+class CameraController: FNViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     private weak var camWrapper: UIViewController!
-    let fasttttCam = FastttCamera.new()
+    let fasttttCam = FastttFilterCamera.new()
 
     @IBAction func cancel(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    @IBAction func filters(sender: UIButton) {
+        let picker = UIImagePickerController()
+        picker.sourceType = .PhotoLibrary
+        picker.delegate = self
+        presentViewController(picker, animated: true, completion: nil)
     }
 
     @IBAction func takePicture(sender: UIButton) {
@@ -51,5 +56,11 @@ class CameraController: FNViewController {
 
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
+    }
+
+    // MARK: UIImagePickerControllerDelegate
+
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+        fasttttCam.filterImage = info[UIImagePickerControllerOriginalImage] as? UIImage
     }
 }

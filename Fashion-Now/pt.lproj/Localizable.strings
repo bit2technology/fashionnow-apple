@@ -83,13 +83,13 @@
 "LoginController.resetPassword.successMessage" = "Instruções para resetar senha enviadas para seu e-mail";
 
 /* Shown when user taps the gear button */
-"MeController.gearButton.actionSheet.linkFacebookButtonTitle" = "Conectar ao Facebook";
+"ProfileController.gearButton.actionSheet.linkFacebookButtonTitle" = "Conectar ao Facebook";
 
 /* Shown when user taps the gear button */
-"MeController.gearButton.actionSheet.logOutButtonTitle" = "Logout";
+"ProfileController.gearButton.actionSheet.logOutButtonTitle" = "Logout";
 
 /* Shown when user taps the gear button */
-"MeController.gearButton.actionSheet.unlinkFacebookButtonTitle" = "Desconectar do Facebook";
+"ProfileController.gearButton.actionSheet.unlinkFacebookButtonTitle" = "Desconectar do Facebook";
 
 /* Push title for when a friend posts a poll */
 "P001" = "Nova Enquete";

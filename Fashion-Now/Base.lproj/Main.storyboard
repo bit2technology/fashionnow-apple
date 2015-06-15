@@ -460,6 +460,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
+                            <gestureRecognizers/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="Tov-fz-RZ3" secondAttribute="trailing" id="6Ea-kV-6mR"/>
                                 <constraint firstItem="AvG-QN-hJT" firstAttribute="leading" secondItem="tGc-sv-wKS" secondAttribute="leading" id="6IZ-1i-61r"/>
@@ -472,6 +473,9 @@
                                 <constraint firstAttribute="bottom" secondItem="Tov-fz-RZ3" secondAttribute="bottom" id="gl6-dt-4uN"/>
                                 <constraint firstAttribute="bottom" secondItem="AvG-QN-hJT" secondAttribute="bottom" id="znM-iO-12R"/>
                             </constraints>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="JZC-dB-V4y" appends="YES" id="U5a-2R-ugm"/>
+                            </connections>
                         </view>
                         <barButtonItem key="rightBarButtonItem" enabled="NO" image="BarButtonGear" id="7cP-ys-3w6">
                             <connections>
@@ -537,8 +541,13 @@
                         <constraint firstAttribute="centerX" secondItem="7wD-R2-s6K" secondAttribute="centerX" id="NwP-d1-N64"/>
                     </constraints>
                 </view>
+                <tapGestureRecognizer id="JZC-dB-V4y" userLabel="Navigation Bar Tapped">
+                    <connections>
+                        <segue destination="cEa-Or-vWC" kind="push" identifier="Show Profile" id="3Xp-g0-9O6"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="661" y="-277"/>
+            <point key="canvasLocation" x="872" y="87"/>
         </scene>
         <!--Post: Main-->
         <scene sceneID="DGH-qf-Zqz">
@@ -706,7 +715,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="661" y="250"/>
+            <point key="canvasLocation" x="1233" y="-617"/>
         </scene>
         <!--Me Navigation-->
         <scene sceneID="H8i-C2-7Wl">
@@ -728,7 +737,7 @@
         <!--Profile: Main-->
         <scene sceneID="N06-YM-3cg">
             <objects>
-                <collectionViewController title="Profile: Main" id="cEa-Or-vWC" customClass="MeController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController title="Profile: Main" id="cEa-Or-vWC" customClass="ProfileController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="HOW-qe-YmB">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1093,11 +1102,11 @@
                         <viewControllerLayoutGuide type="bottom" id="obc-UW-hDZ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="xyj-Ge-eBW">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="kHl-T6-1iS">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1210,7 +1219,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VNd-ng-GCT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1038" y="250"/>
+            <point key="canvasLocation" x="1610" y="-617"/>
         </scene>
         <!--Login: Signup-->
         <scene sceneID="reA-p0-HcY">
@@ -1486,7 +1495,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fpy-e7-ti8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-324" y="543"/>
+            <point key="canvasLocation" x="-632" y="603"/>
         </scene>
         <!--Poll Controller-->
         <scene sceneID="Vak-gc-gYh">
@@ -1620,7 +1629,7 @@
                     </connections>
                 </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1804" y="108.5"/>
+            <point key="canvasLocation" x="2070" y="444.5"/>
         </scene>
         <!--Photo Controller-->
         <scene sceneID="oDJ-hZ-wtb">
@@ -1741,7 +1750,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AbR-wv-pbr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2101" y="108.5"/>
+            <point key="canvasLocation" x="2367" y="444.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="cdr-w8-bRH">
@@ -1762,7 +1771,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Df-8L-FFt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1644" y="658"/>
+            <point key="canvasLocation" x="1910" y="994"/>
         </scene>
         <!--Poll: Gallery-->
         <scene sceneID="TKG-G3-PVx">
@@ -1860,7 +1869,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DaN-zL-qWs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2021" y="658"/>
+            <point key="canvasLocation" x="2287" y="994"/>
         </scene>
         <!--Camera-->
         <scene sceneID="l1g-1T-gIP">
@@ -1880,7 +1889,7 @@
                                     <segue destination="9zg-vi-6uZ" kind="embed" identifier="Camera Wrapper" id="Y1X-ZA-iHA"/>
                                 </connections>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jeX-hF-UDG" userLabel="Right Vote" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jeX-hF-UDG" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                 <rect key="frame" x="4" y="4" width="68" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="1Fv-Rn-QM1"/>
@@ -1894,7 +1903,6 @@
                                 </state>
                                 <connections>
                                     <action selector="cancel:" destination="jzN-Z8-jwF" eventType="touchUpInside" id="efq-3M-yIA"/>
-                                    <action selector="voteButtonPressed:" destination="6wq-1Y-TiB" eventType="touchUpInside" id="ccl-9W-AIR"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QUe-9Y-W7j" userLabel="Camera Button" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
@@ -1907,15 +1915,33 @@
                                     <action selector="takePicture:" destination="jzN-Z8-jwF" eventType="touchUpInside" id="tFR-lc-iMc"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KAR-BC-wyF" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                                <rect key="frame" x="254" y="4" width="62" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="DaU-m5-CCq"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="ZKb-Py-vFg"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="tintColor" red="0.027450980619999999" green="0.51372551919999998" blue="0.48235294220000002" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                <state key="normal" title="Filters" backgroundImage="ButtonRoundBordersBackground">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="filters:" destination="jzN-Z8-jwF" eventType="touchUpInside" id="1wx-Xf-T31"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="8MH-AJ-k8H" secondAttribute="trailing" id="CU1-Lo-7OR"/>
                             <constraint firstItem="jeX-hF-UDG" firstAttribute="top" secondItem="PQp-Av-DJn" secondAttribute="bottom" constant="4" id="DN7-AS-0tE"/>
+                            <constraint firstAttribute="trailing" secondItem="KAR-BC-wyF" secondAttribute="trailing" constant="4" id="EqP-7k-R5u"/>
                             <constraint firstAttribute="bottom" secondItem="8MH-AJ-k8H" secondAttribute="bottom" id="N12-Mb-B9O"/>
                             <constraint firstItem="jeX-hF-UDG" firstAttribute="leading" secondItem="V54-W7-foX" secondAttribute="leading" constant="4" id="UyK-ed-I3p"/>
                             <constraint firstAttribute="centerX" secondItem="QUe-9Y-W7j" secondAttribute="centerX" id="d76-m9-Ooc"/>
                             <constraint firstItem="8MH-AJ-k8H" firstAttribute="top" secondItem="V54-W7-foX" secondAttribute="top" id="ht7-yV-w3i"/>
+                            <constraint firstItem="KAR-BC-wyF" firstAttribute="top" secondItem="PQp-Av-DJn" secondAttribute="bottom" constant="4" id="pJB-Af-Q6s"/>
                             <constraint firstItem="8MH-AJ-k8H" firstAttribute="leading" secondItem="V54-W7-foX" secondAttribute="leading" id="wIS-PZ-LYx"/>
                             <constraint firstAttribute="bottom" secondItem="QUe-9Y-W7j" secondAttribute="bottom" constant="8" id="xZ9-P4-zHa"/>
                         </constraints>
@@ -1923,7 +1949,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q69-BY-DlT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2480" y="1289"/>
+            <point key="canvasLocation" x="2746" y="1165"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pAc-yH-lCJ">
@@ -1960,7 +1986,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EVa-6h-L2l" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="286" y="-277"/>
+            <point key="canvasLocation" x="497" y="87"/>
         </scene>
         <!--Create-->
         <scene sceneID="7Mt-CD-10B">
@@ -1979,7 +2005,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k2Y-Es-VEH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="286" y="250"/>
+            <point key="canvasLocation" x="858" y="-617"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="BJu-Gj-weB">
@@ -1998,7 +2024,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nem-V0-tXi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2862" y="1289"/>
+            <point key="canvasLocation" x="3150" y="1165"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2V3-4B-qgO">
@@ -2039,10 +2065,11 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="uM3-tb-eTB"/>
-        <segue reference="IZA-Rh-gPV"/>
-        <segue reference="0or-XS-PHn"/>
         <segue reference="QiP-s0-H0Y"/>
+        <segue reference="3Xp-g0-9O6"/>
+        <segue reference="udm-ma-IdO"/>
+        <segue reference="uM3-tb-eTB"/>
+        <segue reference="Aqg-dd-jfU"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="1" colorSpace="calibratedRGB"/>
 </document>

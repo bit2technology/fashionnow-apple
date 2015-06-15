@@ -1,43 +1,34 @@
 //
-//  MeController.swift
+//  ProfileController.swift
 //  Fashion Now
 //
 //  Created by Igor Camilo on 2014-11-20.
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-private let logOutButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.logOutButtonTitle", value: "Log Out", comment: "Shown when user taps the gear button")
-private let linkFacebookButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.linkFacebookButtonTitle", value: "Connect to Facebook", comment: "Shown when user taps the gear button")
-private let unlinkFacebookButtonTitle = NSLocalizedString("MeController.gearButton.actionSheet.unlinkFacebookButtonTitle", value: "Disconnect of Facebook", comment: "Shown when user taps the gear button")
+private let asLogOut = NSLocalizedString("ProfileController.gearButton.actionSheet.logOutButtonTitle", value: "Log Out", comment: "Shown when user taps the gear button")
+private let asLinkFB = NSLocalizedString("ProfileController.gearButton.actionSheet.linkFacebookButtonTitle", value: "Connect to Facebook", comment: "Shown when user taps the gear button")
+private let asUnlinkFB = NSLocalizedString("ProfileController.gearButton.actionSheet.unlinkFacebookButtonTitle", value: "Disconnect of Facebook", comment: "Shown when user taps the gear button")
+private let asMap = NSLocalizedString("ProfileController.gearButton.actionSheet.mapButtonTitle", value: "Devices Map", comment: "Shown when user taps the gear button")
+private let asEditAccount = NSLocalizedString("ProfileController.gearButton.actionSheet.editAccountkButtonTitle", value: "Edit Account", comment: "Shown when user taps the gear button")
 
-
-
-
-// FIXIME: !!!!!!
-private let showUsersMap = "Experimental: Devices Map"
-private let asEditAccount = "Edit Account"
-
-
-
-
-
-
-private let mineParameters = ParsePollList.Parameters(type: .Mine)
-
-class MeController: FNCollectionController, UIActionSheetDelegate {
+class ProfileController: FNCollectionController, UIActionSheetDelegate {
 
     /// Main list of polls to show
-    private var myPolls = ParsePollList(parameters: mineParameters)
-    /// List of posted polls before update
+    var user: ParseUser!
+    private var userPolls: ParsePollList!
+
+    /// List of posted polls before update (only if user is me)
     private var postedPolls = [ParsePoll]()
     /// Get currect poll
     private func poll(index: Int) -> ParsePoll {
         if index < postedPolls.count {
             return postedPolls[index]
         }
-        return myPolls[index - postedPolls.count]!
+        return userPolls[index - postedPolls.count]!
     }
 
+    /// Cache for scaled down images
     private var scaledImages = [String: UIImage]()
 
     weak var refreshControl: UIRefreshControl!
@@ -48,13 +39,18 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if user == nil {
+            user = ParseUser.current()
+        }
+
         // Basic configuration
-        navigationController!.tabBarItem.selectedImage = UIImage(named: "TabBarIconProfileSelected")
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Bordered, target: nil, action: nil)
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
-        notificationCenter.addObserver(self, selector: "pollDeleted:", name: FNPollDeletedNotificationName, object: nil)
-        notificationCenter.addObserver(self, selector: "pollPosted:", name: FNPollPostedNotificationName, object: nil)
+        if user.objectId == ParseUser.current().objectId {
+            navigationController!.tabBarItem.selectedImage = UIImage(named: "TabBarIconProfileSelected")
+            let notificationCenter = NSNotificationCenter.defaultCenter()
+            notificationCenter.addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
+            notificationCenter.addObserver(self, selector: "pollDeleted:", name: FNPollDeletedNotificationName, object: nil)
+            notificationCenter.addObserver(self, selector: "pollPosted:", name: FNPollPostedNotificationName, object: nil)
+        }
 
         // Configure refresh control for manual update
         let refreshControl = UIRefreshControl()
@@ -69,6 +65,8 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
         let itemWidth = floor(((collectionView?.bounds.width ?? 320) - 8) / 3)
         (collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: itemWidth, height: floor(itemWidth * 3 / 2))
 
+        // Load polls
+        userPolls = ParsePollList(parameters: ParsePollList.Parameters(type: .User(user)))
         loadPolls(showError: false)
     }
 
@@ -76,7 +74,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
         super.viewWillAppear(animated)
 
         // Update header information
-        navigationItem.title = ParseUser.current().displayName
+        navigationItem.title = user.displayName
         header?.updateContent()
     }
 
@@ -97,7 +95,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
     // Tries to update poll list
     private func loadPolls(type: ParsePollList.UpdateType = .Newer, showError: Bool = true) {
 
-        myPolls.update(type: type, completionHandler: { (succeeded, error) -> Void in
+        userPolls.update(type: type, completionHandler: { (succeeded, error) -> Void in
 
             // If there is new polls, clean list of posted polls (since they will be in the update) and refresh content
             if succeeded {
@@ -133,11 +131,11 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
             self.actionSheetAction(action.title)
         }
         var actions = [[String:String]]()
-        actions += [["title": logOutButtonTitle, "style": "destructive"], ["title": asEditAccount]]
+        actions += [["title": asLogOut, "style": "destructive"], ["title": asEditAccount]]
         // TODO: Link/Unlink Facebook
 //        actions.append(["title": currentUser.isLoggedFacebook ? unlinkFacebookButtonTitle : linkFacebookButtonTitle])
         if find(PFConfig.currentConfig()["admins"] as? [String] ?? [], currentUser.objectId!) != nil {
-            actions.append(["title": showUsersMap])
+            actions.append(["title": asMap])
         }
         actions.append(["title": FNLocalizedCancelButtonTitle, "style": "cancel"])
 
@@ -186,7 +184,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
     private func actionSheetAction(buttonTitle: String) {
         switch buttonTitle {
 
-        case logOutButtonTitle:
+        case asLogOut:
             let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
             ParseUser.logOutInBackgroundWithBlock({ (error) -> Void in
                 activityIndicator.removeFromSuperview()
@@ -195,7 +193,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
                 self.fn_tabBarController.selectedIndex = 0
             })
 
-        case linkFacebookButtonTitle:
+        case asLinkFB:
             let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
             PFFacebookUtils.linkUserInBackground(ParseUser.current(), withReadPermissions: FNFacebookReadPermissions, block: { (succeeded, error) -> Void in
                 activityIndicator.removeFromSuperview()
@@ -203,7 +201,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
                 FNAnalytics.logError(error, location: "Me: Link Facebook")
             })
 
-        case unlinkFacebookButtonTitle:
+        case asUnlinkFB:
             let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
             PFFacebookUtils.unlinkUserInBackground(ParseUser.current(), block: { (succeeded, error) -> Void in
                 activityIndicator.removeFromSuperview()
@@ -214,7 +212,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
         case asEditAccount:
             performSegueWithIdentifier("Edit Account", sender: nil)
 
-        case showUsersMap:
+        case asMap:
             performSegueWithIdentifier("Users Map", sender: nil)
             
         default:
@@ -232,10 +230,11 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
 
             switch unwrappedId {
             case "Result Controller":
+                navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Bordered, target: nil, action: nil)
                 let idx = (collectionView!.indexPathsForSelectedItems().first as! NSIndexPath).item
                 (segue.destinationViewController as! ResultPollController).poll = poll(idx)
             default:
-                return
+                navigationItem.backBarButtonItem = nil
             }
         }
     }
@@ -243,7 +242,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
     func loginChanged(notification: NSNotification) {
 
         // Clean caches. Also load polls if new user is not anonymous
-        myPolls = ParsePollList(parameters: mineParameters)
+        userPolls = ParsePollList(parameters: ParsePollList.Parameters(type: .User(user)))
         collectionView!.reloadData()
         if ParseUser.current().isLogged {
             footer?.activityIndicator?.startAnimating()
@@ -252,7 +251,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
     }
 
     func pollDeleted(notification: NSNotification) {
-        if let removedPoll = notification.userInfo?["poll"] as? ParsePoll, let index = myPolls.removePoll(removedPoll) {
+        if let removedPoll = notification.userInfo?["poll"] as? ParsePoll, let index = userPolls.removePoll(removedPoll) {
             removedPoll.unpinInBackgroundWithBlock(nil)
             collectionView!.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
             updateFooterButton()
@@ -270,7 +269,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
     // MARK: UICollectionoViewController
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return postedPolls.count + myPolls.count
+        return postedPolls.count + userPolls.count
     }
 
     override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
@@ -278,7 +277,7 @@ class MeController: FNCollectionController, UIActionSheetDelegate {
         // Header
         if kind == UICollectionElementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Me Overview", forIndexPath: indexPath) as! MePollHeader
-            header.meController = self
+            header.controller = self
             self.header = header
             return header.updateContent()
         }
@@ -420,7 +419,7 @@ class MePollCell: UICollectionViewCell {
 
 class MePollHeader: UICollectionReusableView {
 
-    var meController: MeController?
+    var controller: ProfileController!
 
     @IBOutlet weak var avatarImageView: UIImageView!
     var avatarUrl: NSURL?
@@ -433,10 +432,8 @@ class MePollHeader: UICollectionReusableView {
     }
 
     func updateContent() -> Self {
-        let currentUser = ParseUser.current()
-
         // Avatar
-        let currentUserUrl = currentUser.avatarURL(size: 84)
+        let currentUserUrl = controller.user.avatarURL(size: 84)
         if avatarUrl != currentUserUrl {
             avatarUrl = currentUserUrl
             avatarImageView.setImageWithURL(currentUserUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)

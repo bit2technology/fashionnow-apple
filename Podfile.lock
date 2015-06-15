@@ -9,12 +9,10 @@ PODS:
   - Bolts/Tasks (1.2.0)
   - CCHMapClusterController (1.6.6)
   - DateTools (1.5.0)
-  - EAIntroView (2.7.3):
-    - EARestrictedScrollView (~> 0.1.0)
-  - EARestrictedScrollView (0.1.0)
-  - FastttCamera (0.3.1):
-    - FastttCamera/Default (= 0.3.1)
   - FastttCamera/Default (0.3.1)
+  - FastttCamera/Filters (0.3.1):
+    - FastttCamera/Default
+    - GPUImage (~> 0.1.0)
   - FBSDKCoreKit (4.2.0):
     - Bolts (~> 1.1)
     - FBSDKCoreKit/arc (= 4.2.0)
@@ -31,6 +29,7 @@ PODS:
   - GoogleAnalytics-iOS-SDK (3.12):
     - GoogleAnalytics-iOS-SDK/Core (= 3.12)
   - GoogleAnalytics-iOS-SDK/Core (3.12)
+  - GPUImage (0.1.6)
   - HexColors (2.2.1)
   - NYXImagesKit (2.3)
   - Parse (1.7.4):
@@ -64,8 +63,7 @@ DEPENDENCIES:
   - Bolts
   - CCHMapClusterController
   - DateTools
-  - EAIntroView
-  - FastttCamera
+  - FastttCamera/Filters
   - FBSDKCoreKit
   - FBSDKLoginKit
   - FBSDKShareKit
@@ -87,13 +85,12 @@ SPEC CHECKSUMS:
   Bolts: d176cb1e0012175589e389a9db49b85e27787576
   CCHMapClusterController: 982db41114b42a575798366371bd9908e0f9ec8b
   DateTools: b93a2c2017747329c6077c7d7e8a75106e23d0d7
-  EAIntroView: bedde44388280d71c9798ce36c82720901596355
-  EARestrictedScrollView: 5ab3eadd9ea55282cc72df0daecb09803059e3a0
   FastttCamera: dfcec6e490be93130123309fdecc7cf444081470
   FBSDKCoreKit: 84b3616a361801f190e43a9909caead7bb6087c7
   FBSDKLoginKit: 57e37106af12c9e264e473dcb75d7decdbb07fe4
   FBSDKShareKit: 931746fdf8fb95efd6e12310ec14b2b3295e2aec
   GoogleAnalytics-iOS-SDK: 0a3327a993b8ed2b8fe1c6c4a8dcf5b76d2237a8
+  GPUImage: 4675ce4a5370ca92fcea8623b2a08b8f0c51b940
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
   NYXImagesKit: 8163e3335a40eaa173ca5bbbf81fafb57d3947eb
   Parse: 6ca512c6e860b66739c95151b2f76ac4712b7842

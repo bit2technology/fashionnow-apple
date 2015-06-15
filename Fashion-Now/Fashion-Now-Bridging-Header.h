@@ -8,8 +8,7 @@
 #import <CCHMapClusterController/CCHMapClusterController.h>
 #import <CCHMapClusterController/CCHMapClusterControllerDelegate.h>
 #import <CCHMapClusterController/CCHMapClusterAnnotation.h>
-#import <EAIntroView/EAIntroView.h>
-#import <FastttCamera/FastttCamera.h>
+#import <FastttCamera/FastttFilterCamera.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
