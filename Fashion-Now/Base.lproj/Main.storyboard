@@ -179,14 +179,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gA1-ed-9m9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-99" y="2133"/>
+            <point key="canvasLocation" x="497" y="2985"/>
         </scene>
         <!--Edit Account-->
         <scene sceneID="8tH-OJ-rH9">
             <objects>
                 <tableViewController id="n5u-he-LbX" customClass="EditAccountController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="bhl-RM-JSP">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
@@ -356,7 +356,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Zm-bN-0on" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2032" y="1960"/>
+            <point key="canvasLocation" x="1480" y="2278"/>
         </scene>
         <!--Vote: Main-->
         <scene sceneID="VVH-fN-2gA">
@@ -823,7 +823,7 @@
                                 </connections>
                             </collectionViewCell>
                         </cells>
-                        <collectionReusableView key="sectionHeaderView" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Me Overview" id="CRs-XG-0ED" customClass="MePollHeader" customModule="Fashion_Now" customModuleProvider="target">
+                        <collectionReusableView key="sectionHeaderView" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Header" id="CRs-XG-0ED" customClass="MePollHeader" customModule="Fashion_Now" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="64" width="320" height="108"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
@@ -891,7 +891,7 @@
                                 <outlet property="friendsButton" destination="ImK-lm-ETH" id="Oc2-2X-bVA"/>
                             </connections>
                         </collectionReusableView>
-                        <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Loading Footer" id="Rbz-At-Uf5" customClass="MePollFooter" customModule="Fashion_Now" customModuleProvider="target">
+                        <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Footer" id="Rbz-At-Uf5" customClass="MePollFooter" customModule="Fashion_Now" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="338" width="320" height="64"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
@@ -1102,11 +1102,11 @@
                         <viewControllerLayoutGuide type="bottom" id="obc-UW-hDZ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="xyj-Ge-eBW">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="kHl-T6-1iS">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1147,7 +1147,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pRe-3D-79x" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1061" y="1700"/>
+            <point key="canvasLocation" x="1038" y="1822"/>
         </scene>
         <!--Post: Friends-->
         <scene sceneID="5qp-bD-6TV">
@@ -1441,7 +1441,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xq6-l7-NYw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="296" y="2243"/>
+            <point key="canvasLocation" x="286" y="2203"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ixg-aA-FPE">
@@ -1457,7 +1457,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HHk-Mc-YKC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1644" y="1960"/>
+            <point key="canvasLocation" x="1480" y="1624"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sT9-WB-ml1">
@@ -1473,7 +1473,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gRT-Sz-dcX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="296" y="1564"/>
+            <point key="canvasLocation" x="286" y="1452"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="CJf-es-BZO">
@@ -1629,7 +1629,7 @@
                     </connections>
                 </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2070" y="444.5"/>
+            <point key="canvasLocation" x="2018" y="206"/>
         </scene>
         <!--Photo Controller-->
         <scene sceneID="oDJ-hZ-wtb">
@@ -1750,7 +1750,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AbR-wv-pbr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2367" y="444.5"/>
+            <point key="canvasLocation" x="2345" y="205.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="cdr-w8-bRH">
@@ -1967,7 +1967,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ox9-Wq-caD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-99" y="1564"/>
+            <point key="canvasLocation" x="115" y="2985"/>
         </scene>
         <!--Vote-->
         <scene sceneID="w3X-gR-82r">
@@ -2042,7 +2042,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G11-ih-IQb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="684" y="1700"/>
+            <point key="canvasLocation" x="661" y="1822"/>
         </scene>
     </scenes>
     <resources>
@@ -2065,11 +2065,11 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="QiP-s0-H0Y"/>
         <segue reference="3Xp-g0-9O6"/>
-        <segue reference="udm-ma-IdO"/>
+        <segue reference="IZA-Rh-gPV"/>
         <segue reference="uM3-tb-eTB"/>
-        <segue reference="Aqg-dd-jfU"/>
+        <segue reference="0or-XS-PHn"/>
+        <segue reference="iBu-gn-e01"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.027450980618596077" green="0.51372551918029785" blue="0.48235294222831726" alpha="1" colorSpace="calibratedRGB"/>
 </document>

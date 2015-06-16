@@ -31,10 +31,10 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
     /// Cache for scaled down images
     private var scaledImages = [String: UIImage]()
 
-    weak var refreshControl: UIRefreshControl!
+    private weak var refreshControl: UIRefreshControl!
 
-    weak var header: MePollHeader?
-    weak var footer: MePollFooter?
+    private weak var header: ProfileHeader!
+    private weak var footer: ProfileFooter!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +50,7 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
             notificationCenter.addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
             notificationCenter.addObserver(self, selector: "pollDeleted:", name: FNPollDeletedNotificationName, object: nil)
             notificationCenter.addObserver(self, selector: "pollPosted:", name: FNPollPostedNotificationName, object: nil)
+            notificationCenter.addObserver(self, selector: "friendsUpdated:", name: ParseFriendsList.FinishLoadingNotification, object: nil)
         }
 
         // Configure refresh control for manual update
@@ -62,20 +63,32 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
         collectionView!.alwaysBounceVertical = true
 
         // Set collection view item size
-        let itemWidth = floor(((collectionView?.bounds.width ?? 320) - 8) / 3)
-        (collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: itemWidth, height: floor(itemWidth * 3 / 2))
+        let itemWidth = Int(((collectionView?.bounds.width ?? 320) - 8) / 3)
+        (collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: itemWidth, height: Int(itemWidth * 3 / 2))
 
         // Load polls
         userPolls = ParsePollList(parameters: ParsePollList.Parameters(type: .User(user)))
         loadPolls(showError: false)
     }
 
+    func friendsUpdated(sender: NSNotification?) {
+        //let title = (sender?.userInfo?["error"] == nil ? "\(ParseFriendsList.shared.count)\n" : "") + "Friends"
+        let title = "\(ParseFriendsList.shared.count)\nFriends"
+        header.friendsButton.setTitle(title, forState: .Normal)
+    }
+
+    func updateHeader() {
+        header.avatarImageView.setImageWithURL(user.avatarURL(size: 84), placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
+        friendsUpdated(nil)
+    }
+
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
         // Update header information
         navigationItem.title = user.displayName
-        header?.updateContent()
+        updateHeader()
     }
 
     deinit {
@@ -84,7 +97,7 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
 
     func refreshControlDidChangeValue(sender: UIRefreshControl) {
         loadPolls()
-        header?.updateContent()
+        updateHeader()
     }
 
     @IBAction func loadPolls(sender: UIButton) {
@@ -197,7 +210,7 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
             let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
             PFFacebookUtils.linkUserInBackground(ParseUser.current(), withReadPermissions: FNFacebookReadPermissions, block: { (succeeded, error) -> Void in
                 activityIndicator.removeFromSuperview()
-                self.header?.updateContent()
+                self.updateHeader()
                 FNAnalytics.logError(error, location: "Me: Link Facebook")
             })
 
@@ -205,7 +218,7 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
             let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
             PFFacebookUtils.unlinkUserInBackground(ParseUser.current(), block: { (succeeded, error) -> Void in
                 activityIndicator.removeFromSuperview()
-                self.header?.updateContent()
+                self.updateHeader()
                 FNAnalytics.logError(error, location: "Me: Unlink Facebook")
             })
 
@@ -276,14 +289,15 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
 
         // Header
         if kind == UICollectionElementKindSectionHeader {
-            let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Me Overview", forIndexPath: indexPath) as! MePollHeader
-            header.controller = self
+            let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Header", forIndexPath: indexPath) as! ProfileHeader
+            header.avatarImageView.image = UIColor.fn_placeholder().fn_image()
             self.header = header
-            return header.updateContent()
+            updateHeader()
+            return header
         }
 
         // Footer
-        let footer = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Loading Footer", forIndexPath: indexPath) as! MePollFooter
+        let footer = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Footer", forIndexPath: indexPath) as! ProfileFooter
         self.footer = footer
         return footer
     }
@@ -295,14 +309,12 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
 
         // Set urls to check later if it is still the same cell
         let poll = self.poll(indexPath.row)
-        cell.leftImageUrl = poll.photos?[0].image?.url
-        cell.rightImageUrl = poll.photos?[1].image?.url
 
-        if cell.leftImageUrl != nil && cell.rightImageUrl != nil {
+        if let leftImageUrl = poll.photos?[0].image?.url, let rightImageUrl = poll.photos?[1].image?.url {
 
             // If both images are already cached, just set them and return the cell
-            cell.leftImageView.image = scaledImages[cell.leftImageUrl!]
-            cell.rightImageView.image = scaledImages[cell.rightImageUrl!]
+            cell.leftImageView.image = scaledImages[leftImageUrl]
+            cell.rightImageView.image = scaledImages[rightImageUrl]
             if cell.leftImageView.image != nil && cell.rightImageView.image != nil {
                 // Adjust aspect ratio
                 cell.leftImageView.fn_setAspectRatio(image: nil)
@@ -341,9 +353,9 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
                             self.scaledImages[urlString] = scaledImage
 
                             var imageView: UIImageView!
-                            if urlString == cell.leftImageUrl {
+                            if urlString == leftImageUrl {
                                 imageView = cell.leftImageView
-                            } else if urlString == cell.rightImageUrl {
+                            } else if urlString == rightImageUrl {
                                 imageView = cell.rightImageView
                             } else {
                                 // Too late. Cell is already being used by another item. Just do nothing.
@@ -373,8 +385,8 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
             }
 
             let manager = SDWebImageManager.sharedManager()
-            manager.downloadImageWithURL(NSURL(string: cell.leftImageUrl!), options: nil, progress: nil, completed: completion)
-            manager.downloadImageWithURL(NSURL(string: cell.rightImageUrl!), options: nil, progress: nil, completed: completion)
+            manager.downloadImageWithURL(NSURL(string: leftImageUrl), options: nil, progress: nil, completed: completion)
+            manager.downloadImageWithURL(NSURL(string: rightImageUrl), options: nil, progress: nil, completed: completion)
         }
         else {
             // TODO: Better error handling
@@ -412,48 +424,16 @@ class MePollCell: UICollectionViewCell {
         }
         CATransaction.commit()
     }
-
-    var leftImageUrl: String?
-    var rightImageUrl: String?
 }
 
-class MePollHeader: UICollectionReusableView {
-
-    var controller: ProfileController!
-
+class ProfileHeader: UICollectionReusableView {
     @IBOutlet weak var avatarImageView: UIImageView!
-    var avatarUrl: NSURL?
-
     @IBOutlet weak var friendsButton: UIButton!
-    func updateFriendsButton(sender: NSNotification?) {
-        //let title = (sender?.userInfo?["error"] == nil ? "\(ParseFriendsList.shared.count)\n" : "") + "Friends"
-        let title = "\(ParseFriendsList.shared.count)\nFriends"
-        friendsButton.setTitle(title, forState: .Normal)
-    }
-
-    func updateContent() -> Self {
-        // Avatar
-        let currentUserUrl = controller.user.avatarURL(size: 84)
-        if avatarUrl != currentUserUrl {
-            avatarUrl = currentUserUrl
-            avatarImageView.setImageWithURL(currentUserUrl, placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
-        }
-
-        updateFriendsButton(nil)
-
-        return self
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        avatarImageView.image = UIColor.fn_placeholder().fn_image()
-
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateFriendsButton:", name: ParseFriendsList.FinishLoadingNotification, object: nil)
-    }
+    @IBOutlet weak var editProfileButton: UIButton!
+    @IBOutlet weak var addFriendButton: UIButton!
 }
 
-class MePollFooter: UICollectionReusableView {
+class ProfileFooter: UICollectionReusableView {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var loadButton: UIButton!
     @IBOutlet weak var createBtn: UIButton!

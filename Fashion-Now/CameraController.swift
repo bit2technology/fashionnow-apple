@@ -62,5 +62,6 @@ class CameraController: FNViewController, UIImagePickerControllerDelegate, UINav
 
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         fasttttCam.filterImage = info[UIImagePickerControllerOriginalImage] as? UIImage
+        picker.dismissViewControllerAnimated(true, completion: nil)
     }
 }
