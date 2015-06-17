@@ -56,11 +56,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Observe login change and update installation
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
 
-        // Update configuration
-        PFConfig.getConfigInBackgroundWithBlock { (config, error) -> Void in
-            FNAnalytics.logError(error, location: "AppDelegate: Get Config")
-        }
-
         return true
     }
     
@@ -84,47 +79,54 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Facebook Analytics
         FBSDKAppEvents.activateApp()
 
-        // Get FN partners installed on this device
-        var partners = [String]()
-        for partner in PFConfig.currentConfig().partners ?? [] {
-            if application.canOpenURL(partner.urlIOS) {
-                partners.append(partner.name)
-            }
-        }
-
-        // Erase badge number, set userID and update location
-        let install = ParseInstallation.currentInstallation()
-        install.partners = partners
-        install.badge = 0
-        install.userId = ParseUser.current().objectId
-        switch CLLocationManager.authorizationStatus() {
-        default:
-            // Get aproximate location with https://freegeoip.net/
-            NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: "https://freegeoip.net/json")!, completionHandler: { (data, response, error) -> Void in
-                if FNAnalytics.logError(error, location: "AppDelegate: Location From IP Download") {
-                    return
-                }
-                var jsonError: NSError?
-                let geoInfo = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &jsonError) as? [String: AnyObject]
-                if FNAnalytics.logError(jsonError, location: "AppDelegate: Location From IP Serialization") {
-                    return
-                }
-                let latitude = geoInfo!["latitude"] as? Double
-                let longitude = geoInfo!["longitude"] as? Double
-                if latitude != nil && longitude != nil {
-                    install.location = PFGeoPoint(latitude: latitude!, longitude: longitude!)
-                    install.saveEventually { (succeeded, error) -> Void in
-                        FNAnalytics.logError(error, location: "AppDelegate: Location From IP Save")
-                    }
-                }
-            }).resume()
-        }
-
         // Start friends cache
         ParseFriendsList.shared.update(false)
 
         // Clean image cache
         SDImageCache.sharedImageCache().cleanDiskWithCompletionBlock(nil)
+
+        // Update configuration
+        PFConfig.getConfigInBackgroundWithBlock { (config, error) -> Void in
+            FNAnalytics.logError(error, location: "AppDelegate: Get Config")
+
+            // Get FN partners installed on this device
+            var partners = [String]()
+            for partner in PFConfig.currentConfig().partners ?? [] {
+                if application.canOpenURL(partner.urlIOS) {
+                    partners.append(partner.name)
+                }
+            }
+
+            // Erase badge number, set userID and update location
+            let install = ParseInstallation.currentInstallation()
+            install.badge = 0
+            install.localization = NSBundle.mainBundle().preferredLocalizations.first as? String
+            install.partners = partners
+            install.pushVersion = 2
+            install.userId = ParseUser.current().objectId
+            switch CLLocationManager.authorizationStatus() {
+            default:
+                // Get aproximate location with https://freegeoip.net/
+                NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: "https://freegeoip.net/json")!, completionHandler: { (data, response, error) -> Void in
+                    if FNAnalytics.logError(error, location: "AppDelegate: Location From IP Download") {
+                        return
+                    }
+                    var jsonError: NSError?
+                    let geoInfo = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &jsonError) as? [String: AnyObject]
+                    if FNAnalytics.logError(jsonError, location: "AppDelegate: Location From IP Serialization") {
+                        return
+                    }
+                    let latitude = geoInfo!["latitude"] as? Double
+                    let longitude = geoInfo!["longitude"] as? Double
+                    if latitude != nil && longitude != nil {
+                        install.location = PFGeoPoint(latitude: latitude!, longitude: longitude!)
+                        install.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+                            FNAnalytics.logError(error, location: "AppDelegate: Location From IP Save")
+                        }
+                    }
+                }).resume()
+            }
+        }
     }
 
     func applicationDidReceiveMemoryWarning(application: UIApplication) {

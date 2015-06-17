@@ -178,8 +178,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
                 for arg in args {
                     cArgs.append(Unmanaged<AnyObject>.passUnretained(arg).toOpaque())
                 }
-                let cVaList = getVaList(cArgs)
-                let locMessage = NSString(format: locFormat, arguments: cVaList) as String
+                let locMessage = String(format: locFormat, arguments: cArgs)
 
                 // Show notification
                 let alert = SDCAlertController(title: locTitle, message: locMessage, preferredStyle: .Alert)
@@ -346,8 +345,6 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        navigationController!.tabBarItem.selectedImage = UIImage(named: "TabBarIconVoteSelected")
 
         navigationItem.titleView!.frame.size.width = 9999
 

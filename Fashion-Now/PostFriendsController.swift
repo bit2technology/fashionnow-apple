@@ -115,11 +115,11 @@ class PostFriendsController: FNTableController {
             if succeeded {
                 self.poll.pinInBackground() // FIXME: Maybe give it a name?
 
-                var params = ["from": ParseUser.current().displayName, "to": userIds, "poll": self.poll.objectId!] as [NSObject:AnyObject]
+                var params = ["to": userIds, "poll": self.poll.objectId!] as [NSObject:AnyObject]
                 if let caption = self.poll.caption?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where caption.fn_count > 0 {
                     params["caption"] = caption
                 }
-                PFCloud.callFunctionInBackground("sendPush", withParameters: params) { (result, error) -> Void in
+                PFCloud.callFunctionInBackground("pollPosted", withParameters: params) { (result, error) -> Void in
                     FNAnalytics.logError(error, location: "Friends List: Send Push")
                 }
 

@@ -9,14 +9,17 @@
 private let asLogOut = NSLocalizedString("ProfileController.gearButton.actionSheet.logOutButtonTitle", value: "Log Out", comment: "Shown when user taps the gear button")
 private let asLinkFB = NSLocalizedString("ProfileController.gearButton.actionSheet.linkFacebookButtonTitle", value: "Connect to Facebook", comment: "Shown when user taps the gear button")
 private let asUnlinkFB = NSLocalizedString("ProfileController.gearButton.actionSheet.unlinkFacebookButtonTitle", value: "Disconnect of Facebook", comment: "Shown when user taps the gear button")
-private let asMap = NSLocalizedString("ProfileController.gearButton.actionSheet.mapButtonTitle", value: "Devices Map", comment: "Shown when user taps the gear button")
 private let asEditAccount = NSLocalizedString("ProfileController.gearButton.actionSheet.editAccountkButtonTitle", value: "Edit Account", comment: "Shown when user taps the gear button")
+private let asMap = NSLocalizedString("ProfileController.gearButton.actionSheet.mapButtonTitle", value: "Devices Map", comment: "Shown when user taps the gear button")
 
 class ProfileController: FNCollectionController, UIActionSheetDelegate {
 
+    /// User to present info from
+    lazy var user = ParseUser.current()
     /// Main list of polls to show
-    var user: ParseUser!
     private var userPolls: ParsePollList!
+    /// If count buttons are interactable
+    private var countButtonsEnabled = false
 
     /// List of posted polls before update (only if user is me)
     private var postedPolls = [ParsePoll]()
@@ -39,18 +42,13 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if user == nil {
-            user = ParseUser.current()
-        }
-
-        // Basic configuration
-        if user.objectId == ParseUser.current().objectId {
-            navigationController!.tabBarItem.selectedImage = UIImage(named: "TabBarIconProfileSelected")
+        if user == ParseUser.current() {
             let notificationCenter = NSNotificationCenter.defaultCenter()
             notificationCenter.addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
             notificationCenter.addObserver(self, selector: "pollDeleted:", name: FNPollDeletedNotificationName, object: nil)
             notificationCenter.addObserver(self, selector: "pollPosted:", name: FNPollPostedNotificationName, object: nil)
             notificationCenter.addObserver(self, selector: "friendsUpdated:", name: ParseFriendsList.FinishLoadingNotification, object: nil)
+            countButtonsEnabled = true
         }
 
         // Configure refresh control for manual update
@@ -74,12 +72,17 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
     func friendsUpdated(sender: NSNotification?) {
         //let title = (sender?.userInfo?["error"] == nil ? "\(ParseFriendsList.shared.count)\n" : "") + "Friends"
         let title = "\(ParseFriendsList.shared.count)\nFriends"
-        header.friendsButton.setTitle(title, forState: .Normal)
+        header?.friendsButton.setTitle(title, forState: .Normal)
     }
 
     func updateHeader() {
-        header.avatarImageView.setImageWithURL(user.avatarURL(size: 84), placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
+        header?.avatarImageView.setImageWithURL(user.avatarURL(size: 84), placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         friendsUpdated(nil)
+
+        let userIsCurrent = (user == ParseUser.current())
+        if !userIsCurrent {
+            header?.editProfileButton.setTitle("Follow", forState: .Normal)
+        }
     }
 
 
@@ -104,6 +107,41 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
         footer?.activityIndicator.hidden = false
         loadPolls()
     }
+
+
+
+
+
+
+
+
+
+    @IBAction func headerBtnPressed(sender: UIButton) {
+
+        let currentUser = ParseUser.current()
+
+        if user == currentUser {
+            performSegueWithIdentifier("Edit Profile", sender: sender)
+        }
+        else if !currentUser.isLogged {
+            fn_tabBarController.presentLoginController()
+        }
+        else {
+            // TODO: Verify if this user is being followed
+            PFCloud.callFunctionInBackground("followUser", withParameters: ["follow": user.objectId!]) { (result, error) -> Void in
+                FNAnalytics.logError(error, location: "Profile: Follow User")
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
 
     // Tries to update poll list
     private func loadPolls(type: ParsePollList.UpdateType = .Newer, showError: Bool = true) {
@@ -255,7 +293,9 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
     func loginChanged(notification: NSNotification) {
 
         // Clean caches. Also load polls if new user is not anonymous
+        user = ParseUser.current()
         userPolls = ParsePollList(parameters: ParsePollList.Parameters(type: .User(user)))
+        postedPolls.removeAll(keepCapacity: false)
         collectionView!.reloadData()
         if ParseUser.current().isLogged {
             footer?.activityIndicator?.startAnimating()
@@ -429,6 +469,8 @@ class MePollCell: UICollectionViewCell {
 class ProfileHeader: UICollectionReusableView {
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var friendsButton: UIButton!
+    @IBOutlet weak var followersButton: UIButton!
+    @IBOutlet weak var followingButton: UIButton!
     @IBOutlet weak var editProfileButton: UIButton!
     @IBOutlet weak var addFriendButton: UIButton!
 }
@@ -438,4 +480,3 @@ class ProfileFooter: UICollectionReusableView {
     @IBOutlet weak var loadButton: UIButton!
     @IBOutlet weak var createBtn: UIButton!
 }
-

@@ -1,11 +1,59 @@
 /* global Parse */
 /* global Parse */
 
-Parse.Cloud.define("sendPush", function (request, response) {
+Parse.Cloud.define("followUser", function (request, response) {
     "use strict";
+    
+    if (!request.user) {
+        response.error("No user");
+    } else if (!request.params.follow) {
+        response.error("Parameter missing: follow - User to follow");
+    }
+    
+    var query = new Parse.Query(Parse.Installation),
+        locArgs = [request.user.get("name") || request.user.get("username")];
+    
+    // Configure query and remove unsuported versions
+    query.equalTo("userId", request.params.follow)
+         .greaterThanOrEqualTo("pushVersion", 2);
+
+    Parse.Push.send({
+        where: query,
+        data: {
+            alert: {
+                "title-loc-key": "P004",
+                "loc-key": "P005",
+                "loc-args": locArgs
+            },
+            badge: "Increment",
+            follower: request.user.id
+        }
+    }, {
+        success: function () {
+            // Push successfull
+            response.success("Success");
+        },
+        error: function (error) {
+            // Handle error
+            response.error("Error: " + error);
+        }
+    });
+});
+
+Parse.Cloud.define("pollPosted", function (request, response) {
+    "use strict";
+    
+    if (!request.user) {
+        response.error("No user");
+    } else if (!request.params.to) {
+        response.error("Parameter missing: to - Array of user IDs to send the notification");
+    } else if (!request.params.poll) {
+        response.error("Parameter missing: poll - Poll ID");
+    }
+    
     var query = new Parse.Query(Parse.Installation),
         locKey = "P002",
-        locArgs = [request.params.from];
+        locArgs = [request.user.get("name") || request.user.get("username")];
     
     // Change notification style if there is a caption
     if (request.params.caption) {
@@ -13,8 +61,9 @@ Parse.Cloud.define("sendPush", function (request, response) {
         locArgs.push(request.params.caption);
     }
     
+    // Configure query and remove unsuported versions
     query.containedIn("userId", request.params.to)
-         .notEqualTo("appVersion", "1785");
+         .greaterThanOrEqualTo("pushVersion", 1);
 
     Parse.Push.send({
         where: query,
@@ -30,11 +79,11 @@ Parse.Cloud.define("sendPush", function (request, response) {
     }, {
         success: function () {
             // Push successfull
-            response.success("sendPush successful");
+            response.success("Success");
         },
         error: function (error) {
             // Handle error
-            response.error("sendPush error: " + error);
+            response.error(error);
         }
     });
 });
@@ -43,7 +92,9 @@ Parse.Cloud.define("resendVerification", function (request, response) {
     "use strict";
     
     if (!request.user) {
-        response.error("resendVerification error: no user");
+        response.error("No user");
+    } else if (!request.user.get("email")) {
+        response.error("User has no email");
     }
     
     var emailBkp = request.user.get("email");
@@ -53,17 +104,17 @@ Parse.Cloud.define("resendVerification", function (request, response) {
             request.user.save("email", emailBkp, {
                 success: function () {
                     // Second save successful
-                    response.success("resendVerification successful");
+                    response.success("Success");
                 },
                 error: function (error) {
                     // Handle error
-                    response.error("resendVerification 2 error: " + error);
+                    response.error("Error Save 2: " + error);
                 }
             });
         },
         error: function (error) {
             // Handle error
-            response.error("resendVerification 1 error: " + error);
+            response.error("Error Save 1: " + error);
         }
     });
 });
@@ -79,38 +130,12 @@ Parse.Cloud.define("deviceLocations", function (request, response) {
     query.find({
         useMasterKey: true,
         success: function (results) {
-            // Second save successful
             response.success(results);
         },
         error: function (error) {
-            // Handle error
-            response.error("deviceLocations error: " + error);
+            response.error(error);
         }
     });
-    
-    
-    
-//    var error: NSError?
-//            var locations = [UserAnnotation]()
-//            
-//
-//            while error == nil {
-//                if let results = query.findObjects(&error) as? [ParseInstallation] {
-//                    if results.count == 0 {
-//                        break
-//                    }
-//                    jump += results.count
-//
-//                    for result in results {
-//                        if let location = result.location {
-//                            locations.append(UserAnnotation(latitude: location.latitude, longitude: location.longitude))
-//                        }
-//                    }
-//
-//                } else {
-//                    break
-//                }
-//            }
 });
 
 Parse.Cloud.beforeSave(Parse.User, function (request, response) {
@@ -125,7 +150,38 @@ Parse.Cloud.beforeSave(Parse.User, function (request, response) {
     response.success();
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ####################### COMPATIBILITY WITH OLD VERSIONS ###############################
+
+Parse.Cloud.beforeSave(Parse.Installation, function (request, response) {
+    "use strict";
+    
+    // Get Facebook authorization info
+    if (!request.object.get("pushVersion")) {
+        request.object.set("pushVersion", request.object.get("appVersion") >= 2607 ? 1 : 0);
+    }
+                       
+    response.success();
+});
 
 Parse.Cloud.afterSave("Poll", function (request) {
     "use strict";
@@ -172,6 +228,44 @@ Parse.Cloud.beforeSave("Vote", function (request, response) {
     } else {
         response.success();
     }
+});
+
+Parse.Cloud.define("sendPush", function (request, response) {
+    "use strict";
+    var query = new Parse.Query(Parse.Installation),
+        locKey = "P002",
+        locArgs = [request.params.from];
+    
+    // Change notification style if there is a caption
+    if (request.params.caption) {
+        locKey = "P003";
+        locArgs.push(request.params.caption);
+    }
+    
+    query.containedIn("userId", request.params.to)
+         .greaterThanOrEqualTo("pushVersion", 1);
+
+    Parse.Push.send({
+        where: query,
+        data: {
+            alert: {
+                "title-loc-key": "P001",
+                "loc-key": locKey,
+                "loc-args": locArgs
+            },
+            badge: "Increment",
+            poll: request.params.poll
+        }
+    }, {
+        success: function () {
+            // Push successfull
+            response.success("sendPush successful");
+        },
+        error: function (error) {
+            // Handle error
+            response.error("sendPush error: " + error);
+        }
+    });
 });
 
 //Parse.Cloud.afterSave("Vote", function (request) {

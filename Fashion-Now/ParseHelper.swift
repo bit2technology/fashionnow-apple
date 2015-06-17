@@ -48,11 +48,31 @@ extension PFConfig {
 
 // MARK: - Installation class
 
-let ParseInstallationPartnersKey = "partners"
+let ParseInstallationLocalizationKey = "localization"
 let ParseInstallationLocationKey = "location"
+let ParseInstallationPartnersKey = "partners"
+let ParseInstallationPushVersionKey = "pushVersion"
 let ParseInstallationUserIdKey = "userId"
 
 class ParseInstallation: PFInstallation, PFSubclassing {
+
+    var localization: String? {
+        get {
+            return self[ParseInstallationLocalizationKey] as? String
+        }
+        set {
+            self[ParseInstallationLocalizationKey] = newValue ?? NSNull()
+        }
+    }
+
+    var location: PFGeoPoint? {
+        get {
+            return self[ParseInstallationLocationKey] as? PFGeoPoint
+        }
+        set {
+            self[ParseInstallationLocationKey] = newValue ?? NSNull()
+        }
+    }
 
     var partners: [String]? {
         get {
@@ -63,12 +83,12 @@ class ParseInstallation: PFInstallation, PFSubclassing {
         }
     }
 
-    var location: PFGeoPoint? {
+    var pushVersion: Int {
         get {
-            return self[ParseInstallationLocationKey] as? PFGeoPoint
+            return self[ParseInstallationPushVersionKey] as? Int ?? 0
         }
         set {
-            self[ParseInstallationLocationKey] = newValue ?? NSNull()
+            self[ParseInstallationPushVersionKey] = newValue ?? NSNull()
         }
     }
 
