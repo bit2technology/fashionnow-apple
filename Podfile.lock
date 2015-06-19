@@ -26,10 +26,8 @@ PODS:
     - FBSDKCoreKit
   - FBSDKShareKit (4.2.0):
     - FBSDKCoreKit
-  - GoogleAnalytics-iOS-SDK (3.12):
-    - GoogleAnalytics-iOS-SDK/Core (= 3.12)
-  - GoogleAnalytics-iOS-SDK/Core (3.12)
-  - GPUImage (0.1.6)
+  - GoogleAnalytics (3.12.0)
+  - GPUImage (0.1.7)
   - HexColors (2.2.1)
   - NYXImagesKit (2.3)
   - Parse (1.7.4):
@@ -67,7 +65,8 @@ DEPENDENCIES:
   - FBSDKCoreKit
   - FBSDKLoginKit
   - FBSDKShareKit
-  - GoogleAnalytics-iOS-SDK
+  - GoogleAnalytics
+  - GPUImage (from `https://github.com/BradLarson/GPUImage.git`)
   - NYXImagesKit
   - Parse
   - ParseCrashReporting
@@ -79,6 +78,15 @@ DEPENDENCIES:
   - UIActivityIndicator-for-SDWebImage
   - UIImageEffects
 
+EXTERNAL SOURCES:
+  GPUImage:
+    :git: https://github.com/BradLarson/GPUImage.git
+
+CHECKOUT OPTIONS:
+  GPUImage:
+    :commit: b270f452755b5edb616c3579d10c41e3c9460013
+    :git: https://github.com/BradLarson/GPUImage.git
+
 SPEC CHECKSUMS:
   ActionSheetPicker-3.0: cc9f90ae785070623e9b972270013c3242190fb0
   ALAssetsLibrary-CustomPhotoAlbum: 4df413c22294b310f47c5525fa99523fd43419f9
@@ -89,8 +97,8 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: 84b3616a361801f190e43a9909caead7bb6087c7
   FBSDKLoginKit: 57e37106af12c9e264e473dcb75d7decdbb07fe4
   FBSDKShareKit: 931746fdf8fb95efd6e12310ec14b2b3295e2aec
-  GoogleAnalytics-iOS-SDK: 0a3327a993b8ed2b8fe1c6c4a8dcf5b76d2237a8
-  GPUImage: 4675ce4a5370ca92fcea8623b2a08b8f0c51b940
+  GoogleAnalytics: ef2e0b800ef3c1e62688cdfc959e0d3132bc246c
+  GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
   NYXImagesKit: 8163e3335a40eaa173ca5bbbf81fafb57d3947eb
   Parse: 6ca512c6e860b66739c95151b2f76ac4712b7842
