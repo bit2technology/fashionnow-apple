@@ -42,7 +42,7 @@ PODS:
     - Parse (~> 1.7.4)
   - RBBAnimation (0.4.0)
   - Reachability (3.2)
-  - SDCAlertView (2.5.1):
+  - SDCAlertView (2.5.2):
     - RBBAnimation (~> 0.3)
     - SDCAutoLayout (~> 2.0)
   - SDCAutoLayout (2.0.3)
@@ -106,7 +106,7 @@ SPEC CHECKSUMS:
   ParseFacebookUtilsV4: 481ea7b00f8f62440c314ac7f80eada228bf7488
   RBBAnimation: 4b2d66f6d993febce63cd564da934985313b9c59
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  SDCAlertView: afdedd7ff3edef6117abbcf3ff201f0f0b960b93
+  SDCAlertView: f9706c18f456ea87909f8f199704cd28e582ff27
   SDCAutoLayout: e6885bb39ab8e2ec2ff84d158f38035f025f7420
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   TSMessages: 2a52642128d7ab15b46930c810b9c9403a2b58f3
