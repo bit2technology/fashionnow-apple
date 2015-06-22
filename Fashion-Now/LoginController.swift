@@ -19,13 +19,14 @@ class LoginController: FNTableController, UITextFieldDelegate {
 
     @IBAction func facebookButtonPressed(sender: UIButton) {
 
+        // Preparation for login
+
         if fn_isOffline() {
             return
         }
-
         let loadingView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
-
-        let previousUserId = ParseUser.current().objectId
+        let previousUser = ParseUser.current()
+        FBSDKLoginManager().logOut()
 
         // Login
         PFFacebookUtils.facebookLoginManager().loginBehavior = .SystemAccount
@@ -35,7 +36,7 @@ class LoginController: FNTableController, UITextFieldDelegate {
 
                 // Successful login
                 NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
-                if previousUserId == nil || previousUserId == parseUser.objectId {
+                if previousUser == parseUser {
                     // This is a sign up (first login with Facebook)
                     FNAnalytics.logRegistration("Facebook")
                 }

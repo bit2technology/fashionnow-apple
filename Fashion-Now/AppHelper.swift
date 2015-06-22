@@ -291,19 +291,17 @@ class FNAnalytics {
 
     class func logError(error: NSError?, location: String) -> Bool {
         if let error = error {
-            var params = ["Domain": error.domain, "Code": "\(error.code)", "Location": location]
-            GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createExceptionWithDescription(error.description, withFatal: false).setAll(params).build() as [NSObject:AnyObject])
-            params["Description"] = error.description
+            var params = ["Domain": error.domain, "Code": "\(error.code)", "Detail": error.description]
+            GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createExceptionWithDescription(location, withFatal: false).setAll(params).build() as [NSObject:AnyObject])
+            params["Location"] = location
             FBSDKAppEvents.logEvent("Error", parameters: params)
             return true
         }
         return false
     }
 
-    class func logRegistration(method: String?) {
-        if let method = method {
-            FBSDKAppEvents.logEvent(FBSDKAppEventNameCompletedRegistration, parameters: [FBSDKAppEventParameterNameRegistrationMethod: method])
-        }
+    class func logRegistration(method: String) {
+        FBSDKAppEvents.logEvent(FBSDKAppEventNameCompletedRegistration, parameters: [FBSDKAppEventParameterNameRegistrationMethod: method])
     }
 
     class func logPhoto(imageSource: String) {
