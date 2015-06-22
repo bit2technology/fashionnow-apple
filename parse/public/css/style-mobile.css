@@ -140,6 +140,10 @@
 	
 /* Custom */
 
+	#header {
+		text-shadow: 1px 1px 2px black;
+	}
+
 	.storebadge {
 		height: 40px;
 		margin: 0 4px;

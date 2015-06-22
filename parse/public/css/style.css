@@ -957,6 +957,10 @@
 		
 /* Custom */
 
+	#header {
+		text-shadow: 2px 2px 3px black;
+	}
+
 	#header a, footer a {
 		border: none !important;
 	}
