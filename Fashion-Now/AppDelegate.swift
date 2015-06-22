@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Parse.setApplicationId("AIQ4OyhhFVequZa6eXLCDdEpxu9qE0JyFkkfczWw", clientKey: "4dMOa5Ts1cvKVcnlIv2E4wYudyN7iJoH0gQDxpVy")
             GAI.sharedInstance().optOut = true
         #else
-        Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
+            Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
         #endif
         ParseUser.enableAutomaticUser()
         ParseUser.enableRevocableSessionInBackgroundWithBlock { (error) -> Void in

@@ -13,9 +13,9 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
-#import <GoogleAnalytics-iOS-SDK/GAI.h>
-#import <GoogleAnalytics-iOS-SDK/GAIDictionaryBuilder.h>
-#import <GoogleAnalytics-iOS-SDK/GAIFields.h>
+#import <GoogleAnalytics/GAI.h>
+#import <GoogleAnalytics/GAIDictionaryBuilder.h>
+#import <GoogleAnalytics/GAIFields.h>
 #import <NYXImagesKit/NYXImagesKit.h>
 #import <Parse/Parse.h>
 #import <Parse/PFObject+Subclass.h>
