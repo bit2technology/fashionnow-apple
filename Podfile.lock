@@ -8,10 +8,7 @@ PODS:
     - Bolts/Tasks
   - Bolts/Tasks (1.2.0)
   - CCHMapClusterController (1.6.6)
-  - DateTools (1.5.0)
-  - EAIntroView (2.7.4):
-    - EARestrictedScrollView (~> 0.2.0)
-  - EARestrictedScrollView (0.2.0)
+  - DateTools (1.6.1)
   - FastttCamera (0.3.1):
     - FastttCamera/Default (= 0.3.1)
   - FastttCamera/Default (0.3.1)
@@ -62,7 +59,6 @@ DEPENDENCIES:
   - Bolts
   - CCHMapClusterController
   - DateTools
-  - EAIntroView
   - FastttCamera
   - FBSDKCoreKit
   - FBSDKLoginKit
@@ -84,9 +80,7 @@ SPEC CHECKSUMS:
   ALAssetsLibrary-CustomPhotoAlbum: 4df413c22294b310f47c5525fa99523fd43419f9
   Bolts: d176cb1e0012175589e389a9db49b85e27787576
   CCHMapClusterController: 982db41114b42a575798366371bd9908e0f9ec8b
-  DateTools: b93a2c2017747329c6077c7d7e8a75106e23d0d7
-  EAIntroView: 50b85eedf414260e61330070ffe5947e72493a62
-  EARestrictedScrollView: f86d61e16c61d3e93c84f8e96e83122a2a3b7631
+  DateTools: 9bcc89e4f2f9004d8a7a2bd1b49269cf78968e65
   FastttCamera: dfcec6e490be93130123309fdecc7cf444081470
   FBSDKCoreKit: 84b3616a361801f190e43a9909caead7bb6087c7
   FBSDKLoginKit: 57e37106af12c9e264e473dcb75d7decdbb07fe4
