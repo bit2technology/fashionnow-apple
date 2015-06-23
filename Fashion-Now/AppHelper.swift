@@ -295,6 +295,7 @@ class FNAnalytics {
             GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createExceptionWithDescription(location, withFatal: false).setAll(params).build() as [NSObject:AnyObject])
             params["Location"] = location
             FBSDKAppEvents.logEvent("Error", parameters: params)
+            GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Error", action: "Error", label: nil, value: nil).setAll(params).build() as [NSObject:AnyObject])
             return true
         }
         return false
