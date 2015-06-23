@@ -200,7 +200,7 @@ class PostFriendsController: FNTableController {
 
         case sectionPublicPoll:
             cell.accessoryType = publicPoll ? .Checkmark : .None
-            cell.avatarView.image = UIImage(named: "FriendsPublic")?.imageWithRenderingMode(.AlwaysTemplate)
+            cell.avatarView.image = UIImage(named: "PrivacyLevelPublicMedium")?.imageWithRenderingMode(.AlwaysTemplate)
             cell.nameLabel.text = NSLocalizedString("PostFriendsController.rowTitle.publicPoll", value: "All users", comment: "Table view row title for make the poll public for all users")
 
         case sectionFriends:
@@ -215,7 +215,7 @@ class PostFriendsController: FNTableController {
 
         case sectionInvite:
             cell.avatarView.cornerRadius = 0
-            cell.avatarView.image = UIImage(named: "FriendsInvite")?.imageWithRenderingMode(.AlwaysTemplate)
+            cell.avatarView.image = UIImage(named: "PrivacyLevelFriendsMedium")?.imageWithRenderingMode(.AlwaysTemplate)
             cell.nameLabel.text = NSLocalizedString("PostFriendsController.rowTitle.inviteFriens", value: "Invite friends", comment: "Table view row title for invite friends to use the app")
 
         default:

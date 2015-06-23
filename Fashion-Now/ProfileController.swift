@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
+// Action Sheet
 private let asLogOut = NSLocalizedString("ProfileController.gearButton.actionSheet.logOutButtonTitle", value: "Log Out", comment: "Shown when user taps the gear button")
 private let asLinkFB = NSLocalizedString("ProfileController.gearButton.actionSheet.linkFacebookButtonTitle", value: "Connect to Facebook", comment: "Shown when user taps the gear button")
 private let asUnlinkFB = NSLocalizedString("ProfileController.gearButton.actionSheet.unlinkFacebookButtonTitle", value: "Disconnect of Facebook", comment: "Shown when user taps the gear button")
@@ -19,11 +20,11 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
     /// Main list of polls to show
     private var userPolls: ParsePollList!
     /// If count buttons are interactable
-    private var countButtonsEnabled = false
+    private var countButtonsEnabled = true
 
     /// List of posted polls before update (only if user is me)
     private var postedPolls = [ParsePoll]()
-    /// Get currect poll
+    /// Get correct poll
     private func poll(index: Int) -> ParsePoll {
         if index < postedPolls.count {
             return postedPolls[index]
@@ -33,41 +34,42 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
 
     /// Cache for scaled down images
     private var scaledImages = [String: UIImage]()
-
+    /// Custom Refresh Control
     private weak var refreshControl: UIRefreshControl!
-
+    /// Reference to the Collection View Header
     private weak var header: ProfileHeader!
+    /// Reference to the Collection View Footer
     private weak var footer: ProfileFooter!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        if user == ParseUser.current() {
-            let notificationCenter = NSNotificationCenter.defaultCenter()
-            notificationCenter.addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
-            notificationCenter.addObserver(self, selector: "pollDeleted:", name: FNPollDeletedNotificationName, object: nil)
-            notificationCenter.addObserver(self, selector: "pollPosted:", name: FNPollPostedNotificationName, object: nil)
-            notificationCenter.addObserver(self, selector: "friendsUpdated:", name: ParseFriendsList.FinishLoadingNotification, object: nil)
-            countButtonsEnabled = true
+    /// Updates Navigation Item and Collection View Header with user information.
+    private func updateUserInfo() {
+        navigationItem.title = user.displayName
+        let userIsCurrent = (user == ParseUser.current())
+        if !userIsCurrent {
+            header?.editProfileButton.setTitle("Follow", forState: .Normal)
         }
 
-        // Configure refresh control for manual update
-        let refreshControl = UIRefreshControl()
-        refreshControl.tintColor = UIColor.lightGrayColor()
-        refreshControl.layer.zPosition = -9999
-        refreshControl.addTarget(self, action: "refreshControlDidChangeValue:", forControlEvents: .ValueChanged)
-        collectionView!.addSubview(refreshControl)
-        self.refreshControl = refreshControl
-        collectionView!.alwaysBounceVertical = true
-
-        // Set collection view item size
-        let itemWidth = Int(((collectionView?.bounds.width ?? 320) - 8) / 3)
-        (collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: itemWidth, height: Int(itemWidth * 3 / 2))
-
-        // Load polls
-        userPolls = ParsePollList(parameters: ParsePollList.Parameters(type: .User(user)))
-        loadPolls(showError: false)
+        if let newUserAvatarURL = user.avatarURL(size: 88) where newUserAvatarURL != header?.avatarImageView.sd_imageURL() {
+            header?.avatarImageView.setImageWithURL(newUserAvatarURL, placeholderImage: UIImage(named: "PlaceholderUserBig"), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
+        }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     func friendsUpdated(sender: NSNotification?) {
         //let title = (sender?.userInfo?["error"] == nil ? "\(ParseFriendsList.shared.count)\n" : "") + "Friends"
@@ -75,32 +77,11 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
         header?.friendsButton.setTitle(title, forState: .Normal)
     }
 
-    func updateHeader() {
-        header?.avatarImageView.setImageWithURL(user.avatarURL(size: 84), placeholderImage: UIColor.fn_placeholder().fn_image(), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
-        friendsUpdated(nil)
 
-        let userIsCurrent = (user == ParseUser.current())
-        if !userIsCurrent {
-            header?.editProfileButton.setTitle("Follow", forState: .Normal)
-        }
-    }
-
-
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-
-        // Update header information
-        navigationItem.title = user.displayName
-        updateHeader()
-    }
-
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
 
     func refreshControlDidChangeValue(sender: UIRefreshControl) {
         loadPolls()
-        updateHeader()
+        updateUserInfo()
     }
 
     @IBAction func loadPolls(sender: UIButton) {
@@ -248,7 +229,7 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
             let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
             PFFacebookUtils.linkUserInBackground(ParseUser.current(), withReadPermissions: FNFacebookReadPermissions, block: { (succeeded, error) -> Void in
                 activityIndicator.removeFromSuperview()
-                self.updateHeader()
+                self.updateUserInfo()
                 FNAnalytics.logError(error, location: "Me: Link Facebook")
             })
 
@@ -256,7 +237,7 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
             let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
             PFFacebookUtils.unlinkUserInBackground(ParseUser.current(), block: { (succeeded, error) -> Void in
                 activityIndicator.removeFromSuperview()
-                self.updateHeader()
+                self.updateUserInfo()
                 FNAnalytics.logError(error, location: "Me: Unlink Facebook")
             })
 
@@ -332,7 +313,7 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
             let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Header", forIndexPath: indexPath) as! ProfileHeader
             header.avatarImageView.image = UIColor.fn_placeholder().fn_image()
             self.header = header
-            updateHeader()
+            updateUserInfo()
             return header
         }
 
@@ -434,6 +415,47 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
         }
 
         return cell
+    }
+
+    // MARK: (De)Initialization
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        if user == ParseUser.current() {
+            let notificationCenter = NSNotificationCenter.defaultCenter()
+            notificationCenter.addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
+            notificationCenter.addObserver(self, selector: "pollDeleted:", name: FNPollDeletedNotificationName, object: nil)
+            notificationCenter.addObserver(self, selector: "pollPosted:", name: FNPollPostedNotificationName, object: nil)
+            notificationCenter.addObserver(self, selector: "friendsUpdated:", name: ParseFriendsList.FinishLoadingNotification, object: nil)
+            countButtonsEnabled = true
+        }
+
+        // Configure refresh control for manual update
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = UIColor.lightGrayColor()
+        refreshControl.layer.zPosition = -9999
+        refreshControl.addTarget(self, action: "refreshControlDidChangeValue:", forControlEvents: .ValueChanged)
+        collectionView!.addSubview(refreshControl)
+        self.refreshControl = refreshControl
+        collectionView!.alwaysBounceVertical = true
+
+        // Set collection view item size
+        let itemWidth = Int(((collectionView?.bounds.width ?? 320) - 8) / 3)
+        (collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: itemWidth, height: Int(itemWidth * 3 / 2))
+
+        // Load polls
+        userPolls = ParsePollList(parameters: ParsePollList.Parameters(type: .User(user)))
+        loadPolls(showError: false)
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        updateUserInfo()
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 }
 

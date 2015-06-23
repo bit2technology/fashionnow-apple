@@ -260,7 +260,7 @@ extension UIImage {
     }
 
     func fn_blur() -> UIImage! {
-        return scaleToFitSize(CGSize(width: 128, height: 128)).applyBlurWithRadius(1, tintColor: nil, saturationDeltaFactor: 1, maskImage: nil)
+        return scaleToFitSize(CGSize(width: 128, height: 128)).blurredImageWithRadius(1)
     }
 }
 

@@ -15,6 +15,7 @@
 #import <GoogleAnalytics/GAI.h>
 #import <GoogleAnalytics/GAIDictionaryBuilder.h>
 #import <GoogleAnalytics/GAIFields.h>
+#import <ImageEffects/ImageEffects.h>
 #import <NYXImagesKit/NYXImagesKit.h>
 #import <Parse/Parse.h>
 #import <Parse/PFObject+Subclass.h>
@@ -25,5 +26,4 @@
 #import <SDCAlertView/SDCAlertController.h>
 #import <SDCAutoLayout/UIView+SDCAutoLayout.h>
 #import <TSMessages/TSMessage.h>
-#import <UIImageEffects/UIImage+ImageEffects.h>
 #import <UIImageView+UIActivityIndicatorForSDWebImage.h>
