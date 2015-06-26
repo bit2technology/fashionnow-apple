@@ -31,16 +31,16 @@ PODS:
   - HexColors (2.2.1)
   - ImageEffects (1.0.0)
   - NYXImagesKit (2.4)
-  - Parse (1.7.4):
-    - Bolts/Tasks (>= 1.1.5)
-  - ParseCrashReporting (1.7.4):
-    - Bolts/Tasks (>= 1.1.5)
-    - Parse (~> 1.7.4)
-  - ParseFacebookUtilsV4 (1.7.4):
-    - Bolts/Tasks (>= 1.1.5)
+  - Parse (1.7.5):
+    - Bolts/Tasks (>= 1.2.0)
+  - ParseCrashReporting (1.7.5):
+    - Bolts/Tasks (>= 1.2.0)
+    - Parse (~> 1.7.5)
+  - ParseFacebookUtilsV4 (1.7.5):
+    - Bolts/Tasks (>= 1.2.0)
     - FBSDKCoreKit (~> 4.0)
     - FBSDKLoginKit (~> 4.0)
-    - Parse (~> 1.7.4)
+    - Parse (~> 1.7.5)
   - RBBAnimation (0.4.0)
   - Reachability (3.2)
   - SDCAlertView (2.5.2):
@@ -107,9 +107,9 @@ SPEC CHECKSUMS:
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
   ImageEffects: 6f92f55ae12c4010642f84dcc2d7e21246666cf9
   NYXImagesKit: 3b233aa490c36088db40e9d34a637d54053f4936
-  Parse: 6ca512c6e860b66739c95151b2f76ac4712b7842
-  ParseCrashReporting: 0cff3a2720d6e977fff1bdd64e6d3ea94528e170
-  ParseFacebookUtilsV4: 481ea7b00f8f62440c314ac7f80eada228bf7488
+  Parse: 7c0f115eff3e0cea3fac08d50bda47154edb8832
+  ParseCrashReporting: 504b77a57d0619f8099061c11d323877e681a184
+  ParseFacebookUtilsV4: 3107725c6f2b69e3a03afe9c3aff35d6ee3e9ba5
   RBBAnimation: 4b2d66f6d993febce63cd564da934985313b9c59
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDCAlertView: f9706c18f456ea87909f8f199704cd28e582ff27
