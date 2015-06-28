@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-import UIKit
+private let analyticsEnabledKey = "AnalyticsEnabled"
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -31,10 +31,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.enableLocalDatastore()
         ParseCrashReporting.enable()
 
+        // Analytics configuration
+        var error: NSError?
+        GGLContext.sharedInstance().configureWithError(&error)
+        #if DEBUG
+            NSLog("Googel Configuration Error: \(error)")
+            GAI.sharedInstance().optOut = true
+        #else
+            GAI.sharedInstance().optOut = !NSUserDefaults.standardUserDefaults().objectForKey(analyticsEnabledKey) as? Bool ?? true
+        #endif
+        let gai = GAI.sharedInstance()
+        gai.trackUncaughtExceptions = true
+        gai.defaultTracker.set("&uid", value: ParseUser.current().objectId)
+
         // Parse configuration
         #if DEBUG
             Parse.setApplicationId("AIQ4OyhhFVequZa6eXLCDdEpxu9qE0JyFkkfczWw", clientKey: "4dMOa5Ts1cvKVcnlIv2E4wYudyN7iJoH0gQDxpVy")
-            GAI.sharedInstance().optOut = true
         #else
             Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
         #endif
@@ -44,17 +56,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
 
-        // Analytics
-        // Parse/Facebook
+        // Observe login change and update installation
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
+
+        // Track app opened
         if application.applicationState != .Background {
             PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         }
-        // Google
-        let tracker = GAI.sharedInstance().trackerWithTrackingId("UA-62043366-1")
-        tracker.set("&uid", value: ParseUser.current().objectId)
-
-        // Observe login change and update installation
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
 
         return true
     }

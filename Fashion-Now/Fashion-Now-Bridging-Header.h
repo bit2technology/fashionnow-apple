@@ -12,9 +12,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
-#import <GoogleAnalytics/GAI.h>
-#import <GoogleAnalytics/GAIDictionaryBuilder.h>
-#import <GoogleAnalytics/GAIFields.h>
+#import <Google/Analytics.h>
 #import <ImageEffects/ImageEffects.h>
 #import <NYXImagesKit/NYXImagesKit.h>
 #import <Parse/Parse.h>

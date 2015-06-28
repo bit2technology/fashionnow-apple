@@ -13,20 +13,32 @@ PODS:
   - FastttCamera/Filters (0.3.1):
     - FastttCamera/Default
     - GPUImage (~> 0.1.0)
-  - FBSDKCoreKit (4.2.0):
+  - FBSDKCoreKit (4.3.0):
     - Bolts (~> 1.1)
-    - FBSDKCoreKit/arc (= 4.2.0)
-    - FBSDKCoreKit/no-arc (= 4.2.0)
-  - FBSDKCoreKit/arc (4.2.0):
+    - FBSDKCoreKit/arc (= 4.3.0)
+    - FBSDKCoreKit/no-arc (= 4.3.0)
+  - FBSDKCoreKit/arc (4.3.0):
     - Bolts (~> 1.1)
-  - FBSDKCoreKit/no-arc (4.2.0):
+  - FBSDKCoreKit/no-arc (4.3.0):
     - Bolts (~> 1.1)
     - FBSDKCoreKit/arc
-  - FBSDKLoginKit (4.2.0):
+  - FBSDKLoginKit (4.3.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.2.0):
+  - FBSDKShareKit (4.3.0):
     - FBSDKCoreKit
+  - Google/Analytics (1.0.7):
+    - Google/Core
+    - GoogleAnalytics (~> 3.12)
+  - Google/Core (1.0.7):
+    - GoogleNetworkingUtilities (~> 1.0)
+    - GoogleSymbolUtilities (~> 1.0)
+    - GoogleUtilities (~> 1.0)
   - GoogleAnalytics (3.12.0)
+  - GoogleNetworkingUtilities (1.0.0):
+    - GoogleSymbolUtilities (~> 1.0)
+  - GoogleSymbolUtilities (1.0.0)
+  - GoogleUtilities (1.0.1):
+    - GoogleSymbolUtilities (~> 1.0)
   - GPUImage (0.1.7)
   - HexColors (2.2.1)
   - ImageEffects (1.0.0)
@@ -65,7 +77,7 @@ DEPENDENCIES:
   - FBSDKCoreKit
   - FBSDKLoginKit
   - FBSDKShareKit
-  - GoogleAnalytics
+  - Google/Analytics
   - GPUImage (from `https://github.com/BradLarson/GPUImage.git`)
   - ImageEffects
   - NYXImagesKit (from `https://github.com/Nyx0uf/NYXImagesKit.git`)
@@ -99,10 +111,14 @@ SPEC CHECKSUMS:
   CCHMapClusterController: 982db41114b42a575798366371bd9908e0f9ec8b
   DateTools: 9bcc89e4f2f9004d8a7a2bd1b49269cf78968e65
   FastttCamera: dfcec6e490be93130123309fdecc7cf444081470
-  FBSDKCoreKit: 84b3616a361801f190e43a9909caead7bb6087c7
-  FBSDKLoginKit: 57e37106af12c9e264e473dcb75d7decdbb07fe4
-  FBSDKShareKit: 931746fdf8fb95efd6e12310ec14b2b3295e2aec
+  FBSDKCoreKit: a3a60225a84abeace291d0fe71cae29a627382c2
+  FBSDKLoginKit: 6bc2f8f2628c3b6d2e346762fff8cb55cfd3a58d
+  FBSDKShareKit: 15806d69714de39d5dff2c84645f4cde23f5876e
+  Google: 875f5a8ade86dd02e36586e4a54814843938c7f6
   GoogleAnalytics: ef2e0b800ef3c1e62688cdfc959e0d3132bc246c
+  GoogleNetworkingUtilities: 292992ab31b7b4ba32809a0e8b40e324cdfb2c0c
+  GoogleSymbolUtilities: a7b0feed1fe667c8d5e647177938d0ecd62d6948
+  GoogleUtilities: e3475cd4d45134221d2f3f3626095a1c49b62041
   GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
   ImageEffects: 6f92f55ae12c4010642f84dcc2d7e21246666cf9

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1D824CAC92C93D9205931DB7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 048B75AE9DC83A2F458FA468 /* libPods.a */; };
+		4B1883191B405CBE001183EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B1883181B405CBE001183EE /* GoogleService-Info.plist */; };
 		4B3864651A178B80004ECAB8 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3864641A178B80004ECAB8 /* TabBarController.swift */; };
 		4B3E8DBC1B0CBF7600B2189B /* EditAccountController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3E8DBB1B0CBF7600B2189B /* EditAccountController.swift */; };
 		4B458F921B013527002E035F /* PostFriendsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B458F911B013527002E035F /* PostFriendsController.swift */; };
@@ -54,6 +55,7 @@
 
 /* Begin PBXFileReference section */
 		048B75AE9DC83A2F458FA468 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B1883181B405CBE001183EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4B3864641A178B80004ECAB8 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4B3E8DBB1B0CBF7600B2189B /* EditAccountController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditAccountController.swift; sourceTree = "<group>"; };
 		4B458F911B013527002E035F /* PostFriendsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostFriendsController.swift; sourceTree = "<group>"; };
@@ -201,12 +203,13 @@
 			isa = PBXGroup;
 			children = (
 				4BAE1EF21B25093C002E80B9 /* Tutorials */,
-				4B82B48D1AF9A42000F63883 /* InfoPlist.strings */,
-				4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */,
-				4BC4CF0A1A01164F0000A231 /* .gitignore */,
 				4BF1D0801A010DD400818658 /* Fashion-Now-Bridging-Header.h */,
+				4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */,
+				4B82B48D1AF9A42000F63883 /* InfoPlist.strings */,
 				4BF1D0591A00F1EB00818658 /* Info.plist */,
+				4B1883181B405CBE001183EE /* GoogleService-Info.plist */,
 				4BE767DD1A239F6B00CCAA65 /* Settings.bundle */,
+				4BC4CF0A1A01164F0000A231 /* .gitignore */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				4BAE1EF31B250961002E80B9 /* TutorialWelcome.jpg in Resources */,
 				4BAE1EFD1B2509BB002E80B9 /* TutorialPost.jpg in Resources */,
 				4BF1D0631A00F1EB00818658 /* Main.storyboard in Resources */,
+				4B1883191B405CBE001183EE /* GoogleService-Info.plist in Resources */,
 				4BF1D0651A00F1EB00818658 /* Images.xcassets in Resources */,
 				4BE767DE1A239F6B00CCAA65 /* Settings.bundle in Resources */,
 			);
