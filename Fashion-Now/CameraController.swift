@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Bit2 Software. All rights reserved.
 //
 
-class CameraController: FNViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class CameraController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     private weak var camWrapper: UIViewController!
     let fasttttCam = FastttFilterCamera.new()

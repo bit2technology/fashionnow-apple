@@ -1954,10 +1954,10 @@
             </objects>
             <point key="canvasLocation" x="2287" y="994"/>
         </scene>
-        <!--Camera-->
+        <!--Camera Controller-->
         <scene sceneID="l1g-1T-gIP">
             <objects>
-                <viewController title="Camera" id="jzN-Z8-jwF" customClass="CameraController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="jzN-Z8-jwF" customClass="CameraController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PQp-Av-DJn"/>
                         <viewControllerLayoutGuide type="bottom" id="IRi-Gf-Vbp"/>

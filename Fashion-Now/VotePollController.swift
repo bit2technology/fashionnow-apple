@@ -489,11 +489,13 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
     func pollWillHighlight(pollController: PollController, index: Int, source: PollController.HighlightSource) {
 
-        var voteMethod = "Button"
+        let voteMethod: String
         if source == .DoubleTap {
-            voteMethod = "Double Tap"
+            voteMethod = "Double Click"
         } else if source == .Drag {
-            voteMethod = "Drag"
+            voteMethod = "Swipe"
+        } else {
+            voteMethod = "Button"
         }
         FNAnalytics.logVote(index, method: voteMethod)
 

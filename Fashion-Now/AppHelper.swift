@@ -289,11 +289,7 @@ class FNAnalytics {
 
     class func logError(error: NSError?, location: String) -> Bool {
         if let error = error {
-            var params = ["Domain": error.domain, "Code": "\(error.code)", "Detail": error.description]
-            GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createExceptionWithDescription(location, withFatal: false).setAll(params).build() as [NSObject:AnyObject])
-            params["Location"] = location
-            FBSDKAppEvents.logEvent("Error", parameters: params)
-            GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Error", action: "Error", label: nil, value: nil).setAll(params).build() as [NSObject:AnyObject])
+            GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createExceptionWithDescription("\(error.domain):\(error.code) - \(location)", withFatal: false).build() as [NSObject:AnyObject])
             return true
         }
         return false
@@ -304,15 +300,19 @@ class FNAnalytics {
     }
 
     class func logPhoto(imageSource: String) {
-        let params = ["Source": imageSource]
-        FBSDKAppEvents.logEvent("Photo Saved", parameters: params)
-        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Photo Saved", action: "Source", label: nil, value: nil).setAll(params).build() as [NSObject:AnyObject])
+        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Post", action: "Photo Source", label: imageSource, value: nil).build() as [NSObject:AnyObject])
     }
 
     class func logVote(vote: Int, method: String) {
-        let params = ["Vote": "\(vote)", "Method": method]
-        FBSDKAppEvents.logEvent("Poll Voted", parameters: params)
-        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Vote", action: "Poll Voted", label: nil, value: nil).setAll(params).build() as [NSObject:AnyObject])
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("Vote", action: "Poll Voted", label: String(vote), value: nil).build() as [NSObject:AnyObject])
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("Vote", action: "Way Used", label: method, value: nil).build() as [NSObject:AnyObject])
+    }
+
+    class func logScreen(name: String) {
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: name)
+        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
     }
 }
 
@@ -355,10 +355,8 @@ class FNViewController: UIViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        TSMessage.setDefaultViewController(self)
-        let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: title)
-        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
+        TSMessage.setDefaultViewController(navigationController ?? self)
+        FNAnalytics.logScreen(title!)
     }
 }
 
@@ -366,10 +364,8 @@ class FNTableController: UITableViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        TSMessage.setDefaultViewController(navigationController)
-        let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: title)
-        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
+        TSMessage.setDefaultViewController(navigationController ?? self)
+        FNAnalytics.logScreen(title!)
     }
 }
 
@@ -377,10 +373,8 @@ class FNCollectionController: UICollectionViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        TSMessage.setDefaultViewController(self)
-        let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: title)
-        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
+        TSMessage.setDefaultViewController(navigationController ?? self)
+        FNAnalytics.logScreen(title!)
     }
 }
 

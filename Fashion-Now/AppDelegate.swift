@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-private let analyticsEnabledKey = "AnalyticsEnabled"
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -18,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // App basic configuration
         window!.tintColor = UIColor.fn_tint()
 
-        // Register subclasses
+        // Parse pre configuration
         ParseInstallation.registerSubclass()
         ParsePhoto.registerSubclass()
         ParsePoll.registerSubclass()
@@ -27,30 +25,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ParseVote.registerSubclass()
         ParseBlock.registerSubclass()
 
-        // Parse pre configuration
+        // Parse configuration
         Parse.enableLocalDatastore()
         ParseCrashReporting.enable()
-
-        // Analytics configuration
-        var error: NSError?
-        GGLContext.sharedInstance().configureWithError(&error)
-        #if DEBUG
-            NSLog("Googel Configuration Error: \(error)")
-            GAI.sharedInstance().optOut = true
-        #else
-            GAI.sharedInstance().optOut = !NSUserDefaults.standardUserDefaults().objectForKey(analyticsEnabledKey) as? Bool ?? true
-        #endif
-        let gai = GAI.sharedInstance()
-        gai.trackUncaughtExceptions = true
-        gai.defaultTracker.set("&uid", value: ParseUser.current().objectId)
-
-        // Parse configuration
         #if DEBUG
             Parse.setApplicationId("AIQ4OyhhFVequZa6eXLCDdEpxu9qE0JyFkkfczWw", clientKey: "4dMOa5Ts1cvKVcnlIv2E4wYudyN7iJoH0gQDxpVy")
         #else
             Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
         #endif
         ParseUser.enableAutomaticUser()
+
+        // Analytics configuration
+        var error: NSError?
+        GGLContext.sharedInstance().configureWithError(&error)
+        #if DEBUG
+            GAI.sharedInstance().optOut = true
+        #else
+            GAI.sharedInstance().optOut = !NSUserDefaults.standardUserDefaults().objectForKey("AnalyticsEnabled") as? Bool ?? true
+        #endif
+        let gai = GAI.sharedInstance()
+        gai.defaultTracker.set("&uid", value: ParseUser.current().objectId)
+
+        // Parse post configuration
         ParseUser.enableRevocableSessionInBackgroundWithBlock { (error) -> Void in
             FNAnalytics.logError(error, location: "AppDelegate: Enable Revocable Session")
         }
@@ -68,6 +64,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+
+        // Analytics
+        let params = GAIDictionaryBuilder().setCampaignParametersFromUrl(url.absoluteString).build() as [NSObject:AnyObject]
+        if params[kGAICampaignSource] != nil {
+            GAI.sharedInstance().defaultTracker.send(params)
+        }
 
         // TODO: Analyse if poll is from current user
 //        if url.scheme == "fashionnowapp" {
@@ -95,21 +97,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Update configuration
         PFConfig.getConfigInBackgroundWithBlock { (config, error) -> Void in
-            FNAnalytics.logError(error, location: "AppDelegate: Get Config")
 
-            // Get FN partners installed on this device
-            var partners = [String]()
-            for partner in PFConfig.currentConfig().partners ?? [] {
-                if application.canOpenURL(partner.urlIOS) {
-                    partners.append(partner.name)
+            let install = ParseInstallation.currentInstallation()
+
+            if !FNAnalytics.logError(error, location: "AppDelegate: Get Config") {
+                // Get FN partners installed on this device
+                var partners = [String]()
+                for partner in config?.partners ?? [] {
+                    if application.canOpenURL(partner.urlIOS) {
+                        partners.append(partner.name)
+                    }
                 }
+                install.partners = partners
             }
 
             // Erase badge number, set userID and update location
-            let install = ParseInstallation.currentInstallation()
             install.badge = 0
             install.localization = NSBundle.mainBundle().preferredLocalizations.first as? String
-            install.partners = partners
             install.pushVersion = 2
             install.userId = ParseUser.current().objectId
             switch CLLocationManager.authorizationStatus() {
