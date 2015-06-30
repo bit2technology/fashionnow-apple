@@ -113,6 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             // Erase badge number, set userID and update location
             install.badge = 0
+            install.language = NSLocale.currentLocale().localeIdentifier
             install.localization = NSBundle.mainBundle().preferredLocalizations.first as? String
             install.pushVersion = 2
             install.userId = ParseUser.current().objectId

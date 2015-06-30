@@ -101,18 +101,18 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
 
         let currentUser = ParseUser.current()
 
-        if user == currentUser {
+//        if user == currentUser {
             performSegueWithIdentifier("Edit Profile", sender: sender)
-        }
-        else if !currentUser.isLogged {
-            fn_tabBarController.presentLoginController()
-        }
-        else {
-            // TODO: Verify if this user is being followed
-            PFCloud.callFunctionInBackground("followUser", withParameters: ["follow": user.objectId!]) { (result, error) -> Void in
-                FNAnalytics.logError(error, location: "Profile: Follow User")
-            }
-        }
+//        }
+//        else if !currentUser.isLogged {
+//            fn_tabBarController.presentLoginController()
+//        }
+//        else {
+//            // TODO: Verify if this user is being followed
+//            PFCloud.callFunctionInBackground("followUser", withParameters: ["follow": user.objectId!]) { (result, error) -> Void in
+//                FNAnalytics.logError(error, location: "Profile: Follow User")
+//            }
+//        }
     }
 
 
@@ -166,7 +166,7 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
         actions += [["title": asLogOut, "style": "destructive"], ["title": asEditAccount]]
         // TODO: Link/Unlink Facebook
 //        actions.append(["title": currentUser.isLoggedFacebook ? unlinkFacebookButtonTitle : linkFacebookButtonTitle])
-        if find(PFConfig.currentConfig()["admins"] as? [String] ?? [], currentUser.objectId!) != nil {
+        if currentUser.isAdmin {
             actions.append(["title": asMap])
         }
         actions.append(["title": FNLocalizedCancelButtonTitle, "style": "cancel"])

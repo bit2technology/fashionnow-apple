@@ -541,7 +541,7 @@
                         <constraint firstAttribute="centerX" secondItem="7wD-R2-s6K" secondAttribute="centerX" id="NwP-d1-N64"/>
                     </constraints>
                 </view>
-                <tapGestureRecognizer id="JZC-dB-V4y" userLabel="Navigation Bar Tapped">
+                <tapGestureRecognizer enabled="NO" id="JZC-dB-V4y" userLabel="Navigation Bar Tapped">
                     <connections>
                         <segue destination="cEa-Or-vWC" kind="push" identifier="Show Profile" id="3Xp-g0-9O6"/>
                     </connections>
@@ -1184,11 +1184,11 @@
                         <viewControllerLayoutGuide type="bottom" id="obc-UW-hDZ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="xyj-Ge-eBW">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="kHl-T6-1iS">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2164,9 +2164,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="apZ-Yv-541"/>
         <segue reference="uM3-tb-eTB"/>
-        <segue reference="udm-ma-IdO"/>
-        <segue reference="Mdo-2f-mHS"/>
+        <segue reference="3Xp-g0-9O6"/>
         <segue reference="0or-XS-PHn"/>
         <segue reference="iBu-gn-e01"/>
     </inferredMetricsTieBreakers>

@@ -25,10 +25,6 @@ extension PFConfig {
         }
     }
 
-    var admins: [String]? {
-        return self["admins"] as? [String]
-    }
-
     var partners: [Partner]? {
         if let allPartners = self["partners"] as? [[String:String]] {
             var partnersArray = [Partner]()
@@ -48,6 +44,7 @@ extension PFConfig {
 
 // MARK: - Installation class
 
+let ParseInstallationLanguageKey = "language"
 let ParseInstallationLocalizationKey = "localization"
 let ParseInstallationLocationKey = "location"
 let ParseInstallationPartnersKey = "partners"
@@ -55,6 +52,15 @@ let ParseInstallationPushVersionKey = "pushVersion"
 let ParseInstallationUserIdKey = "userId"
 
 class ParseInstallation: PFInstallation, PFSubclassing {
+
+    var language: String? {
+        get {
+            return self[ParseInstallationLanguageKey] as? String
+        }
+        set {
+            self[ParseInstallationLanguageKey] = newValue ?? NSNull()
+        }
+    }
 
     var localization: String? {
         get {
@@ -104,6 +110,7 @@ class ParseInstallation: PFInstallation, PFSubclassing {
 
 // MARK: - User class
 
+let ParseUserAdminKey = "admin"
 let ParseUserAvatarImageKey = "avatarImage"
 let ParseUserBirthdayKey = "birth"
 let ParseUserEmailVerifiedKey = "emailVerified"
@@ -121,6 +128,10 @@ class ParseUser: PFUser, PFSubclassing {
 
     class func current() -> Self {
         return currentUser()!
+    }
+
+    var isAdmin: Bool {
+        return self[ParseUserAdminKey] as? Bool ?? false
     }
 
     var avatarImage: PFFile? {
