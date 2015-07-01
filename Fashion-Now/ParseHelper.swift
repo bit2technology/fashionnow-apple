@@ -12,36 +12,6 @@ let ParseObjectIdKey = "objectId"
 
 let ParseQueryLimit = 1000
 
-// MARK: - Config extension
-
-extension PFConfig {
-
-    class Partner {
-        let name: String
-        let urlIOS: NSURL
-        init(dict: [String:String]) {
-            name = dict["name"]!
-            urlIOS = NSURL(string: dict["urlIOS"]!)!
-        }
-    }
-
-    var partners: [Partner]? {
-        if let allPartners = self["partners"] as? [[String:String]] {
-            var partnersArray = [Partner]()
-            for dict in allPartners {
-                partnersArray.append(Partner(dict: dict))
-            }
-            return partnersArray
-        } else {
-            return nil
-        }
-    }
-
-//    var pollDateLimit: NSTimeInterval? {
-//        return self["pollDateLimit"] as? NSTimeInterval
-//    }
-}
-
 // MARK: - Installation class
 
 let ParseInstallationLanguageKey = "language"

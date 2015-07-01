@@ -21,6 +21,8 @@
 		4B7C3DEB1A1EB610004A4D37 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C3DEA1A1EB610004A4D37 /* ProfileController.swift */; };
 		4B82B4861AF9A41F00F63883 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B82B4881AF9A41F00F63883 /* InfoPlist.strings */; };
 		4B82B48B1AF9A42000F63883 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B82B48D1AF9A42000F63883 /* InfoPlist.strings */; };
+		4B8E41861B44311E0035A5BB /* libAdIdAccess.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8E41851B44311E0035A5BB /* libAdIdAccess.a */; };
+		4B8E41871B4432550035A5BB /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8E41801B442C030035A5BB /* AdSupport.framework */; };
 		4B9443591AB08B6D007DBAFD /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9443581AB08B6D007DBAFD /* AppHelper.swift */; };
 		4BAAAF8E1A14C5FB00AAFAFB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */; };
 		4BAE1EF31B250961002E80B9 /* TutorialWelcome.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE1EF51B250961002E80B9 /* TutorialWelcome.jpg */; };
@@ -69,6 +71,8 @@
 		4B7C3DEA1A1EB610004A4D37 /* ProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		4B82B4871AF9A41F00F63883 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4B82B48C1AF9A42000F63883 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4B8E41801B442C030035A5BB /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		4B8E41851B44311E0035A5BB /* libAdIdAccess.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAdIdAccess.a; sourceTree = "<group>"; };
 		4B9443581AB08B6D007DBAFD /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppHelper.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4BAAAF8F1A14C5FB00AAFAFB /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4BAE1EF41B250961002E80B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Base; path = Base.lproj/TutorialWelcome.jpg; sourceTree = "<group>"; };
@@ -107,7 +111,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B8E41871B4432550035A5BB /* AdSupport.framework in Frameworks */,
 				4BF47AE81B0A5A40000CE441 /* MapKit.framework in Frameworks */,
+				4B8E41861B44311E0035A5BB /* libAdIdAccess.a in Frameworks */,
 				1D824CAC92C93D9205931DB7 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -202,6 +208,7 @@
 		4BF1D0581A00F1EB00818658 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4B8E41851B44311E0035A5BB /* libAdIdAccess.a */,
 				4BAE1EF21B25093C002E80B9 /* Tutorials */,
 				4BF1D0801A010DD400818658 /* Fashion-Now-Bridging-Header.h */,
 				4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */,
@@ -245,6 +252,7 @@
 		852B2819E90E3361AA2D69D7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4B8E41801B442C030035A5BB /* AdSupport.framework */,
 				4BF47AE71B0A5A40000CE441 /* MapKit.framework */,
 				048B75AE9DC83A2F458FA468 /* libPods.a */,
 			);
@@ -646,6 +654,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "$(SRCROOT)/Fashion-Now/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Fashion-Now",
+				);
 				PRODUCT_NAME = "Fashion-Now";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Fashion-Now/Fashion-Now-Bridging-Header.h";
@@ -665,6 +677,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "$(SRCROOT)/Fashion-Now/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Fashion-Now",
+				);
 				PRODUCT_NAME = "Fashion-Now";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Fashion-Now/Fashion-Now-Bridging-Header.h";

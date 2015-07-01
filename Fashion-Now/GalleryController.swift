@@ -33,13 +33,16 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Add gesture recognizers
-        let doubleTap = UITapGestureRecognizer(target: self, action: "vote:")
-        doubleTap.numberOfTapsRequired = 2
-        view.addGestureRecognizer(doubleTap)
         let tap = UITapGestureRecognizer(target: self, action: "hideBars:")
-        tap.requireGestureRecognizerToFail(doubleTap)
         view.addGestureRecognizer(tap)
+
+        // Be able to vote if poll is not from current user
+        if pollController.poll.createdBy != ParseUser.current() {
+            let doubleTap = UITapGestureRecognizer(target: self, action: "vote:")
+            doubleTap.numberOfTapsRequired = 2
+            view.addGestureRecognizer(doubleTap)
+            tap.requireGestureRecognizerToFail(doubleTap)
+        }
 
         // set blurred backgrounds
         if let bgImgs = blurImages {
@@ -54,7 +57,7 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
         UIView.animateWithDuration(NSTimeInterval(UINavigationControllerHideShowBarDuration), animations: { () -> Void in
             self.setNeedsStatusBarAppearanceUpdate()
             let navController = self.navigationController!
-            navController.setToolbarHidden(self.barsHidden, animated: true)
+            navController.setToolbarHidden(self.pollController.poll.createdBy != ParseUser.current() ? self.barsHidden : true, animated: true)
             let alpha: CGFloat = self.barsHidden ? 0 : 1
             navController.navigationBar.alpha = alpha
             navController.toolbar.alpha = alpha

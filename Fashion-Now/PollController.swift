@@ -33,7 +33,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
             // Enable gestures
             tap.enabled = poll.objectId?.fn_count > 0
-            let votable = poll.createdBy?.objectId != ParseUser.current().objectId
+            let votable = poll.createdBy != ParseUser.current()
             for gesture in [doubleTap, drager] {
                 gesture.enabled = votable
             }
@@ -302,7 +302,9 @@ class PollController: UIViewController, PhotoControllerDelegate {
                 rightPhotoController = segue.destinationViewController as! PhotoController
             case "Present Gallery":
                 if let leftImage = leftPhotoController.imageView.image, let rightImage = rightPhotoController.imageView.image {
-                    let gallery = (segue.destinationViewController as! UINavigationController).topViewController as! GalleryController
+                    let navController = segue.destinationViewController as! UINavigationController
+                    navController.toolbarHidden = poll.createdBy == ParseUser.current()
+                    let gallery = navController.topViewController as! GalleryController
                     gallery.pollController = self
                     gallery.images = [leftImage, rightImage]
                     if let leftBgImg = leftPhotoController.bgImageView.image, let rightBgImg = rightPhotoController.bgImageView.image {

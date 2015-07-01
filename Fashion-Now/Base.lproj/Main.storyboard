@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="6QH-p8-eFG">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="6QH-p8-eFG">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -548,54 +548,6 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="906" y="7"/>
-        </scene>
-        <!--Root View Controller-->
-        <scene sceneID="HLa-gf-LgB">
-            <objects>
-                <tableViewController id="cdo-6T-umW" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="BQT-gg-NHS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="uLW-1V-Qlj">
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uLW-1V-Qlj" id="QdN-D4-aQJ">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="cdo-6T-umW" id="2Yb-06-aLI"/>
-                            <outlet property="delegate" destination="cdo-6T-umW" id="KhH-gv-7PZ"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="eLE-Gh-SZA"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="M2k-de-dzu" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1410" y="-1299"/>
-        </scene>
-        <!--Search-->
-        <scene sceneID="R6p-AU-zPU">
-            <objects>
-                <navigationController id="XAh-FE-YET" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Search" image="TabBarIconSearchUnselected" id="KD5-sF-B6o">
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="image" keyPath="selectedImage" value="TabBarIconSearchSelected"/>
-                        </userDefinedRuntimeAttributes>
-                    </tabBarItem>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="5ak-y2-707">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="cdo-6T-umW" kind="relationship" relationship="rootViewController" id="Rek-0l-Yoz"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bFF-xZ-6IE" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="870" y="-1299"/>
         </scene>
         <!--Post: Main-->
         <scene sceneID="DGH-qf-Zqz">
@@ -1184,11 +1136,11 @@
                         <viewControllerLayoutGuide type="bottom" id="obc-UW-hDZ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="xyj-Ge-eBW">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="kHl-T6-1iS">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1572,7 +1524,6 @@
                         <segue destination="0Nc-ub-aly" kind="modal" identifier="Login Controller" id="neE-T0-GYT"/>
                         <segue destination="lMD-1Q-cPe" kind="relationship" relationship="viewControllers" id="EOH-kZ-a3B"/>
                         <segue destination="oUO-1p-KSF" kind="relationship" relationship="viewControllers" id="dIm-df-iYM"/>
-                        <segue destination="XAh-FE-YET" kind="relationship" relationship="viewControllers" id="EoG-sy-YBR"/>
                         <segue destination="yJf-au-aBx" kind="relationship" relationship="viewControllers" id="URf-sy-6Z3"/>
                     </connections>
                 </tabBarController>
@@ -2153,8 +2104,6 @@
         <image name="TabBarIconPostUnselected" width="25" height="25"/>
         <image name="TabBarIconProfileSelected" width="25" height="25"/>
         <image name="TabBarIconProfileUnselected" width="25" height="25"/>
-        <image name="TabBarIconSearchSelected" width="25" height="25"/>
-        <image name="TabBarIconSearchUnselected" width="25" height="25"/>
         <image name="TabBarIconVoteSelected" width="25" height="25"/>
         <image name="TabBarIconVoteUnselected" width="25" height="25"/>
     </resources>
@@ -2166,7 +2115,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="apZ-Yv-541"/>
         <segue reference="uM3-tb-eTB"/>
-        <segue reference="3Xp-g0-9O6"/>
+        <segue reference="Mdo-2f-mHS"/>
         <segue reference="0or-XS-PHn"/>
         <segue reference="iBu-gn-e01"/>
     </inferredMetricsTieBreakers>

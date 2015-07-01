@@ -49,7 +49,7 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
             header?.editProfileButton.setTitle("Follow", forState: .Normal)
         }
 
-        if let newUserAvatarURL = user.avatarURL(size: 88) where newUserAvatarURL != header?.avatarImageView.sd_imageURL() {
+        if let newUserAvatarURL = user.avatarURL(size: 88) where header != nil && newUserAvatarURL != header?.avatarImageView.sd_imageURL() {
             header?.avatarImageView.setImageWithURL(newUserAvatarURL, placeholderImage: UIImage(named: "PlaceholderUserBig"), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         }
     }
@@ -311,7 +311,6 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
         // Header
         if kind == UICollectionElementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Header", forIndexPath: indexPath) as! ProfileHeader
-            header.avatarImageView.image = UIColor.fn_placeholder().fn_image()
             self.header = header
             updateUserInfo()
             return header
