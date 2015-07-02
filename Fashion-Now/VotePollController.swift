@@ -409,20 +409,11 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
             let alertWelcome = fn_alertController(UIImage(named: "TutorialWelcome.jpg")!)
             let alertVote = fn_alertController(UIImage(named: "TutorialVote.jpg")!)
-            let alertAnalytics = SDCAlertController(title: NSLocalizedString("VotePollController.tutorial.analytics.title", value: "Send Usage Data?", comment: "Alert asking to user for usage statistics"), message: NSLocalizedString("VotePollController.tutorial.analytics.message", value: "Send usage data in order to help to improve Fashion Now. These informations won’t be used to identify or contact you.", comment: "Alert asking to user for usage statistics"), preferredStyle: .Alert)
 
             alertWelcome.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.tutorial.welcome.enter", value: "Enter", comment: "Dismiss welcome alert button title"), style: .Recommended, handler: { (action) -> Void in
                 alertVote.presentWithCompletion(nil)
             }))
             alertVote.addAction(SDCAlertAction(title: FNLocalizedGotItButtonTitle, style: .Recommended, handler: { (action) -> Void in
-                alertAnalytics.presentWithCompletion(nil)
-            }))
-            alertAnalytics.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.tutorial.analytics.no", value: "No, Thanks", comment: "Alert asking to user for usage statistics"), style: .Cancel, handler: { (action) -> Void in
-                GAI.sharedInstance().optOut = true
-                self.registerPushNotification()
-            }))
-            alertAnalytics.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.tutorial.analytics.yes", value: "Send", comment: "Alert asking to user for usage statistics"), style: .Default, handler: { (action) -> Void in
-                GAI.sharedInstance().optOut = false
                 self.registerPushNotification()
             }))
             

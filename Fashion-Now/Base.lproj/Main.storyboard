@@ -181,10 +181,10 @@
             </objects>
             <point key="canvasLocation" x="497" y="2985"/>
         </scene>
-        <!--Edit Account-->
+        <!--Login: Signup-->
         <scene sceneID="8tH-OJ-rH9">
             <objects>
-                <tableViewController id="n5u-he-LbX" customClass="EditAccountController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Login: Signup" id="n5u-he-LbX" customClass="EditAccountController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="bhl-RM-JSP">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -846,31 +846,9 @@
                                             </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ImK-lm-ETH">
-                                            <rect key="frame" x="96" y="0.0" width="68" height="44"/>
+                                            <rect key="frame" x="96" y="0.0" width="204" height="44"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <state key="normal" title="Friends">
-                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="boolean" keyPath="centerText" value="YES"/>
-                                            </userDefinedRuntimeAttributes>
-                                        </button>
-                                        <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="jgx-Z4-L8b">
-                                            <rect key="frame" x="164" y="0.0" width="68" height="44"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <state key="normal" title="Followers">
-                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="boolean" keyPath="centerText" value="YES"/>
-                                            </userDefinedRuntimeAttributes>
-                                        </button>
-                                        <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="87h-PJ-c7X">
-                                            <rect key="frame" x="232" y="0.0" width="68" height="44"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <state key="normal" title="Following">
                                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
@@ -892,19 +870,11 @@
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="tFR-BG-zUt" firstAttribute="top" secondItem="jgx-Z4-L8b" secondAttribute="bottom" id="6oq-iy-Zfr"/>
-                                        <constraint firstItem="87h-PJ-c7X" firstAttribute="leading" secondItem="jgx-Z4-L8b" secondAttribute="trailing" id="7bH-43-sxp"/>
                                         <constraint firstAttribute="width" constant="300" id="7oc-85-e0c"/>
-                                        <constraint firstItem="87h-PJ-c7X" firstAttribute="width" secondItem="jgx-Z4-L8b" secondAttribute="width" id="9kt-rU-81W"/>
                                         <constraint firstAttribute="bottom" secondItem="DnG-VQ-q5y" secondAttribute="bottom" id="E7o-T1-wTt"/>
-                                        <constraint firstAttribute="trailing" secondItem="87h-PJ-c7X" secondAttribute="trailing" id="J7H-vT-JTf"/>
                                         <constraint firstItem="ImK-lm-ETH" firstAttribute="leading" secondItem="DnG-VQ-q5y" secondAttribute="trailing" constant="8" id="OaZ-IK-02Y"/>
-                                        <constraint firstItem="jgx-Z4-L8b" firstAttribute="width" secondItem="ImK-lm-ETH" secondAttribute="width" id="Utr-bl-fk0"/>
                                         <constraint firstItem="tFR-BG-zUt" firstAttribute="top" secondItem="ImK-lm-ETH" secondAttribute="bottom" id="Zxv-U5-WJA"/>
-                                        <constraint firstItem="jgx-Z4-L8b" firstAttribute="leading" secondItem="ImK-lm-ETH" secondAttribute="trailing" id="an7-C8-N9x"/>
-                                        <constraint firstItem="jgx-Z4-L8b" firstAttribute="top" secondItem="Y76-R9-fRd" secondAttribute="top" id="b2V-45-jyY"/>
-                                        <constraint firstItem="87h-PJ-c7X" firstAttribute="top" secondItem="Y76-R9-fRd" secondAttribute="top" id="cYs-H2-NAt"/>
-                                        <constraint firstItem="tFR-BG-zUt" firstAttribute="top" secondItem="87h-PJ-c7X" secondAttribute="bottom" id="gpD-mR-INL"/>
+                                        <constraint firstAttribute="trailing" secondItem="ImK-lm-ETH" secondAttribute="trailing" id="jMM-F9-DVI"/>
                                         <constraint firstItem="DnG-VQ-q5y" firstAttribute="top" secondItem="Y76-R9-fRd" secondAttribute="top" id="odl-nO-gOk"/>
                                         <constraint firstItem="ImK-lm-ETH" firstAttribute="top" secondItem="Y76-R9-fRd" secondAttribute="top" id="pU0-fN-RFQ"/>
                                         <constraint firstAttribute="trailing" secondItem="tFR-BG-zUt" secondAttribute="trailing" id="ri5-wC-987"/>
@@ -1255,10 +1225,10 @@
             </objects>
             <point key="canvasLocation" x="1610" y="-617"/>
         </scene>
-        <!--Login: Signup-->
+        <!--Profile: Edit-->
         <scene sceneID="reA-p0-HcY">
             <objects>
-                <tableViewController title="Login: Signup" id="n9L-hk-vfW" customClass="EditProfileController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Profile: Edit" id="n9L-hk-vfW" customClass="EditProfileController" customModule="Fashion_Now" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="3MQ-yd-1YS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="700"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1949,7 +1919,7 @@
                                     <action selector="takePicture:" destination="jzN-Z8-jwF" eventType="touchUpInside" id="tFR-lc-iMc"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KAR-BC-wyF" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KAR-BC-wyF" customClass="FNTemplateBackgroundButton" customModule="Fashion_Now" customModuleProvider="target">
                                 <rect key="frame" x="254" y="4" width="62" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="DaU-m5-CCq"/>

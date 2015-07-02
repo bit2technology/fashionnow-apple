@@ -52,6 +52,8 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
         if let newUserAvatarURL = user.avatarURL(size: 88) where header != nil && newUserAvatarURL != header?.avatarImageView.sd_imageURL() {
             header?.avatarImageView.setImageWithURL(newUserAvatarURL, placeholderImage: UIImage(named: "PlaceholderUserBig"), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         }
+
+        friendsUpdated(nil)
     }
 
 
@@ -72,9 +74,8 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
 
 
     func friendsUpdated(sender: NSNotification?) {
-        //let title = (sender?.userInfo?["error"] == nil ? "\(ParseFriendsList.shared.count)\n" : "") + "Friends"
-        let title = "\(ParseFriendsList.shared.count)\nFriends"
-        header?.friendsButton.setTitle(title, forState: .Normal)
+        let locFriendsTitle = NSLocalizedString("ProfileController.header.friendsBtnTitle", value: "Friends", comment: "Header 'x Friends' button title")
+        header?.friendsButton.setTitle("\(ParseFriendsList.shared.count)\n\(locFriendsTitle)", forState: .Normal)
     }
 
 
