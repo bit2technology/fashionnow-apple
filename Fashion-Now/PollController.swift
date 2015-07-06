@@ -29,7 +29,12 @@ class PollController: UIViewController, PhotoControllerDelegate {
             // Caption
             captionLabel.text = poll.caption
             captionLabel.superview!.hidden = !(captionLabel.text?.fn_count > 0)
-            publicIndicator.setTemplateImage(poll.ACL?.getPublicReadAccess() == true ? UIImage(named: "PrivacyLevelPublicMedium") : UIImage(named: "PrivacyLevelFriendsMedium"))
+            if poll.objectId?.fn_count > 0 {
+                publicIndicator.hidden = false
+                publicIndicator.setTemplateImage(poll.ACL?.getPublicReadAccess() == true ? UIImage(named: "PrivacyLevelPublicMedium") : UIImage(named: "PrivacyLevelFriendsMedium"))
+            } else {
+                publicIndicator.hidden = true
+            }
 
             // Enable gestures
             tap.enabled = poll.objectId?.fn_count > 0
@@ -283,6 +288,8 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
         captionLabel.superview!.hidden = true
         captionLabel.numberOfLines = 2
+
+        publicIndicator.hidden = true
 
         tap.requireGestureRecognizerToFail(doubleTap)
 

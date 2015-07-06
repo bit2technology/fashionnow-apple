@@ -84,25 +84,22 @@ class PostFriendsController: FNTableController {
 
         // Choose poll visibility
 
-        let pollACL = PFACL(user: ParseUser.current())
         var userIds = [String]()
 
         if forcePublic || publicPoll {
             for row in allFriends {
                 userIds.append(friendsList[row]!.objectId!)
             }
-            pollACL.setPublicReadAccess(true)
-            pollACL.setPublicWriteAccess(true)
+            poll.ACL?.setPublicReadAccess(true)
+            poll.ACL?.setPublicWriteAccess(true)
         } else {
             for row in checkedFriendsRow {
                 let user = friendsList[row]!
-                pollACL.setReadAccess(true, forUser: user)
-                pollACL.setWriteAccess(true, forUser: user)
+                poll.ACL?.setReadAccess(true, forUser: user)
+                poll.ACL?.setWriteAccess(true, forUser: user)
                 userIds.append(user.objectId!)
             }
         }
-
-        poll.ACL = pollACL
 
         // Save locally, send poll to server and notify app
 

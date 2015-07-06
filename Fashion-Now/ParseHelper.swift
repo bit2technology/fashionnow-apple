@@ -833,6 +833,8 @@ class ParseVote: PFObject, PFSubclassing {
     class func sendVote(vote voteNumber: Int, poll: ParsePoll, block: PFBooleanResultBlock?) {
         let currentUser = ParseUser.current()
         let vote = ParseVote()
+        vote.ACL = PFACL(user: currentUser)
+        vote.ACL?.setPublicReadAccess(true)
         vote.pollId = poll.objectId
         vote.version = 2
         vote.vote = voteNumber
@@ -849,7 +851,7 @@ class ParseVote: PFObject, PFSubclassing {
         saveAllInBackground(objectsToSave, block: block)
     }
 
-    var pollId: String? {
+    private(set) var pollId: String? {
         get {
             return self[ParseVotePollIdKey] as? String
         }
@@ -858,7 +860,7 @@ class ParseVote: PFObject, PFSubclassing {
         }
     }
 
-    var pollCreatedAt: NSDate? {
+    private(set) var pollCreatedAt: NSDate? {
         get {
             return self[ParseVotePollCreatedAtKey] as? NSDate
         }
@@ -867,7 +869,7 @@ class ParseVote: PFObject, PFSubclassing {
         }
     }
 
-    var pollCreatedById: String? {
+    private(set) var pollCreatedById: String? {
         get {
             return self[ParseVotePollCreatedByIdKey] as? String
         }
@@ -876,7 +878,7 @@ class ParseVote: PFObject, PFSubclassing {
         }
     }
 
-    var vote: Int? {
+    private(set) var vote: Int? {
         get {
             return self[ParseVoteVoteKey] as? Int
         }
@@ -885,7 +887,7 @@ class ParseVote: PFObject, PFSubclassing {
         }
     }
 
-    var version: Int? {
+    private(set) var version: Int? {
         get {
             return self[ParseVoteVersionKey] as? Int
         }
@@ -894,7 +896,7 @@ class ParseVote: PFObject, PFSubclassing {
         }
     }
 
-    var voteBy: ParseUser? {
+    private(set) var voteBy: ParseUser? {
         get {
             return self[ParseVoteByKey] as? ParseUser
         }
