@@ -29,7 +29,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
             // Caption
             captionLabel.text = poll.caption
             captionLabel.superview!.hidden = !(captionLabel.text?.fn_count > 0)
-            publicIndicator.hidden = poll.ACL?.getPublicReadAccess() != true
+            publicIndicator.setTemplateImage(poll.ACL?.getPublicReadAccess() == true ? UIImage(named: "PrivacyLevelPublicMedium") : UIImage(named: "PrivacyLevelFriendsMedium"))
 
             // Enable gestures
             tap.enabled = poll.objectId?.fn_count > 0
@@ -66,7 +66,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
         }
     }
 
-    @IBOutlet weak var publicIndicator: UIImageView!
+    @IBOutlet weak var publicIndicator: FNTemplateImageView!
 
     private func indexForTouch(point: CGPoint) -> Int {
         return point.x > view.bounds.width / 2 ? 2 : 1
@@ -283,8 +283,6 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
         captionLabel.superview!.hidden = true
         captionLabel.numberOfLines = 2
-
-        publicIndicator.hidden = true
 
         tap.requireGestureRecognizerToFail(doubleTap)
 

@@ -7,3 +7,8 @@
 /* Push message for when a friend posts a poll with caption */
 "P003" = "%1$@ needs help: \"%2$@\"";
 
+/* Push title for when a user starts following you */
+"P004" = "New Follower";
+
+/* Push message for when a user starts following you */
+"P005" = "%1$@ is now following you";

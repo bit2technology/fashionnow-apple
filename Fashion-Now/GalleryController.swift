@@ -33,7 +33,7 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let tap = UITapGestureRecognizer(target: self, action: "hideBars:")
+        let tap = UITapGestureRecognizer(target: self, action: "toggleBarsHidden:")
         view.addGestureRecognizer(tap)
 
         // Be able to vote if poll is not from current user
@@ -52,8 +52,17 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
         }
     }
 
-    func hideBars(sender: UITapGestureRecognizer) {
-        barsHidden = !barsHidden
+    func toggleBarsHidden(sender: UITapGestureRecognizer) {
+        hideBars(!barsHidden)
+    }
+
+    private func hideBars(hidden: Bool) {
+
+        if barsHidden == hidden {
+            return
+        }
+
+        barsHidden = hidden
         UIView.animateWithDuration(NSTimeInterval(UINavigationControllerHideShowBarDuration), animations: { () -> Void in
             self.setNeedsStatusBarAppearanceUpdate()
             let navController = self.navigationController!
@@ -122,6 +131,7 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
             return
         }
 
+        hideBars(true)
         rightBg.alpha = scrollView.contentOffset.x / leftScroll.frame.width
         currentImgIdx = rightBg.alpha > 0.5 ? 1 : 0
     }
