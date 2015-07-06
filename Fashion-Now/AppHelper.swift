@@ -61,6 +61,8 @@ private func fn_pushStrings() {
     NSLocalizedString("P001", value: "New Poll", comment: "Push title for when a friend posts a poll")
     NSLocalizedString("P002", value: "%1$@ needs help", comment: "Push message for when a friend posts a poll without caption")
     NSLocalizedString("P003", value: "%1$@ needs help: \"%1$@\"", comment: "Push message for when a friend posts a poll with caption")
+    NSLocalizedString("P004", value: "New Follower", comment: "Push title for when a user starts following you")
+    NSLocalizedString("P005", value: "%1$@ is now following you", comment: "Push message for when a user starts following you")
 }
 
 // MARK: - Extensions

@@ -131,7 +131,11 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
             return
         }
 
-        hideBars(true)
+        // Avoid calling when adjusting initial image
+        if initialImgIdx == nil {
+            hideBars(true)
+        }
+
         rightBg.alpha = scrollView.contentOffset.x / leftScroll.frame.width
         currentImgIdx = rightBg.alpha > 0.5 ? 1 : 0
     }

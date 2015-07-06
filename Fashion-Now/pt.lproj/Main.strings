@@ -46,6 +46,9 @@
 /* Class = "UILabel"; text = "Username"; ObjectID = "K2o-Iq-oKl"; */
 "K2o-Iq-oKl.text" = "Nome de Usuário";
 
+/* Class = "UIButton"; normalTitle = "Filters"; ObjectID = "KAR-BC-wyF"; */
+"KAR-BC-wyF.normalTitle" = "Filtros";
+
 /* Class = "UITextField"; placeholder = "What’s your doubt?"; ObjectID = "KUx-Xw-6OB"; */
 "KUx-Xw-6OB.placeholder" = "Qual a sua dúvida?";
 
@@ -112,6 +115,9 @@
 /* Class = "UIButton"; normalTitle = "I already verified"; ObjectID = "hnv-ds-ohc"; */
 "hnv-ds-ohc.normalTitle" = "Já verifiquei";
 
+/* Class = "UILabel"; text = "0%"; ObjectID = "jPu-g6-gyu"; */
+"jPu-g6-gyu.text" = "0%";
+
 /* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "jeX-hF-UDG"; */
 "jeX-hF-UDG.normalTitle" = "Cancelar";
 
@@ -133,6 +139,9 @@
 /* Class = "UILabel"; text = "Password"; ObjectID = "rcJ-kZ-jnm"; */
 "rcJ-kZ-jnm.text" = "Senha";
 
+/* Class = "UILabel"; text = "0%"; ObjectID = "sO1-m1-YcS"; */
+"sO1-m1-YcS.text" = "0%";
+
 /* Class = "UINavigationItem"; title = "Edit Account"; ObjectID = "sev-S7-uTF"; */
 "sev-S7-uTF.title" = "Editar Conta";
 
@@ -147,6 +156,9 @@
 
 /* Class = "UIButton"; normalTitle = "Load more"; ObjectID = "thF-Md-Kue"; */
 "thF-Md-Kue.normalTitle" = "Carregar mais";
+
+/* Class = "UILabel"; text = "E-mail"; ObjectID = "tzU-bj-UEg"; */
+"tzU-bj-UEg.text" = "E-mail";
 
 /* Class = "UITableViewSection"; headerTitle = "Avatar"; ObjectID = "xQ2-XG-UaR"; */
 "xQ2-XG-UaR.headerTitle" = "Avatar";

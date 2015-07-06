@@ -40,7 +40,7 @@ PODS:
   - GoogleUtilities (1.0.1):
     - GoogleSymbolUtilities (~> 1.0)
   - GPUImage (0.1.7)
-  - HexColors (2.2.1)
+  - HexColors (2.3.0)
   - ImageEffects (1.0.0)
   - NYXImagesKit (2.4)
   - Parse (1.7.5):
@@ -87,7 +87,7 @@ DEPENDENCIES:
   - Reachability
   - SDCAlertView
   - SDWebImage
-  - TSMessages
+  - TSMessages (from `https://github.com/KrauseFx/TSMessages.git`)
   - UIActivityIndicator-for-SDWebImage
 
 EXTERNAL SOURCES:
@@ -97,6 +97,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/BradLarson/GPUImage.git
   NYXImagesKit:
     :git: https://github.com/Nyx0uf/NYXImagesKit.git
+  TSMessages:
+    :git: https://github.com/KrauseFx/TSMessages.git
 
 CHECKOUT OPTIONS:
   FastttCamera:
@@ -108,6 +110,9 @@ CHECKOUT OPTIONS:
   NYXImagesKit:
     :commit: e0cbf80693d435dc426816a5cb23b6140d1efccc
     :git: https://github.com/Nyx0uf/NYXImagesKit.git
+  TSMessages:
+    :commit: e32ad0b3afcc28e2c7b4a51799337a810e6bba72
+    :git: https://github.com/KrauseFx/TSMessages.git
 
 SPEC CHECKSUMS:
   ActionSheetPicker-3.0: cc9f90ae785070623e9b972270013c3242190fb0
@@ -125,7 +130,7 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: a7b0feed1fe667c8d5e647177938d0ecd62d6948
   GoogleUtilities: e3475cd4d45134221d2f3f3626095a1c49b62041
   GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
-  HexColors: abfd172e329dab59888614ccba6f216cec59289d
+  HexColors: 6ad3947c3447a055a3aa8efa859def096351fe5f
   ImageEffects: 6f92f55ae12c4010642f84dcc2d7e21246666cf9
   NYXImagesKit: 3b233aa490c36088db40e9d34a637d54053f4936
   Parse: 7c0f115eff3e0cea3fac08d50bda47154edb8832
