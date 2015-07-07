@@ -62,18 +62,17 @@ PODS:
   - SDWebImage (3.7.2):
     - SDWebImage/Core (= 3.7.2)
   - SDWebImage/Core (3.7.2)
-  - TSMessages (0.9.12):
-    - HexColors
+  - TSMessages (0.9.13):
+    - HexColors (~> 2.3.0)
   - UIActivityIndicator-for-SDWebImage (1.2):
     - SDWebImage (~> 3.7)
 
 DEPENDENCIES:
   - ActionSheetPicker-3.0
   - ALAssetsLibrary-CustomPhotoAlbum
-  - Bolts
   - CCHMapClusterController
   - DateTools
-  - FastttCamera/Filters (from `https://github.com/IFTTT/FastttCamera.git`)
+  - FastttCamera/Filters
   - FBSDKCoreKit
   - FBSDKLoginKit
   - FBSDKShareKit
@@ -91,8 +90,6 @@ DEPENDENCIES:
   - UIActivityIndicator-for-SDWebImage
 
 EXTERNAL SOURCES:
-  FastttCamera:
-    :git: https://github.com/IFTTT/FastttCamera.git
   GPUImage:
     :git: https://github.com/BradLarson/GPUImage.git
   NYXImagesKit:
@@ -101,9 +98,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/KrauseFx/TSMessages.git
 
 CHECKOUT OPTIONS:
-  FastttCamera:
-    :commit: 8c690dcc68eca65774da4482695f269a4cf82364
-    :git: https://github.com/IFTTT/FastttCamera.git
   GPUImage:
     :commit: b270f452755b5edb616c3579d10c41e3c9460013
     :git: https://github.com/BradLarson/GPUImage.git
@@ -111,7 +105,7 @@ CHECKOUT OPTIONS:
     :commit: e0cbf80693d435dc426816a5cb23b6140d1efccc
     :git: https://github.com/Nyx0uf/NYXImagesKit.git
   TSMessages:
-    :commit: e32ad0b3afcc28e2c7b4a51799337a810e6bba72
+    :commit: 7ef3990de3c626e8f3e50bfabb53f76997e374ce
     :git: https://github.com/KrauseFx/TSMessages.git
 
 SPEC CHECKSUMS:
@@ -141,7 +135,7 @@ SPEC CHECKSUMS:
   SDCAlertView: f9706c18f456ea87909f8f199704cd28e582ff27
   SDCAutoLayout: e6885bb39ab8e2ec2ff84d158f38035f025f7420
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
-  TSMessages: 2a52642128d7ab15b46930c810b9c9403a2b58f3
+  TSMessages: 8f04ffae3ce56a324731dedd3b8fab3766878db2
   UIActivityIndicator-for-SDWebImage: 7bf7ebbf0ed1747dedc0d6e949c4603a6d0f9e0c
 
 COCOAPODS: 0.37.2
