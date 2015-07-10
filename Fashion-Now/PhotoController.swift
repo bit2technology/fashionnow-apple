@@ -119,7 +119,8 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         case "Present Camera":
             let fastttCam = (segue.destinationViewController as! CameraController).fasttttCam
             fastttCam.delegate = self
-            fastttCam.maxScaledDimension = 1024
+            fastttCam.maxScaledDimension = floor(1024 / UIScreen.mainScreen().scale)
+            fastttCam.normalizesImageOrientations = true
 
         default:
             break

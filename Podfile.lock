@@ -13,18 +13,18 @@ PODS:
   - FastttCamera/Filters (0.3.1):
     - FastttCamera/Default
     - GPUImage (~> 0.1.0)
-  - FBSDKCoreKit (4.3.0):
+  - FBSDKCoreKit (4.4.0):
     - Bolts (~> 1.1)
-    - FBSDKCoreKit/arc (= 4.3.0)
-    - FBSDKCoreKit/no-arc (= 4.3.0)
-  - FBSDKCoreKit/arc (4.3.0):
+    - FBSDKCoreKit/arc (= 4.4.0)
+    - FBSDKCoreKit/no-arc (= 4.4.0)
+  - FBSDKCoreKit/arc (4.4.0):
     - Bolts (~> 1.1)
-  - FBSDKCoreKit/no-arc (4.3.0):
+  - FBSDKCoreKit/no-arc (4.4.0):
     - Bolts (~> 1.1)
     - FBSDKCoreKit/arc
-  - FBSDKLoginKit (4.3.0):
+  - FBSDKLoginKit (4.4.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.3.0):
+  - FBSDKShareKit (4.4.0):
     - FBSDKCoreKit
   - Google/Analytics (1.0.7):
     - Google/Core
@@ -115,9 +115,9 @@ SPEC CHECKSUMS:
   CCHMapClusterController: 982db41114b42a575798366371bd9908e0f9ec8b
   DateTools: 9bcc89e4f2f9004d8a7a2bd1b49269cf78968e65
   FastttCamera: dfcec6e490be93130123309fdecc7cf444081470
-  FBSDKCoreKit: a3a60225a84abeace291d0fe71cae29a627382c2
-  FBSDKLoginKit: 6bc2f8f2628c3b6d2e346762fff8cb55cfd3a58d
-  FBSDKShareKit: 15806d69714de39d5dff2c84645f4cde23f5876e
+  FBSDKCoreKit: 75bdd75c980e811db218488d99dd93b7740f4474
+  FBSDKLoginKit: 02a9254a4c132412fa03577b0d53e936d068a7fb
+  FBSDKShareKit: a42865f20ba2d1cc548c4d0f73ad22cff6377ddb
   Google: 875f5a8ade86dd02e36586e4a54814843938c7f6
   GoogleAnalytics: ef2e0b800ef3c1e62688cdfc959e0d3132bc246c
   GoogleNetworkingUtilities: 292992ab31b7b4ba32809a0e8b40e324cdfb2c0c
