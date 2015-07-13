@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
+import Fabric
+import Crashlytics
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -103,6 +106,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if application.applicationState != .Background {
             PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         }
+
+        Fabric.with([Crashlytics()])
 
         return true
     }
