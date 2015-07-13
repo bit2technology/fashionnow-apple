@@ -255,7 +255,11 @@ extension UINavigationController {
 extension UIImage {
     
     /// :returns: Compressed JPEG Data to fit square of this size and opaque
-    func fn_data(quality: CGFloat = 0.5) -> NSData {
+    func fn_data(quality: CGFloat = 0.5, maxSize: Int = 1024) -> NSData {
+        let biggestSize = max(size.height, size.width) * scale
+        if biggestSize > 1024 {
+            return UIImageJPEGRepresentation(scaleToFitSize(CGSize(width: maxSize, height: maxSize)), quality)
+        }
         return UIImageJPEGRepresentation(self, quality)
     }
 

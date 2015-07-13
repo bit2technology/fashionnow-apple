@@ -9,7 +9,7 @@
 class CameraController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     private weak var camWrapper: UIViewController!
-    let fasttttCam = FastttFilterCamera.new()
+    let fastttCam = FastttFilterCamera.new()
 
     @IBAction func cancel(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
@@ -23,7 +23,7 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
     }
 
     @IBAction func takePicture(sender: UIButton) {
-        fasttttCam.takePicture()
+        fastttCam.takePicture()
         view.addSubview(view.snapshotViewAfterScreenUpdates(false))
         let whiteView = UIView(frame: view.bounds)
         whiteView.backgroundColor = UIColor.fn_white()
@@ -39,8 +39,8 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        fasttttCam.view.frame = camWrapper.view.bounds
-        camWrapper.fastttAddChildViewController(fasttttCam)
+        fastttCam.view.frame = camWrapper.view.bounds
+        camWrapper.fastttAddChildViewController(fastttCam)
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -61,7 +61,7 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
     // MARK: UIImagePickerControllerDelegate
 
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
-        fasttttCam.filterImage = info[UIImagePickerControllerOriginalImage] as? UIImage
+        fastttCam.filterImage = info[UIImagePickerControllerOriginalImage] as? UIImage
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
 }

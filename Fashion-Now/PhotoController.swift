@@ -91,7 +91,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
     private func setPhotoImage(image: UIImage, source: String) {
 
         // Set photo properties
-        photo.image = PFFile(fn_imageData: image.fn_data())
+        photo.image = PFFile(fn_imageData: image.fastttImageWithNormalizedOrientation().fn_data())
         photo.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             FNAnalytics.logError(error, location: "Photo: Save")
         }
@@ -117,10 +117,11 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         switch segue.identifier! {
 
         case "Present Camera":
-            let fastttCam = (segue.destinationViewController as! CameraController).fasttttCam
+            let fastttCam = (segue.destinationViewController as! CameraController).fastttCam
             fastttCam.delegate = self
-            fastttCam.maxScaledDimension = floor(1024 / UIScreen.mainScreen().scale)
-            fastttCam.normalizesImageOrientations = true
+            fastttCam.cropsImageToVisibleAspectRatio = true
+            fastttCam.normalizesImageOrientations = false
+            fastttCam.scalesImage = false
 
         default:
             break
@@ -149,10 +150,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         ALAssetsLibrary().saveImage(capturedImage.fullImage, toAlbum: FNLocalizedAppName, completion: nil, failure: { (error) -> Void in
             FNAnalytics.logError(error, location: "Photo: Add To Camera Roll")
         })
-    }
-
-    func cameraController(cameraController: FastttCameraInterface!, didFinishNormalizingCapturedImage capturedImage: FastttCapturedImage!) {
-        setPhotoImage(capturedImage.scaledImage, source: cameraController.cameraDevice == .Rear ? "Camera Rear" : "Camera Front")
+        setPhotoImage(capturedImage.fullImage, source: cameraController.cameraDevice == .Rear ? "Camera Rear" : "Camera Front")
         dismissViewControllerAnimated(true, completion: nil)
     }
 }
