@@ -46,7 +46,7 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
 
         // set blurred backgrounds
         if let bgImgs = blurImages {
-            for (idx, bgView) in enumerate([leftBg, rightBg]) {
+            for (idx, bgView) in [leftBg, rightBg].enumerate() {
                 bgView.image = bgImgs[idx]
             }
         }
@@ -73,10 +73,10 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
         })
     }
 
-    private func centerSubview(#scrollView: UIScrollView) {
-        let subview = scrollView.subviews.first as! UIView
-        subview.frame.origin.x = max((scrollView.bounds.size.width - scrollView.contentSize.width) / 2, 0.0)
-        subview.frame.origin.y = max((scrollView.bounds.size.height - scrollView.contentSize.height) / 2, 0.0)
+    private func centerSubview(scrollView scrollView: UIScrollView) {
+        let subview = scrollView.subviews.first
+        subview!.frame.origin.x = max((scrollView.bounds.size.width - scrollView.contentSize.width) / 2, 0.0)
+        subview!.frame.origin.y = max((scrollView.bounds.size.height - scrollView.contentSize.height) / 2, 0.0)
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -88,7 +88,7 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
             imgsAdjusted = true
 
             // Add image views
-            for (idx, scrollView) in enumerate([leftScroll, rightScroll]) {
+            for (idx, scrollView) in [leftScroll, rightScroll].enumerate() {
                 let imgView = UIImageView(image: images[idx])
                 scrollView.addSubview(imgView)
                 scrollView.contentSize = imgView.frame.size
@@ -147,7 +147,7 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
             return nil
         }
 
-        return (scrollView.subviews.first as! UIView)
+        return scrollView.subviews.first
     }
 
     func scrollViewDidZoom(scrollView: UIScrollView) {

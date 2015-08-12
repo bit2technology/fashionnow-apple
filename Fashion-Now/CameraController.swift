@@ -9,7 +9,7 @@
 class CameraController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     private weak var camWrapper: UIViewController!
-    let fastttCam = FastttFilterCamera.new()
+    let fastttCam = FastttFilterCamera()
 
     @IBAction func cancel(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
@@ -47,7 +47,7 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
         switch segue.identifier! {
 
         case "Camera Wrapper":
-            camWrapper = segue.destinationViewController as! UIViewController
+            camWrapper = segue.destinationViewController 
 
         default:
             break
@@ -60,7 +60,7 @@ class CameraController: UIViewController, UIImagePickerControllerDelegate, UINav
 
     // MARK: UIImagePickerControllerDelegate
 
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         fastttCam.filterImage = info[UIImagePickerControllerOriginalImage] as? UIImage
         picker.dismissViewControllerAnimated(true, completion: nil)
     }

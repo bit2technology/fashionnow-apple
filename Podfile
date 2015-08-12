@@ -28,17 +28,17 @@ pod 'TSMessages', :git => 'https://github.com/KrauseFx/TSMessages.git'
 pod 'UIActivityIndicator-for-SDWebImage'
 #pod 'UIPhotoGallery'
 
-pre_install do |installer|
-    supported_locales = ['base', 'en', 'pt']
-    installer.pods.each do |pod|
-        Dir.glob(File.join(pod.root, '**', '*.lproj')).each do |bundle|
-            if (!supported_locales.include?(File.basename(bundle, ".lproj").downcase))
-                puts "Removing #{bundle}"
-                FileUtils.rm_rf(bundle)
-            end
-        end
-    end
-end
+#pre_install do |installer|
+#    supported_locales = ['base', 'en', 'pt']
+#    installer.pods.each do |pod|
+#        Dir.glob(File.join(pod.root, '**', '*.lproj')).each do |bundle|
+#            if (!supported_locales.include?(File.basename(bundle, ".lproj").downcase))
+#                puts "Removing #{bundle}"
+#                FileUtils.rm_rf(bundle)
+#            end
+#        end
+#    end
+#end
 
 post_install do | installer |
     # Acknowledgements

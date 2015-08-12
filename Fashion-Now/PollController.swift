@@ -28,8 +28,8 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
             // Caption
             captionLabel.text = poll.caption
-            captionLabel.superview!.hidden = !(captionLabel.text?.fn_count > 0)
-            if poll.objectId?.fn_count > 0 {
+            captionLabel.superview!.hidden = !(captionLabel.text?.characters.count > 0)
+            if poll.objectId?.characters.count > 0 {
                 publicIndicator.hidden = false
                 publicIndicator.setTemplateImage(poll.ACL?.getPublicReadAccess() == true ? UIImage(named: "PrivacyLevelPublicMedium") : UIImage(named: "PrivacyLevelFriendsMedium"))
             } else {
@@ -37,7 +37,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
             }
 
             // Enable gestures
-            tap.enabled = poll.objectId?.fn_count > 0
+            tap.enabled = poll.objectId?.characters.count > 0
             let votable = poll.createdBy != ParseUser.current()
             for gesture in [doubleTap, drager] {
                 gesture.enabled = votable
@@ -89,7 +89,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
     @IBOutlet weak var drager: UIPanGestureRecognizer!
     @IBAction func didDrag(sender: UIPanGestureRecognizer) {
 
-        var translationX = sender.translationInView(view).x * 1.6
+        let translationX = sender.translationInView(view).x * 1.6
         var horizontalRate = translationX / view.bounds.width
         // Set rate limit
         if horizontalRate > 2 {
@@ -98,8 +98,8 @@ class PollController: UIViewController, PhotoControllerDelegate {
             horizontalRate = -2
         }
 
-        var translationY = sender.translationInView(view).y
-        var verticalRate = translationY / view.bounds.height
+        let translationY = sender.translationInView(view).y
+        let verticalRate = translationY / view.bounds.height
 
         switch sender.state {
         case .Began:
@@ -160,7 +160,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
         case DoubleTap, Drag, Extern
     }
 
-    func animateHighlight(#index: Int, withEaseInAnimation easeIn: Bool = true, source: HighlightSource) {
+    func animateHighlight(index index: Int, withEaseInAnimation easeIn: Bool = true, source: HighlightSource) {
 
         interactDelegate?.pollWillHighlight(self, index: index, source: source)
 
@@ -180,10 +180,10 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
     private func adjustHorizontalLayout(rate: CGFloat, animationTimingFunction: CAMediaTimingFunction?, callCompleteDelegate: Bool) {
 
-        func setMaskTranslateX(translate: CGFloat, #view: UIView) {
-            var layerMaskTransform = view.layer.mask.transform
+        func setMaskTranslateX(translate: CGFloat, view: UIView) {
+            var layerMaskTransform = view.layer.mask!.transform
             layerMaskTransform.m41 = translate
-            view.layer.mask.transform = layerMaskTransform
+            view.layer.mask!.transform = layerMaskTransform
         }
 
         // Adjust layers transform for rate
@@ -293,7 +293,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
         tap.requireGestureRecognizerToFail(doubleTap)
 
-        fn_applyPollMask(leftPhotoView, rightPhotoView)
+        fn_applyPollMask(leftPhotoView, right: rightPhotoView)
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

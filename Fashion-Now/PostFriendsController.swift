@@ -103,7 +103,7 @@ class PostFriendsController: FNTableController {
 
         // Save locally, send poll to server and notify app
 
-        let activityIndicator = navigationController?.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+        let activityIndicator = navigationController?.view.fn_setLoading(background: UIColor.fn_white(0.5))
         poll.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             activityIndicator?.removeFromSuperview()
 
@@ -113,7 +113,7 @@ class PostFriendsController: FNTableController {
                 self.poll.pinInBackground() // FIXME: Maybe give it a name?
 
                 var params = ["to": userIds, "poll": self.poll.objectId!] as [NSObject:AnyObject]
-                if let caption = self.poll.caption?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where caption.fn_count > 0 {
+                if let caption = self.poll.caption?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where caption.characters.count > 0 {
                     params["caption"] = caption
                 }
                 PFCloud.callFunctionInBackground("pollPosted", withParameters: params) { (result, error) -> Void in
@@ -157,16 +157,16 @@ class PostFriendsController: FNTableController {
         containerView.backgroundColor = UIColor.groupTableViewBackgroundColor()
         // Title
         let title = UILabel(frame: CGRect(x: 8, y: 0, width: 312, height: 32))
-        title.autoresizingMask = .FlexibleHeight | .FlexibleWidth
+        title.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
         title.font = UIFont.boldSystemFontOfSize(16)
         title.text =  headerTitles[section]
         containerView.addSubview(title)
         // Button
         if section == 1 && friendsList.count > 0 {
-            let button = UIButton.buttonWithType(.System) as! UIButton
+            let button = UIButton(type: .System)
             button.frame = containerView.bounds
             button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
-            button.autoresizingMask = .FlexibleHeight | .FlexibleWidth
+            button.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
             button.setTitle(checkedFriendsRow.count < friendsList.count ? selectAllBtnTitle : deselectAllBtnTitle, forState: .Normal)
             button.addTarget(self, action: "selectAllFriends:", forControlEvents: .TouchUpInside)
             button.contentHorizontalAlignment = .Right
@@ -186,7 +186,7 @@ class PostFriendsController: FNTableController {
             checkedFriendsRow.removeAll(keepCapacity: true)
             sender.setTitle(selectAllBtnTitle, forState: .Normal)
         }
-        tableView.reloadRowsAtIndexPaths(tableView.indexPathsForVisibleRows()!, withRowAnimation: .None)
+        tableView.reloadRowsAtIndexPaths(tableView.indexPathsForVisibleRows!, withRowAnimation: .None)
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -201,13 +201,13 @@ class PostFriendsController: FNTableController {
             cell.nameLabel.text = NSLocalizedString("PostFriendsController.rowTitle.publicPoll", value: "All users", comment: "Table view row title for make the poll public for all users")
 
         case sectionFriends:
-            cell.accessoryType = find(checkedFriendsRow, indexPath.row) != nil ? .Checkmark : .None
+            cell.accessoryType = checkedFriendsRow.indexOf(indexPath.row) != nil ? .Checkmark : .None
             cell.avatarView.cornerRadius = 20
             cell.avatarView.contentMode = .ScaleToFill
             let user = friendsList[indexPath.row]!
             cell.avatarView.removeActivityIndicator()
             cell.avatarView.sd_cancelCurrentImageLoad()
-            cell.avatarView.setImageWithURL(user.avatarURL(size: 40), usingActivityIndicatorStyle: .White)
+            cell.avatarView.setImageWithURL(user.avatarURL(40), usingActivityIndicatorStyle: .White)
             cell.nameLabel.text = user.displayName
 
         case sectionInvite:
@@ -240,7 +240,7 @@ class PostFriendsController: FNTableController {
             }
 
         case sectionFriends:
-            if let foundIndex = find(checkedFriendsRow, indexPath.row) {
+            if let foundIndex = checkedFriendsRow.indexOf(indexPath.row) {
                 checkedFriendsRow.removeAtIndex(foundIndex)
                 cell.accessoryType = .None
             } else {

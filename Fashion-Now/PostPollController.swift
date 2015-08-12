@@ -48,7 +48,7 @@ class PostPollController: FNViewController, UITextFieldDelegate {
             return
         }
 
-        let activityIndicator = refreshInterface.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+        let activityIndicator = refreshInterface.fn_setLoading(background: UIColor.fn_white(0.5))
         ParseUser.current().fetchInBackgroundWithBlock({ (user, error) -> Void in
             activityIndicator.removeFromSuperview()
 
@@ -87,40 +87,38 @@ class PostPollController: FNViewController, UITextFieldDelegate {
         return true
     }
 
-    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
         textField.resignFirstResponder()
 
-        if let identifier = identifier {
+        switch identifier {
 
-            switch identifier {
-
-            case "Next Step":
-                if fn_isOffline() {
-                    return false
-                }
-                let poll = pollController.poll
-                if poll.isValid {
-                    if textField.text.fn_count > 0 {
-                        poll.caption = textField.text
-                        return true
-                    } else {
-                        let alert = SDCAlertController(title: NSLocalizedString("PostController.noCaptionAlert.title", value: "Poll Without Description", comment: "Shown when user tries to send a invalid without caption"), message: NSLocalizedString("PostController.noCaptionAlert.message", value: "Go further without a description?", comment: "Shown when user tries to send a invalid without caption"), preferredStyle: .Alert)
-                        alert.addAction(SDCAlertAction(title: NSLocalizedString("PostController.noCaptionAlert.cancel", value: "Go Back", comment: "Shown when user tries to send a invalid without caption"), style: .Cancel, handler: nil))
-                        alert.addAction(SDCAlertAction(title: NSLocalizedString("PostController.noCaptionAlert.next", value: "Go Further", comment: "Shown when user tries to send a invalid without caption"), style: .Default, handler: { (action) -> Void in
-                            self.performSegueWithIdentifier(identifier, sender: nil)
-                        }))
-                        alert.presentWithCompletion(nil)
-                        return false
-                    }
-                } else {
-                    FNToast.show(title: NSLocalizedString("PostController.invalidPollAlert.title", value: "Invalid Poll", comment: "Shown when user tries to send a invalid poll"), message: NSLocalizedString("PostController.invalidPollAlert.message", value: "Choose two photos", comment: "Shown when user tries to send a invalid poll"), type: .Error)
-                    return false
-                }
-
-            default:
-                break
+        case "Next Step":
+            if fn_isOffline() {
+                return false
             }
+            let poll = pollController.poll
+            if poll.isValid {
+                if textField.text?.characters.count > 0 {
+                    poll.caption = textField.text
+                    return true
+                } else {
+                    let alert = SDCAlertController(title: NSLocalizedString("PostController.noCaptionAlert.title", value: "Poll Without Description", comment: "Shown when user tries to send a invalid without caption"), message: NSLocalizedString("PostController.noCaptionAlert.message", value: "Go further without a description?", comment: "Shown when user tries to send a invalid without caption"), preferredStyle: .Alert)
+                    alert.addAction(SDCAlertAction(title: NSLocalizedString("PostController.noCaptionAlert.cancel", value: "Go Back", comment: "Shown when user tries to send a invalid without caption"), style: .Cancel, handler: nil))
+                    alert.addAction(SDCAlertAction(title: NSLocalizedString("PostController.noCaptionAlert.next", value: "Go Further", comment: "Shown when user tries to send a invalid without caption"), style: .Default, handler: { (action) -> Void in
+                        self.performSegueWithIdentifier(identifier, sender: nil)
+                    }))
+                    alert.presentWithCompletion(nil)
+                    return false
+                }
+            } else {
+                FNToast.show(title: NSLocalizedString("PostController.invalidPollAlert.title", value: "Invalid Poll", comment: "Shown when user tries to send a invalid poll"), message: NSLocalizedString("PostController.invalidPollAlert.message", value: "Choose two photos", comment: "Shown when user tries to send a invalid poll"), type: .Error)
+                return false
+            }
+
+        default:
+            break
         }
+        
         return true
     }
 
@@ -163,9 +161,9 @@ class PostPollController: FNViewController, UITextFieldDelegate {
 
         // Show refresh interface if user cannot post
         if showRefreshInterface {
-            if find(view.subviews as! [UIView], refreshInterface) == nil {
+            if (view.subviews ).indexOf(refreshInterface) == nil {
                 refreshInterface.frame = view.bounds
-                refreshInterface.autoresizingMask = .FlexibleHeight | .FlexibleWidth
+                refreshInterface.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
                 view.addSubview(refreshInterface)
             }
         } else {
@@ -174,9 +172,9 @@ class PostPollController: FNViewController, UITextFieldDelegate {
 
         // Show no email interface if needed
         if showNoEmailInterface {
-            if find(view.subviews as! [UIView], noEmailInterface) == nil {
+            if (view.subviews ).indexOf(noEmailInterface) == nil {
                 noEmailInterface.frame = view.bounds
-                noEmailInterface.autoresizingMask = .FlexibleHeight | .FlexibleWidth
+                noEmailInterface.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
                 view.addSubview(noEmailInterface)
             }
         } else {

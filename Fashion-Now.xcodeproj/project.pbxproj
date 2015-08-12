@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1D824CAC92C93D9205931DB7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 048B75AE9DC83A2F458FA468 /* libPods.a */; };
-		4B118CE91B53E80400EF79BD /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B118CE71B53E80400EF79BD /* Fabric.framework */; };
-		4B118CEA1B53E80400EF79BD /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B118CE81B53E80400EF79BD /* Crashlytics.framework */; };
 		4B1883191B405CBE001183EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B1883181B405CBE001183EE /* GoogleService-Info.plist */; };
 		4B3864651A178B80004ECAB8 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3864641A178B80004ECAB8 /* TabBarController.swift */; };
 		4B3E8DBC1B0CBF7600B2189B /* EditAccountController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3E8DBB1B0CBF7600B2189B /* EditAccountController.swift */; };
@@ -59,8 +57,6 @@
 
 /* Begin PBXFileReference section */
 		048B75AE9DC83A2F458FA468 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		4B118CE71B53E80400EF79BD /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = SOURCE_ROOT; };
-		4B118CE81B53E80400EF79BD /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = SOURCE_ROOT; };
 		4B1883181B405CBE001183EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4B3864641A178B80004ECAB8 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4B3E8DBB1B0CBF7600B2189B /* EditAccountController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditAccountController.swift; sourceTree = "<group>"; };
@@ -116,10 +112,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B8E41871B4432550035A5BB /* AdSupport.framework in Frameworks */,
-				4B118CE91B53E80400EF79BD /* Fabric.framework in Frameworks */,
 				4BF47AE81B0A5A40000CE441 /* MapKit.framework in Frameworks */,
 				4B8E41861B44311E0035A5BB /* libAdIdAccess.a in Frameworks */,
-				4B118CEA1B53E80400EF79BD /* Crashlytics.framework in Frameworks */,
 				1D824CAC92C93D9205931DB7 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -214,8 +208,6 @@
 		4BF1D0581A00F1EB00818658 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4B118CE71B53E80400EF79BD /* Fabric.framework */,
-				4B118CE81B53E80400EF79BD /* Crashlytics.framework */,
 				4B8E41851B44311E0035A5BB /* libAdIdAccess.a */,
 				4BAE1EF21B25093C002E80B9 /* Tutorials */,
 				4BF1D0801A010DD400818658 /* Fashion-Now-Bridging-Header.h */,
@@ -282,7 +274,6 @@
 				4B5D53A61B2F0A28005572C7 /* Show Warnings */,
 				4BDB6D131A21FD6C003D56C1 /* Build Number Increment */,
 				4BD55F2D1A3AFFB00028F026 /* Send Symbol Files to Parse */,
-				4B118CE61B53E77900EF79BD /* Fabric */,
 			);
 			buildRules = (
 			);
@@ -317,7 +308,9 @@
 		4BF1D04D1A00F1EB00818658 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Bit2 Software";
 				TargetAttributes = {
 					4BF1D0541A00F1EB00818658 = {
@@ -401,20 +394,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
-		};
-		4B118CE61B53E77900EF79BD /* Fabric */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = Fabric;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "./Fabric.framework/run 522a504376e1d3e160f5fd54f575b6c38bfe537d c529814eb6ebede4b6859b7c4e9f40723b8898dc7dd77ee6cc87da94041e63f6";
 		};
 		4B5D53A61B2F0A28005572C7 /* Show Warnings */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -605,7 +584,9 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -649,6 +630,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -685,6 +667,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Fashion-Now",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bit2software.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "Fashion-Now";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Fashion-Now/Fashion-Now-Bridging-Header.h";
@@ -712,6 +695,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Fashion-Now",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bit2software.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "Fashion-Now";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Fashion-Now/Fashion-Now-Bridging-Header.h";
@@ -733,6 +717,7 @@
 				);
 				INFOPLIST_FILE = "Fashion-NowTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bit2software.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "Fashion-NowTests";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fashion-Now.app/Fashion-Now";
 			};
@@ -748,6 +733,7 @@
 				);
 				INFOPLIST_FILE = "Fashion-NowTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bit2software.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "Fashion-NowTests";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fashion-Now.app/Fashion-Now";
 			};

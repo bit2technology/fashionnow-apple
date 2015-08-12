@@ -69,7 +69,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         })
     }
     @IBAction func voteButtonPressed(sender: UIButton) {
-        pollController.animateHighlight(index: find([leftVoteButton, rightVoteButton], sender)! + 1, source: .Extern)
+        pollController.animateHighlight(index: [leftVoteButton, rightVoteButton].indexOf(sender)! + 1, source: .Extern)
     }
 
     // Message interface with a button to refresh
@@ -92,7 +92,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
             // Avatar
             let placeholderImage = UIColor.fn_placeholder().fn_image()
-            if let avatarUrl = pollToShow.createdBy?.avatarURL(size: 33) {
+            if let avatarUrl = pollToShow.createdBy?.avatarURL(33) {
                 avatarView.setImageWithURL(avatarUrl, placeholderImage: placeholderImage, usingActivityIndicatorStyle: .White)
             } else {
                 avatarView.image = placeholderImage
@@ -197,14 +197,14 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
     private func registerPushNotification() {
         let application = UIApplication.sharedApplication()
-        if application.respondsToSelector("registerUserNotificationSettings:") {
+        if #available(iOS 8.0, *) {
             // Register for Push Notitications, if running iOS 8 and later
-            let settings = UIUserNotificationSettings(forTypes:.Alert | .Badge | .Sound, categories: nil)
+            let settings = UIUserNotificationSettings(forTypes:[.Alert, .Badge, .Sound], categories: nil)
             application.registerUserNotificationSettings(settings)
             application.registerForRemoteNotifications()
         } else {
             // Register for Push Notifications before iOS 8
-            application.registerForRemoteNotificationTypes(.Alert | .Badge | .Sound)
+            application.registerForRemoteNotificationTypes([.Alert, .Badge, .Sound])
         }
     }
 
@@ -213,9 +213,6 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     @IBAction func gearButtonPressed(sender: UIBarButtonItem) {
 
         // Buttons
-        let defaultHandler: ((UIAlertAction!) -> Void) = { (action) -> Void in
-            self.actionSheetAction(action.title)
-        }
         var actions = [[String:String]]()
         actions.append(["title": asBlockButtonTitle, "style": "destructive"])
         actions.append(["title": asReportButtonTitle])
@@ -228,7 +225,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         actions.append(["title": FNLocalizedCancelButtonTitle, "style": "cancel"])
 
         // Presentation
-        if NSClassFromString("UIAlertController") != nil {
+        if #available(iOS 8.0, *) {
 
             // iOS 8 and above
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
@@ -241,7 +238,9 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
                         style = .Cancel
                     }
                 }
-                actionSheet.addAction(UIAlertAction(title: action["title"]!, style: style, handler: defaultHandler))
+                actionSheet.addAction(UIAlertAction(title: action["title"]!, style: style) { (action) -> Void in
+                    self.actionSheetAction(action.title!)
+                })
             }
             actionSheet.popoverPresentationController?.barButtonItem = sender
             presentViewController(actionSheet, animated: true, completion: nil)
@@ -266,7 +265,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
     }
 
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        actionSheetAction(actionSheet.buttonTitleAtIndex(buttonIndex))
+        actionSheetAction(actionSheet.buttonTitleAtIndex(buttonIndex)!)
     }
 
     private func actionSheetAction(buttonTitle: String) {
@@ -317,7 +316,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
 
     // MARK: UIViewController
 
-    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
         if identifier == "Show Profile" && currentPoll?.createdBy == nil {
             return false
         }
@@ -349,7 +348,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
         navigationItem.titleView!.frame.size.width = 9999
 
         refreshMessageContainer.frame = view.bounds
-        refreshMessageContainer.autoresizingMask = .FlexibleHeight | .FlexibleWidth
+        refreshMessageContainer.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
         view.addSubview(refreshMessageContainer)
 
         loadingInterface = view.fn_setLoading(background: UIColor.groupTableViewBackgroundColor())

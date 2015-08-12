@@ -13,10 +13,10 @@ func fn_alertController(image: UIImage) -> SDCAlertController {
     let alertController = SDCAlertController(title: nil, message: nil, preferredStyle: .Alert)
     let imgView = UIImageView(image: image)
     let metrics = ["top": NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1 ? -46 : -2, "bottom": NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1 ? 0 : -19, "height": Int(image.size.height * 270 / image.size.width), "max": Int(UIScreen.mainScreen().bounds.height - 84)]
-    imgView.setTranslatesAutoresizingMaskIntoConstraints(false)
+    imgView.translatesAutoresizingMaskIntoConstraints = false
     alertController.contentView.addSubview(imgView)
-    alertController.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-(-2)-[img]-(-2)-|", options: .allZeros, metrics: nil, views: ["img": imgView]))
-    alertController.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(top)-[img(height@999,<=max)]-(bottom)-|", options: .allZeros, metrics: metrics, views: ["img": imgView]))
+    alertController.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-(-2)-[img]-(-2)-|", options: [], metrics: nil, views: ["img": imgView]))
+    alertController.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(top)-[img(height@999,<=max)]-(bottom)-|", options: [], metrics: metrics, views: ["img": imgView]))
     return alertController
 }
 
@@ -101,7 +101,7 @@ extension UIColor {
 
     /// rgb(7, 131, 123)
     class func fn_tint(alpha: CGFloat = 1) -> UIColor {
-        return fn_detail(alpha: alpha)
+        return fn_detail(alpha)
     }
 
     /// rgb(255, 0, 0)
@@ -114,12 +114,12 @@ extension UIColor {
         return UIColor(red: 0.73333333333333333333333333333333333333333333333333, green: 0.72941176470588235294117647058823529411764705882353, blue: 0.76078431372549019607843137254901960784313725490196, alpha: alpha)
     }
 
-    /// :returns: Random color
+    /// - returns: Random color
     class func fn_random(alpha: CGFloat = 1) -> UIColor{
         return UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: alpha)
     }
 
-    /// :returns: An image with this color, size 1x1 and scale 1
+    /// - returns: An image with this color, size 1x1 and scale 1
     func fn_image() -> UIImage! {
         let size = CGSize(width: 1, height: 1)
         UIGraphicsBeginImageContextWithOptions(size, true, 1)
@@ -129,13 +129,6 @@ extension UIColor {
         let image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         return image
-    }
-}
-
-extension String {
-    /// Same as count(self)
-    var fn_count: Int {
-        return count(self)
     }
 }
 
@@ -200,7 +193,7 @@ extension UIView {
         activityIndicator.hidesWhenStopped = false
         activityIndicator.startAnimating()
         activityIndicator.frame = bounds
-        activityIndicator.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        activityIndicator.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         activityIndicator.opaque = true
         activityIndicator.userInteractionEnabled = true
         addSubview(activityIndicator)
@@ -242,25 +235,25 @@ extension UIViewController {
 
 extension UINavigationController {
     public override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
-        return topViewController.preferredStatusBarUpdateAnimation()
+        return topViewController?.preferredStatusBarUpdateAnimation() ?? .Slide
     }
     public override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return topViewController.preferredStatusBarStyle()
+        return topViewController?.preferredStatusBarStyle() ?? .Default
     }
     public override func prefersStatusBarHidden() -> Bool {
-        return topViewController.prefersStatusBarHidden()
+        return topViewController?.prefersStatusBarHidden() ?? false
     }
 }
 
 extension UIImage {
     
-    /// :returns: Compressed JPEG Data to fit square of this size and opaque
+    /// - returns: Compressed JPEG Data to fit square of this size and opaque
     func fn_data(quality: CGFloat = 0.5, maxSize: Int = 1024) -> NSData {
         let biggestSize = max(size.height, size.width) * scale
         if biggestSize > 1024 {
-            return UIImageJPEGRepresentation(scaleToFitSize(CGSize(width: maxSize, height: maxSize)), quality)
+            return UIImageJPEGRepresentation(scaleToFitSize(CGSize(width: maxSize, height: maxSize)), quality)!
         }
-        return UIImageJPEGRepresentation(self, quality)
+        return UIImageJPEGRepresentation(self, quality)!
     }
 
     func fn_blur() -> UIImage! {
@@ -274,10 +267,10 @@ extension UIImageView {
 
         if let correctImage = newImage ?? image {
             // Remove old aspect ratio
-            if NSLayoutConstraint.respondsToSelector("deactivateConstraints:") {
-                NSLayoutConstraint.deactivateConstraints(constraints())
+            if #available(iOS 8.0, *) {
+                NSLayoutConstraint.deactivateConstraints(constraints)
             } else {
-                removeConstraints(constraints())
+                removeConstraints(constraints)
             }
 
             // Add new
@@ -352,7 +345,7 @@ class FNTemplateImageView: UIImageView {
 
 /// Helper for TSMessage
 class FNToast {
-    class func show(#title: String, message: String? = nil, type: TSMessageNotificationType = .Message, position: TSMessageNotificationPosition = .Top) {
+    class func show(title title: String, message: String? = nil, type: TSMessageNotificationType = .Message, position: TSMessageNotificationPosition = .Top) {
         TSMessage.showNotificationInViewController(TSMessage.defaultViewController(), title: title, subtitle: message, image: nil, type: type, duration: 0, callback: nil, buttonTitle: nil, buttonCallback: nil, atPosition: position, canBeDismissedByUser: true)
     }
 }

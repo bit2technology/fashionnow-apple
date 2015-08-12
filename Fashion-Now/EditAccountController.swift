@@ -29,7 +29,7 @@ class EditAccountController: FNTableController, UITextFieldDelegate {
             FNToast.show(title: NSLocalizedString("EditAccountController.reviewAlert.title", value: "Review information" , comment: "Title of alert of missing/wrong information"), message: message, type: .Warning, position: .Bottom)
         }
 
-        if fn_isOffline(notificationPosition: .Bottom) {
+        if fn_isOffline(.Bottom) {
             return
         }
 
@@ -40,14 +40,14 @@ class EditAccountController: FNTableController, UITextFieldDelegate {
         }
 
         // Email
-        if emailField.fn_text == nil || !emailField.text.isEmail() {
+        if emailField.fn_text == nil || !emailField.text!.isEmail() {
             emailLabel.textColor = UIColor.fn_error()
             showError(NSLocalizedString("EditAccountController.saveErrorDescription.emailNotValid", value: "You must provide a valid e-mail.", comment: "Error message for Sign Up or Edit Profile"))
             return
         }
 
         // Username
-        if !(usernameField.text.fn_count >= 6) {
+        if !(usernameField.text!.characters.count >= 6) {
             usernameLabel.textColor = UIColor.fn_error()
             showError(NSLocalizedString("EditAccountController.saveErrorDescription.usernameMissing", value: "Your username must have at least 6 characters.", comment: "Error message for Sign Up or Edit Profile"))
             return
@@ -55,7 +55,7 @@ class EditAccountController: FNTableController, UITextFieldDelegate {
 
         if isSignup || passwordChanged || currentUser.unsavedPassword {
             // Password
-            if !(passwordField.text.fn_count >= 6) {
+            if !(passwordField.text!.characters.count >= 6) {
                 passwordLabel.textColor = UIColor.fn_error()
                 showError(NSLocalizedString("EditAccountController.saveErrorDescription.passwordTooShort", value: "Your password must have at least 6 characters.", comment: "Error message for Sign Up or Edit Profile"))
                 return
@@ -68,7 +68,7 @@ class EditAccountController: FNTableController, UITextFieldDelegate {
             }
         }
 
-        let activityIndicatorView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+        let activityIndicatorView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(0.5))
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
             var error: NSError?
 
@@ -108,7 +108,6 @@ class EditAccountController: FNTableController, UITextFieldDelegate {
                 currentUser.hasPassword = true
             }
 
-            // Save attempt
             currentUser.save(&error)
             if FNAnalytics.logError(error, location: "EditAccountController: User Save") {
                 handleError(error!)
@@ -186,6 +185,6 @@ class EditAccountController: FNTableController, UITextFieldDelegate {
 private extension UITextField {
     /// Returns nil if text == ""
     var fn_text: String? {
-        return text.fn_count > 0 ? text : nil
+        return text!.characters.count > 0 ? text : nil
     }
 }
