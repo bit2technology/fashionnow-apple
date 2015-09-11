@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
+import Fabric
+import Crashlytics
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -69,14 +72,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Parse configuration
         Parse.enableLocalDatastore()
-        ParseCrashReporting.enable()
         #if DEBUG
             Parse.setApplicationId("AIQ4OyhhFVequZa6eXLCDdEpxu9qE0JyFkkfczWw", clientKey: "4dMOa5Ts1cvKVcnlIv2E4wYudyN7iJoH0gQDxpVy")
         #else
             Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
         #endif
         ParseUser.enableAutomaticUser()
-
+        
+        let currentUser = ParseUser.current()
+        
         // Analytics configuration
         var error: NSError?
         GGLContext.sharedInstance().configureWithError(&error)
@@ -88,22 +92,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #endif
         let tracker = GAI.sharedInstance().defaultTracker
         tracker.allowIDFACollection = true
-        tracker.set(kGAIUserId, value: ParseUser.current().objectId)
-
+        tracker.set(kGAIUserId, value: currentUser.objectId)
+        
         // Parse post configuration
         ParseUser.enableRevocableSessionInBackgroundWithBlock { (error) -> Void in
             FNAnalytics.logError(error, location: "AppDelegate: Enable Revocable Session")
         }
         PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
-
+        
         // Observe login change and update installation
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
-
+        
         // Track app opened
         if application.applicationState != .Background {
             PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         }
-
+        
+        #if DEBUG
+            Crashlytics.sharedInstance().debugMode = true
+        #endif
+        Fabric.with([Crashlytics()])
+        #if DEBUG
+            Fabric.sharedSDK().debug = true
+        #endif
+        
+        
+        
+        
+        
+        
+        
+        // FIXME: !!!!!!
+        ParseUser.current().saveInBackground()
+        Crashlytics.sharedInstance().setUserEmail(currentUser.email)
+        Crashlytics.sharedInstance().setUserIdentifier(currentUser.objectId)
+        Crashlytics.sharedInstance().setUserName(currentUser.displayName)
+        
+        
+        
+        
+        
+        
+        
+        
         return true
     }
     

@@ -70,7 +70,6 @@ class EditAccountController: FNTableController, UITextFieldDelegate {
 
         let activityIndicatorView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(0.5))
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
-            var error: NSError?
 
             /// Present error alert.
             func handleError(error: NSError) {
@@ -108,19 +107,20 @@ class EditAccountController: FNTableController, UITextFieldDelegate {
                 currentUser.hasPassword = true
             }
 
-            currentUser.save(&error)
-            if FNAnalytics.logError(error, location: "EditAccountController: User Save") {
-                handleError(error!)
-                return
+            do {
+                try currentUser.save()
+                currentUser.unsavedPassword = false
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    if self.isSignup {
+                        FNAnalytics.logRegistration("Email")
+                    }
+                    self.dismissLoginModalController()
+                })
+            } catch {
+                FNAnalytics.logError(error as NSError, location: "EditAccountController: User Save")
+                handleError(error as NSError)
             }
-            currentUser.unsavedPassword = false
-
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                if self.isSignup {
-                    FNAnalytics.logRegistration("Email")
-                }
-                self.dismissLoginModalController()
-            })
         }
     }
 

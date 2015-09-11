@@ -790,7 +790,7 @@ class ParsePollList: CustomStringConvertible, CustomDebugStringConvertible {
     }
 
     /// Helper method to update
-    private func finishDownload(success: ObjCBool, error: NSError!) {
+    private func finishDownload(success: Bool, error: NSError!) {
         downloading = false
         completionHandler?(success, error)
         completionHandler = nil

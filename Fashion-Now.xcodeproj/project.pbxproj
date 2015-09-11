@@ -266,14 +266,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4BF1D0771A00F1EB00818658 /* Build configuration list for PBXNativeTarget "Fashion-Now" */;
 			buildPhases = (
+				4BDB6D131A21FD6C003D56C1 /* Build Number Increment */,
 				3BDADDEDC860DE1AB8F8FECD /* Check Pods Manifest.lock */,
 				4BF1D0511A00F1EB00818658 /* Sources */,
 				4BF1D0521A00F1EB00818658 /* Frameworks */,
 				4BF1D0531A00F1EB00818658 /* Resources */,
 				75813197C4A225B2AEDD361A /* Copy Pods Resources */,
+				4BD55F2D1A3AFFB00028F026 /* Send Symbol Files to Fabric */,
 				4B5D53A61B2F0A28005572C7 /* Show Warnings */,
-				4BDB6D131A21FD6C003D56C1 /* Build Number Increment */,
-				4BD55F2D1A3AFFB00028F026 /* Send Symbol Files to Parse */,
 			);
 			buildRules = (
 			);
@@ -409,19 +409,19 @@
 			shellPath = /bin/sh;
 			shellScript = "TAGS=\"TODO:|FIXME:\"\necho \"searching ${SRCROOT} for ${TAGS}\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\"";
 		};
-		4BD55F2D1A3AFFB00028F026 /* Send Symbol Files to Parse */ = {
+		4BD55F2D1A3AFFB00028F026 /* Send Symbol Files to Fabric */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Send Symbol Files to Parse";
+			name = "Send Symbol Files to Fabric";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    export PATH=/usr/local/bin:$PATH\n    cd \"${PROJECT_DIR}/parse\"\n    parse symbols \"Fashion Now\" --path=\"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"\nfi";
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    \"${PODS_ROOT}/Fabric/Fabric.framework/run\" 522a504376e1d3e160f5fd54f575b6c38bfe537d c529814eb6ebede4b6859b7c4e9f40723b8898dc7dd77ee6cc87da94041e63f6\nfi";
 		};
 		4BDB6D131A21FD6C003D56C1 /* Build Number Increment */ = {
 			isa = PBXShellScriptBuildPhase;

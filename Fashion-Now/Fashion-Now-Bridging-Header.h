@@ -18,7 +18,6 @@
 #import <NYXImagesKit/NYXImagesKit.h>
 #import <Parse/Parse.h>
 #import <Parse/PFObject+Subclass.h>
-#import <ParseCrashReporting/ParseCrashReporting.h>
 #import <ParseFacebookUtilsV4/PFFacebookUtils.h>
 #import <Reachability/Reachability.h>
 #import <SDCAlertView/SDCAlertController.h>
