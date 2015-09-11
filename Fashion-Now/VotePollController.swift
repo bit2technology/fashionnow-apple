@@ -290,7 +290,7 @@ class VotePollController: FNViewController, PollInteractionDelegate, PollLoadDel
             alert.presentWithCompletion(nil)
 
         case asBlockButtonTitle:
-            let messageWithArgument = NSString(format: NSLocalizedString("VotePollController.gearButton.blockAlert.message", value: "Are you sure you want to block %@? You won’t see any poll from this user.", comment: "Shown when user blocks a user"), currentPoll!.createdBy!.displayName) as String
+            let messageWithArgument = String(format: NSLocalizedString("VotePollController.gearButton.blockAlert.message", value: "Are you sure you want to block %@? You won’t see any poll from this user.", comment: "Shown when user blocks a user"), currentPoll!.createdBy!.displayName ?? "Anonymous")
             let alert = SDCAlertController(title: asBlockButtonTitle, message: messageWithArgument, preferredStyle: .Alert)
             alert.addAction(SDCAlertAction(title: FNLocalizedCancelButtonTitle, style: .Cancel, handler: nil))
             alert.addAction(SDCAlertAction(title: NSLocalizedString("VotePollController.gearButton.blockAlert.blockButtonTitle", value: "Block", comment: "Shown when user blocks a user"), style: .Default, handler: { (action) -> Void in

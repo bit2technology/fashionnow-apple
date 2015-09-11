@@ -142,8 +142,8 @@ class ParseUser: PFUser {
         }
     }
 
-    var displayName: String {
-        return name ?? username!
+    var displayName: String? {
+        return self["displayName"] as? String
     }
 
     var emailVerified: Bool {
@@ -194,28 +194,24 @@ class ParseUser: PFUser {
 
     /// This method downloads info from logged Facebook account and completes the user object if necessary.
     func completeInfoFacebook(completion: PFBooleanResultBlock?) {
-        if !(facebookId?.characters.count > 0) {
-            FacebookUser.getCurrent { (user, error) -> Void in
-                if !(self.email?.characters.count > 0){
-                    self.email = user?.email
-                }
-                if !(self.name?.characters.count > 0) {
-                    self.name = user?.first_name
-                }
-                if !(self.gender?.characters.count > 0) {
-                    self.gender = user?.gender
-                }
-                self.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
-                    if error?.domain == PFParseErrorDomain && error?.code == PFErrorCode.ErrorUserEmailTaken.rawValue {
-                        self.email = nil
-                        self.saveInBackgroundWithBlock(completion)
-                    } else {
-                        completion?(succeeded, error)
-                    }
-                })
+        FacebookUser.getCurrent { (user, error) -> Void in
+            if !(self.email?.characters.count > 0){
+                self.email = user?.email
             }
-        } else {
-            completion?(true, nil)
+            if !(self.name?.characters.count > 0) {
+                self.name = user?.first_name
+            }
+            if !(self.gender?.characters.count > 0) {
+                self.gender = user?.gender
+            }
+            self.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
+                if error?.domain == PFParseErrorDomain && error?.code == PFErrorCode.ErrorUserEmailTaken.rawValue {
+                    self.email = nil
+                    self.saveInBackgroundWithBlock(completion)
+                } else {
+                    completion?(succeeded, error)
+                }
+            })
         }
     }
 
@@ -237,11 +233,6 @@ class ParseUser: PFUser {
 
     var isValid: Bool {
         if !isLogged {
-            return true
-        } else if isLoggedFacebook {
-            completeInfoFacebook({ (succeeded, error) -> Void in
-                FNAnalytics.logError(error, location: "User is valid: Facebook info download")
-            })
             return true
         }
         return email?.isEmail() == true && hasPassword == true
