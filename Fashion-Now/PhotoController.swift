@@ -16,7 +16,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
             imageView.image = nil
 
             // Editability
-            let readonly = photo.objectId?.fn_count > 0
+            let readonly = photo.objectId?.characters.count > 0
             for button in [cameraButton, libraryButton, deleteButton] {
                 button.hidden = readonly
             }
@@ -130,16 +130,16 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
 
     // MARK: UINavigationControllerDelegate
 
-    func navigationControllerSupportedInterfaceOrientations(navigationController: UINavigationController) -> Int {
-        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+    func navigationControllerSupportedInterfaceOrientations(navigationController: UINavigationController) -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Portrait
     }
 
     // MARK: UIPickerViewDelegate
 
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
 
         // Get and apply edited or original image
-        var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as! UIImage
+        let image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as! UIImage
         setPhotoImage(image.scaleToFitSize(CGSize(width: 1024, height: 1024)), source: "Library")
         picker.dismissViewControllerAnimated(true, completion: nil)
     }

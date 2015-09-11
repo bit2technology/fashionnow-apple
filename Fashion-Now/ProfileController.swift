@@ -49,7 +49,7 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
             header?.editProfileButton.setTitle("Follow", forState: .Normal)
         }
 
-        if let newUserAvatarURL = user.avatarURL(size: 88) where header != nil && newUserAvatarURL != header?.avatarImageView.sd_imageURL() {
+        if let newUserAvatarURL = user.avatarURL(88) where header != nil && newUserAvatarURL != header?.avatarImageView.sd_imageURL() {
             header?.avatarImageView.setImageWithURL(newUserAvatarURL, placeholderImage: UIImage(named: "PlaceholderUserBig"), completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         }
 
@@ -128,7 +128,7 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
     // Tries to update poll list
     private func loadPolls(type: ParsePollList.UpdateType = .Newer, showError: Bool = true) {
 
-        userPolls.update(type: type, completionHandler: { (succeeded, error) -> Void in
+        userPolls.update(type, completionHandler: { (succeeded, error) -> Void in
 
             // If there is new polls, clean list of posted polls (since they will be in the update) and refresh content
             if succeeded {
@@ -160,9 +160,6 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
         let currentUser = ParseUser.current()
 
         // Buttons
-        let defaultHandler: ((UIAlertAction!) -> Void) = { (action) -> Void in
-            self.actionSheetAction(action.title)
-        }
         var actions = [[String:String]]()
         actions += [["title": asLogOut, "style": "destructive"], ["title": asEditAccount]]
         // TODO: Link/Unlink Facebook
@@ -173,7 +170,7 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
         actions.append(["title": FNLocalizedCancelButtonTitle, "style": "cancel"])
 
         // Presentation
-        if NSClassFromString("UIAlertController") != nil {
+        if #available(iOS 8.0, *) {
 
             // iOS 8 and above
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
@@ -186,7 +183,9 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
                         style = .Cancel
                     }
                 }
-                actionSheet.addAction(UIAlertAction(title: action["title"]!, style: style, handler: defaultHandler))
+                actionSheet.addAction(UIAlertAction(title: action["title"]!, style: style) { (action) -> Void in
+                    self.actionSheetAction(action.title!)
+                })
             }
             actionSheet.popoverPresentationController?.barButtonItem = sender
             presentViewController(actionSheet, animated: true, completion: nil)
@@ -211,14 +210,14 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
     }
 
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        actionSheetAction(actionSheet.buttonTitleAtIndex(buttonIndex))
+        actionSheetAction(actionSheet.buttonTitleAtIndex(buttonIndex)!)
     }
 
     private func actionSheetAction(buttonTitle: String) {
         switch buttonTitle {
 
         case asLogOut:
-            let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+            let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(0.5))
             ParseUser.logOutInBackgroundWithBlock({ (error) -> Void in
                 activityIndicator.removeFromSuperview()
                 FNAnalytics.logError(error, location: "Me: Log Out")
@@ -227,7 +226,7 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
             })
 
         case asLinkFB:
-            let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+            let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(0.5))
             PFFacebookUtils.linkUserInBackground(ParseUser.current(), withReadPermissions: FNFacebookReadPermissions, block: { (succeeded, error) -> Void in
                 activityIndicator.removeFromSuperview()
                 self.updateUserInfo()
@@ -235,7 +234,7 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
             })
 
         case asUnlinkFB:
-            let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+            let activityIndicator = fn_tabBarController.view.fn_setLoading(background: UIColor.fn_white(0.5))
             PFFacebookUtils.unlinkUserInBackground(ParseUser.current(), block: { (succeeded, error) -> Void in
                 activityIndicator.removeFromSuperview()
                 self.updateUserInfo()
@@ -264,7 +263,7 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
             switch unwrappedId {
             case "Result Controller":
                 navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Bordered, target: nil, action: nil)
-                let idx = (collectionView!.indexPathsForSelectedItems().first as! NSIndexPath).item
+                let idx = collectionView!.indexPathsForSelectedItems()!.first!.item
                 (segue.destinationViewController as! ResultPollController).poll = poll(idx)
             default:
                 navigationItem.backBarButtonItem = nil
@@ -354,11 +353,11 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
                 indicator.startAnimating()
                 activityIndicator = indicator
             } else {
-                activityIndicator = cell.fn_setLoading(style: .White, background: UIColor.fn_lighter(alpha: 1))
+                activityIndicator = cell.fn_setLoading(.White, background: UIColor.fn_lighter(1))
             }
 
             let completion: SDWebImageCompletionWithFinishedBlock = { (image, error, cacheType, completed, url) -> Void in
-                let urlString = url.absoluteString!
+                let urlString = url.absoluteString
 
                 // Downsacle image in background if necessary
                 var scaledImage = image
@@ -406,8 +405,8 @@ class ProfileController: FNCollectionController, UIActionSheetDelegate {
             }
 
             let manager = SDWebImageManager.sharedManager()
-            manager.downloadImageWithURL(NSURL(string: leftImageUrl), options: nil, progress: nil, completed: completion)
-            manager.downloadImageWithURL(NSURL(string: rightImageUrl), options: nil, progress: nil, completed: completion)
+            manager.downloadImageWithURL(NSURL(string: leftImageUrl), options: [], progress: nil, completed: completion)
+            manager.downloadImageWithURL(NSURL(string: rightImageUrl), options: [], progress: nil, completed: completion)
         }
         else {
             // TODO: Better error handling
@@ -469,7 +468,7 @@ class MePollCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        fn_applyPollMask(containers.first!, containers.last!)
+        fn_applyPollMask(containers.first!, right: containers.last!)
 
         let pollContainerLayer = leftImageView.superview!.superview!.layer
         pollContainerLayer.rasterizationScale = UIScreen.mainScreen().scale
@@ -482,7 +481,7 @@ class MePollCell: UICollectionViewCell {
         CATransaction.begin()
         CATransaction.setAnimationDuration(0)
         for container in containers {
-            container.layer.mask.transform = CATransform3DMakeScale(container.bounds.width, container.bounds.height, 1)
+            container.layer.mask!.transform = CATransform3DMakeScale(container.bounds.width, container.bounds.height, 1)
         }
         CATransaction.commit()
     }

@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let install = ParseInstallation.currentInstallation()
         install.badge = 0
         install.language = NSLocale.currentLocale().localeIdentifier
-        install.localization = NSBundle.mainBundle().preferredLocalizations.first as? String
+        install.localization = NSBundle.mainBundle().preferredLocalizations.first
         install.pushVersion = 2
         install.userId = ParseUser.current().objectId
         if let location = location {
@@ -72,14 +72,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Parse configuration
         Parse.enableLocalDatastore()
-        ParseCrashReporting.enable()
         #if DEBUG
             Parse.setApplicationId("AIQ4OyhhFVequZa6eXLCDdEpxu9qE0JyFkkfczWw", clientKey: "4dMOa5Ts1cvKVcnlIv2E4wYudyN7iJoH0gQDxpVy")
         #else
             Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
         #endif
         ParseUser.enableAutomaticUser()
-
+        
+        let currentUser = ParseUser.current()
+        
         // Analytics configuration
         var error: NSError?
         GGLContext.sharedInstance().configureWithError(&error)
@@ -91,28 +92,53 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #endif
         let tracker = GAI.sharedInstance().defaultTracker
         tracker.allowIDFACollection = true
-        tracker.set(kGAIUserId, value: ParseUser.current().objectId)
-
+        tracker.set(kGAIUserId, value: currentUser.objectId)
+        
         // Parse post configuration
         ParseUser.enableRevocableSessionInBackgroundWithBlock { (error) -> Void in
             FNAnalytics.logError(error, location: "AppDelegate: Enable Revocable Session")
         }
         PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
-
+        
         // Observe login change and update installation
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
-
+        
         // Track app opened
         if application.applicationState != .Background {
             PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         }
-
+        
+        #if DEBUG
+            Crashlytics.sharedInstance().debugMode = true
+        #endif
         Fabric.with([Crashlytics()])
-
+        #if DEBUG
+            Fabric.sharedSDK().debug = true
+        #endif
+        
+        
+        
+        
+        
+        
+        
+        // FIXME: !!!!!!
+        ParseUser.current().saveInBackground()
+        Crashlytics.sharedInstance().setUserEmail(currentUser.email)
+        Crashlytics.sharedInstance().setUserIdentifier(currentUser.objectId)
+        Crashlytics.sharedInstance().setUserName(currentUser.displayName)
+        
+        
+        
+        
+        
+        
+        
+        
         return true
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
 
         // Analytics
         let params = GAIDictionaryBuilder().setCampaignParametersFromUrl(url.absoluteString).build() as [NSObject:AnyObject]
@@ -153,16 +179,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     self.updateLocation(nil)
                     return
                 }
-                var jsonError: NSError?
-                let geoInfo = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &jsonError) as? [String: AnyObject]
-                if FNAnalytics.logError(jsonError, location: "AppDelegate: Location From IP Serialization") {
-                    self.updateLocation(nil)
-                    return
-                }
-                let latitude = geoInfo!["latitude"] as? Double
-                let longitude = geoInfo!["longitude"] as? Double
-                if latitude != nil && longitude != nil {
-                    self.updateLocation(PFGeoPoint(latitude: latitude!, longitude: longitude!))
+                do {
+                    let geoInfo = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as? [String: AnyObject]
+                    let latitude = geoInfo!["latitude"] as? Double
+                    let longitude = geoInfo!["longitude"] as? Double
+                    if latitude != nil && longitude != nil {
+                        self.updateLocation(PFGeoPoint(latitude: latitude!, longitude: longitude!))
+                    }
+                } catch {
+                    if FNAnalytics.logError(error as? NSError, location: "AppDelegate: Location From IP Serialization") {
+                        self.updateLocation(nil)
+                        return
+                    }
                 }
             }).resume()
         }

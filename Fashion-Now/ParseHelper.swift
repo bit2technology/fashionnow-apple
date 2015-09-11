@@ -21,7 +21,7 @@ let ParseInstallationPartnersKey = "partners"
 let ParseInstallationPushVersionKey = "pushVersion"
 let ParseInstallationUserIdKey = "userId"
 
-class ParseInstallation: PFInstallation, PFSubclassing {
+class ParseInstallation: PFInstallation {
 
     var language: String? {
         get {
@@ -92,7 +92,7 @@ let ParseUserNameKey = "name"
 
 private let dateFormat = "yyyy-MM-dd"
 
-class ParseUser: PFUser, PFSubclassing {
+class ParseUser: PFUser {
 
     var unsavedPassword = false
 
@@ -142,8 +142,8 @@ class ParseUser: PFUser, PFSubclassing {
         }
     }
 
-    var displayName: String {
-        return name ?? username!
+    var displayName: String? {
+        return self["displayName"] as? String
     }
 
     var emailVerified: Bool {
@@ -194,28 +194,24 @@ class ParseUser: PFUser, PFSubclassing {
 
     /// This method downloads info from logged Facebook account and completes the user object if necessary.
     func completeInfoFacebook(completion: PFBooleanResultBlock?) {
-        if !(facebookId?.fn_count > 0) {
-            FacebookUser.getCurrent { (user, error) -> Void in
-                if !(self.email?.fn_count > 0){
-                    self.email = user?.email
-                }
-                if !(self.name?.fn_count > 0) {
-                    self.name = user?.first_name
-                }
-                if !(self.gender?.fn_count > 0) {
-                    self.gender = user?.gender
-                }
-                self.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
-                    if error?.domain == PFParseErrorDomain && error?.code == PFErrorCode.ErrorUserEmailTaken.rawValue {
-                        self.email = nil
-                        self.saveInBackgroundWithBlock(completion)
-                    } else {
-                        completion?(succeeded, error)
-                    }
-                })
+        FacebookUser.getCurrent { (user, error) -> Void in
+            if !(self.email?.characters.count > 0){
+                self.email = user?.email
             }
-        } else {
-            completion?(true, nil)
+            if !(self.name?.characters.count > 0) {
+                self.name = user?.first_name
+            }
+            if !(self.gender?.characters.count > 0) {
+                self.gender = user?.gender
+            }
+            self.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
+                if error?.domain == PFParseErrorDomain && error?.code == PFErrorCode.ErrorUserEmailTaken.rawValue {
+                    self.email = nil
+                    self.saveInBackgroundWithBlock(completion)
+                } else {
+                    completion?(succeeded, error)
+                }
+            })
         }
     }
 
@@ -237,11 +233,6 @@ class ParseUser: PFUser, PFSubclassing {
 
     var isValid: Bool {
         if !isLogged {
-            return true
-        } else if isLoggedFacebook {
-            completeInfoFacebook({ (succeeded, error) -> Void in
-                FNAnalytics.logError(error, location: "User is valid: Facebook info download")
-            })
             return true
         }
         return email?.isEmail() == true && hasPassword == true
@@ -277,7 +268,7 @@ class ParseFriendsList {
         query.fromPinWithName(sharedFriendsListPinName).findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
             if !FNAnalytics.logError(error, location: "ParseFriendsList: Local Query") {
                 self.list = objects as! [ParseUser]
-                self.list.sort({$0.displayName < $1.displayName})
+                self.list.sortInPlace({$0.displayName < $1.displayName})
                 NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self)
             }
             self.update(false)
@@ -339,7 +330,7 @@ class ParseFriendsList {
 
                             FNAnalytics.logError(error, location: "ParseFriendsList: Pin")
                             self.list = objects as! [ParseUser]
-                            self.list.sort({$0.displayName < $1.displayName})
+                            self.list.sortInPlace({$0.displayName < $1.displayName})
                             NSNotificationCenter.defaultCenter().postNotificationName(ParseFriendsList.FinishLoadingNotification, object: self)
                         })
                     })
@@ -544,7 +535,7 @@ public class ParsePoll: PFObject, PFSubclassing {
 private let ParsePollListQueryLimit = 24
 private let ParsePollListUpdateLimitTime: NSTimeInterval = -5 // Needs to be negative
 
-class ParsePollList: Printable, DebugPrintable {
+class ParsePollList: CustomStringConvertible, CustomDebugStringConvertible {
 
     struct Parameters {
 
@@ -598,7 +589,7 @@ class ParsePollList: Printable, DebugPrintable {
         case .User(let user):
             return pollQuery.whereKey(ParsePollCreatedByKey, equalTo: user ?? currentUser)
         case .Vote:
-            if currentUser.objectId?.fn_count > 0 {
+            if currentUser.objectId?.characters.count > 0 {
                 // Remove already voted polls
                 let votesByMeQuery = PFQuery(className: ParseVote.parseClassName())
                     .orderByDescending(ParseVotePollCreatedAtKey)
@@ -639,8 +630,8 @@ class ParsePollList: Printable, DebugPrintable {
         var nextPollIdx: Int?
 
         // Find
-        for (idx, poll) in enumerate(polls) {
-            if let userId = poll.createdBy?.objectId where find(lastUserIds, userId) == nil {
+        for (idx, poll) in polls.enumerate() {
+            if let userId = poll.createdBy?.objectId where lastUserIds.indexOf(userId) == nil {
                 nextPollIdx = idx
                 // Add userId to list and remove excess
                 lastUserIds.insert(userId, atIndex: 0)
@@ -653,7 +644,7 @@ class ParsePollList: Printable, DebugPrintable {
 
         // Preload more if necessary
         if polls.count % 10 == 0 || nextPollIdx == nil {
-            update(type: .Older, completionHandler: { (succeeded, error) -> Void in
+            update(.Older, completionHandler: { (succeeded, error) -> Void in
                 FNAnalytics.logError(error, location: "Poll List: Preload List")
             })
         }
@@ -664,7 +655,7 @@ class ParsePollList: Printable, DebugPrintable {
 
     /// Remove poll by object
     func removePoll(poll: ParsePoll) -> Int? {
-        if let index = find(polls, poll) {
+        if let index = polls.indexOf(poll) {
             polls.removeAtIndex(index)
             return index
         }
@@ -672,12 +663,12 @@ class ParsePollList: Printable, DebugPrintable {
     }
 
     /// Remove poll for given Id and return it
-    func remove(#id: String) -> ParsePoll? {
+    func remove(id id: String) -> ParsePoll? {
 
         var pollForIdIdx: Int?
 
         // Find
-        for (idx, poll) in enumerate(polls) {
+        for (idx, poll) in polls.enumerate() {
             if poll.objectId == id {
                 pollForIdIdx = idx
                 break
@@ -908,7 +899,7 @@ class ParseVote: PFObject, PFSubclassing {
     // MARK: Helper methods
 
     var isValid: Bool {
-        return pollId?.fn_count > 0 && vote != nil && voteBy != nil
+        return pollId?.characters.count > 0 && vote != nil && voteBy != nil
     }
 }
 
@@ -925,7 +916,7 @@ class ParseReport: PFObject, PFSubclassing {
     }
 
     class func sendReport(poll: ParsePoll, comment: String?, block: PFBooleanResultBlock?) {
-        let report = self.init()
+        let report = ParseReport()
         let acl = PFACL()
         acl.setPublicReadAccess(true)
         report.ACL = acl
@@ -982,7 +973,7 @@ class ParseBlock: PFObject, PFSubclassing {
     }
 
     class func block(user: ParseUser, block: PFBooleanResultBlock?) {
-        let blockObj = self.init()
+        let blockObj = ParseBlock()
         let currentUser = ParseUser.current()
         blockObj.ACL = PFACL(user: currentUser)
         blockObj.user = currentUser

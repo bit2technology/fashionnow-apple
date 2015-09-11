@@ -13,8 +13,8 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
     // Presentation
 
-    override func supportedInterfaceOrientations() -> Int {
-        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Portrait
     }
 
     // MARK: View lifecycle
@@ -33,7 +33,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
         // If controller needs login and user is loged out, show login controller
         if viewController.needsLogin() && !ParseUser.current().isLogged {
-            controllerIndex = find(tabBarController.viewControllers as! [UIViewController], viewController)
+            controllerIndex = tabBarController.viewControllers!.indexOf(viewController)
             presentLoginController()
             return false
         }

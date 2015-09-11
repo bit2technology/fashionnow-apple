@@ -19,7 +19,7 @@ class EditProfileController: FNTableController, UITextFieldDelegate, UINavigatio
     @IBOutlet weak var genderField: UILabel!
     private var gender: String? {
         didSet {
-            if let genderIndex = find(genderValues, gender ?? "") {
+            if let genderIndex = genderValues.indexOf((gender ?? "")) {
                 genderField.textColor = UIColor.fn_tint()
                 genderField.text = genderLabels[genderIndex]
             } else {
@@ -66,7 +66,7 @@ class EditProfileController: FNTableController, UITextFieldDelegate, UINavigatio
         switch indexPath {
 
         case NSIndexPath(forRow: 1, inSection: 0): // Gender
-            let genderPicker = ActionSheetStringPicker(title: nil, rows: genderLabels, initialSelection: find(genderValues, gender ?? "") ?? 0, doneBlock: { (picker, selectedIndex, selectedValue) -> Void in
+            let genderPicker = ActionSheetStringPicker(title: nil, rows: genderLabels, initialSelection: genderValues.indexOf((gender ?? "")) ?? 0, doneBlock: { (picker, selectedIndex, selectedValue) -> Void in
                 self.gender = genderValues[selectedIndex]
             }, cancelBlock: nil, origin: view)
             if gender != nil {
@@ -140,12 +140,12 @@ class EditProfileController: FNTableController, UITextFieldDelegate, UINavigatio
         currentUser.location = self.locationField.fn_text
         // Set photo properties
         if self.avatarChanged {
-            let imageData = self.avatarImageView.image!.scaleToCoverSize(CGSize(width: 256, height: 256)).fn_data(quality: 0.8)
+            let imageData = self.avatarImageView.image!.scaleToCoverSize(CGSize(width: 256, height: 256)).fn_data(0.8)
             currentUser.avatarImage = PFFile(fn_imageData: imageData)
         }
 
         // Update interface
-        let activityIndicatorView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+        let activityIndicatorView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(0.5))
         currentUser.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             activityIndicatorView.removeFromSuperview()
 
@@ -187,7 +187,7 @@ class EditProfileController: FNTableController, UITextFieldDelegate, UINavigatio
         gender = currentUser.gender
         birthday = currentUser.birthday
         locationField.text = currentUser.location
-        if let unwrappedAvatarUrl = currentUser.avatarURL(size: 84) {
+        if let unwrappedAvatarUrl = currentUser.avatarURL(84) {
             avatarImageView.setImageWithURL(unwrappedAvatarUrl, placeholderImage: placeholderImage, completed: nil, usingActivityIndicatorStyle: .WhiteLarge)
         }
     }
@@ -208,16 +208,16 @@ class EditProfileController: FNTableController, UITextFieldDelegate, UINavigatio
 
     // MARK: UINavigationControllerDelegate
 
-    func navigationControllerSupportedInterfaceOrientations(navigationController: UINavigationController) -> Int {
-        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+    func navigationControllerSupportedInterfaceOrientations(navigationController: UINavigationController) -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Portrait
     }
 
     // MARK: UIPickerViewDelegate
 
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
 
         // Get edited or original image
-        var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as! UIImage
+        let image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as! UIImage
         avatarImageView.image = image
         avatarChanged = true
         dismissViewControllerAnimated(true, completion: nil)
@@ -232,6 +232,6 @@ class EditProfileController: FNTableController, UITextFieldDelegate, UINavigatio
 private extension UITextField {
     /// Returns nil if text == ""
     var fn_text: String? {
-        return text.fn_count > 0 ? text : nil
+        return text!.characters.count > 0 ? text : nil
     }
 }
