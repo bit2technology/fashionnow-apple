@@ -6,13 +6,23 @@
 	<array>
 		<dict>
 			<key>DefaultValue</key>
-			<string>1.1 (2608)</string>
+			<string>1.1.2 (2915)</string>
 			<key>Key</key>
 			<string>version_string</string>
 			<key>Title</key>
 			<string>Version</string>
 			<key>Type</key>
 			<string>PSTitleValueSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<true/>
+			<key>Key</key>
+			<string>AnalyticsEnabled</string>
+			<key>Title</key>
+			<string>Send Anonymous Statistics</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>

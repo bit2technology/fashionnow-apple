@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1D824CAC92C93D9205931DB7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 048B75AE9DC83A2F458FA468 /* libPods.a */; };
+		4B1883191B405CBE001183EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B1883181B405CBE001183EE /* GoogleService-Info.plist */; };
 		4B3864651A178B80004ECAB8 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3864641A178B80004ECAB8 /* TabBarController.swift */; };
 		4B3E8DBC1B0CBF7600B2189B /* EditAccountController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3E8DBB1B0CBF7600B2189B /* EditAccountController.swift */; };
 		4B458F921B013527002E035F /* PostFriendsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B458F911B013527002E035F /* PostFriendsController.swift */; };
@@ -17,9 +18,11 @@
 		4B53B2F51B036F4E00CE08EB /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B53B2F41B036F4E00CE08EB /* CameraController.swift */; };
 		4B749E8D1A30916F00E9B128 /* ResultPollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B749E8C1A30916F00E9B128 /* ResultPollController.swift */; };
 		4B7B3FFF1A35C0F30063CB90 /* LoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7B3FFE1A35C0F30063CB90 /* LoginHelper.swift */; };
-		4B7C3DEB1A1EB610004A4D37 /* MeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C3DEA1A1EB610004A4D37 /* MeController.swift */; };
+		4B7C3DEB1A1EB610004A4D37 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C3DEA1A1EB610004A4D37 /* ProfileController.swift */; };
 		4B82B4861AF9A41F00F63883 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B82B4881AF9A41F00F63883 /* InfoPlist.strings */; };
 		4B82B48B1AF9A42000F63883 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B82B48D1AF9A42000F63883 /* InfoPlist.strings */; };
+		4B8E41871B4432550035A5BB /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8E41801B442C030035A5BB /* AdSupport.framework */; };
+		4B8FF63C1BA32D16003668E9 /* libAdIdAccessLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8FF63B1BA32D16003668E9 /* libAdIdAccessLibrary.a */; };
 		4B9443591AB08B6D007DBAFD /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9443581AB08B6D007DBAFD /* AppHelper.swift */; };
 		4BAAAF8E1A14C5FB00AAFAFB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */; };
 		4BAE1EF31B250961002E80B9 /* TutorialWelcome.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE1EF51B250961002E80B9 /* TutorialWelcome.jpg */; };
@@ -54,6 +57,7 @@
 
 /* Begin PBXFileReference section */
 		048B75AE9DC83A2F458FA468 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B1883181B405CBE001183EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4B3864641A178B80004ECAB8 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4B3E8DBB1B0CBF7600B2189B /* EditAccountController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditAccountController.swift; sourceTree = "<group>"; };
 		4B458F911B013527002E035F /* PostFriendsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostFriendsController.swift; sourceTree = "<group>"; };
@@ -64,9 +68,11 @@
 		4B749E8C1A30916F00E9B128 /* ResultPollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ResultPollController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4B7B3FFE1A35C0F30063CB90 /* LoginHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHelper.swift; sourceTree = "<group>"; };
 		4B7C2CA01A13A06E00FB25B8 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = pt; path = pt.lproj/Main.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
-		4B7C3DEA1A1EB610004A4D37 /* MeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeController.swift; sourceTree = "<group>"; };
+		4B7C3DEA1A1EB610004A4D37 /* ProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		4B82B4871AF9A41F00F63883 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4B82B48C1AF9A42000F63883 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4B8E41801B442C030035A5BB /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		4B8FF63B1BA32D16003668E9 /* libAdIdAccessLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAdIdAccessLibrary.a; path = Pods/GoogleIDFASupport/Libraries/libAdIdAccessLibrary.a; sourceTree = "<group>"; };
 		4B9443581AB08B6D007DBAFD /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppHelper.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4BAAAF8F1A14C5FB00AAFAFB /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4BAE1EF41B250961002E80B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Base; path = Base.lproj/TutorialWelcome.jpg; sourceTree = "<group>"; };
@@ -105,8 +111,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B8E41871B4432550035A5BB /* AdSupport.framework in Frameworks */,
 				4BF47AE81B0A5A40000CE441 /* MapKit.framework in Frameworks */,
 				1D824CAC92C93D9205931DB7 /* libPods.a in Frameworks */,
+				4B8FF63C1BA32D16003668E9 /* libAdIdAccessLibrary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,7 +194,7 @@
 				4BD255451AC45F7A004BF005 /* VoteFilterController.swift */,
 				4BEB9E1D1A01AC8500A71764 /* PostPollController.swift */,
 				4B458F911B013527002E035F /* PostFriendsController.swift */,
-				4B7C3DEA1A1EB610004A4D37 /* MeController.swift */,
+				4B7C3DEA1A1EB610004A4D37 /* ProfileController.swift */,
 				4BF47AE51B0A59AA000CE441 /* UsersMapController.swift */,
 				4B749E8C1A30916F00E9B128 /* ResultPollController.swift */,
 				4BF1D0611A00F1EB00818658 /* Main.storyboard */,
@@ -201,12 +209,13 @@
 			isa = PBXGroup;
 			children = (
 				4BAE1EF21B25093C002E80B9 /* Tutorials */,
-				4B82B48D1AF9A42000F63883 /* InfoPlist.strings */,
-				4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */,
-				4BC4CF0A1A01164F0000A231 /* .gitignore */,
 				4BF1D0801A010DD400818658 /* Fashion-Now-Bridging-Header.h */,
+				4BAAAF901A14C5FB00AAFAFB /* Localizable.strings */,
+				4B82B48D1AF9A42000F63883 /* InfoPlist.strings */,
 				4BF1D0591A00F1EB00818658 /* Info.plist */,
+				4B1883181B405CBE001183EE /* GoogleService-Info.plist */,
 				4BE767DD1A239F6B00CCAA65 /* Settings.bundle */,
+				4BC4CF0A1A01164F0000A231 /* .gitignore */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -242,6 +251,8 @@
 		852B2819E90E3361AA2D69D7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4B8FF63B1BA32D16003668E9 /* libAdIdAccessLibrary.a */,
+				4B8E41801B442C030035A5BB /* AdSupport.framework */,
 				4BF47AE71B0A5A40000CE441 /* MapKit.framework */,
 				048B75AE9DC83A2F458FA468 /* libPods.a */,
 			);
@@ -255,13 +266,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4BF1D0771A00F1EB00818658 /* Build configuration list for PBXNativeTarget "Fashion-Now" */;
 			buildPhases = (
+				4BDB6D131A21FD6C003D56C1 /* Build Number Increment */,
 				3BDADDEDC860DE1AB8F8FECD /* Check Pods Manifest.lock */,
 				4BF1D0511A00F1EB00818658 /* Sources */,
 				4BF1D0521A00F1EB00818658 /* Frameworks */,
 				4BF1D0531A00F1EB00818658 /* Resources */,
 				75813197C4A225B2AEDD361A /* Copy Pods Resources */,
-				4BDB6D131A21FD6C003D56C1 /* Build Number Increment */,
-				4BD55F2D1A3AFFB00028F026 /* Send Symbol Files to Parse */,
+				4BD55F2D1A3AFFB00028F026 /* Send Symbol Files to Fabric */,
+				4B5D53A61B2F0A28005572C7 /* Show Warnings */,
 			);
 			buildRules = (
 			);
@@ -296,7 +308,9 @@
 		4BF1D04D1A00F1EB00818658 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Bit2 Software";
 				TargetAttributes = {
 					4BF1D0541A00F1EB00818658 = {
@@ -349,6 +363,7 @@
 				4BAE1EF31B250961002E80B9 /* TutorialWelcome.jpg in Resources */,
 				4BAE1EFD1B2509BB002E80B9 /* TutorialPost.jpg in Resources */,
 				4BF1D0631A00F1EB00818658 /* Main.storyboard in Resources */,
+				4B1883191B405CBE001183EE /* GoogleService-Info.plist in Resources */,
 				4BF1D0651A00F1EB00818658 /* Images.xcassets in Resources */,
 				4BE767DE1A239F6B00CCAA65 /* Settings.bundle in Resources */,
 			);
@@ -380,19 +395,33 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		4BD55F2D1A3AFFB00028F026 /* Send Symbol Files to Parse */ = {
+		4B5D53A61B2F0A28005572C7 /* Show Warnings */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Send Symbol Files to Parse";
+			name = "Show Warnings";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=/usr/local/bin:$PATH\ncd \"${PROJECT_DIR}/parse\"\nparse symbols \"Fashion Now\" --path=\"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"";
+			shellScript = "TAGS=\"TODO:|FIXME:\"\necho \"searching ${SRCROOT} for ${TAGS}\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\"";
+		};
+		4BD55F2D1A3AFFB00028F026 /* Send Symbol Files to Fabric */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Send Symbol Files to Fabric";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    \"${PODS_ROOT}/Fabric/Fabric.framework/run\" 522a504376e1d3e160f5fd54f575b6c38bfe537d c529814eb6ebede4b6859b7c4e9f40723b8898dc7dd77ee6cc87da94041e63f6\nfi";
 		};
 		4BDB6D131A21FD6C003D56C1 /* Build Number Increment */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -438,7 +467,7 @@
 				4BF47AE61B0A59AA000CE441 /* UsersMapController.swift in Sources */,
 				4BDB6D151A221033003D56C1 /* FacebookHelper.swift in Sources */,
 				4B458F921B013527002E035F /* PostFriendsController.swift in Sources */,
-				4B7C3DEB1A1EB610004A4D37 /* MeController.swift in Sources */,
+				4B7C3DEB1A1EB610004A4D37 /* ProfileController.swift in Sources */,
 				4BEB9E1C1A01ABF800A71764 /* PollController.swift in Sources */,
 				4B9443591AB08B6D007DBAFD /* AppHelper.swift in Sources */,
 				4BEB9E1E1A01AC8500A71764 /* PostPollController.swift in Sources */,
@@ -555,7 +584,9 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -599,6 +630,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -625,8 +657,18 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Fashion-Now/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Fashion-Now",
+					"$(PROJECT_DIR)/Pods/GoogleIDFASupport/Libraries",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bit2software.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "Fashion-Now";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Fashion-Now/Fashion-Now-Bridging-Header.h";
@@ -644,8 +686,18 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Fashion-Now/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Fashion-Now",
+					"$(PROJECT_DIR)/Pods/GoogleIDFASupport/Libraries",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bit2software.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "Fashion-Now";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Fashion-Now/Fashion-Now-Bridging-Header.h";
@@ -667,6 +719,7 @@
 				);
 				INFOPLIST_FILE = "Fashion-NowTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bit2software.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "Fashion-NowTests";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fashion-Now.app/Fashion-Now";
 			};
@@ -682,6 +735,7 @@
 				);
 				INFOPLIST_FILE = "Fashion-NowTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bit2software.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "Fashion-NowTests";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fashion-Now.app/Fashion-Now";
 			};

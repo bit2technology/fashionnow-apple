@@ -6,125 +6,13 @@
 //  Copyright (c) 2014 Bit2 Software. All rights reserved.
 //
 
-import UIKit
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject:AnyObject]?) -> Bool {
-
-        // App basic configuration
-        window!.tintColor = UIColor.fn_tint()
-
-        // Register subclasses
-        ParseInstallation.registerSubclass()
-        ParsePhoto.registerSubclass()
-        ParsePoll.registerSubclass()
-        ParseReport.registerSubclass()
-        ParseUser.registerSubclass()
-        ParseVote.registerSubclass()
-        ParseBlock.registerSubclass()
-
-        // Parse pre configuration
-        Parse.enableLocalDatastore()
-        ParseCrashReporting.enable()
-
-        // Parse configuration
-        #if DEBUG
-            Parse.setApplicationId("AIQ4OyhhFVequZa6eXLCDdEpxu9qE0JyFkkfczWw", clientKey: "4dMOa5Ts1cvKVcnlIv2E4wYudyN7iJoH0gQDxpVy")
-            GAI.sharedInstance().optOut = true
-        #else
-        Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
-        #endif
-        ParseUser.enableAutomaticUser()
-        ParseUser.enableRevocableSessionInBackgroundWithBlock { (error) -> Void in
-            FNAnalytics.logError(error, location: "AppDelegate: Enable Revocable Session")
-        }
-        PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
-
-        // Analytics
-        // Parse/Facebook
-        if application.applicationState != .Background {
-            PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
-        }
-        // Google
-        let tracker = GAI.sharedInstance().trackerWithTrackingId("UA-62043366-1")
-        tracker.set("&uid", value: ParseUser.current().objectId)
-
-        // Observe login change and update installation
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
-
-        // Update configuration
-        PFConfig.getConfigInBackgroundWithBlock { (config, error) -> Void in
-            FNAnalytics.logError(error, location: "AppDelegate: Get Config")
-        }
-
-        return true
-    }
-    
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-
-        // TODO: Analyse if poll is from current user
-//        if url.scheme == "fashionnowapp" {
-//
-//            if url.host == "poll" {
-//                VotePollController.firstPollId = url.lastPathComponent
-//                return true
-//            }
-//        }
-
-        // Facebook
-        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
-    }
-
-    func applicationDidBecomeActive(application: UIApplication) {
-
-        // Facebook Analytics
-        FBSDKAppEvents.activateApp()
-
-        // Erase badge number, set userID and update location
-        let install = ParseInstallation.currentInstallation()
-        install.badge = 0
-        install.userId = ParseUser.current().objectId
-        switch CLLocationManager.authorizationStatus() {
-        default:
-            // Get aproximate location with https://freegeoip.net/
-            NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: "https://freegeoip.net/json")!, completionHandler: { (data, response, error) -> Void in
-                if FNAnalytics.logError(error, location: "AppDelegate: Location From IP Download") {
-                    return
-                }
-                var jsonError: NSError?
-                let geoInfo = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &jsonError) as? [String: AnyObject]
-                if FNAnalytics.logError(jsonError, location: "AppDelegate: Location From IP Serialization") {
-                    return
-                }
-                let latitude = geoInfo!["latitude"] as? Double
-                let longitude = geoInfo!["longitude"] as? Double
-                if latitude != nil && longitude != nil {
-                    install.location = PFGeoPoint(latitude: latitude!, longitude: longitude!)
-                    install.saveEventually { (succeeded, error) -> Void in
-                        FNAnalytics.logError(error, location: "AppDelegate: Location From IP Save")
-                    }
-                }
-            }).resume()
-        }
-
-        // Start friends cache
-        ParseFriendsList.shared.update(false)
-
-        // Clean image cache
-        SDImageCache.sharedImageCache().cleanDiskWithCompletionBlock(nil)
-    }
-
-    func applicationDidReceiveMemoryWarning(application: UIApplication) {
-        SDImageCache.sharedImageCache().clearMemory()
-    }
-
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
 
     /// Called every login or logout
     func loginChanged(notification: NSNotification) {
@@ -141,12 +29,179 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let install = ParseInstallation.currentInstallation()
         let currentUser = ParseUser.current()
         install.userId = currentUser.objectId
-        install.saveEventually { (succeeded, error) -> Void in
+        install.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             FNAnalytics.logError(error, location: "AppDelegate: Login Changed Save")
         }
 
         // Update analytics
-        GAI.sharedInstance().defaultTracker.set("&uid", value: currentUser.objectId)
+        GAI.sharedInstance().defaultTracker.set(kGAIUserId, value: currentUser.objectId)
+    }
+
+    /// Updates current installation with default values (included the provided location) and saves.
+    private func updateLocation(location: PFGeoPoint?) {
+        // Erase badge number, set userID and update location
+        let install = ParseInstallation.currentInstallation()
+        install.badge = 0
+        install.language = NSLocale.currentLocale().localeIdentifier
+        install.localization = NSBundle.mainBundle().preferredLocalizations.first
+        install.pushVersion = 2
+        install.userId = ParseUser.current().objectId
+        if let location = location {
+            install.location = location
+        }
+        install.saveInBackgroundWithBlock { (succeeded, error) -> Void in
+            FNAnalytics.logError(error, location: "AppDelegate: Location From IP Save")
+        }
+    }
+
+    // MARK: App lifecycle
+
+    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject:AnyObject]?) -> Bool {
+
+        // App basic configuration
+        window!.tintColor = UIColor.fn_tint()
+
+        // Parse pre configuration
+        ParseInstallation.registerSubclass()
+        ParsePhoto.registerSubclass()
+        ParsePoll.registerSubclass()
+        ParseReport.registerSubclass()
+        ParseUser.registerSubclass()
+        ParseVote.registerSubclass()
+        ParseBlock.registerSubclass()
+
+        // Parse configuration
+        Parse.enableLocalDatastore()
+        #if DEBUG
+            Parse.setApplicationId("AIQ4OyhhFVequZa6eXLCDdEpxu9qE0JyFkkfczWw", clientKey: "4dMOa5Ts1cvKVcnlIv2E4wYudyN7iJoH0gQDxpVy")
+        #else
+            Parse.setApplicationId("Yiuaalmc4UFWxpLHfVHPrVLxrwePtsLfiEt8es9q", clientKey: "60gioIKODooB4WnQCKhCLRIE6eF1xwS0DwUf3YUv")
+        #endif
+        ParseUser.enableAutomaticUser()
+        
+        let currentUser = ParseUser.current()
+        
+        // Analytics configuration
+        var error: NSError?
+        GGLContext.sharedInstance().configureWithError(&error)
+        #if DEBUG
+            GAI.sharedInstance().optOut = true
+            GAI.sharedInstance().logger.logLevel = .Verbose
+        #else
+            GAI.sharedInstance().optOut = !(NSUserDefaults.standardUserDefaults().objectForKey("AnalyticsEnabled") as? Bool ?? true)
+        #endif
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.allowIDFACollection = true
+        tracker.set(kGAIUserId, value: currentUser.objectId)
+        
+        // Parse post configuration
+        ParseUser.enableRevocableSessionInBackgroundWithBlock { (error) -> Void in
+            FNAnalytics.logError(error, location: "AppDelegate: Enable Revocable Session")
+        }
+        PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
+        
+        // Observe login change and update installation
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginChanged:", name: LoginChangedNotificationName, object: nil)
+        
+        // Track app opened
+        if application.applicationState != .Background {
+            PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
+        }
+        
+        #if DEBUG
+            Crashlytics.sharedInstance().debugMode = true
+        #endif
+        Fabric.with([Crashlytics()])
+        #if DEBUG
+            Fabric.sharedSDK().debug = true
+        #endif
+        
+        
+        
+        
+        
+        
+        
+        // FIXME: !!!!!!
+        ParseUser.current().saveInBackground()
+        Crashlytics.sharedInstance().setUserEmail(currentUser.email)
+        Crashlytics.sharedInstance().setUserIdentifier(currentUser.objectId)
+        Crashlytics.sharedInstance().setUserName(currentUser.displayName)
+        
+        
+        
+        
+        
+        
+        
+        
+        return true
+    }
+    
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+
+        // Analytics
+        let params = GAIDictionaryBuilder().setCampaignParametersFromUrl(url.absoluteString).build() as [NSObject:AnyObject]
+        if !(params[kGAICampaignSource] is NSNull) {
+            GAI.sharedInstance().defaultTracker.send(params)
+        }
+
+        // Show poll first if it is in the vote list
+        if url.scheme == "fashionnowapp" {
+
+            if url.host == "poll" {
+                VotePollController.firstPollId = url.lastPathComponent
+                return true
+            }
+        }
+
+        // Facebook
+        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+    }
+
+    func applicationDidBecomeActive(application: UIApplication) {
+
+        // Facebook Analytics
+        FBSDKAppEvents.activateApp()
+
+        // Start friends cache
+        ParseFriendsList.shared.update(false)
+
+        // Clean image cache
+        SDImageCache.sharedImageCache().cleanDiskWithCompletionBlock(nil)
+
+        // Get location for Installation
+        switch CLLocationManager.authorizationStatus() {
+        default:
+            // Get aproximate location with https://freegeoip.net/
+            NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: "https://freegeoip.net/json")!, completionHandler: { (data, response, error) -> Void in
+                if FNAnalytics.logError(error, location: "AppDelegate: Location From IP Download") {
+                    self.updateLocation(nil)
+                    return
+                }
+                do {
+                    let geoInfo = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as? [String: AnyObject]
+                    let latitude = geoInfo!["latitude"] as? Double
+                    let longitude = geoInfo!["longitude"] as? Double
+                    if latitude != nil && longitude != nil {
+                        self.updateLocation(PFGeoPoint(latitude: latitude!, longitude: longitude!))
+                    }
+                } catch {
+                    if FNAnalytics.logError(error as? NSError, location: "AppDelegate: Location From IP Serialization") {
+                        self.updateLocation(nil)
+                        return
+                    }
+                }
+            }).resume()
+        }
+    }
+
+    func applicationDidReceiveMemoryWarning(application: UIApplication) {
+        SDImageCache.sharedImageCache().clearMemory()
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     // MARK: Push notifications

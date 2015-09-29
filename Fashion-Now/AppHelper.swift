@@ -13,10 +13,10 @@ func fn_alertController(image: UIImage) -> SDCAlertController {
     let alertController = SDCAlertController(title: nil, message: nil, preferredStyle: .Alert)
     let imgView = UIImageView(image: image)
     let metrics = ["top": NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1 ? -46 : -2, "bottom": NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1 ? 0 : -19, "height": Int(image.size.height * 270 / image.size.width), "max": Int(UIScreen.mainScreen().bounds.height - 84)]
-    imgView.setTranslatesAutoresizingMaskIntoConstraints(false)
+    imgView.translatesAutoresizingMaskIntoConstraints = false
     alertController.contentView.addSubview(imgView)
-    alertController.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-(-2)-[img]-(-2)-|", options: .allZeros, metrics: nil, views: ["img": imgView]))
-    alertController.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(top)-[img(height@999,<=max)]-(bottom)-|", options: .allZeros, metrics: metrics, views: ["img": imgView]))
+    alertController.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-(-2)-[img]-(-2)-|", options: [], metrics: nil, views: ["img": imgView]))
+    alertController.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(top)-[img(height@999,<=max)]-(bottom)-|", options: [], metrics: metrics, views: ["img": imgView]))
     return alertController
 }
 
@@ -61,6 +61,8 @@ private func fn_pushStrings() {
     NSLocalizedString("P001", value: "New Poll", comment: "Push title for when a friend posts a poll")
     NSLocalizedString("P002", value: "%1$@ needs help", comment: "Push message for when a friend posts a poll without caption")
     NSLocalizedString("P003", value: "%1$@ needs help: \"%1$@\"", comment: "Push message for when a friend posts a poll with caption")
+    NSLocalizedString("P004", value: "New Follower", comment: "Push title for when a user starts following you")
+    NSLocalizedString("P005", value: "%1$@ is now following you", comment: "Push message for when a user starts following you")
 }
 
 // MARK: - Extensions
@@ -99,7 +101,7 @@ extension UIColor {
 
     /// rgb(7, 131, 123)
     class func fn_tint(alpha: CGFloat = 1) -> UIColor {
-        return fn_detail(alpha: alpha)
+        return fn_detail(alpha)
     }
 
     /// rgb(255, 0, 0)
@@ -112,12 +114,12 @@ extension UIColor {
         return UIColor(red: 0.73333333333333333333333333333333333333333333333333, green: 0.72941176470588235294117647058823529411764705882353, blue: 0.76078431372549019607843137254901960784313725490196, alpha: alpha)
     }
 
-    /// :returns: Random color
+    /// - returns: Random color
     class func fn_random(alpha: CGFloat = 1) -> UIColor{
         return UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: alpha)
     }
 
-    /// :returns: An image with this color, size 1x1 and scale 1
+    /// - returns: An image with this color, size 1x1 and scale 1
     func fn_image() -> UIImage! {
         let size = CGSize(width: 1, height: 1)
         UIGraphicsBeginImageContextWithOptions(size, true, 1)
@@ -127,13 +129,6 @@ extension UIColor {
         let image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         return image
-    }
-}
-
-extension String {
-    /// Same as count(self)
-    var fn_count: Int {
-        return count(self)
     }
 }
 
@@ -198,7 +193,7 @@ extension UIView {
         activityIndicator.hidesWhenStopped = false
         activityIndicator.startAnimating()
         activityIndicator.frame = bounds
-        activityIndicator.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        activityIndicator.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         activityIndicator.opaque = true
         activityIndicator.userInteractionEnabled = true
         addSubview(activityIndicator)
@@ -240,25 +235,29 @@ extension UIViewController {
 
 extension UINavigationController {
     public override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
-        return topViewController.preferredStatusBarUpdateAnimation()
+        return topViewController?.preferredStatusBarUpdateAnimation() ?? .Slide
     }
     public override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return topViewController.preferredStatusBarStyle()
+        return topViewController?.preferredStatusBarStyle() ?? .Default
     }
     public override func prefersStatusBarHidden() -> Bool {
-        return topViewController.prefersStatusBarHidden()
+        return topViewController?.prefersStatusBarHidden() ?? false
     }
 }
 
 extension UIImage {
     
-    /// :returns: Compressed JPEG Data to fit square of this size and opaque
-    func fn_data(quality: CGFloat = 0.5) -> NSData {
-        return UIImageJPEGRepresentation(self, quality)
+    /// - returns: Compressed JPEG Data to fit square of this size and opaque
+    func fn_data(quality: CGFloat = 0.5, maxSize: Int = 1024) -> NSData {
+        let biggestSize = max(size.height, size.width) * scale
+        if biggestSize > 1024 {
+            return UIImageJPEGRepresentation(scaleToFitSize(CGSize(width: maxSize, height: maxSize)), quality)!
+        }
+        return UIImageJPEGRepresentation(self, quality)!
     }
 
     func fn_blur() -> UIImage! {
-        return scaleToFitSize(CGSize(width: 128, height: 128)).applyBlurWithRadius(1, tintColor: nil, saturationDeltaFactor: 1, maskImage: nil)
+        return scaleToFitSize(CGSize(width: 128, height: 128)).blurredImageWithRadius(1)
     }
 }
 
@@ -268,10 +267,10 @@ extension UIImageView {
 
         if let correctImage = newImage ?? image {
             // Remove old aspect ratio
-            if NSLayoutConstraint.respondsToSelector("deactivateConstraints:") {
-                NSLayoutConstraint.deactivateConstraints(constraints())
+            if #available(iOS 8.0, *) {
+                NSLayoutConstraint.deactivateConstraints(constraints)
             } else {
-                removeConstraints(constraints())
+                removeConstraints(constraints)
             }
 
             // Add new
@@ -289,31 +288,30 @@ class FNAnalytics {
 
     class func logError(error: NSError?, location: String) -> Bool {
         if let error = error {
-            var params = ["Domain": error.domain, "Code": "\(error.code)", "Location": location]
-            GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createExceptionWithDescription(error.description, withFatal: false).setAll(params).build() as [NSObject:AnyObject])
-            params["Description"] = error.description
-            FBSDKAppEvents.logEvent("Error", parameters: params)
+            GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createExceptionWithDescription("\(error.domain):\(error.code) - \(location)", withFatal: false).build() as [NSObject:AnyObject])
             return true
         }
         return false
     }
 
-    class func logRegistration(method: String?) {
-        if let method = method {
-            FBSDKAppEvents.logEvent(FBSDKAppEventNameCompletedRegistration, parameters: [FBSDKAppEventParameterNameRegistrationMethod: method])
-        }
+    class func logRegistration(method: String) {
+        FBSDKAppEvents.logEvent(FBSDKAppEventNameCompletedRegistration, parameters: [FBSDKAppEventParameterNameRegistrationMethod: method])
     }
 
     class func logPhoto(imageSource: String) {
-        let params = ["Source": imageSource]
-        FBSDKAppEvents.logEvent("Photo Saved", parameters: params)
-        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Photo Saved", action: "Source", label: nil, value: nil).setAll(params).build() as [NSObject:AnyObject])
+        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Post", action: "Photo Source", label: imageSource, value: nil).build() as [NSObject:AnyObject])
     }
 
     class func logVote(vote: Int, method: String) {
-        let params = ["Vote": "\(vote)", "Method": method]
-        FBSDKAppEvents.logEvent("Poll Voted", parameters: params)
-        GAI.sharedInstance().defaultTracker.send(GAIDictionaryBuilder.createEventWithCategory("Vote", action: "Poll Voted", label: nil, value: nil).setAll(params).build() as [NSObject:AnyObject])
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("Vote", action: "Poll Voted", label: String(vote), value: nil).build() as [NSObject:AnyObject])
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("Vote", action: "Way Used", label: method, value: nil).build() as [NSObject:AnyObject])
+    }
+
+    class func logScreen(name: String) {
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: name)
+        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
     }
 }
 
@@ -347,7 +345,7 @@ class FNTemplateImageView: UIImageView {
 
 /// Helper for TSMessage
 class FNToast {
-    class func show(#title: String, message: String? = nil, type: TSMessageNotificationType = .Message, position: TSMessageNotificationPosition = .Top) {
+    class func show(title title: String, message: String? = nil, type: TSMessageNotificationType = .Message, position: TSMessageNotificationPosition = .Top) {
         TSMessage.showNotificationInViewController(TSMessage.defaultViewController(), title: title, subtitle: message, image: nil, type: type, duration: 0, callback: nil, buttonTitle: nil, buttonCallback: nil, atPosition: position, canBeDismissedByUser: true)
     }
 }
@@ -356,10 +354,8 @@ class FNViewController: UIViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        TSMessage.setDefaultViewController(self)
-        let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: title)
-        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
+        TSMessage.setDefaultViewController(navigationController ?? self)
+        FNAnalytics.logScreen(title!)
     }
 }
 
@@ -367,10 +363,8 @@ class FNTableController: UITableViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        TSMessage.setDefaultViewController(navigationController)
-        let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: title)
-        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
+        TSMessage.setDefaultViewController(navigationController ?? self)
+        FNAnalytics.logScreen(title!)
     }
 }
 
@@ -378,10 +372,8 @@ class FNCollectionController: UICollectionViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        TSMessage.setDefaultViewController(self)
-        let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: title)
-        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject:AnyObject])
+        TSMessage.setDefaultViewController(navigationController ?? self)
+        FNAnalytics.logScreen(title!)
     }
 }
 

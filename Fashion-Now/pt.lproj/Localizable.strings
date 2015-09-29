@@ -82,15 +82,6 @@
 /* Message for when the email reset was successful */
 "LoginController.resetPassword.successMessage" = "Instruções para resetar senha enviadas para seu e-mail";
 
-/* Shown when user taps the gear button */
-"MeController.gearButton.actionSheet.linkFacebookButtonTitle" = "Conectar ao Facebook";
-
-/* Shown when user taps the gear button */
-"MeController.gearButton.actionSheet.logOutButtonTitle" = "Logout";
-
-/* Shown when user taps the gear button */
-"MeController.gearButton.actionSheet.unlinkFacebookButtonTitle" = "Desconectar do Facebook";
-
 /* Push title for when a friend posts a poll */
 "P001" = "Nova Enquete";
 
@@ -99,6 +90,15 @@
 
 /* Push message for when a friend posts a poll with caption */
 "P003" = "%1$@ precisa de ajuda: \"%1$@\"";
+
+/* Push title for when a user starts following you */
+"P004" = "Novo Seguidor";
+
+/* Push message for when a user starts following you */
+"P005" = "%1$@ agora está te seguindo";
+
+/* Shown when user tries to send a invalid poll */
+"PostController.invalidPollAlert.message" = "Escolha duas fotos";
 
 /* Shown when user tries to send a invalid poll */
 "PostController.invalidPollAlert.title" = "Enquete Inválida";
@@ -172,6 +172,24 @@
 /* Trying to resend a verification email */
 "PostPollController.resendVerification.errorTitle" = "E-mail não enviado";
 
+/* Shown when user taps the gear button */
+"ProfileController.gearButton.actionSheet.editAccountkButtonTitle" = "Editar Conta";
+
+/* Shown when user taps the gear button */
+"ProfileController.gearButton.actionSheet.linkFacebookButtonTitle" = "Conectar ao Facebook";
+
+/* Shown when user taps the gear button */
+"ProfileController.gearButton.actionSheet.logOutButtonTitle" = "Logout";
+
+/* Shown when user taps the gear button */
+"ProfileController.gearButton.actionSheet.mapButtonTitle" = "Mapa de dispositivos";
+
+/* Shown when user taps the gear button */
+"ProfileController.gearButton.actionSheet.unlinkFacebookButtonTitle" = "Desconectar do Facebook";
+
+/* Header 'x Friends' button title */
+"ProfileController.header.friendsBtnTitle" = "Amigos";
+
 /* Shown when user is about to delete a poll */
 "ResultPollController.deleteSheet.destructiveButtonTitle" = "Deletar";
 
@@ -179,7 +197,7 @@
 "ResultPollController.deleteSheet.title" = "Você realmente quer deletar essa enquete? Esta ação não pode ser desfeita";
 
 /* Shown when current poll was created more than 24h ago */
-"VotePollController.createdAt.moreThanOneDayAgo" = "Mais de um dia atrás";
+"VotePollController.createdAt.moreThanOneDayAgo" = "Há mais de um dia";
 
 /* Shown when user taps the gear button */
 "VotePollController.gearButton.actionSheet.blockButtonTitle" = "Bloquear Usuário";
@@ -216,18 +234,6 @@
 
 /* Shown when there is no poll to show */
 "VotePollController.refreshMessage.pollLoadFail" = "Ops… Alguma coisa deu errado. Por favor, tente de novo.";
-
-/* Alert asking to user for usage statistics */
-"VotePollController.tutorial.analytics.message" = "Envie dados de uso para ajudar a melhorar o Fahion Now. Estas informações não serão usadas para identificar ou contactar você.";
-
-/* Alert asking to user for usage statistics */
-"VotePollController.tutorial.analytics.no" = "Não, Obrigado";
-
-/* Alert asking to user for usage statistics */
-"VotePollController.tutorial.analytics.title" = "Enviar Dados de Uso?";
-
-/* Alert asking to user for usage statistics */
-"VotePollController.tutorial.analytics.yes" = "Enviar";
 
 /* Dismiss welcome alert button title */
 "VotePollController.tutorial.welcome.enter" = "Entrar";

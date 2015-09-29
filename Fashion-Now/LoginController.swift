@@ -19,13 +19,14 @@ class LoginController: FNTableController, UITextFieldDelegate {
 
     @IBAction func facebookButtonPressed(sender: UIButton) {
 
+        // Preparation for login
+
         if fn_isOffline() {
             return
         }
-
-        let loadingView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
-
-        let previousUserId = ParseUser.current().objectId
+        let loadingView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(0.5))
+        let previousUser = ParseUser.current()
+        FBSDKLoginManager().logOut()
 
         // Login
         PFFacebookUtils.facebookLoginManager().loginBehavior = .SystemAccount
@@ -35,7 +36,7 @@ class LoginController: FNTableController, UITextFieldDelegate {
 
                 // Successful login
                 NSNotificationCenter.defaultCenter().postNotificationName(LoginChangedNotificationName, object: self)
-                if previousUserId == nil || previousUserId == parseUser.objectId {
+                if previousUser == parseUser {
                     // This is a sign up (first login with Facebook)
                     FNAnalytics.logRegistration("Facebook")
                 }
@@ -70,15 +71,15 @@ class LoginController: FNTableController, UITextFieldDelegate {
         view.endEditing(true)
 
         // Check vality of fields
-        if usernameField.text.fn_count > 0 && passwordField.text.fn_count > 0 {
+        if usernameField.text?.characters.count > 0 && passwordField.text?.characters.count > 0 {
 
             if fn_isOffline() {
                 return
             }
 
-            let loadingView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(alpha: 0.5))
+            let loadingView = navigationController!.view.fn_setLoading(background: UIColor.fn_white(0.5))
 
-            ParseUser.logInWithUsernameInBackground(usernameField.text, password: passwordField.text) { (user, error) -> Void in
+            ParseUser.logInWithUsernameInBackground(usernameField.text!, password: passwordField.text!) { (user, error) -> Void in
 
                 if let parseUser = user as? ParseUser {
 
@@ -142,7 +143,7 @@ class LoginController: FNTableController, UITextFieldDelegate {
         alert.addAction(SDCAlertAction(title: NSLocalizedString("LoginController.resetPassword.alert.resetButtonTitle", value: "Reset", comment: "Alert button for reset password"), style: .Recommended, handler: { (action) -> Void in
             let email = alert.textFieldAtIndex(0)?.text
 
-            if email?.fn_count > 0 && email!.isEmail() {
+            if email?.characters.count > 0 && email!.isEmail() {
 
                 if fn_isOffline() {
                     return
@@ -165,7 +166,7 @@ class LoginController: FNTableController, UITextFieldDelegate {
                 }
 
             } else {
-                self.showResetAlertView(message: NSLocalizedString("LoginController.resetPassword.errorDescription.emailNotValid", value: "Please, insert a valid email address", comment: "Alert title for when user types an invalid email address"))
+                self.showResetAlertView(NSLocalizedString("LoginController.resetPassword.errorDescription.emailNotValid", value: "Please, insert a valid email address", comment: "Alert title for when user types an invalid email address"))
             }
         }))
         alert.presentWithCompletion(nil)

@@ -28,12 +28,17 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
             // Caption
             captionLabel.text = poll.caption
-            captionLabel.superview!.hidden = !(captionLabel.text?.fn_count > 0)
-            publicIndicator.hidden = poll.ACL?.getPublicReadAccess() != true
+            captionLabel.superview!.hidden = !(captionLabel.text?.characters.count > 0)
+            if poll.objectId?.characters.count > 0 {
+                publicIndicator.hidden = false
+                publicIndicator.setTemplateImage(poll.ACL?.getPublicReadAccess() == true ? UIImage(named: "PrivacyLevelPublicMedium") : UIImage(named: "PrivacyLevelFriendsMedium"))
+            } else {
+                publicIndicator.hidden = true
+            }
 
             // Enable gestures
-            tap.enabled = poll.objectId?.fn_count > 0
-            let votable = poll.createdBy?.objectId != ParseUser.current().objectId
+            tap.enabled = poll.objectId?.characters.count > 0
+            let votable = poll.createdBy != ParseUser.current()
             for gesture in [doubleTap, drager] {
                 gesture.enabled = votable
             }
@@ -66,7 +71,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
         }
     }
 
-    @IBOutlet weak var publicIndicator: UIImageView!
+    @IBOutlet weak var publicIndicator: FNTemplateImageView!
 
     private func indexForTouch(point: CGPoint) -> Int {
         return point.x > view.bounds.width / 2 ? 2 : 1
@@ -84,7 +89,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
     @IBOutlet weak var drager: UIPanGestureRecognizer!
     @IBAction func didDrag(sender: UIPanGestureRecognizer) {
 
-        var translationX = sender.translationInView(view).x * 1.6
+        let translationX = sender.translationInView(view).x * 1.6
         var horizontalRate = translationX / view.bounds.width
         // Set rate limit
         if horizontalRate > 2 {
@@ -93,8 +98,8 @@ class PollController: UIViewController, PhotoControllerDelegate {
             horizontalRate = -2
         }
 
-        var translationY = sender.translationInView(view).y
-        var verticalRate = translationY / view.bounds.height
+        let translationY = sender.translationInView(view).y
+        let verticalRate = translationY / view.bounds.height
 
         switch sender.state {
         case .Began:
@@ -155,7 +160,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
         case DoubleTap, Drag, Extern
     }
 
-    func animateHighlight(#index: Int, withEaseInAnimation easeIn: Bool = true, source: HighlightSource) {
+    func animateHighlight(index index: Int, withEaseInAnimation easeIn: Bool = true, source: HighlightSource) {
 
         interactDelegate?.pollWillHighlight(self, index: index, source: source)
 
@@ -175,10 +180,10 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
     private func adjustHorizontalLayout(rate: CGFloat, animationTimingFunction: CAMediaTimingFunction?, callCompleteDelegate: Bool) {
 
-        func setMaskTranslateX(translate: CGFloat, #view: UIView) {
-            var layerMaskTransform = view.layer.mask.transform
+        func setMaskTranslateX(translate: CGFloat, view: UIView) {
+            var layerMaskTransform = view.layer.mask!.transform
             layerMaskTransform.m41 = translate
-            view.layer.mask.transform = layerMaskTransform
+            view.layer.mask!.transform = layerMaskTransform
         }
 
         // Adjust layers transform for rate
@@ -288,7 +293,7 @@ class PollController: UIViewController, PhotoControllerDelegate {
 
         tap.requireGestureRecognizerToFail(doubleTap)
 
-        fn_applyPollMask(leftPhotoView, rightPhotoView)
+        fn_applyPollMask(leftPhotoView, right: rightPhotoView)
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -302,7 +307,9 @@ class PollController: UIViewController, PhotoControllerDelegate {
                 rightPhotoController = segue.destinationViewController as! PhotoController
             case "Present Gallery":
                 if let leftImage = leftPhotoController.imageView.image, let rightImage = rightPhotoController.imageView.image {
-                    let gallery = (segue.destinationViewController as! UINavigationController).topViewController as! GalleryController
+                    let navController = segue.destinationViewController as! UINavigationController
+                    navController.toolbarHidden = poll.createdBy == ParseUser.current()
+                    let gallery = navController.topViewController as! GalleryController
                     gallery.pollController = self
                     gallery.images = [leftImage, rightImage]
                     if let leftBgImg = leftPhotoController.bgImageView.image, let rightBgImg = rightPhotoController.bgImageView.image {

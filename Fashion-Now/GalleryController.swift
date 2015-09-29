@@ -33,38 +33,50 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Add gesture recognizers
-        let doubleTap = UITapGestureRecognizer(target: self, action: "vote:")
-        doubleTap.numberOfTapsRequired = 2
-        view.addGestureRecognizer(doubleTap)
-        let tap = UITapGestureRecognizer(target: self, action: "hideBars:")
-        tap.requireGestureRecognizerToFail(doubleTap)
+        let tap = UITapGestureRecognizer(target: self, action: "toggleBarsHidden:")
         view.addGestureRecognizer(tap)
+
+        // Be able to vote if poll is not from current user
+        if pollController.poll.createdBy != ParseUser.current() {
+            let doubleTap = UITapGestureRecognizer(target: self, action: "vote:")
+            doubleTap.numberOfTapsRequired = 2
+            view.addGestureRecognizer(doubleTap)
+            tap.requireGestureRecognizerToFail(doubleTap)
+        }
 
         // set blurred backgrounds
         if let bgImgs = blurImages {
-            for (idx, bgView) in enumerate([leftBg, rightBg]) {
+            for (idx, bgView) in [leftBg, rightBg].enumerate() {
                 bgView.image = bgImgs[idx]
             }
         }
     }
 
-    func hideBars(sender: UITapGestureRecognizer) {
-        barsHidden = !barsHidden
+    func toggleBarsHidden(sender: UITapGestureRecognizer) {
+        hideBars(!barsHidden)
+    }
+
+    private func hideBars(hidden: Bool) {
+
+        if barsHidden == hidden {
+            return
+        }
+
+        barsHidden = hidden
         UIView.animateWithDuration(NSTimeInterval(UINavigationControllerHideShowBarDuration), animations: { () -> Void in
             self.setNeedsStatusBarAppearanceUpdate()
             let navController = self.navigationController!
-            navController.setToolbarHidden(self.barsHidden, animated: true)
+            navController.setToolbarHidden(self.pollController.poll.createdBy != ParseUser.current() ? self.barsHidden : true, animated: true)
             let alpha: CGFloat = self.barsHidden ? 0 : 1
             navController.navigationBar.alpha = alpha
             navController.toolbar.alpha = alpha
         })
     }
 
-    private func centerSubview(#scrollView: UIScrollView) {
-        let subview = scrollView.subviews.first as! UIView
-        subview.frame.origin.x = max((scrollView.bounds.size.width - scrollView.contentSize.width) / 2, 0.0)
-        subview.frame.origin.y = max((scrollView.bounds.size.height - scrollView.contentSize.height) / 2, 0.0)
+    private func centerSubview(scrollView scrollView: UIScrollView) {
+        let subview = scrollView.subviews.first
+        subview!.frame.origin.x = max((scrollView.bounds.size.width - scrollView.contentSize.width) / 2, 0.0)
+        subview!.frame.origin.y = max((scrollView.bounds.size.height - scrollView.contentSize.height) / 2, 0.0)
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -76,7 +88,7 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
             imgsAdjusted = true
 
             // Add image views
-            for (idx, scrollView) in enumerate([leftScroll, rightScroll]) {
+            for (idx, scrollView) in [leftScroll, rightScroll].enumerate() {
                 let imgView = UIImageView(image: images[idx])
                 scrollView.addSubview(imgView)
                 scrollView.contentSize = imgView.frame.size
@@ -119,6 +131,11 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
             return
         }
 
+        // Avoid calling when adjusting initial image
+        if initialImgIdx == nil {
+            hideBars(true)
+        }
+
         rightBg.alpha = scrollView.contentOffset.x / leftScroll.frame.width
         currentImgIdx = rightBg.alpha > 0.5 ? 1 : 0
     }
@@ -130,7 +147,7 @@ class GalleryController: FNViewController, UIScrollViewDelegate {
             return nil
         }
 
-        return (scrollView.subviews.first as! UIView)
+        return scrollView.subviews.first
     }
 
     func scrollViewDidZoom(scrollView: UIScrollView) {

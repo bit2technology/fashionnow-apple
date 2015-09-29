@@ -16,7 +16,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
             imageView.image = nil
 
             // Editability
-            let readonly = photo.objectId?.fn_count > 0
+            let readonly = photo.objectId?.characters.count > 0
             for button in [cameraButton, libraryButton, deleteButton] {
                 button.hidden = readonly
             }
@@ -91,7 +91,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
     private func setPhotoImage(image: UIImage, source: String) {
 
         // Set photo properties
-        photo.image = PFFile(fn_imageData: image.fn_data())
+        photo.image = PFFile(fn_imageData: image.fastttImageWithNormalizedOrientation().fn_data())
         photo.saveInBackgroundWithBlock { (succeeded, error) -> Void in
             FNAnalytics.logError(error, location: "Photo: Save")
         }
@@ -117,9 +117,11 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         switch segue.identifier! {
 
         case "Present Camera":
-            let fastttCam = (segue.destinationViewController as! CameraController).fasttttCam
+            let fastttCam = (segue.destinationViewController as! CameraController).fastttCam
             fastttCam.delegate = self
-            fastttCam.maxScaledDimension = 1024
+            fastttCam.cropsImageToVisibleAspectRatio = true
+            fastttCam.normalizesImageOrientations = false
+            fastttCam.scalesImage = false
 
         default:
             break
@@ -128,16 +130,16 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
 
     // MARK: UINavigationControllerDelegate
 
-    func navigationControllerSupportedInterfaceOrientations(navigationController: UINavigationController) -> Int {
-        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+    func navigationControllerSupportedInterfaceOrientations(navigationController: UINavigationController) -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Portrait
     }
 
     // MARK: UIPickerViewDelegate
 
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
 
         // Get and apply edited or original image
-        var image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as! UIImage
+        let image = (info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as! UIImage
         setPhotoImage(image.scaleToFitSize(CGSize(width: 1024, height: 1024)), source: "Library")
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -148,10 +150,7 @@ class PhotoController: UIViewController, UINavigationControllerDelegate, UIImage
         ALAssetsLibrary().saveImage(capturedImage.fullImage, toAlbum: FNLocalizedAppName, completion: nil, failure: { (error) -> Void in
             FNAnalytics.logError(error, location: "Photo: Add To Camera Roll")
         })
-    }
-
-    func cameraController(cameraController: FastttCameraInterface!, didFinishNormalizingCapturedImage capturedImage: FastttCapturedImage!) {
-        setPhotoImage(capturedImage.scaledImage, source: cameraController.cameraDevice == .Rear ? "Camera Rear" : "Camera Front")
+        setPhotoImage(capturedImage.fullImage, source: cameraController.cameraDevice == .Rear ? "Camera Rear" : "Camera Front")
         dismissViewControllerAnimated(true, completion: nil)
     }
 }

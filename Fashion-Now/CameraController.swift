@@ -6,19 +6,24 @@
 //  Copyright (c) 2015 Bit2 Software. All rights reserved.
 //
 
-import UIKit
-
-class CameraController: FNViewController {
+class CameraController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     private weak var camWrapper: UIViewController!
-    let fasttttCam = FastttCamera.new()
+    let fastttCam = FastttFilterCamera()
 
     @IBAction func cancel(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
+    @IBAction func filters(sender: UIButton) {
+        let picker = UIImagePickerController()
+        picker.sourceType = .PhotoLibrary
+        picker.delegate = self
+        presentViewController(picker, animated: true, completion: nil)
+    }
+
     @IBAction func takePicture(sender: UIButton) {
-        fasttttCam.takePicture()
+        fastttCam.takePicture()
         view.addSubview(view.snapshotViewAfterScreenUpdates(false))
         let whiteView = UIView(frame: view.bounds)
         whiteView.backgroundColor = UIColor.fn_white()
@@ -34,15 +39,15 @@ class CameraController: FNViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        fasttttCam.view.frame = camWrapper.view.bounds
-        camWrapper.fastttAddChildViewController(fasttttCam)
+        fastttCam.view.frame = camWrapper.view.bounds
+        camWrapper.fastttAddChildViewController(fastttCam)
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         switch segue.identifier! {
 
         case "Camera Wrapper":
-            camWrapper = segue.destinationViewController as! UIViewController
+            camWrapper = segue.destinationViewController 
 
         default:
             break
@@ -51,5 +56,12 @@ class CameraController: FNViewController {
 
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
+    }
+
+    // MARK: UIImagePickerControllerDelegate
+
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        fastttCam.filterImage = info[UIImagePickerControllerOriginalImage] as? UIImage
+        picker.dismissViewControllerAnimated(true, completion: nil)
     }
 }
